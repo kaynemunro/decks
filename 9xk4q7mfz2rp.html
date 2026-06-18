@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Phone Dollars — One NZ's unfair advantage</title>
+<style>
+  :root{--green:#00A45F;--bright:#00C472;--lime:#19D17F;--first:#2bbf78;--orange:#f5a623;--blue:#3aa0ff;--ink:#06110C;--ink2:#0B1F16;--muted:#8fae9f;--muted2:#5e7a6c;--rose:#ff7a6b;--white:#fff}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:scroll}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--ink);color:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .scene{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6vh 7vw;position:relative;opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;overflow:hidden}
+  .scene.in{opacity:1;transform:none}
+  .kicker{font-size:clamp(12px,1.4vw,15px);letter-spacing:.3em;text-transform:uppercase;color:var(--lime);font-weight:600;margin-bottom:18px}
+  h1{font-size:clamp(38px,7.6vw,96px);font-weight:800;line-height:.98;letter-spacing:-.02em}
+  h2{font-size:clamp(28px,4.8vw,62px);font-weight:800;line-height:1.03;letter-spacing:-.015em;max-width:18ch}
+  .sub{font-size:clamp(16px,2vw,23px);color:var(--muted);max-width:44ch;line-height:1.5;margin-top:20px;font-weight:400}
+  .big{color:var(--bright)} .rose{color:var(--rose)}
+  .stat{font-size:clamp(52px,11vw,128px);font-weight:800;line-height:1;letter-spacing:-.03em;background:linear-gradient(92deg,var(--bright),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .statlbl{font-size:clamp(14px,1.7vw,19px);color:var(--muted);margin-top:10px;max-width:30ch}
+  .hint{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);z-index:40;animation:bob 2.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .nav{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:40}
+  .nav a{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.2);transition:.3s;display:block}
+  .nav a.on{background:var(--lime);transform:scale(1.4)}
+  .next{margin-top:30px;background:rgba(25,209,127,.12);border:1px solid rgba(25,209,127,.4);color:var(--lime);font-size:14px;font-weight:600;padding:11px 22px;border-radius:30px;cursor:pointer;transition:.2s}
+  .next:hover{background:rgba(25,209,127,.22)}
+  .row{display:flex;gap:clamp(14px,2.5vw,50px);flex-wrap:wrap;justify-content:center;align-items:center;margin-top:30px}
+  .phone{width:min(290px,72vw);background:#020806;border:10px solid #11241a;border-radius:42px;padding:22px 20px 28px;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:6px auto 0}
+  .phone .notch{width:110px;height:20px;background:#11241a;border-radius:0 0 16px 16px;margin:-22px auto 16px}
+  .phone .pdlogo{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-weight:700}
+  .phone .balrow{margin:14px 0 4px;color:var(--muted);font-size:13px}
+  .phone .bal{font-size:52px;font-weight:800;color:var(--white);letter-spacing:-.02em} .phone .bal .d{color:var(--bright)}
+  .phone .bar{height:8px;border-radius:6px;background:#11241a;margin:16px 0 6px;overflow:hidden}
+  .phone .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--lime));transition:width 2.2s ease}
+  .phone .pill{display:inline-block;margin-top:12px;background:rgba(25,209,127,.14);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px}
+  .simon{position:absolute;top:5vh;left:-140px;width:96px;height:62px}
+  .simon.run{animation:scoot 6s linear infinite} @keyframes scoot{0%{left:-140px}100%{left:108vw}}
+  .simon .bod{animation:hop .42s ease-in-out infinite} @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .offers{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+  .offers span{background:var(--ink2);border:1px solid rgba(255,255,255,.1);border-radius:30px;padding:10px 18px;font-size:clamp(13px,1.6vw,17px);font-weight:600;opacity:0;transform:translateY(10px);transition:.5s}
+  .offers span.show{opacity:1;transform:none} .offers b{color:var(--bright)}
+  .tracks{width:100%;max-width:1040px;margin-top:22px;display:flex;flex-direction:column;gap:18px}
+  .track{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px 18px;text-align:left}
+  .track .th{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .track .tt{font-size:clamp(15px,1.9vw,20px);font-weight:700} .track .tt small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+  .track .tm{font-size:13px;color:var(--muted);text-align:right} .track .tm b{color:var(--bright);font-size:20px}
+  .grid{display:grid;grid-template-columns:repeat(40,1fr);gap:4px}
+  .dot{aspect-ratio:1;border-radius:50%;background:#1c2c24;transform:scale(0);transition:transform .3s ease}
+  .dot.show{transform:scale(1)} .dot.first{background:var(--first)} .dot.mob{background:var(--orange)} .dot.bb{background:var(--blue)} .dot.gone{opacity:.1;transform:scale(.6)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px;justify-content:center}
+  .legend span{display:inline-flex;align-items:center;gap:6px} .legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .prop{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:28px}
+  .prop div{background:var(--ink2);border:1px solid rgba(25,209,127,.16);border-radius:16px;padding:18px 22px;max-width:280px;opacity:0;transform:translateY(14px);transition:.6s}
+  .prop div.show{opacity:1;transform:none}
+  .prop b{color:var(--lime);display:block;font-size:16px;margin-bottom:6px} .prop p{font-size:13.5px;color:var(--muted);line-height:1.45}
+  .bars{width:min(680px,92vw);margin-top:28px}
+  .brow{display:flex;align-items:center;gap:14px;margin:12px 0}
+  .brow .lab{width:34%;text-align:right;font-size:clamp(13px,1.6vw,16px);color:var(--muted)}
+  .brow .bw{flex:1;background:var(--ink2);border-radius:10px;overflow:hidden;height:38px}
+  .brow .bw i{display:block;height:100%;width:0;border-radius:10px;transition:width 1.3s ease}
+  .brow .val{width:64px;font-weight:800;font-size:18px;text-align:left}
+  @media(max-width:640px){.grid{grid-template-columns:repeat(25,1fr)}}
+</style>
+</head>
+<body>
+<div class="nav" id="nav"></div>
+<div class="hint">Scroll · → · or tap Next</div>
+
+<section class="scene" id="s0">
+  <h1>One NZ's<br><span class="big">unfair advantage.</span></h1>
+  <p class="sub">Three things every one of us can use on the floor — and the real numbers behind them.</p>
+  <button class="next">Begin →</button>
+</section>
+
+<section class="scene" id="s1">
+  <div class="kicker">01 · It started with churn</div>
+  <h2>When a customer can <span class="big">see</span> their balance, they stay.</h2>
+  <div class="row" style="align-items:center">
+    <div class="phone" aria-hidden="true">
+      <div class="notch"></div><div class="pdlogo">One Wallet · Phone Dollars</div>
+      <div class="balrow">Your balance</div>
+      <div class="bal"><span class="d">$</span><span id="bal">0</span></div>
+      <div class="bar"><i id="balbar"></i></div>
+      <div class="pill">Growing every month ↑</div>
+    </div>
+    <div style="text-align:left;max-width:430px">
+      <div class="stat"><span id="s1a">0</span>pp</div>
+      <div class="statlbl">lower annual churn for our engaged Phone Dollars base — measured against a matched control.</div>
+      <div style="margin-top:22px;font-size:clamp(16px,2vw,22px);color:var(--muted)">That's <b style="color:var(--lime)">~8,000 customers</b> we keep every year — worth <b style="color:var(--lime)">$4.8m</b>.</div>
+      <p class="sub" style="margin-top:16px">A visible, growing balance is the stickiest thing we've ever put in a customer's pocket. They check it. They protect it. They stay for it.</p>
+    </div>
+  </div>
+  <button class="next">Next →</button>
+</section>
+
+<section class="scene" id="s2">
+  <svg class="simon" viewBox="0 0 96 62" aria-hidden="true"><g class="bod">
+    <ellipse cx="50" cy="38" rx="34" ry="20" fill="#a9682f"/><ellipse cx="50" cy="34" rx="30" ry="16" fill="#c47e3e"/>
+    <circle cx="78" cy="30" r="14" fill="#c47e3e"/><ellipse cx="70" cy="20" rx="6" ry="8" fill="#9c5d2a"/>
+    <circle cx="84" cy="28" r="2.6" fill="#1a0f08"/><circle cx="90" cy="32" r="2.4" fill="#3a2414"/>
+    <path d="M20 54 l4 6 M32 56 l3 6 M60 56 l3 6 M72 54 l4 6" stroke="#7c4a20" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="40" cy="30" rx="12" ry="9" fill="#f0d9b8" opacity=".5"/></g></svg>
+  <div class="kicker">02 · Then Simon knocked</div>
+  <h2>“Check what's in your <span class="big">wallet.</span>”</h2>
+  <p class="sub">At the last iPhone launch, non-customers on other networks opened What's In My Wallet — and found real Phone Dollars and a hero device deal waiting for them.</p>
+  <div class="offers" id="offers">
+    <span>Phone Dollars to spend</span>
+    <span>Up to <b>$1,200 off</b> a hero device</span>
+    <span>Trade-in on top</span>
+    <span>~<b>5,000</b> wallets a month</span>
+  </div>
+  <div style="margin-top:30px"><div class="stat"><span id="s2n">0</span>%</div>
+    <div class="statlbl">of those non-customers switched to us within <b style="color:var(--lime)">days</b> — just from seeing their balance.</div></div>
+  <button class="next">Next →</button>
+</section>
+
+<section class="scene" id="s3">
+  <div class="kicker">03 · The big one</div>
+  <h2>Phone Dollars doesn't just win the sale.<br>It wins the <span class="big">whole home.</span></h2>
+  <div class="prop" id="prop">
+    <div><b>Connect More, Keep More</b><p>$300–$500 Phone Dollars upfront. The more they connect, the more they keep.</p></div>
+    <div><b>Bill Bonus</b><p>The account holder gets up to 6% of the whole bill back — every single month.</p></div>
+    <div><b>Phone Dollars on every line</b><p>Value compounds across the household, not one phone — keeping the whole home sticky.</p></div>
+  </div>
+  <button class="next">Show me the proof →</button>
+</section>
+
+<section class="scene" id="s4">
+  <div class="kicker">03 · The proof — part 1</div>
+  <h2>For every <span class="big">100</span> IFPs we sell, how many connections do we add?</h2>
+  <div class="tracks" id="tracks"></div>
+  <div class="legend">
+    <span><i style="background:var(--first)"></i>the mobile (the IFP)</span>
+    <span><i style="background:var(--orange)"></i>+ a 2nd mobile</span>
+    <span><i style="background:var(--blue)"></i>+ broadband</span>
+  </div>
+  <button class="next" id="s4next">Add the first mobile →</button>
+</section>
+
+<section class="scene" id="s5">
+  <div class="kicker">03 · The proof — part 2</div>
+  <h2>The more connected the home, the <span class="big">longer</span> they stay with us.</h2>
+  <div class="bars" id="bars">
+    <div class="brow"><div class="lab">Single mobile</div><div class="bw"><i data-w="93" style="background:var(--rose)"></i></div><div class="val rose" data-v="26">0</div></div>
+    <div class="brow"><div class="lab">Mobile + broadband</div><div class="bw"><i data-w="50" style="background:#e0a32e"></i></div><div class="val" style="color:#e0a32e" data-v="14">0</div></div>
+    <div class="brow"><div class="lab">Multi-mobile home</div><div class="bw"><i data-w="13" style="background:var(--lime)"></i></div><div class="val big" data-v="3">0</div></div>
+  </div>
+  <p class="sub">Annual churn. A standalone mobile leaks at ~26% a year. Build the home and it falls to 3–4%.</p>
+  <button class="next">Now fast-forward a year →</button>
+</section>
+
+<section class="scene" id="s6">
+  <div class="kicker">03 · The proof — part 3</div>
+  <h2>12 months on — how many <span class="big">connections</span> are still live?</h2>
+  <div class="row" style="gap:60px;margin-top:10px">
+    <div style="text-align:center"><div class="stat" style="background:none;color:var(--rose);-webkit-text-fill-color:var(--rose)"><span id="r6a">0</span></div><div class="statlbl">above-the-line — of 127 we added</div></div>
+    <div style="text-align:center"><div class="stat"><span id="r6b">0</span></div><div class="statlbl">Phone Dollars — of 160 we added</div></div>
+  </div>
+  <p class="sub">Phone Dollars puts <b style="color:var(--lime)">far more connections</b> in the door — and because the homes are connected, it loses far fewer. More in, and more still here a year later.</p>
+  <button class="next">What's it worth? →</button>
+</section>
+
+<section class="scene" id="s7">
+  <div class="kicker">04 · What it's worth</div>
+  <h2>Run the home this way, and it's worth <span class="big">real money.</span></h2>
+  <div style="margin-top:18px"><div class="stat">$<span id="s7n">0</span>m</div>
+    <div class="statlbl">more margin every year — the extra lines and broadband we attach, plus the customers we stop losing.</div></div>
+  <p class="sub" style="margin-top:22px">And connected homes don't churn — so it isn't one-off. It stacks, year on year on year.</p>
+  <button class="next">The takeaway →</button>
+</section>
+
+<section class="scene" id="s8">
+  <div class="kicker">On the floor</div>
+  <h2>A standalone mobile churns at <span class="rose">26%</span>.<br>A connected home? <span class="big">3%.</span></h2>
+  <p class="sub">Lead with the wallet. Get the number. Then build the household — a second line, broadband, Phone Dollars on every connection. Every connection you add doesn't just add revenue. It locks the whole home in.</p>
+  <p class="sub" style="margin-top:30px;color:var(--lime);font-weight:600;font-size:clamp(18px,2.4vw,26px)">This is One NZ's unfair advantage — and we win tomorrow with it.</p>
+</section>
+
+<script>
+(function(){
+  var scenes=[].slice.call(document.querySelectorAll('.scene'));
+  var nav=document.getElementById('nav');
+  scenes.forEach(function(s){var a=document.createElement('a');a.href='#'+s.id;nav.appendChild(a);});
+  var ndots=[].slice.call(nav.children);
+  [].slice.call(document.querySelectorAll('.next')).forEach(function(b){if(b.id==='s4next')return;b.addEventListener('click',function(){
+    var i=scenes.indexOf(b.closest('.scene'));if(scenes[i+1])scenes[i+1].scrollIntoView();});});
+
+  function ease(el,to,dur,fmt){el.textContent='0';var s=null;
+    function step(t){if(s===null)s=t;var p=Math.min(1,(t-s)/dur);var e=1-Math.pow(1-p,3);var v=to*e;
+      el.textContent=fmt==='f'?v.toFixed(1):Math.round(v);if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
+
+  function buildTrack(c){var w=document.createElement('div');w.className='track';
+    var th=document.createElement('div');th.className='th';
+    th.innerHTML='<div class="tt">'+c.title+'<small>'+c.sub+'</small></div><div class="tm" data-m>—</div>';
+    var g=document.createElement('div');g.className='grid';
+    w.appendChild(th);w.appendChild(g);return {el:w,grid:g,meta:th.querySelector('[data-m]'),cfg:c};}
+  var T=[buildTrack({title:'Above-the-line offer',sub:'just the deal',mob:22,bb:5}),
+         buildTrack({title:'Phone Dollars · What’s In My Wallet',sub:'lead with the wallet',mob:48,bb:12})];
+  var tc=document.getElementById('tracks');T.forEach(function(t){tc.appendChild(t.el);});
+
+  // Dots build up one wave per click: 1) first mobiles 2) 2nd mobiles 3) broadband.
+  var dotStep=0, dotsBuilt=false;
+  function updateDotPrompt(){var b=document.getElementById('s4next');if(!b)return;
+    b.textContent=['Add the first mobile →','Now add a 2nd mobile →','Now add broadband →','And the churn? →'][dotStep];}
+  function buildDots(){
+    T.forEach(function(t){var g=t.grid;g.innerHTML='';t.meta.textContent='—';
+      var seq=[],i;
+      for(i=0;i<100;i++)seq.push('first');
+      for(i=0;i<t.cfg.mob;i++)seq.push('mob');
+      for(i=0;i<t.cfg.bb;i++)seq.push('bb');
+      t.els=seq.map(function(cls){var s=document.createElement('span');s.className='dot '+cls;g.appendChild(s);return s;});});
+    dotStep=0;dotsBuilt=true;updateDotPrompt();
+  }
+  function stepDots(){
+    if(!dotsBuilt)buildDots();
+    if(dotStep>=3)return false;
+    dotStep++;
+    var cls=dotStep===1?'first':dotStep===2?'mob':'bb';
+    var delay=dotStep===1?14:dotStep===2?12:24;
+    T.forEach(function(t){var c=t.cfg;
+      var ds=t.els.filter(function(x){return x.classList.contains(cls);});
+      ds.forEach(function(x,k){setTimeout(function(){x.classList.add('show');},k*delay);});
+      var cum=dotStep===1?100:dotStep===2?(100+c.mob):(100+c.mob+c.bb);
+      var last=Math.max(0,ds.length-1)*delay+140;
+      setTimeout(function(){t.meta.innerHTML='<b>'+cum+'</b> connections';},last);});
+    updateDotPrompt();
+    return true;
+  }
+  function runBars(){[].slice.call(document.querySelectorAll('#bars .brow')).forEach(function(r){
+    var bar=r.querySelector('i'),val=r.querySelector('.val');bar.style.width='0';val.textContent='0';
+    setTimeout(function(){bar.style.width=bar.getAttribute('data-w')+'%';ease(val,+val.getAttribute('data-v'),1100);},80);});}
+  function runFade(sel,base,step){[].slice.call(document.querySelectorAll(sel)).forEach(function(d,i){d.classList.remove('show');setTimeout(function(){d.classList.add('show');},base+i*step);});}
+
+  function animate(id){
+    if(id==='s1'){ease(document.getElementById('bal'),248,2200);var bb=document.getElementById('balbar');bb.style.width='0';setTimeout(function(){bb.style.width='78%';},100);ease(document.getElementById('s1a'),4,1500);}
+    if(id==='s2'){ease(document.getElementById('s2n'),10,1600);runFade('#offers span',300,450);}
+    if(id==='s3'){runFade('#prop div',250,350);}
+    if(id==='s4'){buildDots();}
+    if(id==='s5'){runBars();}
+    if(id==='s6'){ease(document.getElementById('r6a'),106,1600);ease(document.getElementById('r6b'),146,1600);}
+    if(id==='s7'){ease(document.getElementById('s7n'),2.5,1800,'f');}
+  }
+
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){var i=scenes.indexOf(e.target);
+    if(e.isIntersecting&&e.intersectionRatio>0.55){e.target.classList.add('in');animate(e.target.id);
+      ndots.forEach(function(d,k){d.classList.toggle('on',k===i);});}});},{threshold:[0.55]});
+  scenes.forEach(function(s){io.observe(s);});
+  var s4btn=document.getElementById('s4next');
+  if(s4btn)s4btn.addEventListener('click',function(){
+    if(stepDots())return;
+    var i=scenes.indexOf(s4btn.closest('.scene'));if(scenes[i+1])scenes[i+1].scrollIntoView();});
+  document.addEventListener('keydown',function(e){var cur=0;for(var i=0;i<scenes.length;i++){if(scenes[i].getBoundingClientRect().top<=window.innerHeight*0.4)cur=i;}
+    if(['ArrowDown','ArrowRight',' ','PageDown'].indexOf(e.key)>=0){e.preventDefault();
+      if(scenes[cur]&&scenes[cur].id==='s4'&&stepDots())return;
+      if(scenes[cur+1])scenes[cur+1].scrollIntoView();}
+    if(['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key)>=0){e.preventDefault();if(scenes[cur-1])scenes[cur-1].scrollIntoView();}});
+  scenes[0].classList.add('in');ndots[0].classList.add('on');
+  var sim=document.querySelector('.simon');if(sim)sim.classList.add('run');
+})();
+</script>
+</body></html>
