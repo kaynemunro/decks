@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Marketing Memory Layer — 3-Year Business Case</title>
+<style>
+  :root {
+    --green: #00BD6F;
+    --green-deep: #007A47;
+    --green-glow: rgba(0, 189, 111, 0.25);
+    --bg: #0A1410;
+    --bg-card: #111B16;
+    --bg-card-hi: #16241D;
+    --line: #1F3128;
+    --text: #E8F0EC;
+    --text-dim: #8FA398;
+    --text-faint: #5C6E66;
+    --accent: #F2EBDD;          /* warm off-white for non-financial highlights */
+    --accent-dim: #C9C2B4;
+    --red: #FF6B6B;
+    --amber: #FFB84D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif; line-height: 1.55; }
+  body { padding: 48px 32px 96px; max-width: 1180px; margin: 0 auto; }
+
+  .meta { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin-bottom: 16px; }
+  h1 { font-size: 52px; line-height: 1.05; letter-spacing: -0.02em; font-weight: 700; margin-bottom: 16px; }
+  h1 span { color: var(--accent); }
+  h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin: 56px 0 16px; }
+  h3 { font-size: 18px; font-weight: 600; margin: 24px 0 12px; color: var(--text); }
+  .sub { font-size: 18px; color: var(--text-dim); margin-bottom: 32px; max-width: 720px; }
+
+  /* Problem / Future state two-card grid */
+  .context-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-bottom: 32px;
+  }
+  .context-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .context-card .ctx-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-faint); font-weight: 600; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .context-card .ctx-label::before {
+    content: ''; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--accent-dim);
+  }
+  .context-card.future .ctx-label::before { background: var(--green); }
+  .context-card p { font-size: 13px; color: var(--text); line-height: 1.55; margin: 0; }
+  @media (max-width: 720px) {
+    .context-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Readiness status pills */
+  .readiness-grid {
+    display: grid; gap: 8px;
+    margin: 12px 0 0;
+  }
+  .readiness-row {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 16px; align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-card-hi);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .readiness-row .rd-label { font-size: 13px; color: var(--text); font-weight: 600; }
+  .readiness-row .rd-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .status-pill {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 700; padding: 4px 10px; border-radius: 12px;
+    white-space: nowrap;
+  }
+  .status-pill.defined { background: rgba(0,189,111,0.12); color: var(--green); border: 1px solid rgba(0,189,111,0.3); }
+  .status-pill.progress { background: rgba(255,184,77,0.10); color: var(--amber); border: 1px solid rgba(255,184,77,0.3); }
+  .status-pill.clarify { background: rgba(255,107,107,0.08); color: var(--red); border: 1px solid rgba(255,107,107,0.25); }
+
+  /* Programme KPIs */
+  .programme-kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px; margin-top: 16px;
+  }
+  .programme-kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent-dim);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .programme-kpi .kpi-name {
+    font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+  }
+  .programme-kpi .kpi-measure {
+    font-size: 11px; color: var(--text-dim); line-height: 1.5;
+  }
+  .programme-kpi .kpi-target {
+    font-size: 11px; color: var(--accent); font-weight: 600;
+    margin-top: 6px; padding-top: 6px;
+    border-top: 1px solid var(--line);
+  }
+  p { color: var(--text-dim); margin-bottom: 12px; font-size: 15px; }
+  p.lead { color: var(--text); font-size: 16px; }
+  strong { color: var(--text); font-weight: 600; }
+
+  .hero {
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0E2B1E 0%, #0A1410 60%);
+    border: 1px solid var(--line);
+    padding: 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 300px; height: 300px; background: var(--green-glow);
+    filter: blur(80px); border-radius: 50%;
+  }
+
+  .headline-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 24px 0 8px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 0; }
+  .kpi-card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px;
+  }
+  .kpi-card .label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 6px; font-weight: 600; }
+  .kpi-card .value { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpi-card .value.green { color: var(--green); }
+  .kpi-card .delta { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+  /* FY in-year divider + variant */
+  .fy-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 24px 0 12px;
+  }
+  .fy-divider::before, .fy-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .fy-divider-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-faint); font-weight: 700;
+  }
+  .fy-grid { grid-template-columns: repeat(3, 1fr); }
+  .kpi-card.fy {
+    border-color: var(--line);
+    background: var(--bg-card);
+  }
+  .kpi-card.fy .label { color: var(--text-faint); }
+
+  @media (max-width: 900px) {
+    .fy-grid { grid-template-columns: 1fr; }
+  }
+
+  .callout-box {
+    margin-top: 24px;
+    padding: 18px 20px;
+    background: rgba(255,107,107,0.06);
+    border-left: 3px solid var(--red);
+    border-radius: 0 10px 10px 0;
+  }
+  .callout-label {
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--red); font-weight: 700; margin-bottom: 8px;
+  }
+  .callout-body { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .callout-body strong { color: var(--text); }
+  .headline-card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 20px;
+  }
+  .headline-card .label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; font-weight: 600; }
+  .headline-card .value { font-size: 28px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  .headline-card .value.green { color: var(--green); }
+  .headline-card .delta { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+  /* Controls */
+  .controls {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 16px; padding: 24px; margin-bottom: 32px;
+  }
+  .controls h3 { margin-top: 0; display: flex; align-items: center; gap: 8px; }
+  .controls h3::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+  .control-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 16px; }
+  .control { }
+  .control label { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px; font-weight: 600; }
+  .control .v { font-size: 22px; color: var(--text); font-weight: 600; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .control input[type=range] {
+    width: 100%; -webkit-appearance: none; appearance: none; height: 4px;
+    background: var(--line); border-radius: 2px; outline: none;
+  }
+  .control input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--green); cursor: pointer; box-shadow: 0 0 0 4px rgba(0,189,111,0.15);
+  }
+  .control input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%; background: var(--green);
+    cursor: pointer; border: none; box-shadow: 0 0 0 4px rgba(0,189,111,0.15);
+  }
+  .scenario-toggle {
+    display: inline-flex; background: var(--bg); border: 1px solid var(--line);
+    border-radius: 8px; padding: 4px; margin-top: 8px;
+  }
+  .scenario-toggle button {
+    background: transparent; color: var(--text-dim); border: 0;
+    padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer;
+    border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+    font-family: inherit;
+  }
+  .scenario-toggle button.active { background: var(--green); color: #001A0E; }
+
+  /* Tables */
+  .table-wrap {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; overflow: hidden; margin: 16px 0 24px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--bg-card-hi); color: var(--text); font-weight: 600; text-align: left;
+       padding: 14px 18px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+       border-bottom: 1px solid var(--line); }
+  th.num { text-align: right; }
+  td { padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.dim { color: var(--text-dim); font-size: 13px; }
+  tr.total td { background: rgba(0,189,111,0.07); font-weight: 600; border-top: 1px solid var(--green-deep); }
+  tr.subtotal td { font-weight: 600; background: rgba(255,255,255,0.02); }
+  tr:last-child td { border-bottom: none; }
+
+  /* Chart */
+  .chart-card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 16px; padding: 28px; margin: 24px 0;
+  }
+  .chart-card h3 { margin-top: 0; }
+  .bar-chart { display: flex; gap: 32px; align-items: flex-end; height: 280px; padding: 24px 16px 0; border-bottom: 1px solid var(--line); }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+  .bar-stack { display: flex; flex-direction: column-reverse; width: 64px; }
+  .bar { position: relative; min-height: 2px; transition: height 0.4s ease; }
+  .bar.invest { background: linear-gradient(180deg, #FF6B6B, #C04848); border-radius: 4px 4px 0 0; }
+  .bar.benefit { background: linear-gradient(180deg, var(--green), var(--green-deep)); border-radius: 4px 4px 0 0; }
+  .bar-label { font-size: 12px; color: var(--text-dim); margin-top: 12px; font-weight: 600; }
+  .bar-value { font-size: 11px; color: var(--text-faint); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .legend { display: flex; gap: 24px; margin-top: 20px; justify-content: center; font-size: 13px; color: var(--text-dim); }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
+
+  /* Roadmap */
+  .roadmap-phase-ribbon {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin: 24px 0 14px;
+  }
+  .roadmap-phase {
+    position: relative;
+    padding: 14px 14px 12px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .roadmap-phase::before {
+    content: '';
+    position: absolute; left: 0; right: 0; top: 0;
+    height: 3px;
+    background: var(--phase-color, var(--text-faint));
+    opacity: 0.85;
+  }
+  .roadmap-phase .ph-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 700; color: var(--phase-color, var(--text-faint));
+    margin-bottom: 4px;
+  }
+  .roadmap-phase .ph-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--phase-color, var(--text-faint));
+  }
+  .roadmap-phase .ph-quarter {
+    font-size: 17px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.01em; margin-bottom: 2px;
+  }
+  .roadmap-phase .ph-window {
+    font-size: 11px; color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  /* Phase colour ramp: cool → warm as platform matures */
+  .roadmap-phase[data-phase="q1"] { --phase-color: #6E8FA8; }   /* cool slate */
+  .roadmap-phase[data-phase="q2"] { --phase-color: #8AA5A0; }   /* muted teal */
+  .roadmap-phase[data-phase="q3"] { --phase-color: #A6B58D; }   /* sage */
+  .roadmap-phase[data-phase="q4"] { --phase-color: #C9C99D; }   /* warm sage */
+  .roadmap-phase[data-phase="y2"] { --phase-color: #F2EBDD; }   /* accent cream */
+
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 24px;
+  }
+  .roadmap-col {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column;
+    min-height: 280px;
+    position: relative;
+  }
+  .roadmap-col::before {
+    content: '';
+    position: absolute; left: 0; right: 0; top: 0;
+    height: 2px;
+    background: var(--phase-color, var(--text-faint));
+    opacity: 0.5;
+  }
+  .roadmap-col[data-quarter="Q1"] { --phase-color: #6E8FA8; }
+  .roadmap-col[data-quarter="Q2"] { --phase-color: #8AA5A0; }
+  .roadmap-col[data-quarter="Q3"] { --phase-color: #A6B58D; }
+  .roadmap-col[data-quarter="Q4"] { --phase-color: #C9C99D; }
+  .roadmap-col[data-quarter="Y2"] { --phase-color: #F2EBDD; }
+  .roadmap-col-head {
+    background: var(--bg-card-hi);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .roadmap-col-label {
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 700; color: var(--phase-color, var(--accent));
+  }
+  .roadmap-col-sub {
+    font-size: 11px; color: var(--text-faint);
+    margin-top: 2px; letter-spacing: 0.04em;
+  }
+  .roadmap-col-body {
+    padding: 10px;
+    display: flex; flex-direction: column; gap: 8px;
+    flex: 1;
+    min-height: 80px;
+  }
+  .roadmap-col-body.drag-over {
+    background: rgba(255,255,255,0.03);
+  }
+  .roadmap-card {
+    background: var(--bg-card-hi);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: grab;
+    transition: transform 0.15s, box-shadow 0.15s, border-left-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .roadmap-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    border-left-color: var(--phase-color, var(--accent-dim));
+    background: #1A2C24;
+  }
+  .roadmap-card.dragging {
+    opacity: 0.4; cursor: grabbing;
+  }
+  .roadmap-card .rc-title {
+    font-size: 12px; font-weight: 700; color: var(--text);
+    margin-bottom: 3px;
+    display: flex; align-items: flex-start; gap: 7px;
+  }
+  .roadmap-card .rc-title::before {
+    content: '';
+    flex-shrink: 0;
+    width: 10px; height: 10px; border-radius: 2px;
+    background: var(--phase-color, var(--text-faint));
+    opacity: 0.75;
+    margin-top: 3px;
+  }
+  /* Inherit phase color on cards via parent column */
+  .roadmap-col[data-quarter="Q1"] .roadmap-card { --phase-color: #6E8FA8; }
+  .roadmap-col[data-quarter="Q2"] .roadmap-card { --phase-color: #8AA5A0; }
+  .roadmap-col[data-quarter="Q3"] .roadmap-card { --phase-color: #A6B58D; }
+  .roadmap-col[data-quarter="Q4"] .roadmap-card { --phase-color: #C9C99D; }
+  .roadmap-col[data-quarter="Y2"] .roadmap-card { --phase-color: #F2EBDD; }
+  .roadmap-card .rc-desc {
+    font-size: 11px; color: var(--text-dim); line-height: 1.4;
+  }
+
+  @media (max-width: 1100px) {
+    .roadmap-grid, .roadmap-phase-ribbon { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .roadmap-grid, .roadmap-phase-ribbon { grid-template-columns: 1fr; }
+  }
+
+  /* Collapsible details */
+  details.collapsible {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; margin: 16px 0 24px; overflow: hidden;
+  }
+  details.collapsible > summary {
+    list-style: none; cursor: pointer; padding: 16px 20px;
+    background: var(--bg-card-hi);
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid transparent; transition: background 0.15s;
+  }
+  details.collapsible > summary:hover { background: #1A2C24; }
+  details.collapsible[open] > summary { border-bottom-color: var(--line); }
+  details.collapsible > summary::-webkit-details-marker { display: none; }
+  details.collapsible > summary .chev {
+    display: inline-block; width: 10px; height: 10px;
+    border-right: 2px solid var(--text-faint); border-bottom: 2px solid var(--text-faint);
+    transform: rotate(-45deg); transition: transform 0.2s;
+    margin-right: 4px; margin-top: -3px;
+  }
+  details.collapsible[open] > summary .chev { transform: rotate(45deg); margin-top: -8px; }
+  details.collapsible > summary .title {
+    font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.01em;
+  }
+  details.collapsible > summary .hint {
+    font-size: 11px; color: var(--text-faint); letter-spacing: 0.04em;
+    margin-left: auto;
+  }
+  details.collapsible > .collapsible-body {
+    padding: 20px 22px 4px;
+  }
+  details.collapsible > .collapsible-body > h3:first-child { margin-top: 0; }
+
+  /* Assumptions */
+  .assumption {
+    background: rgba(255,184,77,0.08); border-left: 3px solid var(--amber);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0;
+    font-size: 13px; color: var(--text-dim);
+  }
+  .assumption strong { color: var(--amber); font-weight: 600; }
+
+  /* Risks */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .panel {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 24px;
+  }
+  .panel.without { border-color: rgba(255,107,107,0.3); }
+  .panel.with { border-color: rgba(0,189,111,0.3); background: var(--bg-card); }
+  .panel h4 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 12px; font-weight: 600; }
+  .panel.without h4 { color: var(--red); }
+  .panel.with h4 { color: var(--green); }
+  .panel ul { list-style: none; padding: 0; }
+  .panel li { padding: 8px 0; color: var(--text-dim); font-size: 14px; border-bottom: 1px solid var(--line); }
+  .panel li:last-child { border-bottom: 0; }
+
+  .questions {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 28px; margin-top: 24px;
+  }
+  .questions h3 { margin-top: 0; }
+  .q {
+    display: grid; grid-template-columns: 28px 1fr; gap: 12px;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .q:last-child { border-bottom: 0; }
+  .q-num { color: var(--text-faint); font-weight: 700; font-size: 14px; }
+  .q-body strong { display: block; color: var(--text); margin-bottom: 4px; font-size: 14px; }
+  .q-body p { font-size: 13px; color: var(--text-dim); margin: 0; }
+
+  /* Q&A option panels */
+  .qa-options { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .qa-option {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .qa-option.qa-recommended {
+    border-color: var(--green);
+    background: rgba(0,189,111,0.06);
+  }
+  .qa-option-label {
+    font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 700; color: var(--text); margin-bottom: 6px;
+  }
+  .qa-option.qa-recommended .qa-option-label { color: var(--green); }
+  .qa-option-body p { font-size: 13px; color: var(--text-dim); margin: 6px 0; }
+  .qa-option .qa-tag {
+    font-size: 12px; color: var(--text-faint);
+    background: rgba(255,255,255,0.03);
+    padding: 6px 10px; border-radius: 6px; margin-top: 8px;
+  }
+
+  .footnote { color: var(--text-faint); font-size: 12px; margin-top: 8px; font-style: italic; }
+
+  /* Section navigator */
+  .nav-pill {
+    position: fixed; right: 20px; bottom: 20px;
+    background: rgba(17,27,22,0.92); backdrop-filter: blur(12px);
+    border: 1px solid var(--line); border-radius: 12px; padding: 6px;
+    display: flex; flex-direction: row; gap: 2px; z-index: 100;
+    flex-wrap: wrap; max-width: 520px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .nav-pill a {
+    display: block; padding: 6px 10px; font-size: 10px; color: var(--text-faint);
+    text-decoration: none; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+    font-weight: 600; white-space: nowrap;
+  }
+  .nav-pill a:hover { color: var(--text); background: var(--bg-card-hi); }
+
+  @media (max-width: 900px) {
+    .headline-grid { grid-template-columns: repeat(2, 1fr); }
+    .control-row { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .nav-pill { display: none; }
+    h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<section id="summary" class="hero">
+  <div class="meta">Three-year business case · Draft v1</div>
+  <h1>Marketing Memory Layer<br><span>The brand operating system.</span></h1>
+  <p class="sub">Operationalising the Memory Layer turns Let's Get Connected from a brand line into the underlying mechanism for how Marketing thinks, decides and acts — and recovers the cost of the platform many times over within the three-year window.</p>
+
+  <p style="font-size:17px; color:var(--text); font-weight:600; margin:-16px 0 28px; max-width:780px;">The programme is self-funding in its first year, returns <span style="color:var(--green);">$12.5M net over three</span> — and the workforce benefit underpinning it is already actioned through the restructure.</p>
+
+  <div class="context-grid">
+    <div class="context-card">
+      <div class="ctx-label">The problem we're solving</div>
+      <p>AI is only as useful as the context it can work from. Today, brand truth, campaign learnings, customer signals and approved workflows sit fragmented across people, agencies and tools — so every cycle restarts from scratch, AI outputs drift, and the new operating model can't scale at the speed it needs to.</p>
+    </div>
+    <div class="context-card future">
+      <div class="ctx-label">The future state we're enabling</div>
+      <p>A governed, always-on memory layer that every team, agent and partner draws from and contributes back to — so campaigns start from everything we already know, AI works inside guard rails, and a leaner operating model becomes faster and more accurate, not more exposed.</p>
+    </div>
+  </div>
+
+  <div class="headline-grid">
+    <div class="headline-card">
+      <div class="label">3-yr Investment</div>
+      <div class="value" id="hl-invest">—</div>
+      <div class="delta" id="hl-invest-d">Total cash, NZD</div>
+    </div>
+    <div class="headline-card">
+      <div class="label">3-yr Gross Benefit</div>
+      <div class="value" id="hl-benefit">—</div>
+      <div class="delta">Workforce + media</div>
+    </div>
+    <div class="headline-card">
+      <div class="label">3-yr Net Benefit</div>
+      <div class="value green" id="hl-net">—</div>
+      <div class="delta">Cumulative</div>
+    </div>
+    <div class="headline-card">
+      <div class="label">3-yr ROI</div>
+      <div class="value green" id="hl-roi">—</div>
+      <div class="delta">Net / investment</div>
+    </div>
+    <div class="headline-card">
+      <div class="label">Payback</div>
+      <div class="value" id="hl-payback">—</div>
+      <div class="delta">From Y1 platform spend</div>
+    </div>
+  </div>
+
+  <div class="fy-divider">
+    <span class="fy-divider-label">The financial-year story · what we spend, what we bank</span>
+  </div>
+
+  <div class="kpi-grid fy-grid">
+    <div class="kpi-card fy">
+      <div class="label">FY26/27 · We spend</div>
+      <div class="value" id="hl-fy-invest">—</div>
+      <div class="delta">10 months of project costs (Jun 26 – Mar 27): full build-out + run-cost</div>
+    </div>
+    <div class="kpi-card fy">
+      <div class="label">FY26/27 · We bank</div>
+      <div class="value" id="hl-fy-benefit">—</div>
+      <div class="delta">9 FTE saved from 1 Jun 26 + media efficiency</div>
+    </div>
+    <div class="kpi-card fy">
+      <div class="label">FY26/27 · Net position</div>
+      <div class="value" id="hl-fy-net">—</div>
+      <div class="delta">Effectively breakeven in the build year — by 31 Mar 2027</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid fy-grid" style="margin-top:10px;">
+    <div class="kpi-card fy">
+      <div class="label">FY27/28 · We spend</div>
+      <div class="value" id="hl-fy2-invest">—</div>
+      <div class="delta">Run-cost only — build is finished</div>
+    </div>
+    <div class="kpi-card fy">
+      <div class="label">FY27/28 · We bank</div>
+      <div class="value" id="hl-fy2-benefit">—</div>
+      <div class="delta">+10 FTE from 1 Jun 27, plus acquisition &amp; churn benefits arriving</div>
+    </div>
+    <div class="kpi-card fy">
+      <div class="label">FY27/28 · Net position</div>
+      <div class="value" id="hl-fy2-net">—</div>
+      <div class="delta">The compounding year — full run-rate from June</div>
+    </div>
+  </div>
+
+  <div class="callout-box" style="margin-top:20px; background: rgba(0,189,111,0.05); border-left: 3px solid var(--green);">
+    <div class="callout-label" style="color: var(--green);">Why this case clears even on the harshest read</div>
+    <div class="callout-body">The workforce benefit — <strong>$8.2M over three years</strong> — is already actioned through the confirmed restructure. That locked-in benefit alone exceeds the entire programme cost of $5.54M. Media efficiency ($3.45M, estimated) and acquisition/churn ($6.3M, modelled) are upside on top of a case that already clears.</div>
+  </div>
+
+  <div class="callout-box" style="margin-top:12px; background: rgba(242,235,221,0.04); border-left: 3px solid var(--accent-dim);">
+    <div class="callout-label" style="color: var(--accent);">The decision requested</div>
+    <div class="callout-body">Approve <strong>$1.325M one-off build investment</strong> plus approximately <strong>$880K/year net-new run cost</strong> (2 net-new FTE, platform &amp; tooling, usage allowance). The remainder of the $5.54M three-year total is existing resource redeployed — not new money.</div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">NPV @ 10%</div>
+      <div class="value" id="hl-npv">—</div>
+      <div class="delta">3-year, NZD</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">New cash ask</div>
+      <div class="value" id="hl-ask" style="font-size:17px;">—</div>
+      <div class="delta">One-off build + net-new annual run</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Y1 P&amp;L Impact</div>
+      <div class="value" id="hl-y1pl">—</div>
+      <div class="delta">OpEx only, post-cap</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Benefit : Cost Ratio</div>
+      <div class="value" id="hl-bcr">—</div>
+      <div class="delta">Over 3 years</div>
+    </div>
+  </div>
+
+  <div class="callout-box">
+    <div class="callout-label">Comparative investment choice</div>
+    <div class="callout-body">
+      <strong>Adobe Content Supply Chain Stack</strong> — ~$700K setup + ~$1.1M/year to run, for a significantly narrower feature set, hard-locked to a single vendor, with AI applied only to small specific use cases. The Marketing Memory Layer runs at roughly the same ongoing cost (~$1.2M/yr) but delivers a full brand operating system: cross-function memory, AI-native architecture, vendor-modular, queryable by every team and agent.
+    </div>
+  </div>
+</section>
+
+<section id="controls" class="controls">
+  <h3>Model assumptions — adjust to see impact</h3>
+  <p style="font-size:13px;color:var(--text-dim);margin-top:6px;">The whole model is driven by the controls below. Drag to test sensitivity before the steering committee.</p>
+
+  <div class="control-row">
+    <div class="control">
+      <label>Y1 FTE reduction</label>
+      <div class="v"><span id="v-fte1">9</span> FTE</div>
+      <input type="range" min="5" max="30" value="9" id="i-fte1">
+    </div>
+    <div class="control">
+      <label>Y2+ Additional FTE</label>
+      <div class="v"><span id="v-fte2">10</span> FTE</div>
+      <input type="range" min="0" max="25" value="10" id="i-fte2">
+    </div>
+    <div class="control">
+      <label>Avg loaded FTE cost</label>
+      <div class="v">$<span id="v-fteCost">175</span>K</div>
+      <input type="range" min="120" max="220" value="175" step="5" id="i-fteCost">
+    </div>
+  </div>
+  <div class="control-row">
+    <div class="control">
+      <label>Working media baseline</label>
+      <div class="v">$<span id="v-media">23.0</span>M</div>
+      <input type="range" min="15" max="35" value="23" step="0.5" id="i-media">
+    </div>
+    <div class="control">
+      <label>Media efficiency uplift</label>
+      <div class="v"><span id="v-mediaPct">5</span>%</div>
+      <input type="range" min="0" max="15" value="5" step="0.5" id="i-mediaPct">
+    </div>
+    <div class="control">
+      <label>Y1 realisation (sensitivity)</label>
+      <div class="v"><span id="v-ramp">100</span>%</div>
+      <input type="range" min="30" max="100" value="100" step="5" id="i-ramp">
+    </div>
+  </div>
+
+  <div class="assumption" style="margin-top: 24px; padding: 10px 14px;">
+    <strong>Additional benefits not modelled:</strong>
+    <ul style="margin: 4px 0 0 18px; padding: 0; font-size: 12px; color: var(--text-dim); line-height: 1.5;">
+      <li><strong>Channel deployment</strong> — downstream readiness FTE reducible as automation matures.</li>
+      <li><strong>Finance/Commercial</strong> — ~4 roles release ~20% capacity via on-demand performance insights.</li>
+      <li><strong>Data &amp; Analytics</strong> — ~0.5 FTE released as the platform handles data quality and signal pipelines.</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:24px;">
+    <label style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);font-weight:600;">Scenario</label>
+    <div class="scenario-toggle">
+      <button data-scenario="conservative">Conservative</button>
+      <button data-scenario="base" class="active">Base case</button>
+      <button data-scenario="stretch">Stretch</button>
+    </div>
+  </div>
+</section>
+
+<section id="invest">
+<h2>Investment</h2>
+<p class="lead">Two phased build milestones to land the platform plus a dedicated data architect for the first 6 months. Approximately $1.4M/year to run thereafter.</p>
+
+<h3>One-off platform investment</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Milestone</th><th>Timing</th><th class="num">NZD</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Initial MVP launch</strong> — core surfaces operational, marketing function on-platform</td>
+        <td class="dim">8–12 weeks</td>
+        <td class="num"><strong>$600,000</strong></td></tr>
+    <tr><td><strong>Full operational readiness</strong> — full feature set, integrations, governance, scaled adoption</td>
+        <td class="dim">+3 months after MVP</td>
+        <td class="num"><strong>$600,000</strong></td></tr>
+    <tr><td><strong>Dedicated data architect</strong> — security, schema, ingestion design (first 6 months minimum)</td>
+        <td class="dim">6 months</td>
+        <td class="num"><strong>$125,000</strong></td></tr>
+    <tr class="total"><td>Total one-off build investment</td><td></td><td class="num">$1,325,000</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout-box" style="margin-top: 12px; margin-bottom: 24px; background: rgba(242,235,221,0.04); border-left: 3px solid var(--accent-dim);">
+  <div class="callout-label" style="color: var(--accent);">Foundational enterprise capability</div>
+  <div class="callout-body">
+    The $1.325M funds <strong>core infrastructure, security architecture, guard rails and the sub-team workbench layer</strong> — foundations that any function (Customer Service, Retail, Product, Finance, HR) can build on without paying for them again. Marketing pays for the foundations; the benefits in this case are the floor of what the investment returns, not the ceiling.
+  </div>
+</div>
+
+<h3>Ongoing run-cost — summary</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Line item</th><th class="num">Annual cost</th><th>P&amp;L treatment</th></tr></thead>
+  <tbody>
+    <tr><td>Marketing Memory Intelligence team (5 FTE × $175K — <strong>3 of 5 funded from existing resource</strong>)</td>
+        <td class="num">$875,000</td><td class="dim">70% CapEx ($612.5K) / 30% OpEx ($262.5K)</td></tr>
+    <tr><td>Platform &amp; tooling, hosting, retainers</td>
+        <td class="num">$350,000</td><td class="dim">100% OpEx</td></tr>
+    <tr><td>Usage allowance (LLM tokens, API consumption — $15K/month)</td>
+        <td class="num">$180,000</td><td class="dim">100% OpEx</td></tr>
+    <tr class="total"><td>Total annual run-cost (cash)</td>
+        <td class="num">$1,405,000</td><td class="dim">$792.5K OpEx / $612.5K CapEx</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="assumption">
+  <strong>Team funding:</strong> 3 of the 5 MMI team FTE are funded from existing resource (redeployed from current roles), so the incremental headcount cost is materially lower than the gross $875K figure suggests. Full $875K is shown here to reflect total team cost loading; net new ask to Finance is approximately $350K for the 2 net new FTE.
+</div>
+
+<p style="font-size:13px;color:var(--text-dim);margin-top:8px;">Full P&amp;L, CapEx and cash breakdown in <a href="#cashflow" style="color:var(--accent);text-decoration:underline;">Section 5</a>.</p>
+
+<h3 style="margin-top:32px;">AI readiness — tooling, infrastructure and operating model</h3>
+<p style="font-size:13px;color:var(--text-dim);margin:0 0 4px;">What's in place, what's actively being worked, and what still needs to be clarified before scale.</p>
+<div class="readiness-grid">
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Multiple LLM availability</div>
+      <div class="rd-sub">Model-agnostic access to frontier and specialised LLMs (incl. failover); approved model catalogue maintained centrally.</div>
+    </div>
+    <span class="status-pill defined">Defined</span>
+  </div>
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Data ingestion &amp; pipelines</div>
+      <div class="rd-sub">Approved-source ingestion patterns, transformation, instrumentation and signal pipelines feeding the memory layer.</div>
+    </div>
+    <span class="status-pill defined">Defined</span>
+  </div>
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Infrastructure</div>
+      <div class="rd-sub">Deployed on One NZ approved cloud tenancy; data residency, hosting and compute aligned to enterprise standards.</div>
+    </div>
+    <span class="status-pill defined">Defined</span>
+  </div>
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Protocols &amp; integration standards</div>
+      <div class="rd-sub">Agent/LLM communication protocols (MCP), API patterns, authentication and logging standards.</div>
+    </div>
+    <span class="status-pill defined">Defined</span>
+  </div>
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Privacy &amp; data use approach</div>
+      <div class="rd-sub">PII handling, customer data classification, consent and use boundaries — requires clarification before unconstrained scope expansion.</div>
+    </div>
+    <span class="status-pill progress">In progress</span>
+  </div>
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Operating model — inside Marketing</div>
+      <div class="rd-sub">Roles, decision rights, ways of working and ownership of the platform within Marketing (post-restructure).</div>
+    </div>
+    <span class="status-pill progress">In progress</span>
+  </div>
+  <div class="readiness-row">
+    <div>
+      <div class="rd-label">Operating model — outside Marketing</div>
+      <div class="rd-sub">How adjacent functions (Commercial, Channel, Data &amp; Analytics, Customer) interact with the platform — informs future data-model and data-provision approach.</div>
+    </div>
+    <span class="status-pill clarify">To clarify</span>
+  </div>
+</div>
+
+</section>
+
+<section id="roadmap">
+<h2>Capability delivery roadmap</h2>
+<p class="lead">A draft sequence for what the platform delivers and when. Drag items left or right between quarters to model alternative sequencing — benefits gate on the quarter the relevant capability lands.</p>
+
+<div class="roadmap-phase-ribbon" aria-hidden="true">
+  <div class="roadmap-phase" data-phase="q1">
+    <div class="ph-label"><span class="ph-dot"></span>Foundation</div>
+    <div class="ph-quarter">Q1</div>
+    <div class="ph-window">Months 1–3</div>
+  </div>
+  <div class="roadmap-phase" data-phase="q2">
+    <div class="ph-label"><span class="ph-dot"></span>Early value</div>
+    <div class="ph-quarter">Q2</div>
+    <div class="ph-window">Months 4–6</div>
+  </div>
+  <div class="roadmap-phase" data-phase="q3">
+    <div class="ph-label"><span class="ph-dot"></span>Scale</div>
+    <div class="ph-quarter">Q3</div>
+    <div class="ph-window">Months 7–9</div>
+  </div>
+  <div class="roadmap-phase" data-phase="q4">
+    <div class="ph-label"><span class="ph-dot"></span>Maturity</div>
+    <div class="ph-quarter">Q4</div>
+    <div class="ph-window">Months 10–12</div>
+  </div>
+  <div class="roadmap-phase" data-phase="y2">
+    <div class="ph-label"><span class="ph-dot"></span>Compound</div>
+    <div class="ph-quarter">Year 2</div>
+    <div class="ph-window">Months 13+</div>
+  </div>
+</div>
+
+<div class="roadmap-grid">
+  <div class="roadmap-col" data-quarter="Q1">
+    <div class="roadmap-col-head">
+      <div class="roadmap-col-label">Q1 — Foundation</div>
+      <div class="roadmap-col-sub">Months 1–3 · MVP land</div>
+    </div>
+    <div class="roadmap-col-body" data-dropzone>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Core infrastructure</div>
+        <div class="rc-desc">Platform, hosting, connectors, security architecture stood up</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Sub-team workbench architecture</div>
+        <div class="rc-desc">Framework for portfolio teams (Membership, Consumer, Business Mobile etc.) to build their own workbenches on shared core infrastructure</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Usage &amp; access guard rails</div>
+        <div class="rc-desc">What the MML can/can't do, who can query what, compliance and audit traceability</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Low-risk memory ingestion</div>
+        <div class="rc-desc">Brand assets, public domain, PII-scrubbed frontline insights, MPS, base movements</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Predictive analytics v1</div>
+        <div class="rc-desc">First-pass predictive modelling on plan data and readily available information — early sizing of acquisition, value-at-risk and campaign response</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap-col" data-quarter="Q2">
+    <div class="roadmap-col-head">
+      <div class="roadmap-col-label">Q2 — Early value</div>
+      <div class="roadmap-col-sub">Months 4–6 · benefits start flowing</div>
+    </div>
+    <div class="roadmap-col-body" data-dropzone>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Campaign planning &amp; prioritisation</div>
+        <div class="rc-desc">Right work in the right order; AI-assisted intake, scoring and sequencing</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Media optimisation</div>
+        <div class="rc-desc">Real-time performance feed to McCann — unlocks the 5% media efficiency and digital FTE outsource economics</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Memory-assisted campaign delivery (One NZ + Omnicom)</div>
+        <div class="rc-desc">The shared delivery surface between One NZ and Omnicom — extends our existing AI briefing tool with memory so briefs auto-generate, prioritise and carry full context (prior wins, audience truth, creative direction) into the agency without manual rework</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Brand dashboard &amp; live plug-ins</div>
+        <div class="rc-desc">Always-on health view replaces retrospective reporting; analyst time shifts to interpretation</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Channel deployment</div>
+        <div class="rc-desc">Digital, retail and contact-centre channel teams plugged into briefing &amp; performance surfaces — channel-specific creative variants and feedback loops live</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap-col" data-quarter="Q3">
+    <div class="roadmap-col-head">
+      <div class="roadmap-col-label">Q3 — Scale</div>
+      <div class="roadmap-col-sub">Months 7–9 · full operational readiness</div>
+    </div>
+    <div class="roadmap-col-body" data-dropzone>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Design studio</div>
+        <div class="rc-desc">Performance marketing creative produced jointly with agency; the surface that makes McCann absorb scope at zero cost</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Synthetic customer profiles</div>
+        <div class="rc-desc">Queryable representations of priority segments; powers Insights team reductions</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Channel optimisation features</div>
+        <div class="rc-desc">Performance tuning, frontline/agent enablement for campaign briefing (key points, key conversations) and campaign optimisation from real-world conversation feedback</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Conversation transcript ingestion</div>
+        <div class="rc-desc">PII-scrubbed call &amp; conversation transcripts ingested into memory — enabler for downstream optimisation, frontline coaching and Q4 predictive v2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap-col" data-quarter="Q4">
+    <div class="roadmap-col-head">
+      <div class="roadmap-col-label">Q4 — Maturity</div>
+      <div class="roadmap-col-sub">Months 10–12 · benefits compound</div>
+    </div>
+    <div class="roadmap-col-body" data-dropzone>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Next-best-conversation at individual customer level</div>
+        <div class="rc-desc">Powers right offer / right moment at the individual customer — including data bolt-ons, Phone Dollar boosts, network conversations</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Predictive analytics v2</div>
+        <div class="rc-desc">Real-time predictive modelling fed by channel performance, live conversation transcripts and behavioural signal — the reason acquisition/churn benefits begin Y2</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Cross-function expansion</div>
+        <div class="rc-desc">Finance/Commercial, retail save flows, contact centre access to performance insights</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Real-time creative variants</div>
+        <div class="rc-desc">Auto-generated channel adaptations and resizes from a single approved asset</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roadmap-col" data-quarter="Y2">
+    <div class="roadmap-col-head">
+      <div class="roadmap-col-label">Year 2 — Beyond</div>
+      <div class="roadmap-col-sub">Months 13+ · platform maturity</div>
+    </div>
+    <div class="roadmap-col-body" data-dropzone>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Full orchestration depth</div>
+        <div class="rc-desc">Near-full automation of campaign workload — unlocks the additional 10 FTE</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Enterprise-wide memory</div>
+        <div class="rc-desc">Memory expansion beyond Marketing into broader One NZ functions</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Customer journey orchestration</div>
+        <div class="rc-desc">End-to-end journey orchestration through digital and AI-assisted channels — personalised, brand-safe, signal-led</div>
+      </div>
+      <div class="roadmap-card" draggable="true">
+        <div class="rc-title">Agent orchestration framework</div>
+        <div class="rc-desc">AI agents operating against the layer on routine workload — foundation for an AI-based commerce future</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p style="font-size: 13px; color: var(--text-dim); margin-top: 16px;"><em>Tip: drag any card to re-sequence — useful when discussing what could land earlier or later in scoping conversations.</em></p>
+
+</section>
+
+<section id="benefits">
+<h2>Benefits</h2>
+<p class="lead">Workforce optimisation is the dominant benefit, with media efficiency layered on top — and customer acquisition and churn benefits incremental from Year 2 onwards.</p>
+
+<div class="callout info" style="margin-bottom: 24px;">
+  <h4>How we treat the workforce benefit in light of the recent restructure</h4>
+  <p style="margin-bottom: 8px;">The Product &amp; Marketing leadership team directly built FTE benefits (and FTE investments) into the new structure on the basis that the Marketing Memory Layer would be deployed. The capability is part of what made the new operating model viable.</p>
+  <p style="margin-bottom: 8px;">That said, we appreciate it's not as simple as one-for-one attribution. In practice, FTE reductions of this scale always rest on three things: an honest reassessment of what work is genuinely needed, a meaningful change in capability that reduces what humans have to do, and an acceptance that some delivery risk now sits with a leaner team. The MML is the middle lever — capability that makes a leaner operating model both sustainable and more effective, not just smaller.</p>
+  <p style="margin-bottom: 8px;">This case takes the conservative middle position. We do <strong>not</strong> claim 100% of the confirmed FTE reduction value as MML-enabled — that would invite the fair challenge that the restructure was approved on its own merits. We also do <strong>not</strong> walk back to zero attribution — that would understate the dependency the new operating model has on the platform.</p>
+  <p>Instead, the case claims (a) the ~9 FTE worth of media and content production scope that McCann has absorbed at no additional cost because the platform exists between us and them, and (b) the additional 10 FTE in Year 2 unlocked by deeper automation maturity. The remaining in-house FTE reduction has <strong>not</strong> been claimed in this case — but to be clear, a large portion of that reduction is still enabled by this capability (e.g. Marketing leads, the insights function, design and experience, and creative roles). Full discussion in <a href="#qs" style="color: var(--accent);">Q1 of the Q&amp;A</a>.</p>
+</div>
+
+<details class="collapsible">
+  <summary>
+    <span class="chev"></span>
+    <span class="title">Workforce optimisation — detailed workings (9 FTE Y1 + 10 FTE Y2 = 19 FTE, $3.33M run-rate)</span>
+    <span class="hint">click to expand</span>
+  </summary>
+  <div class="collapsible-body">
+
+<h3>Workforce optimisation — Year 1</h3>
+<p>The confirmed Product &amp; Marketing restructure delivers ~28 net FTE reduction across the MML-relevant functions (Portfolio Owner consolidation excluded as it is pure structural). Of that ~28, this case claims <strong>9 FTE in Year 1 (~32% of the MML-relevant value)</strong> — specifically the media and content production scope that McCann has absorbed at no additional cost because the platform exists between us and them. The remaining ~19 confirmed reductions are attributed to the restructure itself rather than this case.</p>
+<p>The 9 Y1 FTE claim sits inside the role categories where the MML's memory, intelligence, automation, brand-guardrail and orchestration capability is the enabler:</p>
+<ul style="color:var(--text-dim); font-size:14px; padding-left:20px; margin-bottom: 16px;">
+  <li>Media</li>
+  <li>Creative</li>
+  <li>Marketing automation</li>
+  <li>Senior leadership</li>
+  <li>Marketing leads</li>
+  <li>Research, insights and analytics</li>
+  <li>Design and experience</li>
+  <li>Creative &amp; performance marketing assets</li>
+</ul>
+
+<h3>Workforce optimisation — Year 2</h3>
+<p>Year 2 unlocks a further 10 FTE through a step-change to <strong>near-full automation</strong> of the orchestration workload. This is the case <em>extending beyond</em> the restructure's confirmed ~28 — the additional 10 reflects deeper automation depth the MML enables as the platform matures across deployment channels and routine campaign workload. Role categories don't change; depth of automation does.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Phase</th><th class="num">FTE</th><th class="num">Run-rate annual value</th><th>Driver</th></tr></thead>
+  <tbody>
+    <tr><td>Year 1 — McCann-absorbed scope</td>
+        <td class="num"><span id="t-fte1">9</span></td>
+        <td class="num" id="t-fte1-val">$1,575,000</td>
+        <td class="dim">Media and content production scope absorbed by McCann at no additional cost — only possible because the platform sits between us and them</td></tr>
+    <tr><td>Year 2 — near-full automation</td>
+        <td class="num">+<span id="t-fte2">10</span></td>
+        <td class="num" id="t-fte2-val">$1,750,000</td>
+        <td class="dim">Deeper automation depth unlocks additional capacity beyond the structural restructure</td></tr>
+    <tr class="total"><td>Total workforce optimisation (Y2/Y3 run-rate)</td>
+        <td class="num"><span id="t-fteT">19</span></td>
+        <td class="num" id="t-fteT-val">$3,325,000</td>
+        <td></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="assumption">
+  <strong>Ramp assumption:</strong> 9 FTE effective 1 June 2026 → benefit realised at 100% run-rate from project start. Additional 10 FTE effective 1 June 2027 → 100% from start of Y2. The sensitivity slider applies a haircut for stress-testing only — base case is 100%. Currently set at <span id="a-ramp">100</span>%.
+</div>
+
+<h3>Where the FTE reductions come from</h3>
+<p>The 20 + 15 FTE workforce optimisation is how we deliver the benefits the confirmed Product &amp; Marketing restructure is already locking in. The restructure removes capacity across eight functional areas and creates a smaller set of new roles in their place. The MML is the capability that makes the net reduction sustainable.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr>
+    <th>Function</th>
+    <th class="num">Net FTE</th>
+    <th>How the MML enables the reduction</th>
+  </tr></thead>
+  <tbody>
+    <tr><td><strong>Marketing Automation</strong></td>
+        <td class="num"><strong>~5</strong></td>
+        <td class="dim">Automated audience targeting, ROI analysis, SQL and campaign tracking; workflow connectors orchestrate Salesforce MC, Ripple and channel deployment; brand guardrails enforce compliance without manual QA.</td></tr>
+    <tr><td><strong>Marketing Leadership</strong></td>
+        <td class="num"><strong>~6</strong></td>
+        <td class="dim">Memory layer eliminates the 9.3 hrs/week context-rebuilding tax; auto-briefing surfaces prior wins, audience truth and creative direction; orchestration replaces approval coordination across creative and media.</td></tr>
+    <tr><td><strong>Marketing Insights &amp; Analytics</strong></td>
+        <td class="num"><strong>~1</strong></td>
+        <td class="dim">Synthetic customer profiles, live performance plug-ins and predictive signal replace retrospective reporting; analyst time shifts from data prep to interpretation.</td></tr>
+    <tr><td><strong>Digital Media</strong></td>
+        <td class="num"><strong>~7</strong></td>
+        <td class="dim">Outsourced to McCann. MML supplies the real-time performance feed, audience definitions and brand guardrails the partner consumes — without that signal McCann economics weaken.</td></tr>
+    <tr><td><strong>Creative &amp; Production</strong></td>
+        <td class="num"><strong>~3</strong></td>
+        <td class="dim">Brand-aware AI generation (Claude/Firefly/Ripple via connectors); auto-resize and variant creation; memory-driven brand voice consistency lowers the floor of work needing senior creative oversight.</td></tr>
+    <tr><td><strong>Brand Management &amp; Channel Leads</strong></td>
+        <td class="num"><strong>~3</strong></td>
+        <td class="dim">Owned-channels consolidation enabled by single brand source-of-truth; channel cadence (social, content, influence) coordinated through one queryable layer rather than channel-specific managers.</td></tr>
+    <tr><td><strong>Experience &amp; UX Design</strong></td>
+        <td class="num"><strong>~3</strong></td>
+        <td class="dim">Design system in the memory layer — components, tokens, accessibility rules queryable by every team and AI tool; auto-enforced design standards reduce senior-designer review load.</td></tr>
+    <tr class="total"><td>Total net structural reductions (MML-relevant functions)</td>
+        <td class="num"><strong>~28</strong></td>
+        <td></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="assumption">
+  <strong>Note on scope:</strong> Portfolio Owner consolidation (~2 FTE through the Consumer/Business merger) is excluded from the figure above — that reduction is pure structural and would happen with or without the MML, so we are not claiming it. This case models <strong>9 FTE Y1 + 10 FTE Y2 = 19 FTE total</strong>. The Y1 figure represents 9 of the ~28 MML-relevant net reductions (~32%) — specifically the McCann-absorbed scope that wouldn't have been possible at that price without the platform. The additional 10 FTE in Y2 reflects deeper automation depth realised once the platform matures.
+</div>
+
+<p>The case claims 9 of the ~28 MML-relevant net structural reductions in Year 1 (~32%) — specifically the McCann-absorbed media and content production scope. The Y2 additional 10 FTE is claimed against deeper automation depth that the platform unlocks beyond the structural restructure. This is a deliberately conservative position: we are not claiming the in-house reductions that were already booked through the restructure, only the share the platform genuinely makes possible.</p>
+
+  </div>
+</details>
+
+<h3>Media efficiency</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Driver</th><th class="num">Baseline</th><th class="num">Uplift</th><th class="num">Annual value</th></tr></thead>
+  <tbody>
+    <tr><td>Working media — better traceability, faster decision cycles, sharper targeting</td>
+        <td class="num">$<span id="t-media">23.0</span>M</td>
+        <td class="num"><span id="t-mediaPct">5</span>%</td>
+        <td class="num" id="t-mediaVal">$1,150,000</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Customer acquisition uplift (1%) &amp; churn reduction (0.5%) — <span style="color: var(--amber); font-weight: 600;">Year 2 onwards</span></h3>
+<div class="callout info" style="margin: 0 0 16px 0;">
+  <h4>Incremental benefit — not claimed in FY1</h4>
+  <p>Acquisition and churn benefits are deliberately held out of Year 1 and modelled from Year 2 onwards. The platform's predictive intelligence, frontline conversation flows and digital conversion monitoring all land in the second half of the build roadmap — and customer cohort tenure starts compounding from Year 2. Shown here so the reader sees the incremental upside in subsequent years.</p>
+</div>
+<p>Modelled conservatively at <strong>1% incremental acquisition</strong> and <strong>0.5% churn reduction</strong> across three product lines, valued on lifetime margin (monthly margin × tenure). Why these are credible numbers:</p>
+
+<div class="grid-2" style="margin: 12px 0 20px;">
+  <div class="panel with">
+    <h4>What drives the uplift</h4>
+    <ul>
+      <li><strong>Faster, more accurate access to insight to action.</strong> Decision cycles compress from weeks to days and campaigns get to market faster as performance signal, synthetic profiles and prior learnings sit in a single queryable layer rather than scattered across teams, decks and tools — so the time between knowing and doing collapses, and results start landing sooner.</li>
+      <li><strong>Faster, more timely conversation enhancement in the frontline.</strong> Retail save flows, contact centre saves and proactive outreach pull from live customer context — next-best-conversation, value-at-risk signal and tailored offers — instead of static playbooks updated monthly.</li>
+      <li><strong>Better ability to monitor and address digital conversion.</strong> Real-time funnel signal, attribution and audience definitions feed both internal teams and the McCann media partner, so drop-off is detected and acted on inside the same cycle rather than the next reporting one.</li>
+    </ul>
+  </div>
+  <div class="panel without" style="border-color: rgba(0,189,111,0.3); background: linear-gradient(135deg, #0E2B1E 0%, #0A1410 80%);">
+    <h4 style="color: var(--accent);">Why 1% / 0.5% is the conservative number</h4>
+    <ul>
+      <li>1% on acquisition = 3,500 net additional customers across pay monthly, prepaid and broadband — well below industry benchmarks for marketing analytics platforms (3–7% common).</li>
+      <li>0.5% churn = ~1,750 saved customers — modelled at half the acquisition volume so the case doesn't double-count enthusiasm.</li>
+      <li>Acquisition and retention are driven by the <em>same three mechanisms above</em>, so any miss on one is partly compensated by the other.</li>
+      <li>Headline excludes store/channel performance (5–10% available), channel deployment resources and Finance/Commercial efficiency entirely.</li>
+    </ul>
+  </div>
+</div>
+
+<h4 style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; margin: 20px 0 10px;">Acquisition (1%) — unit economics</h4>
+<div class="table-wrap">
+<table>
+  <thead><tr>
+    <th>Product line</th>
+    <th class="num">Annual baseline</th>
+    <th class="num">1% volume</th>
+    <th class="num">Monthly margin</th>
+    <th class="num">Tenure (mo)</th>
+    <th class="num">LTV value</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>Pay monthly mobile</td>
+        <td class="num">100,000</td>
+        <td class="num">1,000</td>
+        <td class="num">$45</td>
+        <td class="num">30</td>
+        <td class="num">$1,350,000</td></tr>
+    <tr><td>Prepaid mobile</td>
+        <td class="num">200,000</td>
+        <td class="num">2,000</td>
+        <td class="num">$15</td>
+        <td class="num">18</td>
+        <td class="num">$540,000</td></tr>
+    <tr><td>Broadband</td>
+        <td class="num">50,000</td>
+        <td class="num">500</td>
+        <td class="num">$15</td>
+        <td class="num">30</td>
+        <td class="num">$225,000</td></tr>
+    <tr class="total"><td>Total acquisition uplift</td>
+        <td class="num">350,000</td>
+        <td class="num">3,500</td>
+        <td class="num"></td>
+        <td class="num"></td>
+        <td class="num" id="t-acqVal">$2,115,000</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; margin: 20px 0 10px;">Churn reduction (0.5%) — unit economics</h4>
+<p style="font-size: 13px;">Half the acquisition volume across the same product lines, valued on the same lifetime margin basis.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr>
+    <th>Product line</th>
+    <th class="num">Saved customers</th>
+    <th class="num">Monthly margin</th>
+    <th class="num">Tenure (mo)</th>
+    <th class="num">LTV value</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>Pay monthly mobile</td>
+        <td class="num">500</td>
+        <td class="num">$45</td>
+        <td class="num">30</td>
+        <td class="num">$675,000</td></tr>
+    <tr><td>Prepaid mobile</td>
+        <td class="num">1,000</td>
+        <td class="num">$15</td>
+        <td class="num">18</td>
+        <td class="num">$270,000</td></tr>
+    <tr><td>Broadband</td>
+        <td class="num">250</td>
+        <td class="num">$15</td>
+        <td class="num">30</td>
+        <td class="num">$112,500</td></tr>
+    <tr class="total"><td>Total churn reduction</td>
+        <td class="num">1,750</td>
+        <td class="num"></td>
+        <td class="num"></td>
+        <td class="num" id="t-churnVal">$1,057,500</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="assumption">
+  <strong>Lifetime value treatment:</strong> Acquisition and churn benefits are valued on customer lifetime margin (monthly margin × expected tenure), not annual margin. Each year the MML is operational generates a fresh cohort of incremental acquisitions and retained customers — so the LTV figures above are realised in each year of the case, not amortised across the three years. Conservative versus typical industry practice. If Finance prefers annual recurring view, divide by tenure: approximately $1.06M/year acquisition + $529K/year churn = ~$1.59M/year recurring.
+</div>
+
+<h3>Store/channel performance</h3>
+<p>Daily (vs monthly) channel updates drive store and channel performance uplift, estimated at 5–10% improvement — not monetised in headline pending revenue baseline sign-off.</p>
+
+<h3>Revenue upside (separately tracked)</h3>
+<ul style="color:var(--text-dim); font-size:14px; padding-left:20px; margin-bottom: 8px;">
+  <li style="margin-bottom:8px;"><strong>Internal scale:</strong> Marketing is ~1/6th of One NZ — extending the platform across the org multiplies the benefit base.</li>
+  <li style="margin-bottom:8px;"><strong>Client transformation services:</strong> external-facing consultancy offer leveraging MML methodology.</li>
+  <li style="margin-bottom:8px;"><strong>Case-study monetisation:</strong> One NZ as flagship reference for enterprise clients.</li>
+  <li style="margin-bottom:8px;"><strong>McCann new-business revenue share:</strong> 3% share proposal on new business won using the platform.</li>
+</ul>
+</section>
+
+<section id="cashflow">
+<h2>Cash flow view</h2>
+<p class="lead">P&amp;L view on top (what Finance reports), CapEx underneath (what's capitalised and amortised), total cash at the bottom (what actually leaves the bank). Quarterly cash position chart at the end shows payback. NZD.</p>
+
+<h3>P&amp;L view (OpEx + amortisation)</h3>
+<p style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">What hits the income statement each year. Build-out and 70% of the MMI team are capitalised and amortised straight-line over 5 years.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>P&amp;L line</th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th class="num">3-yr Total</th></tr></thead>
+  <tbody>
+    <tr><td>MMI team — OpEx portion (30% of $875K)</td>
+        <td class="num" id="pl-mmi1">—</td><td class="num" id="pl-mmi2">—</td><td class="num" id="pl-mmi3">—</td><td class="num" id="pl-mmiT">—</td></tr>
+    <tr><td>Platform &amp; tooling, hosting + usage allowance ($15K/mo)</td>
+        <td class="num" id="pl-op1">—</td><td class="num" id="pl-op2">—</td><td class="num" id="pl-op3">—</td><td class="num" id="pl-opT">—</td></tr>
+    <tr><td>Amortisation — build-out ($1.325M / 5yr)</td>
+        <td class="num" id="pl-am1">—</td><td class="num" id="pl-am2">—</td><td class="num" id="pl-am3">—</td><td class="num" id="pl-amT">—</td></tr>
+    <tr><td>Amortisation — capitalised MMI team</td>
+        <td class="num" id="pl-amm1">—</td><td class="num" id="pl-amm2">—</td><td class="num" id="pl-amm3">—</td><td class="num" id="pl-ammT">—</td></tr>
+    <tr class="subtotal"><td>Total P&amp;L expense</td>
+        <td class="num" id="pl-t1">—</td><td class="num" id="pl-t2">—</td><td class="num" id="pl-t3">—</td><td class="num" id="pl-tT">—</td></tr>
+    <tr><td>Workforce benefit (FTE optimisation)</td>
+        <td class="num" id="pl-wb1">—</td><td class="num" id="pl-wb2">—</td><td class="num" id="pl-wb3">—</td><td class="num" id="pl-wbT">—</td></tr>
+    <tr><td>Media efficiency benefit</td>
+        <td class="num" id="pl-mb1">—</td><td class="num" id="pl-mb2">—</td><td class="num" id="pl-mb3">—</td><td class="num" id="pl-mbT">—</td></tr>
+    <tr><td>Customer acquisition benefit (1% uplift, LTV)</td>
+        <td class="num" id="pl-ab1">—</td><td class="num" id="pl-ab2">—</td><td class="num" id="pl-ab3">—</td><td class="num" id="pl-abT">—</td></tr>
+    <tr><td>Churn reduction benefit (0.5%, LTV)</td>
+        <td class="num" id="pl-cb1">—</td><td class="num" id="pl-cb2">—</td><td class="num" id="pl-cb3">—</td><td class="num" id="pl-cbT">—</td></tr>
+    <tr class="subtotal"><td>Gross benefit</td>
+        <td class="num" id="pl-b1">—</td><td class="num" id="pl-b2">—</td><td class="num" id="pl-b3">—</td><td class="num" id="pl-bT">—</td></tr>
+    <tr class="total"><td>Net P&amp;L impact</td>
+        <td class="num" id="pl-n1">—</td><td class="num" id="pl-n2">—</td><td class="num" id="pl-n3">—</td><td class="num" id="pl-nT">—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>CapEx view (capitalised investment)</h3>
+<p style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">Capitalised on the balance sheet, amortised through the P&amp;L over 5 years.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>CapEx line</th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th class="num">3-yr Total</th></tr></thead>
+  <tbody>
+    <tr><td>Build-out incl. data architect (one-off, Y1)</td>
+        <td class="num" id="cx-b1">$1,325,000</td><td class="num">—</td><td class="num">—</td><td class="num">$1,325,000</td></tr>
+    <tr><td>MMI team capitalised portion (70% of $875K)</td>
+        <td class="num">$612,500</td><td class="num">$612,500</td><td class="num">$612,500</td><td class="num">$1,837,500</td></tr>
+    <tr class="total"><td>Total CapEx</td>
+        <td class="num" id="cx-t1">$1,937,500</td><td class="num">$612,500</td><td class="num">$612,500</td><td class="num">$3,162,500</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Total cash view (what leaves the bank)</h3>
+<p style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">Combined OpEx + CapEx cash outflow — the actual investment ask.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th class="num">Year 1</th><th class="num">Year 2</th><th class="num">Year 3</th><th class="num">3-yr Total</th></tr></thead>
+  <tbody>
+    <tr><td>OpEx cash (MMI 30% + platform + usage allowance)</td>
+        <td class="num" id="ch-o1">—</td><td class="num" id="ch-o2">—</td><td class="num" id="ch-o3">—</td><td class="num" id="ch-oT">—</td></tr>
+    <tr><td>CapEx cash</td>
+        <td class="num">$1,812,500</td><td class="num">$612,500</td><td class="num">$612,500</td><td class="num">$3,037,500</td></tr>
+    <tr class="subtotal"><td>Total cash outflow</td>
+        <td class="num" id="ch-i1">—</td><td class="num" id="ch-i2">—</td><td class="num" id="ch-i3">—</td><td class="num" id="ch-iT">—</td></tr>
+    <tr><td>Gross cash benefit</td>
+        <td class="num" id="ch-b1">—</td><td class="num" id="ch-b2">—</td><td class="num" id="ch-b3">—</td><td class="num" id="ch-bT">—</td></tr>
+    <tr class="total"><td>Net cash flow</td>
+        <td class="num" id="ch-n1">—</td><td class="num" id="ch-n2">—</td><td class="num" id="ch-n3">—</td><td class="num" id="ch-nT">—</td></tr>
+    <tr><td class="dim">Cumulative net cash</td>
+        <td class="num dim" id="ch-c1">—</td><td class="num dim" id="ch-c2">—</td><td class="num dim" id="ch-c3">—</td><td class="num dim">—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="assumption">
+  <strong>Amortisation period:</strong> Modelled at 5 years straight-line for both build-out and capitalised MMI team cost. If Finance prefers a 3-year amortisation, the P&amp;L impact gets heavier earlier — flag in Q2 below.
+</div>
+
+<h3>Quarterly cash position (3 years)</h3>
+<p style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">Each quarter shows the composition of cash flow: cost segments stacked below the zero line (build CapEx, MMI team CapEx, OpEx) and benefit segments stacked above it (workforce, media, acquisition+churn). The white-dot marker on each bar is the in-quarter net. The amber line is the cumulative cash position on the right axis — payback is where it crosses zero.</p>
+<div class="chart-card">
+  <svg id="line-chart" viewBox="0 0 1000 460" style="width:100%; height:auto; display:block;"></svg>
+  <div class="legend">
+    <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);font-weight:600;margin-right:4px;">Costs ↓</span>
+    <span><span class="legend-dot" style="background:#C04848;"></span>Build CapEx</span>
+    <span><span class="legend-dot" style="background:#E07474;"></span>MMI team CapEx</span>
+    <span><span class="legend-dot" style="background:#F0A0A0;"></span>OpEx (platform + team OpEx portion + usage)</span>
+    <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);font-weight:600;margin-right:4px;margin-left:12px;">Benefits ↑</span>
+    <span><span class="legend-dot" style="background:#006B41;"></span>9 FTE workforce benefit</span>
+    <span><span class="legend-dot" style="background:#009159;"></span>+10 FTE (from Y2)</span>
+    <span><span class="legend-dot" style="background:#00BD6F;"></span>Media efficiency</span>
+    <span><span class="legend-dot" style="background:#7FDDB0;"></span>Acquisition + churn (from Y2)</span>
+    <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);font-weight:600;margin-right:4px;margin-left:12px;">In-quarter</span>
+    <span><span class="legend-dot" style="background:#FFFFFF;border:2px solid #1A1A1A;border-radius:50%;"></span>Net cash (benefits − costs)</span>
+    <span><span class="legend-dot" style="background:#FFB84D; border-radius:50%;"></span>Cumulative cash (right axis)</span>
+  </div>
+</div>
+
+<h3>Scenario sensitivity</h3>
+<p style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">The interactive model lets you stress every assumption. For the static view, here's where the three standard scenarios land. Even the conservative case — fewer FTE, lower media uplift, 70% benefit realisation — comfortably clears.</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Scenario</th><th>Assumptions</th><th class="num">3-yr Gross</th><th class="num">3-yr Net</th><th class="num">ROI</th><th class="num">Payback</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Conservative</strong></td><td class="dim">6 FTE Y1 / +6 Y2 · 3% media uplift · 70% Y1 realisation</td><td class="num">$12.8M</td><td class="num">$7.3M</td><td class="num">132%</td><td class="num">~17 mo</td></tr>
+    <tr><td><strong>Base case</strong></td><td class="dim">9 FTE Y1 / +10 Y2 · 5% media uplift · 100% realisation (FTE effective 1 Jun)</td><td class="num">$18.0M</td><td class="num">$12.5M</td><td class="num">225%</td><td class="num">13 mo</td></tr>
+    <tr><td><strong>Stretch</strong></td><td class="dim">14 FTE Y1 / +15 Y2 · 8% media uplift · 100% realisation</td><td class="num">$24.5M</td><td class="num">$18.9M</td><td class="num">342%</td><td class="num">In-year (Y1)</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="assumption"><strong>Reading the table:</strong> acquisition and churn benefits are held constant across scenarios (they're modelled separately at 1% / 0.5%). Year 1 is effectively breakeven in the base case — the build investment is absorbed by the workforce benefit inside the same year.</div>
+</section>
+
+<section id="risks">
+<h2>Risks &amp; opportunity</h2>
+<div class="grid-2">
+  <div class="panel without">
+    <h4>Risks</h4>
+    <ul>
+      <li><strong>Capability-readiness window (largest risk):</strong> restructure effective 15 June 2026, MVP lands ~mid-August, full operational readiness ~mid-November. A 3–5 month gap exists where role reductions take effect ahead of the platform reaching full capability. Compressing the MVP timeline, or staging FTE exits to the platform milestones, is the primary mitigation.</li>
+      <li>Speed of decision on architecture, security and privacy positioning (One NZ + McCann) — the longest pole in the tent</li>
+      <li>Building the appropriate internal knowledge and expertise to operate the platform at scale</li>
+      <li>Fragmentation of systems, software and reporting across the business reducing the value the layer can extract</li>
+    </ul>
+  </div>
+  <div class="panel with">
+    <h4>Opportunity</h4>
+    <ul>
+      <li>Operational readiness in ~6 months — full marketing function on the platform</li>
+      <li>9 FTE optimised at Y1, +10 at Y2 — all redeployable to higher-value work</li>
+      <li>Brand-safe AI deployment by default across all rooms and agents</li>
+      <li>Decisions compound across cycles; speed and quality stop being a trade-off</li>
+      <li>Vendor consolidation reduces dependency and pricing exposure</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<section id="kpis">
+<h2>Programme success metrics</h2>
+<p class="lead">Four KPIs to track whether the platform is delivering as intended. Measured quarterly, reported to the SteerCo, and used to gate phase progression on the roadmap.</p>
+
+<div class="programme-kpi-grid">
+  <div class="programme-kpi">
+    <div class="kpi-name">Campaign cycle time</div>
+    <div class="kpi-measure">Average time from approved brief to in-market across major campaigns. Captures the compound benefit of memory, reuse and AI-assisted production.</div>
+    <div class="kpi-target">Target: 30% reduction by end of Y1, 50% by end of Y2</div>
+  </div>
+  <div class="programme-kpi">
+    <div class="kpi-name">Approved-source usage</div>
+    <div class="kpi-measure">Share of AI outputs and briefs generated from governed, approved sources in the memory layer (vs ad-hoc or external context). Direct measure of the platform's role as the source of truth.</div>
+    <div class="kpi-target">Target: 70% by end of Y1, 90% by end of Y2</div>
+  </div>
+  <div class="programme-kpi">
+    <div class="kpi-name">AI workflow adoption</div>
+    <div class="kpi-measure">Active monthly users of platform-native AI workflows across Marketing and Memory-connected partner roles. Measures whether the operating-model shift is actually landing.</div>
+    <div class="kpi-target">Target: 80% of in-scope roles active monthly by end of Y1</div>
+  </div>
+  <div class="programme-kpi">
+    <div class="kpi-name">Realised benefit vs plan</div>
+    <div class="kpi-measure">Cumulative net cash benefit tracked against the business case base-case projection. Captures whether workforce optimisation, media efficiency and Y2+ acquisition/churn upside are landing as modelled.</div>
+    <div class="kpi-target">Target: within ±10% of base-case projection</div>
+  </div>
+</div>
+</section>
+
+<section id="qs">
+<h2>Key questions for sign-off</h2>
+<p class="lead">Five questions to land before the case goes to the steering committee. Q1 is the most important — it determines how the workforce benefit is read.</p>
+
+<div class="questions">
+
+  <div class="q">
+    <div class="q-num">Q1</div>
+    <div class="q-body">
+      <strong>How do we treat the FTE reduction that Marketing has recently confirmed, in light of the MML?</strong>
+      <p>The Product &amp; Marketing leadership team built FTE benefits (and investments) directly into the new structure on the basis that the MML would be deployed — capability and structure were planned together. A literal reading would still say "the FTE has gone, you can't claim it twice." The honest position is that the reduction reflects a combination: belief some resource wasn't needed, belief the capability changes what's possible, and accepted delivery risk on the remaining team — with the MML shoring up the middle of that combination. Three attribution options:</p>
+
+      <div class="qa-options">
+        <div class="qa-option">
+          <div class="qa-option-label">Option A — Full attribution</div>
+          <div class="qa-option-body">
+            <p>All ~28 net FTE plus the additional 10 Y2 FTE are claimed as MML-enabled. Rationale: the restructure was only signed off on the assumption the capability would land. Without the MML, leadership would likely be re-opening the restructure inside 6 months as the remaining team can't sustain the workload — at which point the cost of partial reversal exceeds the platform spend.</p>
+            <p class="qa-tag"><strong>Pro:</strong> truthful to the leadership team's actual basis for the restructure. <strong>Con:</strong> hard to defend to the CFO as it can read as double-counting.</p>
+          </div>
+        </div>
+
+        <div class="qa-option">
+          <div class="qa-option-label">Option B — Zero attribution on confirmed FTE</div>
+          <div class="qa-option-body">
+            <p>The ~28 confirmed FTE is written off as restructure-attributable and not claimed. The case stands on the additional 10 Y2 FTE, media efficiency and the Y2 acquisition/churn upside only.</p>
+            <p class="qa-tag"><strong>Pro:</strong> safest defensive position to the CFO. <strong>Con:</strong> materially weakens the case headline; understates the dependency the new operating model has on the platform.</p>
+          </div>
+        </div>
+
+        <div class="qa-option qa-recommended">
+          <div class="qa-option-label">Option C — Partial attribution (<strong>recommended</strong>)</div>
+          <div class="qa-option-body">
+            <p>Claim only (a) the ~9 FTE worth of media and content production scope that McCann has absorbed at no additional cost — defensible because the platform is what enables McCann to absorb that scope at that price, and (b) the additional 10 FTE in Y2 unlocked by deeper automation. We do not claim any of the ~28 in-house reductions confirmed through the restructure — those are attributed to the restructure itself, not this case.</p>
+            <p class="qa-tag"><strong>Pro:</strong> defensible to the CFO ("we are claiming only what wouldn't have happened without the platform, not what was already booked"). <strong>Con:</strong> understates the operational dependency the new structure has on the platform — but that exposure can be raised separately as a delivery risk rather than a benefit claim.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-num">Q2</div>
+    <div class="q-body">
+      <strong>Capitalisation treatment with Finance.</strong>
+      <p>Modelled at 70% of the MMI team capitalised, the $1.325M build-out fully capitalised, 5-year amortisation. Need Finance to confirm the split and amortisation period — if 3-year amortisation is preferred, the P&amp;L impact gets heavier earlier.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-num">Q3</div>
+    <div class="q-body">
+      <strong>Architecture, Security &amp; Privacy decision speed.</strong>
+      <p>The largest delivery risk in the plan. Restructure effective 15 June; MVP needs to land 8–12 weeks later. If Architecture/Security/Privacy review takes &gt;6 weeks, the FTE-reduction-before-capability-readiness window widens. What's the read on getting this case approved in parallel with broader AI tooling decisions rather than after them?</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-num">Q4</div>
+    <div class="q-body">
+      <strong>Change management &amp; enablement approach.</strong>
+      <p>Adoption across Marketing (and adjacent functions in Y2) requires sustained change support. Two options: (a) internal change capacity within the new MMI team, or (b) shared retainer with McCann for change &amp; enablement support during the rollout window. Recommendation pending — internal capacity is constrained but cheaper; McCann is faster but adds run cost.</p>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="q-num">Q5</div>
+    <div class="q-body">
+      <strong>Sponsor &amp; governance path.</strong>
+      <p>AI Steering Committee review is optional; Velocity governance has multiple workstreams. Default is full Velocity intake to keep this consistent with the broader restructure consultation. Joe and Summer to confirm.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<script>
+const fmt = (n) => {
+  if (n === 0 || !n) return '—';
+  const abs = Math.abs(n);
+  let s;
+  if (abs >= 1_000_000) s = '$' + (abs/1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+  else if (abs >= 1_000) s = '$' + (abs/1_000).toFixed(0) + 'K';
+  else s = '$' + abs.toFixed(0);
+  return n < 0 ? '(' + s + ')' : s;
+};
+const fmtFull = (n) => {
+  if (n === 0) return '—';
+  return (n < 0 ? '(' : '') + '$' + Math.abs(n).toLocaleString('en-NZ', {maximumFractionDigits:0}) + (n < 0 ? ')' : '');
+};
+
+const state = {
+  fte1: 9, fte2: 10, fteCost: 175, media: 23, mediaPct: 5, ramp: 100,
+  // Acquisition uplift @ 1% — three product lines, LTV basis
+  acqPayMonthly: 1000 * 45 * 30,    // 1,000 × $45 × 30mo = $1,350,000
+  acqPrepaid:    2000 * 15 * 18,    // 2,000 × $15 × 18mo = $540,000
+  acqBroadband:  500  * 15 * 30,    // 500 × $15 × 30mo  = $225,000
+  // Churn reduction @ 0.5% — half acquisition volume, same LTV unit economics
+  churnPayMonthly: 500  * 45 * 30,  // $675,000
+  churnPrepaid:    1000 * 15 * 18,  // $270,000
+  churnBroadband:  250  * 15 * 30,  // $112,500
+  buildOut: 1_325_000,       // one-off Y1 CapEx ($600K MVP + $600K full readiness + $125K data architect)
+  opex: 530_000,             // annual platform OpEx (350K platform + 180K usage allowance @ 15K/mo)
+  mmiTotal: 875_000,         // 5 FTE × $175K
+  mmiCapPct: 0.70,           // 70% capitalised
+  amortYears: 5,             // straight-line amortisation period
+  discountRate: 0.10,        // for NPV
+};
+
+const scenarios = {
+  conservative: { fte1: 6,  fte2: 6,  mediaPct: 3, ramp: 70 },
+  base:         { fte1: 9,  fte2: 10, mediaPct: 5, ramp: 100 },
+  stretch:      { fte1: 14, fte2: 15, mediaPct: 8, ramp: 100 },
+};
+
+// IRR via bisection
+function irr(cashflows, guess = 0.1) {
+  const npvAt = (r) => cashflows.reduce((s, cf, i) => s + cf / Math.pow(1+r, i), 0);
+  let lo = -0.99, hi = 5.0;
+  let fLo = npvAt(lo), fHi = npvAt(hi);
+  if (fLo * fHi > 0) return null;
+  for (let i = 0; i < 100; i++) {
+    const mid = (lo+hi)/2;
+    const fMid = npvAt(mid);
+    if (Math.abs(fMid) < 1) return mid;
+    if (fMid * fLo < 0) { hi = mid; fHi = fMid; } else { lo = mid; fLo = fMid; }
+  }
+  return (lo+hi)/2;
+}
+
+function recompute() {
+  // Pull controls
+  state.fte1       = +document.getElementById('i-fte1').value;
+  state.fte2       = +document.getElementById('i-fte2').value;
+  state.fteCost    = +document.getElementById('i-fteCost').value;
+  state.media      = +document.getElementById('i-media').value;
+  state.mediaPct   = +document.getElementById('i-mediaPct').value;
+  state.ramp       = +document.getElementById('i-ramp').value;
+
+  // Display controls
+  document.getElementById('v-fte1').textContent = state.fte1;
+  document.getElementById('v-fte2').textContent = state.fte2;
+  document.getElementById('v-fteCost').textContent = state.fteCost;
+  document.getElementById('v-media').textContent = state.media.toFixed(1);
+  document.getElementById('v-mediaPct').textContent = state.mediaPct.toFixed(1);
+  document.getElementById('v-ramp').textContent = state.ramp;
+
+  // ---- Benefits ----
+  const fteCostK = state.fteCost * 1000;
+  const fte1Val = state.fte1 * fteCostK;
+  const fte2Val = state.fte2 * fteCostK;
+  const fteTotal = fte1Val + fte2Val;
+  const mediaVal = state.media * 1_000_000 * (state.mediaPct/100);
+  const acqVal = state.acqPayMonthly + state.acqPrepaid + state.acqBroadband;  // $2,115,000
+  const churnVal = state.churnPayMonthly + state.churnPrepaid + state.churnBroadband;  // $1,057,500
+
+  document.getElementById('t-fte1').textContent = state.fte1;
+  document.getElementById('t-fte1-val').textContent = fmtFull(fte1Val);
+  document.getElementById('t-fte2').textContent = state.fte2;
+  document.getElementById('t-fte2-val').textContent = fmtFull(fte2Val);
+  document.getElementById('t-fteT').textContent = state.fte1 + state.fte2;
+  document.getElementById('t-fteT-val').textContent = fmtFull(fteTotal);
+  document.getElementById('t-media').textContent = state.media.toFixed(1);
+  document.getElementById('t-mediaPct').textContent = state.mediaPct.toFixed(1);
+  document.getElementById('t-mediaVal').textContent = fmtFull(mediaVal);
+  document.getElementById('t-acqVal').textContent = fmtFull(acqVal);
+  document.getElementById('t-churnVal').textContent = fmtFull(churnVal);
+  document.getElementById('a-ramp').textContent = state.ramp;
+
+  // Year phasing for benefits
+  // 9 FTE effective 1 June 2026 → Project Y1 is the full benefit at 100% run-rate from day 1.
+  // Additional 10 FTE effective 1 June 2027 → adds to run-rate from start of Project Y2.
+  // Ramp slider is retained as a SENSITIVITY (stress-test only); base case is 100%.
+  const rampY1 = state.ramp / 100;
+  const wY1 = fte1Val * rampY1;
+  const wY2 = fte1Val + fte2Val * rampY1;   // 9 at full + 10 at sensitivity
+  const wY3 = fte1Val + fte2Val;             // full run-rate from Y3
+  const mY1 = mediaVal * rampY1;
+  const mY2 = mediaVal;
+  const mY3 = mediaVal;
+  // Acquisition and churn benefits begin Year 2 — capability matures + cohort tenure starts compounding
+  const aY1 = 0;
+  const aY2 = acqVal;
+  const aY3 = acqVal;
+  const cY1 = 0;
+  const cY2 = churnVal;
+  const cY3 = churnVal;
+  const bY1 = wY1+mY1+aY1+cY1, bY2 = wY2+mY2+aY2+cY2, bY3 = wY3+mY3+aY3+cY3;
+  const bT  = bY1+bY2+bY3;
+
+  // ---- P&L ----
+  const mmiOpEx = state.mmiTotal * (1 - state.mmiCapPct);  // $262.5K
+  const mmiCap  = state.mmiTotal * state.mmiCapPct;        // $612.5K
+  const buildAmort = state.buildOut / state.amortYears;    // $240K/yr
+  const mmiAmortY1 = mmiCap / state.amortYears;
+  const mmiAmortY2 = (mmiCap * 2) / state.amortYears;
+  const mmiAmortY3 = (mmiCap * 3) / state.amortYears;
+
+  const plExpY1 = mmiOpEx + state.opex + buildAmort + mmiAmortY1;
+  const plExpY2 = mmiOpEx + state.opex + buildAmort + mmiAmortY2;
+  const plExpY3 = mmiOpEx + state.opex + buildAmort + mmiAmortY3;
+  const plExpT  = plExpY1+plExpY2+plExpY3;
+
+  const plNetY1 = bY1 - plExpY1;
+  const plNetY2 = bY2 - plExpY2;
+  const plNetY3 = bY3 - plExpY3;
+  const plNetT  = plNetY1+plNetY2+plNetY3;
+
+  // Populate P&L table
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  set('pl-mmi1', fmtFull(mmiOpEx)); set('pl-mmi2', fmtFull(mmiOpEx)); set('pl-mmi3', fmtFull(mmiOpEx)); set('pl-mmiT', fmtFull(mmiOpEx*3));
+  set('pl-op1', fmtFull(state.opex)); set('pl-op2', fmtFull(state.opex)); set('pl-op3', fmtFull(state.opex)); set('pl-opT', fmtFull(state.opex*3));
+  set('pl-am1', fmtFull(buildAmort)); set('pl-am2', fmtFull(buildAmort)); set('pl-am3', fmtFull(buildAmort)); set('pl-amT', fmtFull(buildAmort*3));
+  set('pl-amm1', fmtFull(mmiAmortY1)); set('pl-amm2', fmtFull(mmiAmortY2)); set('pl-amm3', fmtFull(mmiAmortY3));
+  set('pl-ammT', fmtFull(mmiAmortY1+mmiAmortY2+mmiAmortY3));
+  set('pl-t1', fmtFull(plExpY1)); set('pl-t2', fmtFull(plExpY2)); set('pl-t3', fmtFull(plExpY3)); set('pl-tT', fmtFull(plExpT));
+  set('pl-wb1', fmtFull(wY1)); set('pl-wb2', fmtFull(wY2)); set('pl-wb3', fmtFull(wY3)); set('pl-wbT', fmtFull(wY1+wY2+wY3));
+  set('pl-mb1', fmtFull(mY1)); set('pl-mb2', fmtFull(mY2)); set('pl-mb3', fmtFull(mY3)); set('pl-mbT', fmtFull(mY1+mY2+mY3));
+  set('pl-ab1', fmtFull(aY1)); set('pl-ab2', fmtFull(aY2)); set('pl-ab3', fmtFull(aY3)); set('pl-abT', fmtFull(aY1+aY2+aY3));
+  set('pl-cb1', fmtFull(cY1)); set('pl-cb2', fmtFull(cY2)); set('pl-cb3', fmtFull(cY3)); set('pl-cbT', fmtFull(cY1+cY2+cY3));
+  set('pl-b1', fmtFull(bY1)); set('pl-b2', fmtFull(bY2)); set('pl-b3', fmtFull(bY3)); set('pl-bT', fmtFull(bT));
+  set('pl-n1', fmtFull(plNetY1)); set('pl-n2', fmtFull(plNetY2)); set('pl-n3', fmtFull(plNetY3)); set('pl-nT', fmtFull(plNetT));
+
+  // ---- Cash ----
+  const opCashY = mmiOpEx + state.opex;                 // $612.5K/yr OpEx cash
+  const capY1 = state.buildOut + mmiCap;                // Y1 CapEx cash = $1.8125M
+  const capY2 = mmiCap;                                  // $612.5K
+  const capY3 = mmiCap;                                  // $612.5K
+  const cashOutY1 = opCashY + capY1;
+  const cashOutY2 = opCashY + capY2;
+  const cashOutY3 = opCashY + capY3;
+  const cashOutT  = cashOutY1+cashOutY2+cashOutY3;
+
+  const cashNetY1 = bY1 - cashOutY1;
+  const cashNetY2 = bY2 - cashOutY2;
+  const cashNetY3 = bY3 - cashOutY3;
+  const cashNetT  = cashNetY1+cashNetY2+cashNetY3;
+
+  set('ch-o1', fmtFull(opCashY)); set('ch-o2', fmtFull(opCashY)); set('ch-o3', fmtFull(opCashY)); set('ch-oT', fmtFull(opCashY*3));
+  set('ch-i1', fmtFull(cashOutY1)); set('ch-i2', fmtFull(cashOutY2)); set('ch-i3', fmtFull(cashOutY3)); set('ch-iT', fmtFull(cashOutT));
+  set('ch-b1', fmtFull(bY1)); set('ch-b2', fmtFull(bY2)); set('ch-b3', fmtFull(bY3)); set('ch-bT', fmtFull(bT));
+  set('ch-n1', fmtFull(cashNetY1)); set('ch-n2', fmtFull(cashNetY2)); set('ch-n3', fmtFull(cashNetY3)); set('ch-nT', fmtFull(cashNetT));
+  set('ch-c1', fmtFull(cashNetY1));
+  set('ch-c2', fmtFull(cashNetY1+cashNetY2));
+  set('ch-c3', fmtFull(cashNetY1+cashNetY2+cashNetY3));
+
+  // ---- Headline KPIs ----
+  document.getElementById('hl-invest').textContent  = fmt(cashOutT);
+  document.getElementById('hl-benefit').textContent = fmt(bT);
+  document.getElementById('hl-net').textContent     = fmt(cashNetT);
+
+  // ROI (3yr): net / investment, expressed as %
+  const roi = cashOutT > 0 ? (cashNetT / cashOutT) * 100 : 0;
+  document.getElementById('hl-roi').textContent = roi.toFixed(0) + '%';
+
+  // NPV @ 10% — cashflows at start of Y1, end of Y1, end of Y2, end of Y3
+  // Simpler: treat all flows at year-end. Y0 = 0, Y1 = net Y1, etc.
+  const cashflows = [0, cashNetY1, cashNetY2, cashNetY3];
+  let npv = 0;
+  for (let i = 0; i < cashflows.length; i++) npv += cashflows[i] / Math.pow(1 + state.discountRate, i);
+  document.getElementById('hl-npv').textContent = fmt(npv);
+
+  // IRR card removed — with Y1 near-breakeven, IRR is not meaningful; payback + NPV carry the story.
+
+  // Y1 P&L impact (single number)
+  document.getElementById('hl-y1pl').textContent = fmt(plNetY1);
+
+  // Benefit:Cost ratio
+  const bcr = cashOutT > 0 ? (bT / cashOutT) : 0;
+  document.getElementById('hl-bcr').textContent = bcr.toFixed(2) + 'x';
+
+  // Payback (months, cash basis)
+  let payback = '—';
+  const cum = [cashNetY1, cashNetY1+cashNetY2, cashNetY1+cashNetY2+cashNetY3];
+  if (cum[0] >= 0) {
+    const monthlyB = bY1 / 12;
+    const months = Math.ceil(cashOutY1 / Math.max(monthlyB, 1));
+    payback = months + ' mo';
+  } else if (cum[1] >= 0) {
+    const deficit = -cum[0];
+    payback = (12 + Math.ceil(deficit / Math.max(bY2/12, 1))) + ' mo';
+  } else if (cum[2] >= 0) {
+    const deficit = -cum[1];
+    payback = (24 + Math.ceil(deficit / Math.max(bY3/12, 1))) + ' mo';
+  } else {
+    payback = '>36 mo';
+  }
+  document.getElementById('hl-payback').textContent = payback;
+
+  // ---- In-year FY views ----
+  // Project starts 1 June 2026; FY26/27 ends 31 March 2027 → first 10 months = Q1 + Q2 + Q3 + 1/3 of Q4
+  // Build phasing (aligned with annual cash table — ALL build lands in Y1):
+  // MVP $600K over Q1-Q2, full readiness $600K over Q3-Q4, data architect $125K over Q1-Q2
+  const buildW = [0.273585, 0.273585, 0.226415, 0.226415]; // weights of buildOut per Y1 quarter
+  const mmiCapQ = mmiCap / 4;
+  const opCashQ = opCashY / 4;
+  const bY1Q = bY1 / 4;
+  const fyQuarters = [];
+  for (let q = 0; q < 4; q++) {
+    const out = opCashQ + mmiCapQ + state.buildOut * buildW[q];
+    fyQuarters.push({ out, benefit: bY1Q });
+  }
+  // FY26/27 spans Q1 + Q2 + Q3 fully, plus 1/3 of Q4 (March 2027 only)
+  const fyInvest = fyQuarters[0].out + fyQuarters[1].out + fyQuarters[2].out + fyQuarters[3].out / 3;
+  const fyBenefit = fyQuarters[0].benefit + fyQuarters[1].benefit + fyQuarters[2].benefit + fyQuarters[3].benefit / 3;
+  const fyNet = fyBenefit - fyInvest;
+  document.getElementById('hl-fy-invest').textContent = fmt(fyInvest);
+  document.getElementById('hl-fy-benefit').textContent = fmt(fyBenefit);
+  document.getElementById('hl-fy-net').textContent = fmt(fyNet);
+  const fyNetEl = document.getElementById('hl-fy-net');
+  fyNetEl.classList.toggle('green', fyNet >= 0);
+
+  // FY27/28 (1 Apr 2027 – 31 Mar 2028) = remaining 2/3 of Y1 Q4 + Y2 Q1-Q3 + 1/3 of Y2 Q4
+  const y2QOut = opCashQ + mmiCapQ;        // no build cost in Y2
+  const bY2Q = bY2 / 4;
+  const fy2Invest = fyQuarters[3].out * 2/3 + y2QOut * (3 + 1/3);
+  const fy2Benefit = bY1Q * 2/3 + bY2Q * (3 + 1/3);
+  const fy2Net = fy2Benefit - fy2Invest;
+  const fy2I = document.getElementById('hl-fy2-invest');
+  if (fy2I) {
+    fy2I.textContent = fmt(fy2Invest);
+    document.getElementById('hl-fy2-benefit').textContent = fmt(fy2Benefit);
+    const fy2NetEl = document.getElementById('hl-fy2-net');
+    fy2NetEl.textContent = fmt(fy2Net);
+    fy2NetEl.classList.toggle('green', fy2Net >= 0);
+  }
+  // New-cash ask card (build + net-new annual run: 2 net new FTE + platform + usage)
+  const askEl = document.getElementById('hl-ask');
+  if (askEl) {
+    const netNewRun = (state.fte1 >= 0 ? 2 * state.fteCost * 1000 : 0) + 350_000 + 180_000;
+    askEl.textContent = fmt(state.buildOut) + ' + ' + fmt(netNewRun) + '/yr';
+  }
+
+  // Quarterly line chart — cash position over 12 quarters
+  // Pass segment-level annual values so chart can build stacked composition bars
+  renderLineChart({
+    bY1, bY2, bY3,
+    cashOutY1, cashOutY2, cashOutY3,
+    opCashY, buildOut: state.buildOut, mmiCap,
+    // Benefit segments (annual, by year)
+    w9Y1: fte1Val * rampY1, w9Y2: fte1Val, w9Y3: fte1Val,
+    w10Y1: 0,               w10Y2: fte2Val * rampY1, w10Y3: fte2Val,
+    mediaY1: mediaVal * rampY1, mediaY2: mediaVal, mediaY3: mediaVal,
+    acqChurnY1: 0, acqChurnY2: acqVal + churnVal, acqChurnY3: acqVal + churnVal,
+  });
+}
+
+function renderLineChart(d) {
+  // Build 12 quarters of segmented cash flow
+  // Build phasing aligned with annual cash table: ALL build in Y1
+  // (MVP $600K Q1-Q2, readiness $600K Q3-Q4, architect $125K Q1-Q2)
+  const buildW = [0.273585, 0.273585, 0.226415, 0.226415];
+  const mmiCapQ = d.mmiCap / 4;
+  const opCashQ = d.opCashY / 4;
+
+  // Per-year benefit segment quarterly values (each annual / 4)
+  const segByYear = (y1, y2, y3) => q => q < 4 ? y1/4 : q < 8 ? y2/4 : y3/4;
+  const w9Q       = segByYear(d.w9Y1,        d.w9Y2,        d.w9Y3);
+  const w10Q      = segByYear(d.w10Y1,       d.w10Y2,       d.w10Y3);
+  const mediaQ    = segByYear(d.mediaY1,     d.mediaY2,     d.mediaY3);
+  const acqChurnQ = segByYear(d.acqChurnY1,  d.acqChurnY2,  d.acqChurnY3);
+
+  // Per-quarter cost segments — build only in Y1 (Q0-Q3)
+  const buildQ_of = q => q < 4 ? d.buildOut * buildW[q] : 0;
+
+  // Build quarter data
+  const quarters = [];
+  for (let q = 0; q < 12; q++) {
+    // Costs (positive numbers; we'll plot them downward from zero)
+    const cBuild = buildQ_of(q);
+    const cMmiCap = mmiCapQ;
+    const cOp = opCashQ;
+    const costTotal = cBuild + cMmiCap + cOp;
+
+    // Benefits (positive numbers; plotted upward from zero)
+    const b9 = w9Q(q);
+    const b10 = w10Q(q);
+    const bMedia = mediaQ(q);
+    const bAcqChurn = acqChurnQ(q);
+    const benefitTotal = b9 + b10 + bMedia + bAcqChurn;
+
+    quarters.push({
+      cost: { build: cBuild, mmiCap: cMmiCap, op: cOp, total: costTotal },
+      benefit: { w9: b9, w10: b10, media: bMedia, acqChurn: bAcqChurn, total: benefitTotal },
+      net: benefitTotal - costTotal,
+    });
+  }
+
+  const cumNet = [];
+  let acc = 0;
+  for (const q of quarters) { acc += q.net; cumNet.push(acc); }
+
+  // SVG render
+  const svg = document.getElementById('line-chart');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  // Make the SVG bigger to give stacks room to breathe
+  svg.setAttribute('viewBox', '0 0 1000 460');
+  const W = 1000, H = 460;
+  const margin = { top: 30, right: 90, bottom: 70, left: 90 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  // Left-axis (bar) needs to fit max benefit stack (up) and max cost stack (down).
+  const maxBenefit = Math.max(...quarters.map(q => q.benefit.total), 1);
+  const maxCost    = Math.max(...quarters.map(q => q.cost.total),    1);
+  // Cumulative axis
+  const cumMax = Math.max(0, ...cumNet);
+  const cumMin = Math.min(0, ...cumNet);
+
+  // Decide where $0 sits — bar scale (asymmetric: bigger side gets more space, but enforce zero alignment)
+  const pad = 0.06;
+  // Bar scale negative fraction
+  const barNegFrac = maxCost / (maxCost + maxBenefit);
+  const cumNegFrac = cumMin < 0 ? Math.abs(cumMin) / (Math.abs(cumMin) + cumMax) : 0;
+  const zeroFromBottom = Math.max(barNegFrac, cumNegFrac) * (1 - 2*pad) + pad;
+  const yZero = margin.top + innerH * (1 - zeroFromBottom);
+  const pxAboveZero = yZero - margin.top;
+  const pxBelowZero = (margin.top + innerH) - yZero;
+
+  // Bar axis upper/lower bounds derived from zero position
+  const barTopVal = Math.max(maxBenefit, maxCost * pxAboveZero / Math.max(pxBelowZero, 1));
+  const barBotVal = -Math.max(maxCost,   maxBenefit * pxBelowZero / Math.max(pxAboveZero, 1));
+  const cumTopVal = Math.max(cumMax, Math.abs(cumMin) * pxAboveZero / Math.max(pxBelowZero, 1));
+  const cumBotVal = cumMin < 0 ? -Math.max(Math.abs(cumMin), cumMax * pxBelowZero / Math.max(pxAboveZero, 1)) : -1;
+
+  const yBarFor = v => v >= 0
+    ? yZero - (v / barTopVal) * pxAboveZero
+    : yZero + (Math.abs(v) / Math.abs(barBotVal)) * pxBelowZero;
+  const yCumFor = v => v >= 0
+    ? yZero - (v / cumTopVal) * pxAboveZero
+    : yZero + (Math.abs(v) / Math.abs(cumBotVal)) * pxBelowZero;
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  };
+
+  // Year dividers
+  for (let yIdx = 1; yIdx < 3; yIdx++) {
+    const x = margin.left + (yIdx * 4 / 12) * innerW;
+    svg.appendChild(el('line', { x1: x, y1: margin.top, x2: x, y2: H-margin.bottom,
+      stroke: '#1F3128', 'stroke-width': 1, 'stroke-dasharray': '2 4' }));
+  }
+
+  // Gridlines — shared, with $0 line emphasised
+  const gridYs = [margin.top, (margin.top + yZero) / 2, yZero, (yZero + margin.top + innerH) / 2, margin.top + innerH];
+  for (const y of gridYs) {
+    const isZero = Math.abs(y - yZero) < 0.5;
+    svg.appendChild(el('line', { x1: margin.left, y1: y, x2: W-margin.right, y2: y,
+      stroke: isZero ? '#8FA398' : '#1F3128', 'stroke-width': isZero ? 1.5 : 1 }));
+    // Left label
+    let leftVal;
+    if (y <= yZero) leftVal = barTopVal * (yZero - y) / pxAboveZero;
+    else leftVal = -Math.abs(barBotVal) * (y - yZero) / pxBelowZero;
+    const lblL = el('text', { x: margin.left - 10, y: y + 4, fill: '#5C6E66',
+      'font-size': 10, 'text-anchor': 'end', 'font-family': 'inherit' });
+    lblL.textContent = fmt(leftVal);
+    svg.appendChild(lblL);
+    // Right label — value at this y on cum scale
+    // If cumulative never goes negative, hide labels below zero (they're meaningless filler)
+    let rightLabelText = '';
+    if (y <= yZero) {
+      const rightVal = cumTopVal * (yZero - y) / pxAboveZero;
+      rightLabelText = fmt(rightVal);
+    } else if (cumMin < 0) {
+      const rightVal = -Math.abs(cumBotVal) * (y - yZero) / pxBelowZero;
+      rightLabelText = fmt(rightVal);
+    }
+    if (rightLabelText) {
+      const lblR = el('text', { x: W - margin.right + 10, y: y + 4, fill: '#FFB84D',
+        'font-size': 10, 'text-anchor': 'start', 'font-family': 'inherit' });
+      lblR.textContent = rightLabelText;
+      svg.appendChild(lblR);
+    }
+  }
+
+  // Stacked bars — costs below zero, benefits above zero
+  const barSlot = innerW / 12;
+  const barW = barSlot * 0.62;
+
+  // Colour palettes
+  // Costs (top to bottom of stack going down): build (darkest), MMI CapEx (mid), OpEx (lightest)
+  const costColors = {
+    build:  '#C04848',  // deep red — Build CapEx
+    mmiCap: '#E07474',  // mid red — MMI team CapEx
+    op:     '#F0A0A0',  // light red — OpEx
+  };
+  // Benefits (bottom to top of stack going up): 9 FTE (darkest), +10 FTE, media, acq/churn (lightest)
+  const benefitColors = {
+    w9:       '#006B41',  // deep green — 9 FTE
+    w10:      '#009159',  // mid-deep green — +10 FTE
+    media:    '#00BD6F',  // brand green — Media efficiency
+    acqChurn: '#7FDDB0',  // light green — Acquisition + churn
+  };
+
+  for (let i = 0; i < 12; i++) {
+    const cx = margin.left + (i + 0.5) * barSlot;
+    const x = cx - barW/2;
+    const q = quarters[i];
+
+    // BENEFITS stacked upward from zero (largest at bottom of positive stack, smaller on top)
+    let runningUp = 0;
+    const benefitSegments = [
+      { key: 'w9',       v: q.benefit.w9 },
+      { key: 'w10',      v: q.benefit.w10 },
+      { key: 'media',    v: q.benefit.media },
+      { key: 'acqChurn', v: q.benefit.acqChurn },
+    ];
+    for (const seg of benefitSegments) {
+      if (seg.v <= 0) continue;
+      const yTop = yBarFor(runningUp + seg.v);
+      const yBot = yBarFor(runningUp);
+      svg.appendChild(el('rect', { x, y: yTop, width: barW, height: Math.max(1, yBot - yTop),
+        fill: benefitColors[seg.key], 'fill-opacity': 0.92 }));
+      runningUp += seg.v;
+    }
+
+    // COSTS stacked downward from zero (deepest/biggest cost first at top of negative stack)
+    let runningDown = 0;
+    const costSegments = [
+      { key: 'build',  v: q.cost.build },
+      { key: 'mmiCap', v: q.cost.mmiCap },
+      { key: 'op',     v: q.cost.op },
+    ];
+    for (const seg of costSegments) {
+      if (seg.v <= 0) continue;
+      const yTop = yBarFor(-runningDown);
+      const yBot = yBarFor(-(runningDown + seg.v));
+      svg.appendChild(el('rect', { x, y: yTop, width: barW, height: Math.max(1, yBot - yTop),
+        fill: costColors[seg.key], 'fill-opacity': 0.92 }));
+      runningDown += seg.v;
+    }
+
+    // NET marker — high-contrast tick + dot at the in-quarter net value (works on dark and light themes)
+    const yNet = yBarFor(q.net);
+    const tickHalfW = barW/2 + 4;
+    svg.appendChild(el('line', {
+      x1: cx - tickHalfW, y1: yNet, x2: cx + tickHalfW, y2: yNet,
+      stroke: '#FFFFFF', 'stroke-width': 2.5,
+    }));
+    svg.appendChild(el('line', {
+      x1: cx - tickHalfW, y1: yNet, x2: cx + tickHalfW, y2: yNet,
+      stroke: '#1A1A1A', 'stroke-width': 1,
+    }));
+    svg.appendChild(el('circle', {
+      cx, cy: yNet, r: 4, fill: '#FFFFFF', stroke: '#1A1A1A', 'stroke-width': 1.5,
+    }));
+  }
+
+  // Cumulative line on right axis (drawn LAST so it sits above bars)
+  const linePath = cumNet.map((v, i) => {
+    const cx = margin.left + (i + 0.5) * barSlot;
+    return (i === 0 ? 'M' : 'L') + cx + ',' + yCumFor(v);
+  }).join(' ');
+  svg.appendChild(el('path', { d: linePath, fill: 'none', stroke: '#FFB84D',
+    'stroke-width': 2.5, 'stroke-linejoin': 'round' }));
+  for (let i = 0; i < 12; i++) {
+    const cx = margin.left + (i + 0.5) * barSlot;
+    svg.appendChild(el('circle', { cx, cy: yCumFor(cumNet[i]), r: 3.5, fill: '#FFB84D',
+      stroke: '#0A1410', 'stroke-width': 1.5 }));
+  }
+
+  // X-axis labels — quarters
+  for (let i = 0; i < 12; i++) {
+    const cx = margin.left + (i + 0.5) * barSlot;
+    const lbl = el('text', { x: cx, y: H - margin.bottom + 18, fill: '#8FA398',
+      'font-size': 10, 'text-anchor': 'middle', 'font-family': 'inherit' });
+    lbl.textContent = 'Q' + ((i % 4) + 1);
+    svg.appendChild(lbl);
+  }
+  for (let yIdx = 0; yIdx < 3; yIdx++) {
+    const x = margin.left + (yIdx * 4 + 2) / 12 * innerW;
+    const lbl = el('text', { x, y: H - margin.bottom + 38, fill: '#E8F0EC',
+      'font-size': 11, 'text-anchor': 'middle', 'font-weight': 600, 'font-family': 'inherit' });
+    lbl.textContent = 'Year ' + (yIdx + 1);
+    svg.appendChild(lbl);
+  }
+
+  // Axis titles
+  const leftTitle = el('text', { x: -(margin.top + innerH/2), y: 22, fill: '#8FA398',
+    'font-size': 10, 'text-anchor': 'middle', 'font-family': 'inherit',
+    transform: 'rotate(-90)', 'letter-spacing': '0.08em', 'text-transform': 'uppercase' });
+  leftTitle.textContent = 'IN-QUARTER CASH (COSTS ↓ / BENEFITS ↑)';
+  svg.appendChild(leftTitle);
+
+  const rightTitle = el('text', { x: (margin.top + innerH/2), y: -(W - 22), fill: '#FFB84D',
+    'font-size': 10, 'text-anchor': 'middle', 'font-family': 'inherit',
+    transform: 'rotate(90)', 'letter-spacing': '0.08em', 'text-transform': 'uppercase' });
+  rightTitle.textContent = 'CUMULATIVE CASH';
+  svg.appendChild(rightTitle);
+
+  // Payback annotation
+  let paybackIdx = -1;
+  for (let i = 0; i < 12; i++) {
+    if (cumNet[i] >= 0) { paybackIdx = i; break; }
+  }
+  if (paybackIdx > 0) {
+    const prev = cumNet[paybackIdx - 1];
+    const curr = cumNet[paybackIdx];
+    const frac = (0 - prev) / (curr - prev);
+    const xPayCenter = margin.left + (paybackIdx - 1 + 0.5 + frac) * barSlot;
+    svg.appendChild(el('line', { x1: xPayCenter, y1: margin.top, x2: xPayCenter, y2: H-margin.bottom,
+      stroke: '#FFB84D', 'stroke-width': 1.5, 'stroke-dasharray': '4 4' }));
+    const lbl = el('text', { x: xPayCenter + 8, y: margin.top + 14, fill: '#FFB84D',
+      'font-size': 11, 'font-weight': 700, 'font-family': 'inherit' });
+    lbl.textContent = 'Payback';
+    svg.appendChild(lbl);
+    const lbl2 = el('text', { x: xPayCenter + 8, y: margin.top + 28, fill: '#FFB84D',
+      'font-size': 10, 'font-family': 'inherit' });
+    lbl2.textContent = 'Q' + ((paybackIdx % 4) + 1) + ' Y' + (Math.floor(paybackIdx/4) + 1);
+    svg.appendChild(lbl2);
+  } else if (paybackIdx === 0) {
+    const lbl = el('text', { x: margin.left + 20, y: margin.top + 20, fill: '#FFB84D',
+      'font-size': 11, 'font-weight': 700, 'font-family': 'inherit' });
+    lbl.textContent = 'Payback in Q1';
+    svg.appendChild(lbl);
+  }
+}
+
+// (Old bar-chart renderChart removed — replaced by renderLineChart above)
+
+// Bindings
+['i-fte1','i-fte2','i-fteCost','i-media','i-mediaPct','i-ramp'].forEach(id => {
+  document.getElementById(id).addEventListener('input', recompute);
+});
+
+document.querySelectorAll('.scenario-toggle button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.scenario-toggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const s = scenarios[btn.dataset.scenario];
+    document.getElementById('i-fte1').value = s.fte1;
+    document.getElementById('i-fte2').value = s.fte2;
+    document.getElementById('i-mediaPct').value = s.mediaPct;
+    document.getElementById('i-ramp').value = s.ramp;
+    recompute();
+  });
+});
+
+recompute();
+
+// ---- Roadmap drag-and-drop ----
+(function initRoadmap() {
+  let dragged = null;
+  document.querySelectorAll('.roadmap-card').forEach(card => {
+    card.addEventListener('dragstart', (e) => {
+      dragged = card;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      if (dragged) dragged.classList.remove('dragging');
+      dragged = null;
+      document.querySelectorAll('.roadmap-col-body').forEach(z => z.classList.remove('drag-over'));
+    });
+  });
+  document.querySelectorAll('[data-dropzone]').forEach(zone => {
+    zone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+      // Allow ordering within the same zone — insert before the card after the pointer
+      const afterEl = getDragAfterElement(zone, e.clientY);
+      if (!dragged) return;
+      if (afterEl == null) zone.appendChild(dragged);
+      else zone.insertBefore(dragged, afterEl);
+    });
+    zone.addEventListener('dragleave', (e) => {
+      if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over');
+    });
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+    });
+  });
+  function getDragAfterElement(container, y) {
+    const cards = [...container.querySelectorAll('.roadmap-card:not(.dragging)')];
+    return cards.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) return { offset, element: child };
+      return closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
+})();
+</script>
+
+</body>
+</html>
