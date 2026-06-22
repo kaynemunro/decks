@@ -71,7 +71,7 @@
 </head>
 <body>
 <div class="nav" id="nav"></div>
-<div class="hint">Scroll · → · or tap Next</div>
+<div class="hint">Click anywhere · → · or scroll</div>
 
 <section class="scene" id="s0">
   <div class="kicker">Legends Day · Challenge Today, Win Tomorrow</div>
@@ -184,8 +184,6 @@
   var nav=document.getElementById('nav');
   scenes.forEach(function(s){var a=document.createElement('a');a.href='#'+s.id;nav.appendChild(a);});
   var ndots=[].slice.call(nav.children);
-  [].slice.call(document.querySelectorAll('.next')).forEach(function(b){if(b.id==='s4next')return;b.addEventListener('click',function(){
-    var i=scenes.indexOf(b.closest('.scene'));if(scenes[i+1])scenes[i+1].scrollIntoView();});});
 
   function ease(el,to,dur,fmt){el.textContent='0';var s=null;
     function step(t){if(s===null)s=t;var p=Math.min(1,(t-s)/dur);var e=1-Math.pow(1-p,3);var v=to*e;
@@ -248,15 +246,26 @@
     if(e.isIntersecting&&e.intersectionRatio>0.55){e.target.classList.add('in');animate(e.target.id);
       ndots.forEach(function(d,k){d.classList.toggle('on',k===i);});}});},{threshold:[0.55]});
   scenes.forEach(function(s){io.observe(s);});
-  var s4btn=document.getElementById('s4next');
-  if(s4btn)s4btn.addEventListener('click',function(){
-    if(stepDots())return;
-    var i=scenes.indexOf(s4btn.closest('.scene'));if(scenes[i+1])scenes[i+1].scrollIntoView();});
-  document.addEventListener('keydown',function(e){var cur=0;for(var i=0;i<scenes.length;i++){if(scenes[i].getBoundingClientRect().top<=window.innerHeight*0.4)cur=i;}
-    if(['ArrowDown','ArrowRight',' ','PageDown'].indexOf(e.key)>=0){e.preventDefault();
-      if(scenes[cur]&&scenes[cur].id==='s4'&&stepDots())return;
-      if(scenes[cur+1])scenes[cur+1].scrollIntoView();}
-    if(['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key)>=0){e.preventDefault();if(scenes[cur-1])scenes[cur-1].scrollIntoView();}});
+  // The scene currently filling the viewport.
+  function currentIndex(){var cur=0;for(var i=0;i<scenes.length;i++){if(scenes[i].getBoundingClientRect().top<=window.innerHeight*0.4)cur=i;}return cur;}
+  function goNext(){var cur=currentIndex();
+    if(scenes[cur]&&scenes[cur].id==='s4'&&stepDots())return; // s4 builds its dots one wave per advance, then moves on
+    if(scenes[cur+1])scenes[cur+1].scrollIntoView();}
+  function goPrev(){var cur=currentIndex();if(scenes[cur-1])scenes[cur-1].scrollIntoView();}
+
+  // Click ANYWHERE to advance — for presenting, and a wireless presenter's
+  // left-click maps to this too. The side nav dots and any links keep their own
+  // behaviour; everything else (including the Next buttons) just advances.
+  document.addEventListener('click',function(e){
+    if(e.button&&e.button!==0)return;
+    if(e.target.closest&&(e.target.closest('#nav')||e.target.closest('a')))return;
+    goNext();});
+
+  // Keyboard + presentation remotes — most clickers send PageDown/PageUp (or
+  // the arrow keys); Enter/Backspace covers the rest.
+  document.addEventListener('keydown',function(e){
+    if(['ArrowDown','ArrowRight',' ','PageDown','Enter'].indexOf(e.key)>=0){e.preventDefault();goNext();}
+    else if(['ArrowUp','ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){e.preventDefault();goPrev();}});
   scenes[0].classList.add('in');ndots[0].classList.add('on');
 })();
 </script>
