@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>One NZ — Winning the Connected Household</title>
+<style>
+  :root{--green:#00A45F;--bright:#00C472;--lime:#19D17F;--orange:#f5a623;--blue:#3aa0ff;--ink:#06110C;--ink2:#0B1F16;--muted:#8fae9f;--muted2:#5e7a6c;--rose:#ff7a6b;--white:#fff}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-snap-type:y mandatory;overflow-y:scroll}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--ink);color:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .scene{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6vh 7vw;position:relative;opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;overflow:hidden}
+  .scene.in{opacity:1;transform:none}
+  .kicker{font-size:clamp(11px,1.4vw,15px);letter-spacing:.3em;text-transform:uppercase;color:var(--lime);font-weight:600;margin-bottom:18px}
+  h1{font-size:clamp(34px,6.4vw,86px);font-weight:800;line-height:1;letter-spacing:-.02em}
+  h2{font-size:clamp(24px,4vw,52px);font-weight:800;line-height:1.05;letter-spacing:-.015em;max-width:20ch}
+  .sub{font-size:clamp(15px,1.9vw,22px);color:var(--muted);max-width:54ch;line-height:1.5;margin-top:18px;font-weight:400}
+  .titlesub{font-size:clamp(18px,2.6vw,30px);color:var(--muted);font-weight:500;margin-top:18px;letter-spacing:-.01em}
+  .big{color:var(--bright)} .rose{color:var(--rose)} .lime{color:var(--lime)}
+  .stat{font-size:clamp(46px,9vw,108px);font-weight:800;line-height:1;letter-spacing:-.03em;background:linear-gradient(92deg,var(--bright),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .statlbl{font-size:clamp(13px,1.6vw,18px);color:var(--muted);margin-top:10px;max-width:34ch}
+  .hint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);z-index:40;animation:bob 2.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .nav{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;z-index:40}
+  .nav a{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:.3s;display:block}
+  .nav a.on{background:var(--lime);transform:scale(1.4)}
+  .next{margin-top:28px;background:rgba(25,209,127,.12);border:1px solid rgba(25,209,127,.4);color:var(--lime);font-size:13px;font-weight:600;padding:10px 20px;border-radius:30px;cursor:pointer;transition:.2s}
+  .next:hover{background:rgba(25,209,127,.22)}
+  .tbl{width:min(960px,95vw);border-collapse:collapse;margin-top:22px;font-size:clamp(12px,1.55vw,17px)}
+  .tbl th,.tbl td{padding:9px 13px;text-align:right;border-bottom:1px solid rgba(255,255,255,.07)}
+  .tbl th{color:var(--lime);font-weight:600;font-size:clamp(10px,1.1vw,12px);text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid rgba(25,209,127,.3)}
+  .tbl td:first-child,.tbl th:first-child{text-align:left;font-weight:600}
+  .tbl .hi{color:var(--bright);font-weight:800}
+  .tbl .bad{color:var(--rose);font-weight:800}
+  .tbl tr.em td{background:rgba(25,209,127,.06)}
+  .cap{font-size:clamp(12px,1.4vw,15px);color:var(--muted2);margin-top:14px;max-width:62ch;line-height:1.45}
+  .moves{display:flex;flex-direction:column;gap:12px;width:100%;max-width:880px;margin-top:22px;text-align:left}
+  .moves>div{display:flex;gap:15px;align-items:flex-start;background:var(--ink2);border:1px solid rgba(25,209,127,.16);border-radius:14px;padding:14px 18px}
+  .moves .num{flex:none;width:32px;height:32px;border-radius:50%;background:rgba(25,209,127,.16);color:var(--lime);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .moves b{display:block;font-size:clamp(14px,1.7vw,19px);margin-bottom:3px}
+  .moves p{font-size:clamp(12px,1.4vw,15px);color:var(--muted);line-height:1.45}
+  .cards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:24px;max-width:980px}
+  .cards>div{background:var(--ink2);border:1px solid rgba(25,209,127,.16);border-radius:14px;padding:16px 20px;flex:1;min-width:240px;max-width:300px;text-align:left}
+  .cards b{color:var(--lime);display:block;font-size:15px;margin-bottom:6px}
+  .cards p{font-size:13px;color:var(--muted);line-height:1.45}
+  .pill{display:inline-block;margin-top:6px;background:rgba(245,166,35,.14);color:var(--orange);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.02em}
+  @media(max-width:640px){.tbl{font-size:11px}.tbl th,.tbl td{padding:6px 7px}}
+</style>
+</head>
+<body>
+<div class="nav" id="nav"></div>
+<div class="hint">Click anywhere · → · or scroll</div>
+
+<section class="scene" id="s0">
+  <div class="kicker">One NZ · Pricing · Propositions · Marketing</div>
+  <h1>Win the<br><span class="big">connected household.</span></h1>
+  <p class="titlesub">A data-backed strategy: stop fighting the device-discount race, compound household value instead.</p>
+  <button class="next">Begin →</button>
+</section>
+
+<section class="scene" id="s1">
+  <div class="kicker">01 · The one idea</div>
+  <h2 style="max-width:24ch">Our moat isn't the boost. It's the <span class="big">extra connection.</span></h2>
+  <p class="sub" style="max-width:60ch">Multi-connection customers churn at <b class="lime">~3.3%</b> a year vs <b class="rose">~31%</b> for mobile-only — a <b class="big">10× retention gap</b>. Spark and 2degrees can match a device discount; neither can match a wallet that compounds in value with <i>every</i> connection you add. That is the battleground we win.</p>
+  <button class="next">Show me the numbers →</button>
+</section>
+
+<section class="scene" id="s2">
+  <div class="kicker">02 · Why connections win — churn by product mix</div>
+  <h2 style="max-width:none">Add a connection, and churn collapses <span class="big">~10×</span>.</h2>
+  <table class="tbl">
+    <thead><tr><th>Connection profile</th><th>Annualised churn</th><th>Share of base</th></tr></thead>
+    <tbody>
+      <tr class="em"><td>Mobile only</td><td class="bad">~31%</td><td>47%</td></tr>
+      <tr><td>Mobile + Broadband</td><td>~14.5%</td><td>7%</td></tr>
+      <tr><td>Multi-Mobile</td><td class="hi">~3.3%</td><td>34%</td></tr>
+      <tr><td>Multi-Mobile + Broadband</td><td class="hi">~3.3%</td><td>12%</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">Active-90 base, annualised over 90 days (matches the Product-Mix chart). The single highest-value action in the whole program is moving a customer off "mobile only".</p>
+  <button class="next">So who are we acquiring? →</button>
+</section>
+
+<section class="scene" id="s3">
+  <div class="kicker">03 · The leak — acquisition quality</div>
+  <h2 style="max-width:none">Half of what we acquire lands in the <span class="rose">high-churn</span> pocket.</h2>
+  <table class="tbl">
+    <thead><tr><th>Acquisition cohort (Mar–Jun)</th><th>n</th><th>Mobile only</th><th>Multi-mob</th><th>+ Broadband</th><th>Multi-conn</th></tr></thead>
+    <tbody>
+      <tr><td>All acquisition</td><td>62,120</td><td>47.4%</td><td>33.6%</td><td>19.0%</td><td>52.6%</td></tr>
+      <tr class="em"><td>IFP / device buyers</td><td>10,682</td><td class="bad">53.4%</td><td>31.8%</td><td>14.8%</td><td>46.6%</td></tr>
+      <tr><td>Non-IFP</td><td>51,438</td><td>46.2%</td><td>33.9%</td><td>19.8%</td><td>53.8%</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">IFP/device buyers are our <b class="rose">lowest-quality</b> funnel — 53% land mobile-only (the ~31% churn segment) and attach broadband least. It's also the funnel Spark is fighting hardest for. Quality drifted worse Mar→May, then reversed in June with the CMGM $500 promo.</p>
+  <button class="next">Does Phone Dollars help? →</button>
+</section>
+
+<section class="scene" id="s4">
+  <div class="kicker">04 · Phone Dollars vs non-Phone-Dollars at acquisition</div>
+  <h2 style="max-width:none">Phone Dollars brings in a <span class="big">better-connected</span> customer.</h2>
+  <table class="tbl">
+    <thead><tr><th>Acquisition cohort</th><th>n</th><th>Mobile only</th><th>Any multi-mobile</th><th>Any broadband</th><th>Multi-connection</th></tr></thead>
+    <tbody>
+      <tr class="em"><td>Phone Dollars (wallet)</td><td>4,420</td><td class="hi">41.4%</td><td class="hi">51.7%</td><td class="hi">22.1%</td><td class="hi">58.6%</td></tr>
+      <tr><td>Non-Phone-Dollars</td><td>57,700</td><td>47.9%</td><td>45.4%</td><td>18.8%</td><td>52.1%</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">Phone-Dollars-acquired customers come in <b class="lime">+6.3pp</b> more multi-mobile, <b class="lime">+3.3pp</b> more broadband, and <b class="lime">6.5pp fewer</b> mobile-only — i.e. weighted toward the 3.3%-churn profile, not the 31% one. Partly the mechanic working, partly self-selection — but the direction is the whole thesis: Phone Dollars buys households, not just SIMs.</p>
+  <button class="next">And the $500 promo? →</button>
+</section>
+
+<section class="scene" id="s5">
+  <div class="kicker">05 · CMGM $500 promo — it's working (on mobile)</div>
+  <h2 style="max-width:none">Connect More, Get More <span class="big">moved the needle.</span></h2>
+  <div class="row" style="display:flex;gap:clamp(20px,5vw,70px);flex-wrap:wrap;justify-content:center;align-items:flex-start;margin-top:24px">
+    <div style="text-align:center"><div class="stat">39→49%</div><div class="statlbl">additional-mobile attach, weekly, since the ~4-Jun launch (wk 25-May trough → wk 15-Jun) — the highest in the Mar–Jun window</div></div>
+    <div style="text-align:center"><div class="stat" style="background:none;color:var(--rose);-webkit-text-fill-color:var(--rose)">flat</div><div class="statlbl">broadband attach (~18–19%) — the $500 promo did NOT move broadband</div></div>
+  </div>
+  <p class="cap">And it's <i>understated</i>: June cohorts have had the least time to add lines, so a rise showing up anyway means the connections are added <b>at the point of sale</b>. Two reads: the mechanic works — and broadband needs its own lever.</p>
+  <button class="next">So what do we do differently? →</button>
+</section>
+
+<section class="scene" id="s6">
+  <div class="kicker">06 · The five moves</div>
+  <h2>Five things to do <span class="big">differently.</span></h2>
+  <div class="moves" id="moves">
+    <div><span class="num">1</span><div><b>Activate the wallet before spending another dollar on boosts.</b><p>~80% of boosted customers never open the wallet. Crucially — Phone Dollars are a <i>temporary balance top-up, not a perpetual giveaway</i>: if they don't redeem, it expires and costs us nothing. So this isn't wasted money — it's an <b class="lime">unrealised retention asset at no extra risk</b>. We only "pay" when they engage, and engagement is exactly what drives stickiness. Re-architect the journey to force first-open → first-redemption; put the balance on the app home, the bill, an SMS.</p></div></div>
+    <div><span class="num">2</span><div><b>Convert the device sale into a connected home — at the IFP checkout.</b><p>53% of IFP buyers land mobile-only (our worst funnel). Put a CMGM moment at point of sale: "add a line / broadband now, get $X Phone Dollars." Turn device-discount volume into 3.3%-churn households.</p></div></div>
+    <div><span class="num">3</span><div><b>Make CMGM the spearhead — and add a broadband tier.</b><p>The $500 moved mobile but not broadband — the stickiest, most differentiated attach. Test a broadband-specific CMGM (bigger boost / first-months credit). Decide if $500 becomes a permanent step-up, funded by the churn it saves (a multi-connection save ≈ 10× a single-line one).</p></div></div>
+  </div>
+  <button class="next">The near-term move →</button>
+</section>
+
+<section class="scene" id="s7">
+  <div class="kicker">07 · Move 4 — the most actionable thing we can do NOW</div>
+  <h2 style="max-width:24ch">Pre-load the <span class="big">Spark price-rise</span> switch.</h2>
+  <div class="cards">
+    <div><b>The opening</b><p>Spark confirmed <b>mobile + broadband price rises for 31 July</b>. Their base will shop Jun–Aug — a once-a-year retention crack.</p></div>
+    <div><b>We already hold the audience</b><p>~<b class="lime">110–120,000 prospects</b> on file, of which <b class="lime">at least a third are Spark customers</b> (~37–40k) — warm, identified, and about to become price-sensitive.</p></div>
+    <div><b>The play</b><p>Retarget those Spark prospects <b>now</b>, ahead of the rise: "switch, keep your device deal, and start a wallet that grows as you connect more." Warm + timely + on <i>our</i> terms — value, not discount depth.</p></div>
+  </div>
+  <div class="pill">Target multi-line / household potential — don't import Spark's single-line churn.</div>
+  <button class="next">Two more →</button>
+</section>
+
+<section class="scene" id="s8">
+  <div class="kicker">08 · The five moves (cont.)</div>
+  <h2>Protect the base, fix the read.</h2>
+  <div class="moves">
+    <div><span class="num">5</span><div><b>Split collections churn out of everything — it's a payment problem, not a value one.</b><p>Our highest-churn cohort (early-tenure) is ~75% Collections — involuntary non-payment a boost can't fix. Build a separate early-tenure payment-health track (bill smoothing, proactive support); reserve Phone Dollars for the <i>voluntary</i> churn it can actually move.</p></div></div>
+    <div><span class="num">+</span><div><b>Re-engage the $0-wallet, never-redeemed pocket — our fastest-rising churn lever.</b><p>"Your $X is waiting — here's how to use it." The money's already there; they don't know or use it. And investigate the compressing engaged-vs-never dividend before it erodes the core story.</p></div></div>
+    <div><span class="num">+</span><div><b>Restore weekly NPS.</b><p>Sentiment is stale since April and the theme feeds are empty — we're running the program half-blind on <i>why</i> customers leave.</p></div></div>
+  </div>
+  <button class="next">By lever →</button>
+</section>
+
+<section class="scene" id="s9">
+  <div class="kicker">09 · By lever</div>
+  <h2>Same idea, every lever.</h2>
+  <div class="cards">
+    <div><b>Proposition</b><p>"The connected home that pays you back." Lead with compounding household value, not a device line. Defend the premium (we own iPhone 17 Pro Max — don't discount where we already win).</p></div>
+    <div><b>Pricing</b><p>Keep gating device value to higher plans ($73–88) — that's quality — but justify the plan with stacked wallet value, not by discounting it. Higher plans → higher CMGM earn rates.</p></div>
+    <div><b>Marketing</b><p>Re-point media from shallow top-of-funnel curiosity to directed app/wallet activation. Out-value 2degrees' brand play; counter Spark on total household value, not discount depth.</p></div>
+    <div><b>Digital journeys</b><p>One job post-acquisition: first wallet-open → first redemption. Make "your next connection unlocks $X" a self-serve in-app upsell. Cut friction to add a 2nd line / broadband.</p></div>
+    <div><b>Lifecycle</b><p>Trigger CMGM at the right moments (post-activation, sibling line on account, pre-IFP-rolloff). Separate the credit-risk track from the value track.</p></div>
+    <div><b>vs Spark / 2degrees</b><p>Spark buys single-line low-ARPU volume — don't match the depth, take their price-rise switchers. 2degrees is brand-led & easing — hold and monitor.</p></div>
+  </div>
+  <button class="next">What to stop →</button>
+</section>
+
+<section class="scene" id="s10">
+  <div class="kicker">10 · Stop · Watch</div>
+  <h2 style="max-width:22ch">What to <span class="rose">stop</span>, and what to <span class="big">watch</span>.</h2>
+  <div class="cards" style="margin-top:18px">
+    <div><b style="color:var(--rose)">Stop</b><p>Spreading at-risk boosts on low-churn cohorts (~66% of spend went to a 0.77%-churn cohort). Chasing Spark's single-line discount depth — it buys the churn. Running the program with stale NPS.</p></div>
+    <div><b>Watch (leading indicators)</b><p>Wallet-open & first-redemption rate · additional-mobile AND broadband attach at acquisition · mobile-only share of new joins · voluntary vs collections churn split · port-in capture around 31-Jul.</p></div>
+  </div>
+  <p class="cap">Direction is high-confidence (workbench data); sizing is "test before you scale" — we're reasoning ahead of full margin/ARPU economics and the wallet-liability cost.</p>
+  <button class="next">The ask →</button>
+</section>
+
+<section class="scene" id="s11">
+  <div class="kicker">On the floor · The ask</div>
+  <h2 style="max-width:22ch">Compete on the <span class="big">household</span>, not the handset.</h2>
+  <p class="sub" style="max-width:58ch">The wallet is a free, dormant retention asset. The extra connection is a 10× churn lever. Spark's price rise is a once-a-year door. Activate the first, sell the second, walk through the third — now.</p>
+</section>
+
+<script>
+(function(){
+  var scenes=[].slice.call(document.querySelectorAll('.scene'));
+  var nav=document.getElementById('nav');
+  scenes.forEach(function(s){var a=document.createElement('a');a.href='#'+s.id;nav.appendChild(a);});
+  var ndots=[].slice.call(nav.children);
+  function currentIndex(){var cur=0;for(var i=0;i<scenes.length;i++){if(scenes[i].getBoundingClientRect().top<=window.innerHeight*0.4)cur=i;}return cur;}
+  function goNext(){var cur=currentIndex();if(scenes[cur+1])scenes[cur+1].scrollIntoView();}
+  function goPrev(){var cur=currentIndex();if(scenes[cur-1])scenes[cur-1].scrollIntoView();}
+  document.addEventListener('click',function(e){
+    if(e.button&&e.button!==0)return;
+    if(e.target.closest&&(e.target.closest('#nav')||e.target.closest('a')))return;
+    goNext();});
+  document.addEventListener('keydown',function(e){
+    if(['ArrowDown','ArrowRight',' ','PageDown','Enter'].indexOf(e.key)>=0){e.preventDefault();goNext();}
+    else if(['ArrowUp','ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){e.preventDefault();goPrev();}});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){var i=scenes.indexOf(e.target);
+    if(e.isIntersecting&&e.intersectionRatio>0.55){e.target.classList.add('in');
+      ndots.forEach(function(d,k){d.classList.toggle('on',k===i);});}});},{threshold:[0.55]});
+  scenes.forEach(function(s){io.observe(s);});
+  scenes[0].classList.add('in');ndots[0].classList.add('on');
+})();
+</script>
+</body></html>
