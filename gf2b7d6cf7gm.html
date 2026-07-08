@@ -226,6 +226,20 @@ svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,s
 .cmp-bar.alt .fill{background:var(--chart-grey-2)}
 .cmp-bar .v{font-size:.9rem;font-weight:600;color:var(--ink-soft);text-align:left;white-space:nowrap}
 
+/* ---------- data tables ---------- */
+.tablebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px 14px;box-shadow:var(--shadow);margin-top:22px;overflow-x:auto}
+.tablebox h3{margin-bottom:10px;font-size:.95rem}
+table.dt{width:100%;border-collapse:collapse;font-size:.88rem}
+.dt th{font-size:.68rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:bottom}
+.dt td{padding:8px 10px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);white-space:nowrap}
+.dt td:first-child{color:var(--ink);font-weight:500}
+.dt th.num,.dt td.num{text-align:right}
+.dt tr.total td{font-weight:600;color:var(--ink);border-top:2px solid var(--line);border-bottom:none;background:var(--card-2)}
+.dt tr.total td:first-child{color:var(--ink)}
+.tscroll{max-height:62vh;overflow:auto}
+.tscroll .dt thead th{position:sticky;top:0;background:var(--card);z-index:1}
+.tnote{font-size:.78rem;color:var(--ink-faint);padding:10px 4px 2px}
+
 /* ---------- people ---------- */
 .people{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:28px}
 .person{
@@ -334,6 +348,7 @@ svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,s
       <li>Sylvia Park <span>what working looks like</span></li>
       <li>Albany <span>an adoption gap, not a mechanism failure</span></li>
       <li>Individual standouts <span>who moved, and by how much</span></li>
+      <li>Every rep — the full table <span>all 23, sorted by earnings</span></li>
       <li>What we learned <span>five measurement fixes</span></li>
       <li>Recommendations <span>continue, don't scale — and a gate</span></li>
     </ol>
@@ -444,54 +459,47 @@ svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,s
     <div class="twocol" style="margin-top:26px">
       <div class="card reveal d1">
         <div class="step">1</div>
-        <h3>Individuals — each rep vs their own baseline</h3>
-        <p>Every rep is measured against their <strong>own 4-week drift-adjusted baseline</strong>. Fair per-person tracking, and it's what drives the earn rule ($300 per extra sale).</p>
-        <p style="margin-top:10px"><strong class="green">Result: +26 net incremental acquisitions (+16%).</strong></p>
+        <h3>Method 1 — vs own baseline</h3>
+        <p>Individuals &amp; stores vs their <strong>own baseline</strong> (drives the earn rule).</p>
       </div>
       <div class="card reveal d2">
         <div class="step">2</div>
-        <h3>Programme / store — footfall conversion vs control</h3>
-        <p>Acquisition conversion of store <strong>footfall</strong> vs all other stores, pre-trial vs trial — a difference-in-differences read that controls for traffic levels and the hot June market.</p>
-        <p style="margin-top:10px"><strong class="green">Result: Sylvia Park 1.07% → 1.51% vs control 0.61% → 0.71% → +0.34pp ≈ +33 incremental sales. Albany ≈ flat (+0.01pp).</strong></p>
+        <h3>Method 2 — footfall conversion vs other stores</h3>
+        <p>Footfall conversion vs <strong>other stores</strong> over the same period (independent cross-check; controls for traffic and the hot June market).</p>
       </div>
     </div>
-    <div class="chartbox reveal d3">
-      <svg viewBox="0 0 640 320" role="img" aria-label="Footfall conversion pre-trial versus trial: Sylvia Park against control stores">
-        <!-- gridlines -->
-        <line x1="64" y1="260" x2="600" y2="260" stroke="var(--chart-grid)"/>
-        <line x1="64" y1="186.7" x2="600" y2="186.7" stroke="var(--chart-grid)"/>
-        <line x1="64" y1="113.3" x2="600" y2="113.3" stroke="var(--chart-grid)"/>
-        <line x1="64" y1="40" x2="600" y2="40" stroke="var(--chart-grid)"/>
-        <text class="ax" x="56" y="264" text-anchor="end">0%</text>
-        <text class="ax" x="56" y="190" text-anchor="end">0.6%</text>
-        <text class="ax" x="56" y="117" text-anchor="end">1.2%</text>
-        <text class="ax" x="56" y="44" text-anchor="end">1.8%</text>
-        <!-- Sylvia Park: 1.07% -> 1.51% -->
-        <line x1="180" y1="129.2" x2="460" y2="75.4" stroke="var(--green-bright)" stroke-width="3"/>
-        <circle cx="180" cy="129.2" r="6" fill="var(--green-bright)"/>
-        <circle cx="460" cy="75.4" r="7" fill="var(--green-bright)"/>
-        <text class="valg" x="180" y="112" text-anchor="middle">1.07%</text>
-        <text class="valg" x="460" y="58" text-anchor="middle">1.51%</text>
-        <text class="noteb" x="474" y="80" fill="var(--accent-ink)">Sylvia Park</text>
-        <!-- Control: 0.61% -> 0.71% -->
-        <line x1="180" y1="185.4" x2="460" y2="173.2" stroke="var(--chart-grey-2)" stroke-width="3"/>
-        <circle cx="180" cy="185.4" r="6" fill="var(--chart-grey-2)"/>
-        <circle cx="460" cy="173.2" r="6" fill="var(--chart-grey-2)"/>
-        <text class="val" x="180" y="208" text-anchor="middle">0.61%</text>
-        <text class="val" x="460" y="196" text-anchor="middle">0.71%</text>
-        <text class="noteb" x="474" y="177">Control (all other stores)</text>
-        <!-- diff-in-diff annotation -->
-        <text class="noteb" x="320" y="98" text-anchor="middle" fill="var(--accent-ink)">+0.34pp vs control ≈ +33 sales</text>
-        <!-- x labels -->
-        <text class="axb" x="180" y="288" text-anchor="middle">Pre-trial</text>
-        <text class="axb" x="460" y="288" text-anchor="middle">Trial</text>
-        <text class="note" x="64" y="310">Acquisition conversion of store footfall · pre-trial vs trial window</text>
-      </svg>
-      <div class="cap">Difference-in-differences: Sylvia Park's conversion rose +0.44pp while control stores rose +0.10pp → net <strong>+0.34pp ≈ +33 incremental sales</strong>. Albany ≈ flat (+0.01pp net).</div>
+    <div class="twocol reveal d3" style="margin-top:0;gap:22px">
+      <div class="tablebox">
+        <h3>Method 1 · by store (vs own drift-adjusted baseline)</h3>
+        <table class="dt">
+          <thead>
+            <tr><th>Store</th><th class="num">Expected</th><th class="num">Actual</th><th class="num">Lift</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Sylvia Park</td><td class="num">123</td><td class="num">148</td><td class="num"><strong class="green">+25 (+21%)</strong></td></tr>
+            <tr><td>Albany</td><td class="num">44</td><td class="num">45</td><td class="num">+1 (flat)</td></tr>
+            <tr class="total"><td>TOTAL</td><td class="num">167</td><td class="num">193</td><td class="num"><span class="green">+26 (+16%)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tablebox">
+        <h3>Method 2 · footfall conversion, same period, vs other stores</h3>
+        <table class="dt">
+          <thead>
+            <tr><th>Store</th><th class="num">Own conversion change</th><th class="num">Other stores' change</th><th class="num">Net lift</th><th class="num">≈ incremental sales</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Sylvia Park</td><td class="num">+0.44pp</td><td class="num">+0.10pp</td><td class="num"><strong class="green">+0.34pp</strong></td><td class="num"><strong class="green">≈ +33</strong></td></tr>
+            <tr><td>Albany</td><td class="num">+0.11pp</td><td class="num">+0.10pp</td><td class="num">+0.01pp</td><td class="num">≈ 0</td></tr>
+            <tr class="total"><td>TOTAL</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="green">≈ +33</span></td></tr>
+          </tbody>
+        </table>
+        <div class="tnote">Robust to control choice: against the 23 similar-sized stores only, Sylvia Park reads +0.35pp ≈ +34.</div>
+      </div>
     </div>
     <div class="callout reveal d4">
       <span class="tag">The punchline</span>
-      <p>Two <strong>independent</strong> methods land in the same place — <strong class="green">+26</strong> (rep-baseline) vs <strong class="green">+33</strong> (footfall diff-in-diff), both concentrated at Sylvia Park. The result is real, not a measurement artifact.</p>
+      <p>Two independent methods, one answer: <strong class="green">+26</strong> (own-baseline) vs <strong class="green">≈ +33</strong> (footfall conversion) — both concentrated at Sylvia Park. The result is real, not a measurement artifact.</p>
     </div>
   </div>
 </section>
@@ -625,44 +633,34 @@ svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,s
     <div class="kicker reveal">Return on investment</div>
     <h2 class="reveal">The honest answer is a range: 1.1× to 2.9×</h2>
     <p class="lede reveal d1">Best estimate: $40.1k of CLV against $13.8k of GF-attributable spend ≈ <strong class="green">2.9×</strong>. Count <em>every</em> dollar trial reps loaded ($36.8k) as fund spend and it's still <strong>1.1×</strong> — at or above break-even under the most hostile assumption.</p>
-    <div class="chartbox reveal d2">
-      <svg viewBox="0 0 680 240" role="img" aria-label="ROI range from 1.1x conservative to 2.9x best estimate with markers">
-        <!-- axis -->
-        <line x1="60" y1="150" x2="620" y2="150" stroke="var(--chart-grid)" stroke-width="2"/>
-        <text class="ax" x="60"  y="228" text-anchor="middle">0×</text>
-        <text class="ax" x="140" y="228" text-anchor="middle">1×</text>
-        <text class="ax" x="220" y="228" text-anchor="middle">2×</text>
-        <text class="ax" x="300" y="228" text-anchor="middle">3×</text>
-        <text class="ax" x="380" y="228" text-anchor="middle">4×</text>
-        <text class="ax" x="460" y="228" text-anchor="middle">5×</text>
-        <text class="ax" x="540" y="228" text-anchor="middle">6×</text>
-        <text class="ax" x="620" y="228" text-anchor="middle">7×</text>
-        <!-- honest range band 1.1 - 2.9 -->
-        <rect x="148" y="138" width="144" height="24" rx="12" fill="var(--green)" opacity=".28"/>
-        <!-- break-even -->
-        <line x1="140" y1="132" x2="140" y2="168" stroke="var(--chart-grid)" stroke-width="1.5"/>
-        <!-- scale gate 2.5x -->
-        <line x1="260" y1="126" x2="260" y2="174" stroke="var(--alert-yellow)" stroke-width="2" stroke-dasharray="6 5"/>
-        <text class="noteb" x="260" y="120" text-anchor="middle" fill="var(--alert-yellow)">≥2.5× scale gate</text>
-        <!-- markers -->
-        <circle cx="116" cy="150" r="8" fill="var(--chart-grey-2)"/>
-        <text class="note" x="116" y="182" text-anchor="middle">0.7× W4 coded (partial 5/7)</text>
-        <circle cx="148" cy="150" r="9" fill="var(--green)"/>
-        <text class="noteb" x="148" y="108" text-anchor="middle">1.1× conservative floor</text>
-        <text class="note" x="148" y="123" text-anchor="middle">(all trial-rep loads counted)</text>
-        <circle cx="212" cy="150" r="8" fill="var(--green)"/>
-        <text class="note" x="212" y="182" text-anchor="middle" opacity="0">.</text>
-        <text class="noteb" x="196" y="202" text-anchor="end">1.9× at $1,000 CLV</text>
-        <line x1="212" y1="162" x2="204" y2="192" stroke="var(--chart-grid)" stroke-width="1"/>
-        <circle cx="292" cy="150" r="11" fill="var(--green-bright)"/>
-        <text class="valg" x="272" y="128" text-anchor="end">2.9× best estimate</text>
-        <circle cx="572" cy="150" r="8" fill="none" stroke="var(--green-bright)" stroke-width="2.5"/>
-        <text class="noteb" x="572" y="108" text-anchor="middle">~6.4× coded-only</text>
-        <text class="note" x="572" y="123" text-anchor="middle">(denominator artifact — see note)</text>
-        <text class="note" x="60" y="36">Value ÷ GF-attributable spend · value = 26 incremental acquisitions × $1,550 CLV ≈ $40.1k</text>
-      </svg>
-      <div class="cap"><strong>Why show 6.4×?</strong> Dividing $40.1k by only the GF-<em>coded</em> loads (~$6.3k: $5,463 Sylvia Park + $800 Albany) reads ~6.4× — but W1–W2 predate reason codes, so their fund spend can't appear in a coded denominator. It flatters the result; use the 1.1×–2.9× range. W4's 0.7× is 5/7 days and post-window — treat as incomplete, not a trend.</div>
+    <div class="statgrid reveal d2" style="margin:30px 0 6px">
+      <div class="stat">
+        <div class="num">1.1×</div>
+        <div class="lbl">Conservative floor</div>
+        <div class="sub">Every dollar reps loaded counted as fund spend</div>
+      </div>
+      <div class="stat">
+        <div class="num"><em>2.9×</em></div>
+        <div class="lbl">Best estimate</div>
+        <div class="sub">$40.1k value ÷ $13.8k GF-attributable spend</div>
+      </div>
+      <div class="stat">
+        <div class="num">≥2.5×</div>
+        <div class="lbl">The gate for scaling next cycle</div>
+        <div class="sub">The bar a clean, fully-measured cycle must clear</div>
+      </div>
     </div>
+    <div class="reveal d3" style="margin-top:48px">
+      <div style="position:relative;width:100%;height:14px;background:rgba(255,255,255,.08);border:1px solid var(--line-soft);border-radius:999px">
+        <div style="position:absolute;left:36.67%;width:60%;top:0;height:100%;background:#12CB77;border-radius:999px"></div>
+        <div style="position:absolute;left:83.33%;top:-9px;height:32px;width:0;border-left:2px dashed #FFD600"></div>
+        <div style="position:absolute;left:83.33%;top:-32px;transform:translateX(-60%);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:#FFD600;white-space:nowrap">2.5× scale gate</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--ink-faint);margin-top:12px">
+        <span>0×</span><span>1×</span><span>2×</span><span>3×</span>
+      </div>
+    </div>
+    <p class="footnote reveal d3"><strong>Why not 6.4×?</strong> Dividing $40.1k by only the GF-<em>coded</em> loads (~$6.3k: $5,463 Sylvia Park + $800 Albany) reads ~6.4× — but W1–W2 predate reason codes, so their fund spend can't appear in a coded denominator. It flatters the result; use the 1.1×–2.9× range. W4's 0.7× is 5/7 days and post-window — treat as incomplete, not a trend.</p>
     <div class="twocol" style="margin-top:26px">
       <div class="callout reveal d3">
         <span class="tag">Weekly ROI, best-estimate denominators</span>
@@ -686,29 +684,29 @@ svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,s
       <div class="cmp-row">
         <div class="cmp-label">Incremental acquisitions vs adjusted baseline</div>
         <div class="cmp-pair">
-          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="v">+25 (+21%)</span></div>
-          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:4%"></span></span><span class="v">+0.9 (flat)</span></div>
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:92%;background:#12CB77;height:100%;border-radius:inherit"></div></div><span class="v">+25 (+21%)</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:4%;background:#5A6376;height:100%;border-radius:inherit"></div></div><span class="v">+0.9 (flat)</span></div>
         </div>
       </div>
       <div class="cmp-row">
         <div class="cmp-label">Rep adoption — share of active reps who ever deployed</div>
         <div class="cmp-pair">
-          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="v">11 of 13 (85%)</span></div>
-          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:32%"></span></span><span class="v">3 of 10 (30%)</span></div>
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:92%;background:#12CB77;height:100%;border-radius:inherit"></div></div><span class="v">11 of 13 (85%)</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:32%;background:#5A6376;height:100%;border-radius:inherit"></div></div><span class="v">3 of 10 (30%)</span></div>
         </div>
       </div>
       <div class="cmp-row">
         <div class="cmp-label">GF-coded deployments</div>
         <div class="cmp-pair">
-          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="v">$5,463 · 35 loads</span></div>
-          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:14%"></span></span><span class="v">$800 · 3 loads</span></div>
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:92%;background:#12CB77;height:100%;border-radius:inherit"></div></div><span class="v">$5,463 · 35 loads</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:14%;background:#5A6376;height:100%;border-radius:inherit"></div></div><span class="v">$800 · 3 loads</span></div>
         </div>
       </div>
       <div class="cmp-row">
         <div class="cmp-label">Footfall conversion lift (vs control stores)</div>
         <div class="cmp-pair">
-          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="v">+0.34pp (≈ +33 sales)</span></div>
-          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:2%"></span></span><span class="v">+0.01pp (≈ flat)</span></div>
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:92%;background:#12CB77;height:100%;border-radius:inherit"></div></div><span class="v">+0.34pp (≈ +33 sales)</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><div class="track" style="width:100%;height:26px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden"><div class="fill" style="width:3%;background:#5A6376;height:100%;border-radius:inherit"></div></div><span class="v">+0.01pp (≈ flat)</span></div>
         </div>
       </div>
     </div>
@@ -785,6 +783,50 @@ svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,s
       <span class="tag">Also true — for this room only</span>
       <p>Some pre-trial stars ran below their own baseline and never used the fund — including Sylvia Park's highest-baseline rep. Albany's engagement was thin outside Saad. And several large loads were BAU service credits by leads (competitor match, remediation, complaints) — <strong>legitimate and expected</strong>, but a reminder of why coded attribution matters. In store-facing material we keep this as a confidence-and-coaching conversation, not a call-out.</p>
     </div>
+  </div>
+</section>
+
+<!-- ============ 11b · EVERY REP ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">People · full detail</div>
+    <h2 class="reveal">Every rep — the full table</h2>
+    <p class="lede reveal d1">All 23 active reps across both stores, sorted by earnings, then total sales.</p>
+    <div class="tablebox reveal d2">
+      <div class="tscroll" style="max-height:62vh">
+        <table class="dt">
+          <thead>
+            <tr><th>Rep</th><th>Store</th><th class="num">Baseline/wk</th><th class="num">Total sales</th><th class="num">Above baseline</th><th class="num">Earned</th><th class="num">GF uses</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Shuai</td><td>Sylvia Park</td><td class="num">0.25</td><td class="num">16</td><td class="num">12</td><td class="num"><strong class="green">$3,600</strong></td><td class="num">5</td></tr>
+            <tr><td>Taranpreet</td><td>Sylvia Park</td><td class="num">1.25</td><td class="num">16</td><td class="num">8</td><td class="num"><strong class="green">$2,400</strong></td><td class="num">7</td></tr>
+            <tr><td>Saad</td><td>Albany</td><td class="num">0</td><td class="num">7</td><td class="num">7</td><td class="num"><strong class="green">$2,100</strong></td><td class="num">1</td></tr>
+            <tr><td>Shaminder</td><td>Sylvia Park</td><td class="num">3</td><td class="num">20</td><td class="num">6</td><td class="num"><strong class="green">$1,800</strong></td><td class="num">5</td></tr>
+            <tr><td>Ashish</td><td>Sylvia Park</td><td class="num">2</td><td class="num">16</td><td class="num">6</td><td class="num"><strong class="green">$1,800</strong></td><td class="num">7</td></tr>
+            <tr><td>Tina</td><td>Albany</td><td class="num">0.5</td><td class="num">6</td><td class="num">4</td><td class="num">$1,200</td><td class="num">0</td></tr>
+            <tr><td>Raajan</td><td>Sylvia Park</td><td class="num">0.25</td><td class="num">6</td><td class="num">4</td><td class="num">$1,200</td><td class="num">2</td></tr>
+            <tr><td>Mischa</td><td>Albany</td><td class="num">0</td><td class="num">4</td><td class="num">4</td><td class="num">$1,200</td><td class="num">0</td></tr>
+            <tr><td>Harmanjit</td><td>Sylvia Park</td><td class="num">4</td><td class="num">14</td><td class="num">3</td><td class="num">$900</td><td class="num">1</td></tr>
+            <tr><td>Qiong</td><td>Sylvia Park</td><td class="num">3</td><td class="num">14</td><td class="num">2</td><td class="num">$600</td><td class="num">1</td></tr>
+            <tr><td>Kiran</td><td>Sylvia Park</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td class="num">$600</td><td class="num">1</td></tr>
+            <tr><td>Ashmera</td><td>Sylvia Park</td><td class="num">3.25</td><td class="num">10</td><td class="num">1</td><td class="num">$300</td><td class="num">1</td></tr>
+            <tr><td>Daniel</td><td>Sylvia Park</td><td class="num">1</td><td class="num">6</td><td class="num">1</td><td class="num">$300</td><td class="num">2</td></tr>
+            <tr><td>Tom</td><td>Albany</td><td class="num">0.25</td><td class="num">4</td><td class="num">1</td><td class="num">$300</td><td class="num">0</td></tr>
+            <tr><td>Umesh</td><td>Sylvia Park</td><td class="num">5.75</td><td class="num">16</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td></tr>
+            <tr><td>Kai</td><td>Albany</td><td class="num">2</td><td class="num">7</td><td class="num">0</td><td class="num">$0</td><td class="num">1</td></tr>
+            <tr><td>Sahil</td><td>Albany</td><td class="num">2.75</td><td class="num">7</td><td class="num">0</td><td class="num">$0</td><td class="num">3</td></tr>
+            <tr><td>Roanne</td><td>Sylvia Park</td><td class="num">2.25</td><td class="num">7</td><td class="num">0</td><td class="num">$0</td><td class="num">1</td></tr>
+            <tr><td>Joshuah</td><td>Albany</td><td class="num">2</td><td class="num">5</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td></tr>
+            <tr><td>Siyan</td><td>Sylvia Park</td><td class="num">3.25</td><td class="num">5</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td></tr>
+            <tr><td>Qing</td><td>Albany</td><td class="num">2</td><td class="num">4</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td></tr>
+            <tr><td>Jayson</td><td>Albany</td><td class="num">0.5</td><td class="num">1</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td></tr>
+            <tr><td>Mohit</td><td>Albany</td><td class="num">0.5</td><td class="num">0</td><td class="num">0</td><td class="num">$0</td><td class="num">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="footnote reveal d3">Sales are acquisition-only; W4 covers 5 of 7 days. GF uses = reason-coded deployments from 23 Jun.</p>
   </div>
 </section>
 
