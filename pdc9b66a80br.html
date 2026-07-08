@@ -239,6 +239,20 @@ h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
 }
 .callout strong{color:var(--ink);}
 
+/* -------- four-drivers popup (inside value headline) -------- */
+.drivers-toggle{
+  display:inline-block;margin-bottom:1.6rem;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--accent);border-radius:999px;
+  padding:.6rem 1.35rem;
+  font-family:inherit;font-size:.92rem;font-weight:600;letter-spacing:.02em;
+  cursor:pointer;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.drivers-toggle:hover{border-color:var(--accent);transform:translateY(-2px);}
+.drivers-panel{margin:0 0 1.8rem;text-align:left;}
+.drivers-panel[hidden]{display:none !important;}
+
 /* -------- nine-tile AI gallery -------- */
 .gallery{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -343,6 +357,74 @@ ul.clean li strong{color:var(--ink);}
   .flow .farrow{display:none;}
   .dials{gap:.6rem;}
 }
+
+/* ============================================================
+   Ported Legends scenes — namespaced under .lg
+   (visuals copied from the Legends full pack; Legends' palette
+   variables are redefined scoped to section.scene.lg so inline
+   var() references keep working without leaking into the deck.
+   Ported scenes keep their deep-green ground in BOTH themes.)
+   ============================================================ */
+section.scene.lg{
+  --lime:#19D17F;--bright:#00C472;--first:#2bbf78;--orange:#f5a623;--blue:#3aa0ff;
+  --muted:#8fae9f;--muted2:#5e7a6c;--ink2:#0B1F16;--rose:#ff7a6b;
+  background:#06110C;color:#fff;
+}
+.lg .scene-inner{
+  max-width:1080px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.lg .kicker{font-size:clamp(12px,1.4vw,15px);letter-spacing:.3em;text-transform:uppercase;color:var(--lime);font-weight:600;margin-bottom:18px;}
+.lg h2{font-size:clamp(28px,4.8vw,62px);font-weight:800;line-height:1.03;letter-spacing:-.015em;max-width:18ch;margin-bottom:0;}
+.lg .sub{font-size:clamp(16px,2vw,23px);color:var(--muted);max-width:44ch;line-height:1.5;margin-top:20px;font-weight:400;}
+.lg .big{color:var(--bright);} .lg .rose{color:var(--rose);}
+.lg .stat{font-size:clamp(52px,11vw,128px);font-weight:800;line-height:1;letter-spacing:-.03em;background:linear-gradient(92deg,var(--bright),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lg .statlbl{font-size:clamp(14px,1.7vw,19px);color:var(--muted);margin-top:10px;max-width:30ch;}
+.lg .next{margin-top:30px;background:rgba(25,209,127,.12);border:1px solid rgba(25,209,127,.4);color:var(--lime);font-size:14px;font-weight:600;padding:11px 22px;border-radius:30px;cursor:pointer;transition:.2s;font-family:inherit;}
+.lg .next:hover{background:rgba(25,209,127,.22);}
+.lg .row{display:flex;gap:clamp(14px,2.5vw,50px);flex-wrap:wrap;justify-content:center;align-items:center;margin-top:30px;}
+.lg .phone{width:min(290px,72vw);background:#020806;border:10px solid #11241a;border-radius:42px;padding:22px 20px 28px;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:6px auto 0;}
+.lg .phone .notch{width:110px;height:20px;background:#11241a;border-radius:0 0 16px 16px;margin:-22px auto 16px;}
+.lg .phone .pdlogo{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-weight:700;}
+.lg .phone .balrow{margin:14px 0 4px;color:var(--muted);font-size:13px;}
+.lg .phone .bal{font-size:52px;font-weight:800;color:#fff;letter-spacing:-.02em;} .lg .phone .bal .d{color:var(--bright);}
+.lg .phone .bar{height:8px;border-radius:6px;background:#11241a;margin:16px 0 6px;overflow:hidden;}
+.lg .phone .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--lime));transition:width 2.2s ease;}
+.lg .phone .pill{display:inline-block;margin-top:12px;background:rgba(25,209,127,.14);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;}
+.lg .keepline{margin-top:26px;font-size:clamp(18px,2.4vw,26px);color:var(--muted);}
+.lg .keepline b,.lg .keepline strong{color:var(--lime);}
+.lg .offers{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:26px;}
+.lg .offers span{background:var(--ink2);border:1px solid rgba(255,255,255,.1);border-radius:30px;padding:10px 18px;font-size:clamp(13px,1.6vw,17px);font-weight:600;opacity:0;transform:translateY(10px);transition:.5s;}
+.lg .offers span.show{opacity:1;transform:none;} .lg .offers b{color:var(--bright);}
+.lg .tracks{width:100%;max-width:1040px;margin-top:22px;display:flex;flex-direction:column;gap:18px;}
+.lg .track{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px 18px;text-align:left;}
+.lg .track .th{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.lg .track .tt{font-size:clamp(15px,1.9vw,20px);font-weight:700;} .lg .track .tt small{display:block;font-size:12px;font-weight:400;color:var(--muted);}
+.lg .track .tm{font-size:13px;color:var(--muted);text-align:right;} .lg .track .tm b{color:var(--bright);font-size:20px;}
+.lg .grid{display:grid;grid-template-columns:repeat(40,1fr);gap:4px;}
+.lg .grid .dot{aspect-ratio:1;border-radius:50%;background:#1c2c24;transform:scale(0);transition:transform .3s ease;}
+.lg .grid .dot.show{transform:scale(1);}
+.lg .grid .dot.first{background:var(--first);} .lg .grid .dot.mob{background:var(--orange);} .lg .grid .dot.bb{background:var(--blue);}
+.lg .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px;justify-content:center;}
+.lg .legend span{display:inline-flex;align-items:center;gap:6px;} .lg .legend i{width:11px;height:11px;border-radius:50%;display:inline-block;}
+.lg .lg-bars{width:min(680px,92vw);margin-top:28px;}
+.lg .brow{display:flex;align-items:center;gap:14px;margin:12px 0;}
+.lg .brow .lab{width:34%;text-align:right;font-size:clamp(13px,1.6vw,16px);color:var(--muted);}
+.lg .brow .bw{flex:1;background:var(--ink2);border-radius:10px;overflow:hidden;height:38px;}
+.lg .brow .bw i{display:block;height:100%;width:0;border-radius:10px;transition:width 1.3s ease;}
+.lg .brow .val{width:64px;font-weight:800;font-size:18px;text-align:left;}
+.lg .ask{display:flex;flex-direction:column;gap:14px;width:100%;max-width:820px;margin-top:26px;text-align:left;}
+.lg .ask>div{display:flex;gap:16px;align-items:flex-start;background:var(--ink2);border:1px solid rgba(25,209,127,.16);border-radius:16px;padding:16px 20px;opacity:0;transform:translateY(12px);transition:.6s;}
+.lg .ask>div.show{opacity:1;transform:none;}
+.lg .ask .num{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(25,209,127,.16);color:var(--lime);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.lg .ask b{display:block;font-size:clamp(15px,1.85vw,20px);margin-bottom:4px;}
+.lg .ask p{font-size:13.5px;color:var(--muted);line-height:1.45;}
+/* signoff strip on the final ported scene — fixed legible colours on the dark ground in both themes */
+.lg .signoff{width:100%;max-width:820px;border-top-color:rgba(255,255,255,.14);color:rgba(255,255,255,.5);}
+.lg .signoff .so-mark{color:rgba(255,255,255,.8);}
+@media (max-width:640px){
+  .lg .grid{grid-template-columns:repeat(25,1fr);}
+}
 </style>
 </head>
 <body>
@@ -367,7 +449,7 @@ ul.clean li strong{color:var(--ink);}
 <section class="scene" id="agenda">
   <div class="scene-inner">
     <div class="kicker">Agenda</div>
-    <h2>Four chapters, ten minutes.</h2>
+    <h2>Five chapters, ten minutes.</h2>
     <div class="agenda stagger">
       <div class="card">
         <div class="num">1</div>
@@ -379,8 +461,8 @@ ul.clean li strong{color:var(--ink);}
       <div class="card">
         <div class="num">2</div>
         <div>
-          <h3>The idea</h3>
-          <p>Phone Dollars — personalised, private value, dialled per customer and invisible to rivals.</p>
+          <h3>The idea &amp; the proof</h3>
+          <p>Phone Dollars — personalised, private value, dialled per customer — and the production proof it retains and acquires.</p>
         </div>
       </div>
       <div class="card">
@@ -395,6 +477,13 @@ ul.clean li strong{color:var(--ink);}
         <div>
           <h3>The AI-enabled machine</h3>
           <p>Nine AI systems running the whole operating loop — and how it's governed: AI recommends, people decide.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">5</div>
+        <div>
+          <h3>Our focus moving forward</h3>
+          <p>Winning the whole home — connections, retention, and the ask.</p>
         </div>
       </div>
     </div>
@@ -535,7 +624,49 @@ ul.clean li strong{color:var(--ink);}
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
 
-<!-- ======================= 6 · VALUE HEADLINE ======================= -->
+<!-- ======================= 6 · PROOF — RETENTION (ported from Legends s1) ======================= -->
+<section class="scene lg" id="s1">
+  <div class="scene-inner">
+    <div class="kicker">01 · It started with churn</div>
+    <h2 style="max-width:none">When a customer can <span class="big">see</span> their balance, they stay.</h2>
+    <div class="row" style="align-items:center">
+      <div class="phone" aria-hidden="true">
+        <div class="notch"></div><div class="pdlogo">One Wallet · Phone Dollars</div>
+        <div class="balrow">Your balance</div>
+        <div class="bal"><span class="d">$</span><span id="bal">0</span></div>
+        <div class="bar"><i id="balbar"></i></div>
+        <div class="pill">Growing every month ↑</div>
+      </div>
+      <div style="text-align:left">
+        <div class="stat"><span id="s1a">0</span>pp</div>
+        <div class="statlbl">lower annual churn for our engaged Phone Dollars base — against a matched control.</div>
+      </div>
+    </div>
+    <div class="keepline">That's <b style="color:var(--lime)">~8,000 customers</b> we keep every year — 8,000 &times; $1,350 = <strong>$10.8m of customer lifetime value</strong>.</div>
+    <p class="sub" style="max-width:62ch">A balance customers can see and feel in control of.</p>
+    <button class="next">Next →</button>
+  </div>
+</section>
+
+<!-- ======================= 7 · PROOF — ACQUISITION (ported from Legends s2) ======================= -->
+<section class="scene lg" id="s2">
+  <div class="scene-inner">
+    <div class="kicker">02 · Simon says</div>
+    <p class="sub" style="margin-top:0">…on our customers' phones —</p>
+    <h2>“Check what's in your <span class="big">wallet</span>.”</h2>
+    <p class="sub">At the last iPhone release, we launched One Wallet to <span class="big">ANY</span> New Zealander.</p>
+    <div class="offers" id="offers">
+      <span>Up to <b>$1,200 off</b> the iPhone</span>
+      <span>+ avg <b>$550 trade-in</b> on top</span>
+      <span><b>5,000–10,000</b> wallets a month</span>
+    </div>
+    <div style="margin-top:30px"><div class="stat"><span id="s2n">0</span>%+</div><div class="statlbl" style="margin:10px auto 0">convert</div></div>
+    <p class="sub" style="margin-top:26px;color:var(--lime);font-weight:600">…and they convert within days.</p>
+    <button class="next">Next →</button>
+  </div>
+</section>
+
+<!-- ======================= 8 · VALUE HEADLINE (+ four-drivers popup) ======================= -->
 <section class="scene" id="headline">
   <div class="scene-inner" style="text-align:center;">
     <div class="kicker">The value equation</div>
@@ -557,6 +688,34 @@ ul.clean li strong{color:var(--ink);}
       </div>
     </div>
     <p style="font-size:.9rem;color:var(--ink-faint);margin:-1rem 0 2rem;">$10.8m retention + $5.7m saves + $8.9m acquisition &asymp; $25.4m a year</p>
+    <button class="drivers-toggle" id="driversToggle" aria-expanded="false" aria-controls="driversPanel">Four drivers — all observed in production ▸</button>
+    <div class="drivers-panel" id="driversPanel" hidden>
+      <div class="grid-2">
+        <div class="card">
+          <div class="cnum">~$10.8m/yr</div>
+          <h3>Reduced churn on the engaged base</h3>
+          <p>~200k engaged customers churn <strong style="color:var(--ink);">4pp lower</strong> than matched control — roughly 8,000 customers retained a year.</p>
+          <p class="calc">8,000 &times; $1,350 CLV = $10.8m/yr</p>
+        </div>
+        <div class="card">
+          <div class="cnum">~$5.7m/yr</div>
+          <h3>At-risk save campaigns</h3>
+          <p>50–100k at-risk customers targeted monthly, delivering 200–500 saves a month.</p>
+          <p class="calc">4,200 saves/yr &times; $1,350 = $5.7m/yr</p>
+        </div>
+        <div class="card">
+          <div class="cnum">~$8.9m/yr</div>
+          <h3>WhatsInMyWallet acquisition</h3>
+          <p>~5,000 wallets created a month &rarr; ~300 month-1 connections, doubling over months 2–5 (~550).</p>
+          <p class="calc">&asymp;$740k lifetime value per $90k month of media (&asymp;8&times; media ROI) &rarr; &asymp;$8.9m/yr</p>
+        </div>
+        <div class="card">
+          <div class="cnum">2&times;+ attach</div>
+          <h3>Quality of acquired customers</h3>
+          <p>Broadband attach &gt;10% and second-mobile attach ~48% — over double standard acquisition. Multi-product cohorts churn at roughly <strong style="color:var(--ink);">half the rate</strong> of a single-line customer.</p>
+        </div>
+      </div>
+    </div>
     <div class="callout" style="margin:0 auto;text-align:left;">
       <strong>Counted in production, valued by convention</strong> — the customer counts (8,000 retained, 4,200 saves, 300&rarr;550 monthly connections) are observed in production; the value applies a $1,350 customer-lifetime-value convention.
     </div>
@@ -565,41 +724,7 @@ ul.clean li strong{color:var(--ink);}
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
 
-<!-- ======================= 7 · VALUE DRIVERS ======================= -->
-<section class="scene" id="drivers">
-  <div class="scene-inner">
-    <div class="kicker">Where the value comes from</div>
-    <h2>Four drivers, all observed in production.</h2>
-    <div class="grid-2 stagger" style="margin-top:1.8rem;">
-      <div class="card">
-        <div class="cnum">~$10.8m/yr</div>
-        <h3>Reduced churn on the engaged base</h3>
-        <p>~200k engaged customers churn <strong style="color:var(--ink);">4pp lower</strong> than matched control — roughly 8,000 customers retained a year.</p>
-        <p class="calc">8,000 &times; $1,350 CLV = $10.8m/yr</p>
-      </div>
-      <div class="card">
-        <div class="cnum">~$5.7m/yr</div>
-        <h3>At-risk save campaigns</h3>
-        <p>50–100k at-risk customers targeted monthly, delivering 200–500 saves a month.</p>
-        <p class="calc">4,200 saves/yr &times; $1,350 = $5.7m/yr</p>
-      </div>
-      <div class="card">
-        <div class="cnum">~$8.9m/yr</div>
-        <h3>WhatsInMyWallet acquisition</h3>
-        <p>~5,000 wallets created a month &rarr; ~300 month-1 connections, doubling over months 2–5 (~550).</p>
-        <p class="calc">&asymp;$740k lifetime value per $90k month of media (&asymp;8&times; media ROI) &rarr; &asymp;$8.9m/yr</p>
-      </div>
-      <div class="card">
-        <div class="cnum">2&times;+ attach</div>
-        <h3>Quality of acquired customers</h3>
-        <p>Broadband attach &gt;10% and second-mobile attach ~48% — over double standard acquisition. Multi-product cohorts churn at roughly <strong style="color:var(--ink);">half the rate</strong> of a single-line customer.</p>
-      </div>
-    </div>
-  </div>
-  <div class="mark">one<span class="dot">.</span>nz</div>
-</section>
-
-<!-- ======================= 8 · THE AI-ENABLED MACHINE ======================= -->
+<!-- ======================= 9 · THE AI-ENABLED MACHINE ======================= -->
 <section class="scene" id="ai-machine">
   <div class="scene-inner">
     <div class="kicker">The AI-enabled machine</div>
@@ -722,7 +847,7 @@ ul.clean li strong{color:var(--ink);}
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
 
-<!-- ======================= 9 · GOVERNANCE — HUMAN IN THE LOOP ======================= -->
+<!-- ======================= 10 · GOVERNANCE — HUMAN IN THE LOOP ======================= -->
 <section class="scene" id="human">
   <div class="scene-inner">
     <div class="kicker">Governance</div>
@@ -744,6 +869,84 @@ ul.clean li strong{color:var(--ink);}
         <p>Ask almost any question about the programme and get a highly data-driven response and recommendation — via read-only SQL over the production warehouse.</p>
       </div>
     </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 11 · CHAPTER 5 DIVIDER ======================= -->
+<section class="scene" id="focus">
+  <div class="scene-inner" style="text-align:center;">
+    <div class="kicker">Chapter 5</div>
+    <h2 style="margin-bottom:0;">Our focus moving forward.</h2>
+    <p class="lede" style="margin:1.2rem auto 0;">Phone Dollars doesn't just win the sale — it can win the whole home.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 12 · IFP CONNECTIONS (ported from Legends s4) ======================= -->
+<section class="scene lg" id="s4">
+  <div class="scene-inner">
+    <div class="kicker">03 · The proof — part 1</div>
+    <h2>For every <span class="big">100</span> IFPs we sell, how many connections do we add?</h2>
+    <div class="tracks" id="tracks"></div>
+    <div class="legend">
+      <span><i style="background:var(--first)"></i>the mobile (the IFP)</span>
+      <span><i style="background:var(--orange)"></i>+ a 2nd mobile</span>
+      <span><i style="background:var(--blue)"></i>+ broadband</span>
+    </div>
+    <button class="next" id="s4next">Add the first mobile →</button>
+  </div>
+</section>
+
+<!-- ======================= 13 · CONNECTED-HOME RETENTION (ported from Legends s5) ======================= -->
+<section class="scene lg" id="s5">
+  <div class="scene-inner">
+    <div class="kicker">03 · The value — part 2</div>
+    <h2>The more connected the home, the <span class="big">longer</span> they stay with us.</h2>
+    <div class="lg-bars" id="bars">
+      <div class="brow"><div class="lab">Single mobile</div><div class="bw"><i data-w="95" style="background:var(--rose)"></i></div><div class="val rose" data-v="22">0</div></div>
+      <div class="brow"><div class="lab">Mobile + broadband</div><div class="bw"><i data-w="57" style="background:#e0a32e"></i></div><div class="val" style="color:#e0a32e" data-v="13">0</div></div>
+      <div class="brow"><div class="lab">Multi-mobile home</div><div class="bw"><i data-w="52" style="background:var(--lime)"></i></div><div class="val big" data-v="12">0</div></div>
+    </div>
+    <button class="next">Now fast-forward a year →</button>
+  </div>
+</section>
+
+<!-- ======================= 14 · 12 MONTHS ON (ported from Legends s6) ======================= -->
+<section class="scene lg" id="s6">
+  <div class="scene-inner">
+    <div class="kicker">03 · The value — part 3</div>
+    <h2>12 months on — how many <span class="big">connections</span> are still live?</h2>
+    <div class="row" style="gap:60px;margin-top:10px">
+      <div style="text-align:center"><div class="stat" style="background:none;color:var(--rose);-webkit-text-fill-color:var(--rose)"><span id="r6a">0</span></div><div class="statlbl">above-the-line — of 127 we added</div></div>
+      <div style="text-align:center"><div class="stat"><span id="r6b">0</span></div><div class="statlbl">Phone Dollars — of 160 we added</div></div>
+    </div>
+    <button class="next">What's it worth? →</button>
+  </div>
+</section>
+
+<!-- ======================= 15 · WHAT IT'S WORTH (ported from Legends s7) ======================= -->
+<section class="scene lg" id="s7">
+  <div class="scene-inner">
+    <div class="kicker">04 · What it's worth</div>
+    <h2>Run the home this way, and it's worth <span class="big">real money.</span></h2>
+    <div style="margin-top:18px"><div class="stat">$<span id="s7n">0</span>m</div></div>
+    <button class="next">The ask →</button>
+  </div>
+</section>
+
+<!-- ======================= 16 · THE ASK (ported from Legends s8) — FINAL ======================= -->
+<section class="scene lg" id="s8">
+  <div class="scene-inner">
+    <div class="kicker">On the floor · The ask</div>
+    <h2>Not every connection is the <span class="big">same.</span></h2>
+    <p class="sub">To connect the home, we need three things working together:</p>
+    <div class="ask" id="ask">
+      <div><span class="num">1</span><div><b>A proposition that provides value to the home.</b><p>We've got that — it's Phone Dollars &amp; now UNLOCK</p></div></div>
+      <div><span class="num">2</span><div><b>A marketing message that targets the home.</b><p>That's marketing's work — you'll see us focus more heavily here.</p></div></div>
+      <div><span class="num">3</span><div><b>A conversation, and the time taken to connect the home.</b><p>That part is ours. That's the ask today.</p></div></div>
+    </div>
+    <p class="sub" style="margin-top:30px;color:var(--lime);font-weight:600;font-size:clamp(18px,2.4vw,26px)">This is how we'll win tomorrow.</p>
     <div class="signoff">
       <span>Phone Dollars &middot; One NZ &middot; July 2026</span>
       <span class="so-mark">one<span class="dot">.</span>nz</span>
@@ -785,6 +988,92 @@ ul.clean li strong{color:var(--ink);}
     });
   }
 
+  // ---------- four-drivers popup (value headline scene) ----------
+  var dBtn = document.getElementById('driversToggle');
+  var dPanel = document.getElementById('driversPanel');
+  if (dBtn && dPanel){
+    dBtn.addEventListener('click', function(){
+      var open = dPanel.hasAttribute('hidden');
+      if (open){ dPanel.removeAttribute('hidden'); } else { dPanel.setAttribute('hidden',''); }
+      dBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      dBtn.textContent = open ? 'Four drivers — all observed in production ▾' : 'Four drivers — all observed in production ▸';
+    });
+  }
+
+  // ---------- ported Legends helpers (drive the .lg scenes) ----------
+  function ease(el,to,dur,fmt){el.textContent='0';var s=null;
+    function step(t){if(s===null)s=t;var p=Math.min(1,(t-s)/dur);var e=1-Math.pow(1-p,3);var v=to*e;
+      el.textContent=fmt==='f'?v.toFixed(1):Math.round(v);if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
+
+  function runFade(sel,base,step){[].slice.call(document.querySelectorAll(sel)).forEach(function(d,i){d.classList.remove('show');setTimeout(function(){d.classList.add('show');},base+i*step);});}
+
+  function buildTrack(c){var w=document.createElement('div');w.className='track';
+    var th=document.createElement('div');th.className='th';
+    th.innerHTML='<div class="tt">'+c.title+'<small>'+c.sub+'</small></div><div class="tm" data-m>—</div>';
+    var g=document.createElement('div');g.className='grid';
+    w.appendChild(th);w.appendChild(g);return {el:w,grid:g,meta:th.querySelector('[data-m]'),cfg:c};}
+  var T=[buildTrack({title:'Above-the-line offer',sub:'just the deal',mob:22,bb:5}),
+         buildTrack({title:'Phone Dollars · What’s In My Wallet',sub:'lead with the wallet',mob:48,bb:12})];
+  var tc=document.getElementById('tracks');if(tc)T.forEach(function(t){tc.appendChild(t.el);});
+
+  // Dots build up one wave per click of the s4 button: 1) first mobiles 2) 2nd mobiles 3) broadband.
+  var dotStep=0, dotsBuilt=false;
+  function updateDotPrompt(){var b=document.getElementById('s4next');if(!b)return;
+    b.textContent=['Add the first mobile →','Now add a 2nd mobile →','Now add broadband →','A 25% increase in connections →'][dotStep];}
+  function buildDots(){
+    T.forEach(function(t){var g=t.grid;g.innerHTML='';t.meta.textContent='—';
+      var seq=[],i;
+      for(i=0;i<100;i++)seq.push('first');
+      for(i=0;i<t.cfg.mob;i++)seq.push('mob');
+      for(i=0;i<t.cfg.bb;i++)seq.push('bb');
+      t.els=seq.map(function(cls){var s=document.createElement('span');s.className='dot '+cls;g.appendChild(s);return s;});});
+    dotStep=0;dotsBuilt=true;updateDotPrompt();
+  }
+  function stepDots(){
+    if(!dotsBuilt)buildDots();
+    if(dotStep>=3)return false;
+    dotStep++;
+    var cls=dotStep===1?'first':dotStep===2?'mob':'bb';
+    var delay=dotStep===1?14:dotStep===2?12:24;
+    T.forEach(function(t){var c=t.cfg;
+      var ds=t.els.filter(function(x){return x.classList.contains(cls);});
+      ds.forEach(function(x,k){setTimeout(function(){x.classList.add('show');},k*delay);});
+      var cum=dotStep===1?100:dotStep===2?(100+c.mob):(100+c.mob+c.bb);
+      var last=Math.max(0,ds.length-1)*delay+140;
+      setTimeout(function(){t.meta.innerHTML='<b>'+cum+'</b> connections';},last);});
+    updateDotPrompt();
+    return true;
+  }
+  function runBars(){[].slice.call(document.querySelectorAll('#bars .brow')).forEach(function(r){
+    var bar=r.querySelector('i'),val=r.querySelector('.val');bar.style.width='0';val.textContent='0';
+    setTimeout(function(){bar.style.width=bar.getAttribute('data-w')+'%';ease(val,+val.getAttribute('data-v'),1100);},80);});}
+
+  // Legends' animate(id) dispatcher — ported branches only.
+  function lgAnimate(id){
+    if(id==='s1'){ease(document.getElementById('bal'),248,2200);var bb=document.getElementById('balbar');bb.style.width='0';setTimeout(function(){bb.style.width='78%';},100);ease(document.getElementById('s1a'),4,1500);}
+    if(id==='s2'){ease(document.getElementById('s2n'),10,1600);runFade('#offers span',300,450);}
+    if(id==='s4'){buildDots();}
+    if(id==='s5'){runBars();}
+    if(id==='s6'){ease(document.getElementById('r6a'),103,1600);ease(document.getElementById('r6b'),133,1600);}
+    if(id==='s7'){ease(document.getElementById('s7n'),9.4,1800,'f');}
+    if(id==='s8'){runFade('#ask>div',250,400);}
+  }
+  function runLg(scene){
+    if(!scene.classList.contains('lg') || scene.dataset.lgDone) return;
+    scene.dataset.lgDone='1';
+    lgAnimate(scene.id);
+  }
+
+  // Ported "Next" buttons advance to the next scene; s4's button steps its
+  // dot waves first (like Legends' click-to-advance), then moves on.
+  [].slice.call(document.querySelectorAll('.lg .next')).forEach(function(b){
+    b.addEventListener('click',function(){
+      if(b.id==='s4next' && stepDots()) return;
+      var sec=b.closest('section');
+      if(sec && sec.nextElementSibling) sec.nextElementSibling.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
   // ---------- scene entrance ----------
   var scenes = document.querySelectorAll('.scene');
   if ('IntersectionObserver' in window){
@@ -793,12 +1082,13 @@ ul.clean li strong{color:var(--ink);}
         if (e.isIntersecting){
           e.target.classList.add('in-view');
           runDials(e.target);
+          runLg(e.target);
         }
       });
     }, { threshold: 0.22 });
     scenes.forEach(function(s){ io.observe(s); });
   } else {
-    scenes.forEach(function(s){ s.classList.add('in-view'); runDials(s); });
+    scenes.forEach(function(s){ s.classList.add('in-view'); runDials(s); runLg(s); });
   }
 })();
 </script>
