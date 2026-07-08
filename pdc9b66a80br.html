@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone Dollars &amp; One Wallet — a briefing for Mark Ratcliffe</title>
+<style>
+/* ============ One NZ scroll-deck ============ */
+:root{
+  --green:#00A45F;
+  --green-bright:#12CB77;
+  --green-soft:#95EEB4;
+  --green-tint:#CDFBDD;
+  --deep:#0A3833;
+  --deepest:#06231F;
+  --grey-ink:#323232;
+  --grey-mid:#5A6376;
+  --grey-line:#E1E4E9;
+  --grey-bg:#F8F9FA;
+  --alert-red:#D31F3F;
+  --alert-yellow:#FFD600;
+}
+html.theme-dark{
+  --bg:#06231F;
+  --bg-alt:#0A3833;
+  --card:rgba(255,255,255,0.045);
+  --card-border:rgba(149,238,180,0.14);
+  --ink:#F8F9FA;
+  --ink-soft:rgba(248,249,250,0.72);
+  --ink-faint:rgba(248,249,250,0.45);
+  --accent:#12CB77;
+  --accent-strong:#00A45F;
+  --track:rgba(255,255,255,0.09);
+  --hairline:rgba(149,238,180,0.16);
+  --shadow:0 18px 50px rgba(0,0,0,0.35);
+}
+html.theme-light{
+  --bg:#F8F9FA;
+  --bg-alt:#FFFFFF;
+  --card:#FFFFFF;
+  --card-border:#E1E4E9;
+  --ink:#323232;
+  --ink-soft:#5A6376;
+  --ink-faint:#9AA1AC;
+  --accent:#00A45F;
+  --accent-strong:#00A45F;
+  --track:#E1E4E9;
+  --hairline:#E1E4E9;
+  --shadow:0 18px 50px rgba(10,56,51,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+}
+::selection{background:var(--green);color:#fff;}
+
+/* -------- scenes -------- */
+.scene{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:9vh 7vw;
+  position:relative;
+  overflow:hidden;
+}
+.scene-inner{
+  max-width:1060px;
+  width:100%;
+  margin:0 auto;
+  opacity:0;
+  transform:translateY(34px);
+  transition:opacity .85s cubic-bezier(.2,.65,.25,1), transform .85s cubic-bezier(.2,.65,.25,1);
+}
+.scene.in-view .scene-inner{opacity:1;transform:translateY(0);}
+.scene:nth-child(even){background:var(--bg-alt);transition:background .4s ease;}
+
+/* stagger children */
+.stagger > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.scene.in-view .stagger > *{opacity:1;transform:translateY(0);}
+.scene.in-view .stagger > *:nth-child(1){transition-delay:.15s;}
+.scene.in-view .stagger > *:nth-child(2){transition-delay:.28s;}
+.scene.in-view .stagger > *:nth-child(3){transition-delay:.41s;}
+.scene.in-view .stagger > *:nth-child(4){transition-delay:.54s;}
+.scene.in-view .stagger > *:nth-child(5){transition-delay:.67s;}
+.scene.in-view .stagger > *:nth-child(6){transition-delay:.80s;}
+
+/* -------- type -------- */
+.kicker{
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.1rem;
+}
+h1{font-size:clamp(2.4rem,5.4vw,4.1rem);font-weight:600;line-height:1.1;letter-spacing:-0.02em;}
+h2{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:600;line-height:1.16;letter-spacing:-0.015em;margin-bottom:1.2rem;}
+h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
+.lede{font-size:clamp(1.05rem,1.7vw,1.28rem);color:var(--ink-soft);max-width:46em;}
+.accent{color:var(--accent);}
+.big-num{
+  font-size:clamp(2.6rem,6vw,4.4rem);
+  font-weight:600;letter-spacing:-0.03em;line-height:1;
+  color:var(--accent);
+}
+
+/* -------- one.nz mark -------- */
+.mark{
+  position:absolute;bottom:2.2rem;right:7vw;
+  font-weight:600;font-size:.95rem;color:var(--ink-faint);
+  letter-spacing:.01em;user-select:none;
+}
+.mark .dot{color:var(--green-bright);}
+
+/* -------- theme toggle -------- */
+.theme-toggle{
+  position:fixed;top:1.1rem;right:1.2rem;z-index:99;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--ink-soft);
+  border-radius:999px;padding:.42rem .95rem;
+  font-family:inherit;font-size:.78rem;font-weight:600;letter-spacing:.05em;
+  cursor:pointer;backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* -------- cards & grids -------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:1.6rem 1.7rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;}
+.card .cnum{font-size:1.9rem;font-weight:600;color:var(--accent);letter-spacing:-0.02em;margin-bottom:.35rem;}
+.card p{font-size:.95rem;color:var(--ink-soft);}
+.card h3{margin-bottom:.5rem;}
+.tag{
+  display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:.22rem .7rem;margin-bottom:.8rem;
+}
+
+/* -------- bar chart (gap-to-#1) -------- */
+.bars{display:flex;flex-direction:column;gap:.85rem;margin-top:2rem;}
+.bar-row{display:grid;grid-template-columns:5.2rem 1fr 4.5rem;align-items:center;gap:1rem;}
+.bar-label{font-size:.82rem;font-weight:600;color:var(--ink-soft);text-align:right;}
+.bar-track{
+  background:var(--track);border-radius:8px;height:30px;
+  overflow:hidden;position:relative;
+}
+.bar-track > div{
+  height:100%;border-radius:8px;
+  width:0 !important; /* animated in */
+  transition:width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.scene.in-view .bar-track > div{width:var(--w) !important;}
+.bar-val{font-size:.95rem;font-weight:600;color:var(--ink);}
+
+/* -------- headline value strip -------- */
+.value-strip{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:1.4rem;margin:2.4rem 0;
+}
+.value-strip .vs-item{text-align:center;}
+.value-strip .vs-lab{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:.4rem;}
+.value-arrow{font-size:2rem;color:var(--accent);font-weight:300;}
+
+.callout{
+  border-left:4px solid var(--accent-strong);
+  background:var(--card);
+  border-radius:0 14px 14px 0;
+  padding:1.2rem 1.5rem;
+  font-size:1.02rem;color:var(--ink-soft);
+  max-width:52em;
+}
+.callout strong{color:var(--ink);}
+
+/* -------- cost table -------- */
+table.costs{
+  width:100%;max-width:620px;border-collapse:collapse;margin:1.6rem 0 2rem;
+  font-size:.98rem;
+}
+table.costs td{
+  padding:.85rem .4rem;border-bottom:1px solid var(--hairline);
+  color:var(--ink-soft);
+}
+table.costs td:last-child{text-align:right;font-weight:600;color:var(--ink);white-space:nowrap;}
+table.costs tr.total td{color:var(--ink);font-weight:600;border-bottom:none;border-top:2px solid var(--accent);}
+table.costs tr.total td:last-child{color:var(--accent);font-size:1.15rem;}
+
+/* -------- AI loop -------- */
+.loop{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:1rem;margin-top:1.8rem;counter-reset:loopstep;
+}
+.loop .card{position:relative;padding-top:1.9rem;}
+.loop .card::before{
+  counter-increment:loopstep;
+  content:counter(loopstep);
+  position:absolute;top:-14px;left:1.3rem;
+  width:30px;height:30px;border-radius:50%;
+  background:var(--accent-strong);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:600;
+}
+.loop-back{
+  margin-top:1.1rem;text-align:center;font-size:.9rem;font-weight:600;
+  color:var(--accent);letter-spacing:.04em;
+}
+
+/* -------- agenda -------- */
+.agenda{display:flex;flex-direction:column;gap:1.1rem;margin-top:2.2rem;}
+.agenda .card{display:flex;align-items:center;gap:1.4rem;padding:1.4rem 1.7rem;}
+.agenda .num{
+  font-size:2.2rem;font-weight:600;color:var(--accent);
+  min-width:2.6rem;letter-spacing:-0.03em;
+}
+.agenda p{color:var(--ink-soft);font-size:.95rem;margin-top:.15rem;}
+
+/* -------- two-panel idea -------- */
+.pill-url{
+  display:inline-block;font-weight:600;color:var(--accent);
+  background:var(--card);border:1px solid var(--hairline);
+  border-radius:999px;padding:.3rem .95rem;font-size:.92rem;
+}
+
+/* -------- flywheel close -------- */
+.flywheel{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:.5rem .3rem;margin:2.2rem 0;font-weight:600;font-size:clamp(.95rem,1.8vw,1.15rem);
+}
+.flywheel .fstep{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:999px;padding:.5rem 1.1rem;white-space:nowrap;
+}
+.flywheel .farrow{color:var(--accent);padding:0 .25rem;}
+
+ul.clean{list-style:none;margin-top:1rem;}
+ul.clean li{
+  padding:.5rem 0 .5rem 1.7rem;position:relative;color:var(--ink-soft);font-size:1rem;
+}
+ul.clean li::before{
+  content:"";position:absolute;left:0;top:.95rem;
+  width:9px;height:9px;border-radius:50%;background:var(--accent-strong);
+}
+ul.clean li strong{color:var(--ink);}
+
+.footline{margin-top:2.2rem;font-size:.9rem;color:var(--ink-faint);}
+.scroll-hint{
+  position:absolute;bottom:2.1rem;left:50%;transform:translateX(-50%);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.45;transform:translate(-50%,0);}50%{opacity:1;transform:translate(-50%,6px);}}
+
+@media (max-width:640px){
+  .scene{padding:8vh 6vw;}
+  .bar-row{grid-template-columns:4rem 1fr 3.4rem;}
+  .mark{right:6vw;}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">Light</button>
+
+<!-- ======================= 1 · COVER ======================= -->
+<section class="scene" id="cover">
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">Board briefing &middot; July 2026</div>
+      <h1>Phone Dollars<br>&amp; One Wallet</h1>
+      <p class="lede" style="margin-top:1.4rem;">A briefing for <strong style="color:var(--ink);">Mark Ratcliffe</strong> — what it is, why we built it, and where it creates value.</p>
+      <p class="footline">One NZ &middot; ~10 minutes &middot; scroll to begin</p>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 2 · AGENDA ======================= -->
+<section class="scene" id="agenda">
+  <div class="scene-inner">
+    <div class="kicker">Agenda</div>
+    <h2>Three chapters, ten minutes.</h2>
+    <div class="agenda stagger">
+      <div class="card">
+        <div class="num">1</div>
+        <div>
+          <h3>Why we launched it</h3>
+          <p>The prize we're chasing, and the competitive problem a headline discount can't solve.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <div>
+          <h3>Where the value is created</h3>
+          <p>Measured returns — retention, saves, acquisition and customer quality — against honest, fully loaded costs.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <div>
+          <h3>The most AI-enabled loyalty programme on the planet</h3>
+          <p>One AI platform running the whole operating loop — with people making every decision that matters.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 3 · WHY #1 — THE PRIZE ======================= -->
+<section class="scene" id="prize">
+  <div class="scene-inner">
+    <div class="kicker">Why &middot; the prize</div>
+    <h2>The next phone is the market's most valuable transaction.</h2>
+    <p class="lede">Roughly <strong class="accent">$1&nbsp;billion NZD a year</strong> of revenue moves on where New Zealanders choose to buy their next mobile phone. Our ambition is simple: <strong style="color:var(--ink);">#1 in Mobile</strong> — and the gap to #1 has been closing every year since FY21.</p>
+
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-label">FY21</div>
+        <div class="bar-track"><div style="--w:100%; width:100%; background:#5A6376;"></div></div>
+        <div class="bar-val">16pp</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FY22</div>
+        <div class="bar-track"><div style="--w:81%; width:81%; background:#00A45F;"></div></div>
+        <div class="bar-val">13pp</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FY23</div>
+        <div class="bar-track"><div style="--w:59%; width:59%; background:#00A45F;"></div></div>
+        <div class="bar-val">9.5pp</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FY24</div>
+        <div class="bar-track"><div style="--w:44%; width:44%; background:#12CB77;"></div></div>
+        <div class="bar-val">7pp</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Today</div>
+        <div class="bar-track"><div style="--w:31%; width:31%; background:#12CB77;"></div></div>
+        <div class="bar-val">~5pp</div>
+      </div>
+    </div>
+    <p class="footline">Gap to the #1 mobile position, percentage points. Strategic intent: be the best choice to buy your next mobile phone.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 4 · WHY #2 — COMPETITIVE REALITY ======================= -->
+<section class="scene" id="reality">
+  <div class="scene-inner">
+    <div class="kicker">Why &middot; the competitive reality</div>
+    <h2>Phone discounting is instantly matched.</h2>
+    <p class="lede">We've proven it over years. A shelf-price cut is public — rivals mirror it within days. It's brilliant at moving volume <em>between</em> carriers and terrible at building loyalty.</p>
+    <div class="grid-3 stagger" style="margin-top:2.2rem;">
+      <div class="card">
+        <div class="tag">Step 1</div>
+        <h3>We cut the shelf price</h3>
+        <p>The offer is advertised, public, and identical for everyone who walks in.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Step 2</div>
+        <h3>Rivals match in days</h3>
+        <p>Because it's visible, matching it is trivial. The playing field re-levels almost immediately.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Net result</div>
+        <h3 style="color:var(--alert-red, #D31F3F);">Margin destruction, no share shift</h3>
+        <p>Everyone pays more to stand still. Nobody becomes more loyal.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:2.2rem;">
+      <strong>The conclusion we drew:</strong> we needed a smarter way to defend our own base <em>and</em> acquire from competitors' bases — one that can't simply be copied off a shelf.
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 5 · THE IDEA ======================= -->
+<section class="scene" id="idea">
+  <div class="scene-inner">
+    <div class="kicker">The idea</div>
+    <h2>Phone Dollars — value that's personal, not public.</h2>
+    <p class="lede">A dollar-equivalent loyalty currency — <strong class="accent">1 Phone Dollar = $1</strong> — held in a customer's One Wallet. It's loaded <strong style="color:var(--ink);">dynamically and personalised</strong>, not advertised on a shelf. Because the value is targeted and private, it can't be matched like a headline discount.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card">
+        <div class="tag">Defend</div>
+        <h3>Retention</h3>
+        <p>We load value to our own customers who are most at risk of leaving — sized to the risk. The right amount, to the right person, at the right moment.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Attack</div>
+        <h3>Acquisition</h3>
+        <p>Competitors' customers who check <span class="pill-url">whatsinmywallet.one.nz</span> find a personalised balance already waiting for them — a reason to switch that only they can see.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:2.2rem;">
+      <strong>Value customers can see and feel</strong> — real dollars towards the transaction that matters most: their next phone.
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 6 · VALUE HEADLINE ======================= -->
+<section class="scene" id="headline">
+  <div class="scene-inner" style="text-align:center;">
+    <div class="kicker">The value equation</div>
+    <h2>Every dollar in returns four.</h2>
+    <div class="value-strip stagger">
+      <div class="vs-item">
+        <div class="big-num" style="color:var(--ink);">$3.6m</div>
+        <div class="vs-lab">Total annual cost of ownership</div>
+      </div>
+      <div class="value-arrow">&rarr;</div>
+      <div class="vs-item">
+        <div class="big-num">~$15m+</div>
+        <div class="vs-lab">Annual quantified value</div>
+      </div>
+      <div class="value-arrow">&rarr;</div>
+      <div class="vs-item">
+        <div class="big-num">~4.2&times;</div>
+        <div class="vs-lab">Return on TCO</div>
+      </div>
+    </div>
+    <div class="callout" style="margin:0 auto;text-align:left;">
+      <strong>Measured outcomes, not modelled assumptions</strong> — every figure here is observed in production data: live campaign tracking, attributed media, and matched control groups.
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 7 · VALUE DRIVERS ======================= -->
+<section class="scene" id="drivers">
+  <div class="scene-inner">
+    <div class="kicker">Where the value comes from</div>
+    <h2>Four drivers, all observed in production.</h2>
+    <div class="grid-2 stagger" style="margin-top:1.8rem;">
+      <div class="card">
+        <div class="cnum">~$4.8m/yr</div>
+        <h3>Reduced churn on the engaged base</h3>
+        <p>~200k engaged customers churn <strong style="color:var(--ink);">4pp lower</strong> than matched control — roughly 8,000 customers retained a year at $600 annual margin each.</p>
+      </div>
+      <div class="card">
+        <div class="cnum">~$2.5m/yr</div>
+        <h3>At-risk save campaigns</h3>
+        <p>50–100k at-risk customers targeted monthly, delivering 200–500 saves a month — a mid-point of 4,200 saves a year at $600 each.</p>
+      </div>
+      <div class="card">
+        <div class="cnum">~$7.9m/yr</div>
+        <h3>WhatsInMyWallet acquisition</h3>
+        <p>$90k/month of media drives ~5,000 wallets and ~300 month-1 connections, doubling to ~550 over months 2–5. That's $660k of LTV per $90k spend — a <strong style="color:var(--ink);">7.3&times; media ROI</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="cnum">2&times;+ attach</div>
+        <h3>Quality of acquired customers</h3>
+        <p>Broadband attach &gt;10% and second-mobile attach ~48% — over double standard acquisition. Multi-product cohorts churn at 3–4% versus 26% for mobile-only.</p>
+      </div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 8 · HONEST COSTS ======================= -->
+<section class="scene" id="costs">
+  <div class="scene-inner">
+    <div class="kicker">The honest cost line</div>
+    <h2>Fully loaded, nothing hidden.</h2>
+    <table class="costs">
+      <tr>
+        <td>Capex (including embedded FTE)</td>
+        <td>$2.0m</td>
+      </tr>
+      <tr>
+        <td>Programme team — 9 roles @ $175k average</td>
+        <td>$1.6m</td>
+      </tr>
+      <tr class="total">
+        <td>Total annual cost of ownership</td>
+        <td>$3.6m</td>
+      </tr>
+    </table>
+    <h3 style="margin-bottom:.3rem;">And strategic value that isn't in the numbers:</h3>
+    <ul class="clean stagger">
+      <li><strong>Brand differentiation</strong> — the only NZ telco with a tangible, dollar-equivalent loyalty currency.</li>
+      <li><strong>A stickier base</strong> that absorbs annual price increases.</li>
+      <li><strong>The foundational mechanic</strong> for Unlock and Enterprise share protection.</li>
+    </ul>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 9 · AI — THE CLAIM ======================= -->
+<section class="scene" id="ai-loop">
+  <div class="scene-inner">
+    <div class="kicker">Chapter three</div>
+    <h2>Arguably the most AI-enabled loyalty programme on the planet.</h2>
+    <p class="lede">The <strong style="color:var(--ink);">Membership Workbench</strong> — one AI platform that runs the whole operating loop, end to end.</p>
+    <div class="loop stagger">
+      <div class="card">
+        <h3>Team meetings</h3>
+        <p>Recorded &rarr; AI drafts the actions and decisions &rarr; owners are auto-notified.</p>
+      </div>
+      <div class="card">
+        <h3>Audience selection</h3>
+        <p>AI scores churn risk and uplift, excludes collections, and grounds targeting in a living knowledge base of what worked.</p>
+      </div>
+      <div class="card">
+        <h3>Campaign build</h3>
+        <p>Loading files and offer values generated by the platform.</p>
+      </div>
+      <div class="card">
+        <h3>Post-implementation review</h3>
+        <p>Lift vs control measured; per-cohort verdicts written <em>back</em> into the knowledge base the next campaign reads.</p>
+      </div>
+      <div class="card">
+        <h3>Reporting</h3>
+        <p>Automated scorecards, weekly wraps, and rep emails.</p>
+      </div>
+      <div class="card">
+        <h3>Presentations</h3>
+        <p>This deck was built by the workbench's AI Studio — the loop even briefs its own board.</p>
+      </div>
+    </div>
+    <div class="loop-back">&#8635;&nbsp; 6 feeds back into 1 — the loop never stops learning</div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 10 · AI — HUMAN IN THE LOOP ======================= -->
+<section class="scene" id="human">
+  <div class="scene-inner">
+    <div class="kicker">Governance</div>
+    <h2>AI recommends. People decide.</h2>
+    <div class="grid-3 stagger" style="margin-top:1.8rem;">
+      <div class="card">
+        <div class="tag">Pricing</div>
+        <h3>Device Discount Engine</h3>
+        <p>Reads our offers versus Spark and 2degrees, porting flows, churn and in-market campaigns — then recommends per-model offer values inside team guardrails. <strong style="color:var(--ink);">Humans review and lock.</strong></p>
+      </div>
+      <div class="card">
+        <div class="tag">Targeting</div>
+        <h3>At-risk cohorts</h3>
+        <p>The platform proposes cohorts with expected lift. <strong style="color:var(--ink);">Marketers approve the send.</strong></p>
+      </div>
+      <div class="card">
+        <div class="tag">Insight</div>
+        <h3>Deep data agent</h3>
+        <p>Answers plain-English questions with read-only SQL over the production warehouse — analysis on demand, no risk to data.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:2.2rem;">
+      <strong>Significant automation, zero unsupervised spend.</strong> Every dollar loaded is inside human-set guardrails, with a person signing off.
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 11 · CLOSE ======================= -->
+<section class="scene" id="close">
+  <div class="scene-inner" style="text-align:center;">
+    <div class="kicker">Close</div>
+    <h2>The flywheel keeps turning.</h2>
+    <div class="flywheel stagger">
+      <span class="fstep">One Wallet</span><span class="farrow">&middot;</span>
+      <span class="fstep">One Upgrade</span><span class="farrow">&middot;</span>
+      <span class="fstep">Trade-in</span><span class="farrow">&rarr;</span>
+      <span class="fstep">Footfall</span><span class="farrow">&rarr;</span>
+      <span class="fstep">Acquisition &amp; connections</span><span class="farrow">&rarr;</span>
+      <span class="fstep">Margin</span><span class="farrow">&rarr;</span>
+      <span class="fstep">More customers</span>
+    </div>
+    <p class="lede" style="margin:1.8rem auto 0;max-width:34em;">A loyalty currency competitors can't see, an operating loop that learns from every campaign, and a base that grows stickier every cycle.</p>
+    <div class="big-num" style="margin-top:2.6rem;font-size:clamp(2rem,4.5vw,3.2rem);">Value you can see &amp; feel.</div>
+    <p style="margin-top:2.4rem;font-weight:600;font-size:1.3rem;">one<span style="color:var(--green-bright);">.</span>nz</p>
+    <p class="footline">Thank you, Mark. Questions welcome any time.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  // ---------- theme toggle ----------
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function setTheme(mode){
+    root.classList.remove('theme-dark','theme-light');
+    root.classList.add(mode);
+    btn.textContent = mode === 'theme-dark' ? 'Light' : 'Dark';
+  }
+  btn.addEventListener('click', function(){
+    setTheme(root.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark');
+  });
+
+  // ---------- scene entrance ----------
+  var scenes = document.querySelectorAll('.scene');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in-view'); }
+      });
+    }, { threshold: 0.22 });
+    scenes.forEach(function(s){ io.observe(s); });
+  } else {
+    scenes.forEach(function(s){ s.classList.add('in-view'); });
+  }
+})();
+</script>
+</body>
+</html>
