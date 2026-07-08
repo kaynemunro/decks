@@ -656,7 +656,7 @@ section.scene.lg{
 <!-- ======================= 7 · PROOF — ACQUISITION (ported from Legends s2) ======================= -->
 <section class="scene lg" id="s2">
   <div class="scene-inner">
-    <div class="kicker">02 · Simon says</div>
+    <div class="kicker">02 · Acquisition</div>
     <p class="sub" style="margin-top:0">…on our customers' phones —</p>
     <h2>“Check what's in your <span class="big">wallet</span>.”</h2>
     <p class="sub">At the last iPhone release, we launched One Wallet to <span class="big">ANY</span> New Zealander.</p>
@@ -720,9 +720,6 @@ section.scene.lg{
           <p>Broadband attach &gt;10% and second-mobile attach ~48% — over double standard acquisition. Multi-product cohorts churn at roughly <strong style="color:var(--ink);">half the rate</strong> of a single-line customer.</p>
         </div>
       </div>
-    </div>
-    <div class="callout" style="margin:0 auto;text-align:left;">
-      <strong>Counted in production, valued by convention</strong> — the customer counts (8,000 retained, 4,200 saves, 300&rarr;550 monthly connections) are observed in production; the value applies a $1,350 customer-lifetime-value convention.
     </div>
     <p class="footline">Plus unquantified: brand differentiation, price-rise resilience, and Unlock / Enterprise share protection.</p>
   </div>
@@ -881,7 +878,6 @@ section.scene.lg{
 <!-- ======================= 11 · CHAPTER 5 DIVIDER ======================= -->
 <section class="scene" id="focus">
   <div class="scene-inner" style="text-align:center;">
-    <div class="kicker">Chapter 5</div>
     <h2 style="margin-bottom:0;">Our focus moving forward.</h2>
     <p class="lede" style="margin:1.2rem auto 0;">Phone Dollars doesn't just win the sale — it can win the whole home.</p>
   </div>
@@ -891,7 +887,6 @@ section.scene.lg{
 <!-- ======================= 12 · IFP CONNECTIONS (ported from Legends s4) ======================= -->
 <section class="scene lg" id="s4">
   <div class="scene-inner">
-    <div class="kicker">03 · The proof — part 1</div>
     <h2>For every <span class="big">100</span> IFPs we sell, how many connections do we add?</h2>
     <div class="tracks" id="tracks"></div>
     <div class="legend">
@@ -906,7 +901,6 @@ section.scene.lg{
 <!-- ======================= 13 · CONNECTED-HOME RETENTION (ported from Legends s5) ======================= -->
 <section class="scene lg" id="s5">
   <div class="scene-inner">
-    <div class="kicker">03 · The value — part 2</div>
     <h2>The more connected the home, the <span class="big">longer</span> they stay with us.</h2>
     <div class="lg-bars" id="bars">
       <div class="brow"><div class="lab">Single mobile</div><div class="bw"><i data-w="95" style="background:var(--rose)"></i></div><div class="val rose" data-v="22">0</div></div>
@@ -920,30 +914,18 @@ section.scene.lg{
 <!-- ======================= 14 · 12 MONTHS ON (ported from Legends s6) ======================= -->
 <section class="scene lg" id="s6">
   <div class="scene-inner">
-    <div class="kicker">03 · The value — part 3</div>
     <h2>12 months on — how many <span class="big">connections</span> are still live?</h2>
     <div class="row" style="gap:60px;margin-top:10px">
       <div style="text-align:center"><div class="stat" style="background:none;color:var(--rose);-webkit-text-fill-color:var(--rose)"><span id="r6a">0</span></div><div class="statlbl">above-the-line — of 127 we added</div></div>
       <div style="text-align:center"><div class="stat"><span id="r6b">0</span></div><div class="statlbl">Phone Dollars — of 160 we added</div></div>
     </div>
-    <button class="next">What's it worth? →</button>
-  </div>
-</section>
-
-<!-- ======================= 15 · WHAT IT'S WORTH (ported from Legends s7) ======================= -->
-<section class="scene lg" id="s7">
-  <div class="scene-inner">
-    <div class="kicker">04 · What it's worth</div>
-    <h2>Run the home this way, and it's worth <span class="big">real money.</span></h2>
-    <div style="margin-top:18px"><div class="stat">$<span id="s7n">0</span>m</div></div>
     <button class="next">The ask →</button>
   </div>
 </section>
 
-<!-- ======================= 16 · THE ASK (ported from Legends s8) — FINAL ======================= -->
+<!-- ======================= 15 · THE ASK (ported from Legends s8) — FINAL ======================= -->
 <section class="scene lg" id="s8">
   <div class="scene-inner">
-    <div class="kicker">On the floor · The ask</div>
     <h2>Not every connection is the <span class="big">same.</span></h2>
     <p class="sub">To connect the home, we need three things working together:</p>
     <div class="ask" id="ask">
@@ -1057,10 +1039,9 @@ section.scene.lg{
   function lgAnimate(id){
     if(id==='s1'){ease(document.getElementById('bal'),248,2200);var bb=document.getElementById('balbar');bb.style.width='0';setTimeout(function(){bb.style.width='78%';},100);ease(document.getElementById('s1a'),4,1500);}
     if(id==='s2'){ease(document.getElementById('s2n'),10,1600);runFade('#offers span',300,450);}
-    if(id==='s4'){buildDots();}
+    if(id==='s4'){buildDots();setTimeout(stepDots,350);setTimeout(stepDots,2200);setTimeout(stepDots,3400);}
     if(id==='s5'){runBars();}
     if(id==='s6'){ease(document.getElementById('r6a'),103,1600);ease(document.getElementById('r6b'),133,1600);}
-    if(id==='s7'){ease(document.getElementById('s7n'),9.4,1800,'f');}
     if(id==='s8'){runFade('#ask>div',250,400);}
   }
   function runLg(scene){
