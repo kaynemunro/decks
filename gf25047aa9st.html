@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en-NZ" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Fund Trial — How We Went</title>
+<style>
+  /* ============ One NZ theme tokens ============ */
+  :root{
+    --green:#00A45F;
+    --bright:#12CB77;
+    --tint:#95EEB4;
+    --tint-soft:#CDFBDD;
+    --grey-ink:#323232;
+    --grey-mid:#5A6376;
+    --grey-line:#E1E4E9;
+    --grey-bg:#F8F9FA;
+    --ground:#0A3833;
+    --ground-deep:#06231F;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  html.dark{
+    --bg:var(--ground-deep);
+    --bg2:var(--ground);
+    --ink:#F8F9FA;
+    --ink2:#CFE6DB;
+    --muted:#8FB4A5;
+    --line:rgba(255,255,255,.12);
+    --card:rgba(255,255,255,.045);
+    --card-strong:rgba(18,203,119,.10);
+    --accent:var(--bright);
+    --accent-deep:var(--green);
+    --glow:radial-gradient(1200px 700px at 80% -10%, rgba(18,203,119,.14), transparent 60%);
+    --table-stripe:rgba(255,255,255,.03);
+    --thead-bg:#0B3B35;
+    --chip-alb:rgba(149,238,180,.14);
+    --chip-sp:rgba(18,203,119,.18);
+    --podium:rgba(18,203,119,.09);
+  }
+  html.light{
+    --bg:var(--grey-bg);
+    --bg2:#FFFFFF;
+    --ink:var(--grey-ink);
+    --ink2:#3E4A47;
+    --muted:var(--grey-mid);
+    --line:var(--grey-line);
+    --card:#FFFFFF;
+    --card-strong:rgba(0,164,95,.07);
+    --accent:var(--green);
+    --accent-deep:var(--green);
+    --glow:radial-gradient(1200px 700px at 80% -10%, rgba(0,164,95,.08), transparent 60%);
+    --table-stripe:rgba(0,0,0,.025);
+    --thead-bg:#EFF6F2;
+    --chip-alb:rgba(0,164,95,.08);
+    --chip-sp:rgba(0,164,95,.14);
+    --podium:rgba(0,164,95,.06);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* ============ Scene scaffold ============ */
+  .scene{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:96px 6vw;
+    background:var(--bg);
+    overflow:hidden;
+  }
+  .scene.alt{background:var(--bg2);}
+  .scene::before{
+    content:"";
+    position:absolute;inset:0;
+    background:var(--glow);
+    pointer-events:none;
+  }
+  .inner{position:relative;max-width:1080px;margin:0 auto;width:100%;}
+
+  /* one.nz mark on every scene */
+  .onenz{
+    position:absolute;
+    bottom:26px;left:6vw;
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:.01em;
+    color:var(--ink);
+    opacity:.85;
+    user-select:none;
+  }
+  .onenz .dot{color:var(--accent);}
+
+  /* ============ Type ============ */
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(44px,7.5vw,92px);
+    line-height:1.02;
+    font-weight:800;
+    letter-spacing:-.02em;
+  }
+  h2{
+    font-size:clamp(30px,4.6vw,54px);
+    line-height:1.08;
+    font-weight:800;
+    letter-spacing:-.015em;
+    margin-bottom:20px;
+  }
+  .lede{
+    font-size:clamp(17px,2vw,21px);
+    color:var(--ink2);
+    max-width:680px;
+    margin-top:18px;
+  }
+  .kicker{color:var(--accent);}
+
+  /* ============ Reveal animation ============ */
+  .rv{
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .8s var(--ease), transform .8s var(--ease);
+  }
+  .in-view .rv{opacity:1;transform:none;}
+  .in-view .rv.d1{transition-delay:.12s;}
+  .in-view .rv.d2{transition-delay:.24s;}
+  .in-view .rv.d3{transition-delay:.36s;}
+  .in-view .rv.d4{transition-delay:.48s;}
+  .in-view .rv.d5{transition-delay:.60s;}
+
+  /* ============ Cover ============ */
+  #cover{justify-content:center;text-align:left;}
+  #cover .meta{
+    margin-top:28px;
+    font-size:16px;
+    color:var(--muted);
+    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  }
+  #cover .meta b{color:var(--ink2);font-weight:600;}
+  .meta-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;}
+  .scrollcue{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+    color:var(--muted);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    text-align:center;
+  }
+  .scrollcue svg{display:block;margin:8px auto 0;animation:bob 1.8s infinite var(--ease);}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+  /* ============ Cards & stats ============ */
+  .cardrow{display:grid;gap:18px;margin-top:36px;}
+  .cardrow.c3{grid-template-columns:repeat(3,1fr);}
+  .cardrow.c5{grid-template-columns:repeat(5,1fr);}
+  @media(max-width:900px){.cardrow.c3{grid-template-columns:1fr;}.cardrow.c5{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.cardrow.c5{grid-template-columns:1fr;}}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:26px 24px;
+  }
+  .card .step{
+    font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:12px;display:block;
+  }
+  .card h3{font-size:21px;font-weight:700;margin-bottom:8px;letter-spacing:-.01em;}
+  .card p{font-size:15px;color:var(--ink2);}
+
+  .bignum{
+    font-size:clamp(84px,15vw,180px);
+    font-weight:800;
+    letter-spacing:-.03em;
+    line-height:1;
+    color:var(--accent);
+  }
+  .statrow{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:18px;margin-top:44px;
+  }
+  @media(max-width:820px){.statrow{grid-template-columns:1fr;}}
+  .stat{
+    border-left:3px solid var(--accent);
+    padding:6px 0 6px 20px;
+  }
+  .stat .v{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;}
+  .stat .l{font-size:14px;color:var(--muted);margin-top:4px;}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:10px;
+    margin-top:34px;
+    background:var(--card-strong);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:12px 22px;
+    font-size:15px;font-weight:600;color:var(--ink);
+  }
+  .pill .spark{color:var(--accent);font-size:18px;line-height:1;}
+
+  /* champion cards */
+  .champ{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:24px 20px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .champ .name{font-size:18px;font-weight:800;letter-spacing:-.01em;}
+  .champ .store-tag{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .champ .feat{font-size:clamp(26px,3vw,34px);font-weight:800;color:var(--accent);letter-spacing:-.02em;margin:6px 0 2px;}
+  .champ .desc{font-size:13.5px;color:var(--ink2);}
+  .champ .earn{margin-top:auto;padding-top:12px;font-size:13px;font-weight:700;color:var(--accent);}
+
+  /* dots for 11/13 */
+  .dots{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 10px;}
+  .dots span{
+    width:22px;height:22px;border-radius:50%;
+    border:2px solid var(--accent);
+    background:transparent;
+    transform:scale(0);
+    transition:transform .5s var(--ease), background .5s var(--ease);
+  }
+  .dots span.on{background:var(--accent);}
+  .in-view .dots span{transform:scale(1);}
+  .dots-cap{font-size:14px;color:var(--muted);}
+
+  /* split bar (earnings by store) */
+  .split{
+    margin-top:40px;max-width:680px;
+  }
+  .split-track{
+    display:flex;height:46px;border-radius:12px;overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .split-a,.split-b{
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:700;color:#06231F;
+    transform-origin:left;
+    white-space:nowrap;
+  }
+  .split-a{background:var(--bright);flex:0 0 73.8%;}
+  .split-b{background:var(--tint);flex:0 0 26.2%;}
+  html.light .split-a{background:var(--green);color:#fff;}
+  html.light .split-b{background:var(--tint-soft);color:var(--grey-ink);}
+  .split-cap{font-size:13px;color:var(--muted);margin-top:10px;}
+
+  /* saad story */
+  .story{
+    display:grid;grid-template-columns:1.1fr .9fr;gap:24px;margin-top:34px;align-items:stretch;
+  }
+  @media(max-width:860px){.story{grid-template-columns:1fr;}}
+  .story .hero-card{
+    background:var(--card-strong);
+    border:1px solid var(--line);
+    border-radius:20px;padding:30px 28px;
+  }
+  .story .hero-card .big{font-size:clamp(48px,7vw,76px);font-weight:800;color:var(--accent);letter-spacing:-.03em;line-height:1;}
+  .story .hero-card h3{font-size:22px;font-weight:800;margin:14px 0 8px;}
+  .story .hero-card p{font-size:15px;color:var(--ink2);}
+  .mini-col{display:flex;flex-direction:column;gap:18px;}
+  .mini{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;flex:1;
+  }
+  .mini b{display:block;font-size:17px;margin-bottom:4px;}
+  .mini .n{color:var(--accent);font-weight:800;}
+  .mini p{font-size:14px;color:var(--ink2);}
+
+  /* ============ Chart ============ */
+  .chartwrap{margin-top:34px;max-width:780px;}
+  .chartwrap svg{width:100%;height:auto;display:block;}
+  .bar{
+    transform:scaleY(0);
+    transform-box:fill-box;
+    transform-origin:bottom;
+    transition:transform .9s var(--ease);
+  }
+  .in-view .bar{transform:scaleY(1);}
+  .in-view .bar.b2{transition-delay:.12s;}
+  .in-view .bar.b3{transition-delay:.24s;}
+  .in-view .bar.b4{transition-delay:.36s;}
+  .barval{
+    opacity:0;transition:opacity .6s var(--ease) .7s;
+    font-weight:800;font-size:26px;fill:var(--ink);
+  }
+  .in-view .barval{opacity:1;}
+  .axis{font-size:14px;fill:var(--muted);font-weight:600;}
+  .gline{stroke:var(--line);stroke-width:1;}
+  .peaktag,.parttag{font-size:11.5px;font-weight:700;letter-spacing:.08em;}
+  .peaktag{fill:var(--accent);}
+  .parttag{fill:var(--muted);}
+  .footnote{font-size:13px;color:var(--muted);margin-top:16px;}
+
+  /* ============ Leaderboard ============ */
+  .tablewrap{
+    margin-top:30px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:auto;
+    max-height:62vh;
+    background:var(--bg2);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:860px;
+    font-size:13.5px;
+  }
+  thead th{
+    position:sticky;top:0;
+    background:var(--thead-bg);
+    color:var(--muted);
+    font-size:11px;font-weight:700;
+    letter-spacing:.12em;text-transform:uppercase;
+    text-align:right;
+    padding:12px 12px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+    z-index:2;
+  }
+  thead th:first-child, thead th:nth-child(2){text-align:left;}
+  tbody td{
+    padding:9px 12px;
+    text-align:right;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+    color:var(--ink2);
+    font-variant-numeric:tabular-nums;
+  }
+  tbody td:first-child{font-weight:700;color:var(--ink);text-align:left;}
+  tbody td:nth-child(2){text-align:left;}
+  tbody tr:nth-child(even){background:var(--table-stripe);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr.podium{background:var(--podium);}
+  td.earn{font-weight:800;color:var(--accent);}
+  td.zero{color:var(--muted);}
+  .chip{
+    display:inline-block;font-size:11px;font-weight:700;
+    padding:2px 9px;border-radius:999px;letter-spacing:.04em;
+  }
+  .chip.alb{background:var(--chip-alb);color:var(--ink2);}
+  .chip.sp{background:var(--chip-sp);color:var(--ink);}
+  tbody tr{
+    opacity:0;transform:translateY(10px);
+    transition:opacity .5s var(--ease), transform .5s var(--ease);
+  }
+  .in-view tbody tr{opacity:1;transform:none;}
+
+  /* learned / next lists */
+  .nextlist{margin-top:36px;display:flex;flex-direction:column;gap:16px;max-width:760px;}
+  .nextitem{
+    display:flex;gap:18px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:22px 24px;
+  }
+  .nextitem .num{
+    flex:0 0 auto;width:38px;height:38px;border-radius:50%;
+    background:var(--card-strong);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;border:1px solid var(--line);
+  }
+  .nextitem b{display:block;font-size:17px;margin-bottom:4px;}
+  .nextitem p{font-size:14.5px;color:var(--ink2);}
+
+  /* close */
+  #close{text-align:center;}
+  #close .onenz-big{
+    font-size:clamp(30px,5vw,48px);font-weight:800;margin-top:44px;
+  }
+  #close .onenz-big .dot{color:var(--accent);}
+  #close .sub{color:var(--muted);margin-top:14px;font-size:15px;}
+
+  /* ============ Theme toggle ============ */
+  #themeToggle{
+    position:fixed;top:18px;right:18px;z-index:50;
+    width:44px;height:44px;border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--bg2);
+    color:var(--ink);
+    font-size:18px;line-height:1;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);
+    transition:transform .2s var(--ease);
+  }
+  #themeToggle:hover{transform:scale(1.08);}
+
+  @media (prefers-reduced-motion: reduce){
+    .rv,.bar,.barval,tbody tr,.dots span{transition:none !important;opacity:1 !important;transform:none !important;}
+    .scrollcue svg{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<button id="themeToggle" aria-label="Switch between light and dark theme">☀</button>
+
+<!-- ================= 1 · COVER ================= -->
+<section class="scene" id="cover">
+  <div class="inner">
+    <span class="eyebrow rv">Retail trial wrap · 8 June – 3 July 2026</span>
+    <h1 class="rv d1">Growth Fund Trial<br><span class="kicker">— how we went</span></h1>
+    <div class="meta rv d2">
+      <b>Albany</b><span class="meta-dot"></span><b>Sylvia Park</b><span class="meta-dot"></span><span>Four weeks, one fund, your calls</span>
+    </div>
+  </div>
+  <div class="scrollcue">Scroll
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 2 · THANK YOU ================= -->
+<section class="scene alt">
+  <div class="inner">
+    <span class="eyebrow rv">First things first</span>
+    <h2 class="rv d1">Thank you.</h2>
+    <p class="lede rv d2">For four weeks you tried something brand new: your own fund, your own judgement, real value on the counter to win the customer in front of you. Nobody handed you a script — you backed yourselves, and it showed.</p>
+    <p class="lede rv d3">This is the story of what you did with it. Ka pai, team.</p>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 3 · HOW THE FUND WORKS ================= -->
+<section class="scene">
+  <div class="inner">
+    <span class="eyebrow rv">The mechanics</span>
+    <h2 class="rv d1">How the fund works</h2>
+    <p class="lede rv d2">Simple on purpose. You're only ever chasing your own best.</p>
+    <div class="cardrow c3">
+      <div class="card rv d2">
+        <span class="step">Step 01</span>
+        <h3>$300 to open</h3>
+        <p>Every rep started the trial with $300 sitting in their own fund, ready to go from day one.</p>
+      </div>
+      <div class="card rv d3">
+        <span class="step">Step 02</span>
+        <h3>+$300 per extra sale</h3>
+        <p>Every acquisition sale above your own weekly baseline tops the fund up by another $300. Your baseline, your target.</p>
+      </div>
+      <div class="card rv d4">
+        <span class="step">Step 03</span>
+        <h3>Deploy it to close</h3>
+        <p>Load it at point of sale as Phone Dollars to get the deal in front of you over the line.</p>
+      </div>
+    </div>
+    <div class="pill rv d5"><span class="spark">●</span>&nbsp;Always use the <b>&nbsp;Growth Fund reason code&nbsp;</b> — it's how your deployments get counted, so you get full credit for every one.</div>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 4 · HEADLINE ================= -->
+<section class="scene alt">
+  <div class="inner">
+    <span class="eyebrow rv">The headline · both stores</span>
+    <div class="bignum rv d1" data-count="16" data-prefix="+" data-suffix="%">+16%</div>
+    <p class="lede rv d2">193 acquisition sales across Albany and Sylvia Park — around <b>26 more than expected</b> for the month. And that's after allowing for how busy the whole network was. This lift is yours.</p>
+    <div class="statrow">
+      <div class="stat rv d2"><div class="v" data-count="193">193</div><div class="l">Acquisition sales, 8 Jun – 3 Jul</div></div>
+      <div class="stat rv d3"><div class="v">~26</div><div class="l">More sales than expected</div></div>
+      <div class="stat rv d4"><div class="v" data-count="18300" data-prefix="$" data-commas="1">$18,300</div><div class="l">Earned by the team</div></div>
+    </div>
+    <div class="split rv d5">
+      <div class="split-track">
+        <div class="split-a">Sylvia Park $13,500</div>
+        <div class="split-b">Albany $4,800</div>
+      </div>
+      <div class="split-cap">Where the $18,300 in team earnings landed.</div>
+    </div>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 5 · WEEKLY TRAJECTORY ================= -->
+<section class="scene">
+  <div class="inner">
+    <span class="eyebrow rv">Week by week</span>
+    <h2 class="rv d1">The shape of the month</h2>
+    <p class="lede rv d2">Week 3 was the one — <b>67 acquisition sales</b>, the biggest week of the trial. Week 4 covers five of seven days, so it reads lower than it ran — and it's also a nudge: when the trial window closed, the pace eased. Keeping that Week-3 energy alive is the next challenge.</p>
+    <div class="chartwrap rv d3">
+      <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Weekly acquisition sales: week one 49, week two 44, week three 67 which was the peak, week four 33 covering five of seven days">
+        <!-- gridlines -->
+        <line class="gline" x1="60" y1="320" x2="740" y2="320"/>
+        <line class="gline" x1="60" y1="240" x2="740" y2="240"/>
+        <line class="gline" x1="60" y1="160" x2="740" y2="160"/>
+        <line class="gline" x1="60" y1="80"  x2="740" y2="80"/>
+        <text class="axis" x="48" y="325" text-anchor="end">0</text>
+        <text class="axis" x="48" y="245" text-anchor="end">20</text>
+        <text class="axis" x="48" y="165" text-anchor="end">40</text>
+        <text class="axis" x="48" y="85"  text-anchor="end">60</text>
+        <!-- bars: 4px per unit, base y=320 -->
+        <rect class="bar b1" x="95"  y="124" width="100" height="196" rx="10" fill="var(--accent-deep)"/>
+        <rect class="bar b2" x="260" y="144" width="100" height="176" rx="10" fill="var(--accent-deep)"/>
+        <rect class="bar b3" x="425" y="52"  width="100" height="268" rx="10" fill="var(--accent)"/>
+        <rect class="bar b4" x="590" y="188" width="100" height="132" rx="10" fill="var(--accent-deep)" opacity="0.45" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 5"/>
+        <!-- values -->
+        <text class="barval" x="145" y="108" text-anchor="middle">49</text>
+        <text class="barval" x="310" y="128" text-anchor="middle">44</text>
+        <text class="barval" x="475" y="36"  text-anchor="middle">67</text>
+        <text class="barval" x="640" y="172" text-anchor="middle">33</text>
+        <!-- tags -->
+        <text class="peaktag" x="475" y="16" text-anchor="middle">PEAK WEEK</text>
+        <text class="parttag" x="640" y="152" text-anchor="middle">5 OF 7 DAYS</text>
+        <!-- x labels -->
+        <text class="axis" x="145" y="352" text-anchor="middle">W1 · 8 Jun</text>
+        <text class="axis" x="310" y="352" text-anchor="middle">W2 · 15 Jun</text>
+        <text class="axis" x="475" y="352" text-anchor="middle">W3 · 22 Jun</text>
+        <text class="axis" x="640" y="352" text-anchor="middle">W4 · 29 Jun*</text>
+        <text class="axis" x="400" y="390" text-anchor="middle" style="font-size:12px;">Acquisition sales per week — both stores combined</text>
+      </svg>
+    </div>
+    <p class="footnote rv d4">*W4 = 5 of 7 days — sales data runs to Friday 3 July, so the weekend is missing from that bar.</p>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 6 · SYLVIA PARK ================= -->
+<section class="scene alt">
+  <div class="inner">
+    <span class="eyebrow rv">Sylvia Park</span>
+    <h2 class="rv d1">+21% — you set the pace.</h2>
+    <p class="lede rv d2">When nearly a whole store leans in, the whole store moves. Eleven of thirteen of you deployed the fund, and Sylvia Park finished <b>21% above</b> what we expected — 148 acquisition sales and <b>$13,500 earned</b> across the team.</p>
+    <div class="dots rv d3" aria-label="11 of 13 reps used the fund">
+      <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span>
+    </div>
+    <p class="dots-cap rv d3">11 of 13 reps used the fund</p>
+    <div class="cardrow c3">
+      <div class="card rv d3">
+        <span class="step">Fast starter</span>
+        <h3>Harmanjit</h3>
+        <p>Earliest adopter in the whole trial — 13 fund deployments in week one alone, and seven sales on the board that same week.</p>
+      </div>
+      <div class="card rv d4">
+        <span class="step">Flying start</span>
+        <h3>Raajan</h3>
+        <p>Five sales in week one off a tiny baseline — proof the fund can spark a week from a standing start. Earned $1,200.</p>
+      </div>
+      <div class="card rv d5">
+        <span class="step">The pattern</span>
+        <h3>Use it and it works</h3>
+        <p>Week after week, the reps deploying the fund were the reps beating their baseline. That's not a coincidence — that's the mechanic doing its job.</p>
+      </div>
+    </div>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 7 · ALBANY ================= -->
+<section class="scene">
+  <div class="inner">
+    <span class="eyebrow rv">Albany</span>
+    <h2 class="rv d1">The fund worked wherever it was used.</h2>
+    <p class="lede rv d2">Albany put 45 acquisition sales on the board and earned <b>$4,800</b> — and gave the trial one of its best stories.</p>
+    <div class="story">
+      <div class="hero-card rv d3">
+        <div class="big">0 → 7</div>
+        <h3>Saad's month</h3>
+        <p>New to the team, starting with no baseline at all — then <b>six sales in a single week</b> and seven for the trial, earning <b>$2,100</b>. Saad proved it at Albany: when the fund gets used here, it works. Now we want to unlock that for the whole team.</p>
+      </div>
+      <div class="mini-col">
+        <div class="mini rv d4">
+          <b>Tina <span class="n">+4</span></b>
+          <p>Four sales above her baseline and $1,200 earned — lift found before even deploying the fund. Imagine the ceiling with it.</p>
+        </div>
+        <div class="mini rv d5">
+          <b>Mischa <span class="n">+4</span></b>
+          <p>Finished the month flying — three of her four sales landed in the final week. $1,200 earned, momentum heading the right way.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 8 · CHAMPIONS ================= -->
+<section class="scene alt">
+  <div class="inner">
+    <span class="eyebrow rv">Take a bow</span>
+    <h2 class="rv d1">Trial champions</h2>
+    <p class="lede rv d2">Different stores, different starting points — same story: back yourself, use the fund, beat your own best.</p>
+    <div class="cardrow c5">
+      <div class="champ rv d1">
+        <span class="store-tag">Sylvia Park</span>
+        <span class="name">Shuai</span>
+        <div class="feat">1 → 16</div>
+        <p class="desc">One sale in the four weeks before the trial — sixteen during it. Biggest fund deployer, and the trial's top earner.</p>
+        <span class="earn">$3,600 earned</span>
+      </div>
+      <div class="champ rv d2">
+        <span class="store-tag">Sylvia Park</span>
+        <span class="name">Taranpreet</span>
+        <div class="feat">+11</div>
+        <p class="desc">Eleven above own pace, consistent every single week — and the most fund uses of anyone in the trial (7).</p>
+        <span class="earn">$2,400 earned</span>
+      </div>
+      <div class="champ rv d3">
+        <span class="store-tag">Sylvia Park</span>
+        <span class="name">Shaminder</span>
+        <div class="feat">20 sales</div>
+        <p class="desc">Highest volume in the whole trial — twenty acquisition sales while still finishing six above baseline.</p>
+        <span class="earn">$1,800 earned</span>
+      </div>
+      <div class="champ rv d4">
+        <span class="store-tag">Albany</span>
+        <span class="name">Saad</span>
+        <div class="feat">+7</div>
+        <p class="desc">Zero to seven, including six in one week. Albany's proof that the fund delivers when it's in play.</p>
+        <span class="earn">$2,100 earned</span>
+      </div>
+      <div class="champ rv d5">
+        <span class="store-tag">Sylvia Park</span>
+        <span class="name">Ashish</span>
+        <div class="feat">+8.6</div>
+        <p class="desc">Eight-point-six above own pace with seven fund uses — quietly one of the most complete trials anyone ran.</p>
+        <span class="earn">$1,800 earned</span>
+      </div>
+    </div>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 9 · FULL LEADERBOARD ================= -->
+<section class="scene">
+  <div class="inner">
+    <span class="eyebrow rv">Full transparency</span>
+    <h2 class="rv d1">The leaderboard — all 23 of us</h2>
+    <p class="lede rv d2">Everyone who was on the floor, both stores, the whole picture. Sorted by earnings, then total sales.</p>
+    <div class="tablewrap rv d3">
+      <table>
+        <thead>
+          <tr>
+            <th>Rep</th><th>Store</th><th>Baseline/wk</th><th>W1</th><th>W2</th><th>W3</th><th>W4*</th><th>Total sales</th><th>Above baseline</th><th>Earned $</th><th>Fund uses†</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="podium"><td>Shuai</td><td><span class="chip sp">Sylvia Park</span></td><td>0.25</td><td>2</td><td>3</td><td>9</td><td>2</td><td>16</td><td>12</td><td class="earn">$3,600</td><td>5</td></tr>
+          <tr class="podium"><td>Taranpreet</td><td><span class="chip sp">Sylvia Park</span></td><td>1.25</td><td>4</td><td>5</td><td>5</td><td>2</td><td>16</td><td>8</td><td class="earn">$2,400</td><td>7</td></tr>
+          <tr class="podium"><td>Saad</td><td><span class="chip alb">Albany</span></td><td>0</td><td>0</td><td>0</td><td>6</td><td>1</td><td>7</td><td>7</td><td class="earn">$2,100</td><td>1</td></tr>
+          <tr><td>Shaminder</td><td><span class="chip sp">Sylvia Park</span></td><td>3</td><td>6</td><td>4</td><td>6</td><td>4</td><td>20</td><td>6</td><td class="earn">$1,800</td><td>5</td></tr>
+          <tr><td>Ashish</td><td><span class="chip sp">Sylvia Park</span></td><td>2</td><td>3</td><td>4</td><td>7</td><td>2</td><td>16</td><td>6</td><td class="earn">$1,800</td><td>7</td></tr>
+          <tr><td>Raajan</td><td><span class="chip sp">Sylvia Park</span></td><td>0.25</td><td>5</td><td>0</td><td>0</td><td>1</td><td>6</td><td>4</td><td class="earn">$1,200</td><td>2</td></tr>
+          <tr><td>Tina</td><td><span class="chip alb">Albany</span></td><td>0.5</td><td>0</td><td>3</td><td>3</td><td>0</td><td>6</td><td>4</td><td class="earn">$1,200</td><td>0</td></tr>
+          <tr><td>Mischa</td><td><span class="chip alb">Albany</span></td><td>0</td><td>0</td><td>0</td><td>1</td><td>3</td><td>4</td><td>4</td><td class="earn">$1,200</td><td>0</td></tr>
+          <tr><td>Harmanjit</td><td><span class="chip sp">Sylvia Park</span></td><td>4</td><td>7</td><td>2</td><td>2</td><td>3</td><td>14</td><td>3</td><td class="earn">$900</td><td>1</td></tr>
+          <tr><td>Qiong</td><td><span class="chip sp">Sylvia Park</span></td><td>3</td><td>2</td><td>4</td><td>3</td><td>5</td><td>14</td><td>2</td><td class="earn">$600</td><td>1</td></tr>
+          <tr><td>Kiran</td><td><span class="chip sp">Sylvia Park</span></td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td class="earn">$600</td><td>1</td></tr>
+          <tr><td>Ashmera</td><td><span class="chip sp">Sylvia Park</span></td><td>3.25</td><td>2</td><td>2</td><td>2</td><td>4</td><td>10</td><td>1</td><td class="earn">$300</td><td>1</td></tr>
+          <tr><td>Daniel</td><td><span class="chip sp">Sylvia Park</span></td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>6</td><td>1</td><td class="earn">$300</td><td>2</td></tr>
+          <tr><td>Tom</td><td><span class="chip alb">Albany</span></td><td>0.25</td><td>2</td><td>1</td><td>1</td><td>0</td><td>4</td><td>1</td><td class="earn">$300</td><td>0</td></tr>
+          <tr><td>Umesh</td><td><span class="chip sp">Sylvia Park</span></td><td>5.75</td><td>4</td><td>5</td><td>5</td><td>2</td><td>16</td><td class="zero">0</td><td class="zero">$0</td><td class="zero">0</td></tr>
+          <tr><td>Kai</td><td><span class="chip alb">Albany</span></td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>7</td><td class="zero">0</td><td class="zero">$0</td><td>1</td></tr>
+          <tr><td>Roanne</td><td><span class="chip sp">Sylvia Park</span></td><td>2.25</td><td>2</td><td>2</td><td>3</td><td>0</td><td>7</td><td class="zero">0</td><td class="zero">$0</td><td>1</td></tr>
+          <tr><td>Sahil</td><td><span class="chip alb">Albany</span></td><td>2.75</td><td>1</td><td>2</td><td>3</td><td>1</td><td>7</td><td class="zero">0</td><td class="zero">$0</td><td>3</td></tr>
+          <tr><td>Joshuah</td><td><span class="chip alb">Albany</span></td><td>2</td><td>1</td><td>1</td><td>3</td><td>0</td><td>5</td><td class="zero">0</td><td class="zero">$0</td><td class="zero">0</td></tr>
+          <tr><td>Siyan</td><td><span class="chip sp">Sylvia Park</span></td><td>3.25</td><td>2</td><td>1</td><td>2</td><td>0</td><td>5</td><td class="zero">0</td><td class="zero">$0</td><td class="zero">0</td></tr>
+          <tr><td>Qing</td><td><span class="chip alb">Albany</span></td><td>2</td><td>1</td><td>1</td><td>2</td><td>0</td><td>4</td><td class="zero">0</td><td class="zero">$0</td><td class="zero">0</td></tr>
+          <tr><td>Jayson</td><td><span class="chip alb">Albany</span></td><td>0.5</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td class="zero">0</td><td class="zero">$0</td><td class="zero">0</td></tr>
+          <tr><td>Mohit</td><td><span class="chip alb">Albany</span></td><td>0.5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="zero">0</td><td class="zero">$0</td><td class="zero">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote rv d4">*W4 = 5 of 7 days (sales data to Friday 3 July). †Fund uses counts Growth-Fund-coded deployments from 23 June — plenty of deployments happened earlier, before the reason code existed, and many credits reps load are legitimate service credits. Always use the Growth Fund reason code so every deployment counts toward your tally.</p>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 10 · WHAT WE LEARNED ================= -->
+<section class="scene alt">
+  <div class="inner">
+    <span class="eyebrow rv">What we learned</span>
+    <h2 class="rv d1">Three things the month taught us</h2>
+    <div class="cardrow c3">
+      <div class="card rv d2">
+        <span class="step">01</span>
+        <h3>Fund use and lift go together</h3>
+        <p>The reps who deployed the fund were, week after week, the reps beating their own baseline. Sylvia Park had 11 of 13 using it — and finished 21% up.</p>
+      </div>
+      <div class="card rv d3">
+        <span class="step">02</span>
+        <h3>It works from any starting point</h3>
+        <p>Big baselines, tiny baselines, brand-new reps — the fund delivered wherever it was used. Saad proved it at Albany; Shuai proved it at Sylvia Park.</p>
+      </div>
+      <div class="card rv d4">
+        <span class="step">03</span>
+        <h3>The reason code is your friend</h3>
+        <p>Lots of what you load are legitimate service credits — competitor matches, remediation. The Growth Fund reason code keeps your fund work visible so you get full credit for it. Use it every time.</p>
+      </div>
+    </div>
+    <p class="lede rv d5">One honest note: usage wasn't consistent everywhere — so we'll be checking in with a few of you to make sure everyone feels confident using the fund. If it feels unclear, that's on us, not you.</p>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 11 · WHAT'S NEXT ================= -->
+<section class="scene">
+  <div class="inner">
+    <span class="eyebrow rv">What's next</span>
+    <h2 class="rv d1">Keep the momentum</h2>
+    <div class="nextlist">
+      <div class="nextitem rv d2">
+        <span class="num">1</span>
+        <div><b>We'll be checking in with everyone</b>
+        <p>Quick one-on-ones over the coming weeks — what worked, what felt clunky, what you'd change. Your feedback shapes the next phase.</p></div>
+      </div>
+      <div class="nextitem rv d3">
+        <span class="num">2</span>
+        <div><b>Keep doing what worked</b>
+        <p>The mechanics stay simple: beat your own baseline, earn your fund, deploy it to close. Week 3 showed what this looks like at full noise — that's the bar.</p></div>
+      </div>
+      <div class="nextitem rv d4">
+        <span class="num">3</span>
+        <div><b>Next phase incoming</b>
+        <p>We're locking in the details now. Expect the same simple fund with better tracking and more support on the floor — and always tag it with the Growth Fund reason code so your mahi counts.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="onenz">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ================= 12 · CLOSE ================= -->
+<section class="scene alt" id="close">
+  <div class="inner">
+    <span class="eyebrow rv">Albany + Sylvia Park · June 2026</span>
+    <h2 class="rv d1" style="font-size:clamp(38px,6vw,72px);">Thank you —<br>you made this work.</h2>
+    <p class="lede rv d2" style="margin-left:auto;margin-right:auto;">193 sales. $18,300 earned. A brand-new play, proven by the people on the floor. See you in the next phase.</p>
+    <div class="onenz-big rv d3">one<span class="dot">.</span>nz</div>
+    <p class="sub rv d4">Growth Fund Trial · 8 June – 3 July 2026</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- theme toggle (default dark) ---- */
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function setIcon(){ btn.textContent = root.classList.contains('dark') ? '☀' : '☾'; }
+  btn.addEventListener('click', function(){
+    root.classList.toggle('dark');
+    root.classList.toggle('light');
+    setIcon();
+  });
+  setIcon();
+
+  /* ---- count-up ---- */
+  function countUp(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var commas = el.getAttribute('data-commas') === '1';
+    function fmt(n){
+      var v = Math.round(n);
+      var s = commas ? v.toLocaleString('en-NZ') : String(v);
+      return prefix + s + suffix;
+    }
+    if (reduce){ el.textContent = fmt(target); return; }
+    var dur = 1000, start = null;
+    function step(ts){
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(target * eased);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---- scene entrance + staggered table rows ---- */
+  var scenes = document.querySelectorAll('.scene');
+  var counted = new WeakSet();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (!entry.isIntersecting) return;
+      var scene = entry.target;
+      scene.classList.add('in-view');
+      /* stagger table rows */
+      var rows = scene.querySelectorAll('tbody tr');
+      rows.forEach(function(r,i){
+        r.style.transitionDelay = Math.min(i * 45, 900) + 'ms';
+      });
+      /* fire count-ups once */
+      scene.querySelectorAll('[data-count]').forEach(function(el){
+        if (!counted.has(el)){ counted.add(el); countUp(el); }
+      });
+      io.unobserve(scene);
+    });
+  }, { threshold: 0.18 });
+  scenes.forEach(function(s){ io.observe(s); });
+})();
+</script>
+</body>
+</html>

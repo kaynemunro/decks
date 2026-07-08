@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Growth Fund Trial — Programme Review</title>
+<style>
+/* ============ ONE NZ DECK — GROWTH FUND TRIAL (LEADERSHIP READ) ============ */
+:root{
+  --green:#00A45F;
+  --green-bright:#12CB77;
+  --tint:#95EEB4;
+  --tint-2:#CDFBDD;
+  --alert-red:#D31F3F;
+  --alert-yellow:#FFD600;
+}
+.theme-dark{
+  --bg:#06231F;
+  --bg-2:#0A3833;
+  --card:#0A3833;
+  --card-2:#0D423A;
+  --ink:#F8F9FA;
+  --ink-soft:#AEC4BD;
+  --ink-faint:#7E968F;
+  --line:rgba(255,255,255,.12);
+  --line-soft:rgba(255,255,255,.07);
+  --chart-grid:rgba(255,255,255,.10);
+  --chart-grey:#3A5751;
+  --chart-grey-2:#54736C;
+  --accent-ink:#12CB77;
+  --stat-ink:#CDFBDD;
+  --shadow:0 18px 48px rgba(0,0,0,.35);
+  --red-soft:#FF6D89;
+}
+.theme-light{
+  --bg:#F8F9FA;
+  --bg-2:#FFFFFF;
+  --card:#FFFFFF;
+  --card-2:#F1F4F3;
+  --ink:#323232;
+  --ink-soft:#5A6376;
+  --ink-faint:#8A93A0;
+  --line:#E1E4E9;
+  --line-soft:#EDF0F2;
+  --chart-grid:#E1E4E9;
+  --chart-grey:#C9D0D6;
+  --chart-grey-2:#AAB4BC;
+  --accent-ink:#00A45F;
+  --stat-ink:#0A3833;
+  --shadow:0 18px 48px rgba(10,56,51,.10);
+  --red-soft:#D31F3F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .35s ease, color .35s ease;
+}
+::selection{background:var(--green);color:#fff}
+
+/* ---------- scenes ---------- */
+.scene{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:88px 24px;
+  position:relative;
+  overflow:hidden;
+}
+.scene:nth-child(even){background:var(--bg-2)}
+.wrap{width:100%;max-width:1120px;position:relative;z-index:2}
+
+/* entrance animation */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.scene.in-view .reveal{opacity:1;transform:translateY(0)}
+.scene.in-view .reveal.d1{transition-delay:.08s}
+.scene.in-view .reveal.d2{transition-delay:.16s}
+.scene.in-view .reveal.d3{transition-delay:.24s}
+.scene.in-view .reveal.d4{transition-delay:.32s}
+.scene.in-view .reveal.d5{transition-delay:.40s}
+
+/* ---------- type ---------- */
+.kicker{
+  display:inline-block;
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent-ink);
+  margin-bottom:14px;
+}
+h1{font-size:clamp(2.3rem,5.4vw,3.9rem);font-weight:600;line-height:1.08;letter-spacing:-.015em}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;line-height:1.15;letter-spacing:-.01em;margin-bottom:14px}
+h3{font-size:1.08rem;font-weight:600;margin-bottom:6px}
+.lede{font-size:clamp(1.02rem,1.7vw,1.2rem);color:var(--ink-soft);max-width:56ch}
+p{color:var(--ink-soft)}
+strong{color:var(--ink);font-weight:600}
+.green{color:var(--accent-ink)}
+.small{font-size:.85rem;color:var(--ink-faint)}
+.footnote{font-size:.8rem;color:var(--ink-faint);margin-top:14px;max-width:78ch}
+
+/* ---------- brand mark ---------- */
+.mark{
+  position:absolute;
+  bottom:26px;
+  right:30px;
+  font-weight:600;
+  font-size:.95rem;
+  color:var(--ink-faint);
+  letter-spacing:-.01em;
+  z-index:3;
+  user-select:none;
+}
+.mark .dot{color:var(--green)}
+
+/* ---------- theme toggle & progress ---------- */
+#themeToggle{
+  position:fixed;top:18px;right:18px;z-index:50;
+  background:var(--card);color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 16px;
+  font:600 .8rem "Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:background .3s,color .3s,border-color .3s;
+}
+#themeToggle:hover{border-color:var(--green)}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--green);width:0;z-index:60;transition:width .12s linear}
+
+/* ---------- cards, grids, stats ---------- */
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin:34px 0 26px}
+.stat{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:26px 24px 22px;
+  box-shadow:var(--shadow);
+}
+.stat .num{font-size:clamp(1.9rem,3.4vw,2.7rem);font-weight:600;color:var(--stat-ink);line-height:1.05;letter-spacing:-.02em}
+.stat .num em{font-style:normal;color:var(--accent-ink)}
+.stat .lbl{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
+.stat .sub{font-size:.85rem;color:var(--ink-soft);margin-top:6px}
+
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:30px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+.card .step{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--green);color:#fff;font-weight:600;font-size:.95rem;
+  margin-bottom:12px;
+}
+.card p{font-size:.93rem}
+
+.callout{
+  border-left:4px solid var(--green);
+  background:var(--card);
+  border-radius:0 16px 16px 0;
+  padding:20px 24px;
+  margin-top:28px;
+  box-shadow:var(--shadow);
+}
+.callout.warn{border-left-color:var(--alert-yellow)}
+.callout.risk{border-left-color:var(--alert-red)}
+.callout p{font-size:.95rem}
+.callout .tag{font-size:.68rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+
+/* ---------- agenda ---------- */
+.agenda{list-style:none;margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 36px;counter-reset:ag}
+.agenda li{
+  counter-increment:ag;
+  display:flex;gap:16px;align-items:baseline;
+  padding:13px 4px;border-bottom:1px solid var(--line-soft);
+  font-size:1rem;color:var(--ink);font-weight:500;
+}
+.agenda li::before{
+  content:counter(ag,decimal-leading-zero);
+  font-size:.78rem;font-weight:600;color:var(--accent-ink);letter-spacing:.06em;
+}
+.agenda li span{font-size:.82rem;color:var(--ink-faint);font-weight:400}
+
+/* ---------- charts ---------- */
+.chartbox{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:26px 22px 16px;
+  margin-top:30px;
+  box-shadow:var(--shadow);
+  overflow-x:auto;
+}
+.chartbox svg{display:block;width:100%;height:auto;min-width:560px}
+.chartbox .cap{font-size:.8rem;color:var(--ink-faint);padding:10px 6px 6px;min-width:560px}
+.legend{display:flex;flex-wrap:wrap;gap:18px;padding:4px 6px 2px;min-width:560px}
+.legend span{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;color:var(--ink-soft)}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+
+/* svg text */
+svg text{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif}
+.ax{font-size:12px;fill:var(--ink-faint)}
+.axb{font-size:12.5px;font-weight:600;fill:var(--ink-soft)}
+.val{font-size:14px;font-weight:600;fill:var(--ink)}
+.valg{font-size:14px;font-weight:600;fill:var(--accent-ink)}
+.note{font-size:11.5px;fill:var(--ink-faint)}
+.noteb{font-size:11.5px;font-weight:600;fill:var(--ink-soft)}
+
+/* ---------- store compare bars ---------- */
+.compare{display:grid;gap:26px;margin-top:26px}
+.cmp-row .cmp-label{font-size:.78rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
+.cmp-pair{display:grid;gap:8px}
+.cmp-bar{display:grid;grid-template-columns:110px 1fr 110px;align-items:center;gap:14px}
+.cmp-bar .who{font-size:.9rem;font-weight:600;color:var(--ink)}
+.cmp-bar .track{background:var(--card-2);border-radius:8px;height:26px;overflow:hidden}
+.cmp-bar .fill{height:100%;border-radius:8px;background:var(--green);min-width:3px}
+.cmp-bar.alt .fill{background:var(--chart-grey-2)}
+.cmp-bar .v{font-size:.9rem;font-weight:600;color:var(--ink-soft);text-align:left;white-space:nowrap}
+
+/* ---------- people ---------- */
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:28px}
+.person{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);
+}
+.person .who{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.person .who b{font-size:1.05rem;font-weight:600;color:var(--ink)}
+.person .who i{font-style:normal;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.person .big{font-size:1.35rem;font-weight:600;color:var(--stat-ink);margin:2px 0 4px}
+.person p{font-size:.85rem}
+
+/* ---------- numbered recs / learnings ---------- */
+.list{display:grid;gap:14px;margin-top:28px}
+.item{
+  display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow);
+}
+.item .n{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--green);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:600;font-size:.95rem;margin-top:2px;
+}
+.item.gate .n{background:var(--alert-yellow);color:#0A3833}
+.item h3{margin-bottom:2px}
+.item p{font-size:.9rem}
+.fix{display:inline-block;margin-top:6px;font-size:.78rem;font-weight:600;color:var(--accent-ink)}
+
+/* ---------- cover ---------- */
+.cover-bg{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(1100px 560px at 82% -10%, rgba(0,164,95,.28), transparent 62%),
+    radial-gradient(760px 480px at -8% 108%, rgba(18,203,119,.16), transparent 60%);
+}
+.theme-light .cover-bg{
+  background:
+    radial-gradient(1100px 560px at 82% -10%, rgba(0,164,95,.14), transparent 62%),
+    radial-gradient(760px 480px at -8% 108%, rgba(18,203,119,.10), transparent 60%);
+}
+.cover-brand{font-weight:600;font-size:1.25rem;margin-bottom:60px}
+.cover-brand .dot{color:var(--green)}
+.cover-meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.chip{
+  border:1px solid var(--line);
+  background:var(--card);
+  border-radius:999px;
+  padding:8px 18px;
+  font-size:.85rem;font-weight:500;color:var(--ink-soft);
+}
+.chip b{color:var(--accent-ink);font-weight:600}
+
+/* verdict banner */
+.verdict{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--green);color:#fff;
+  border-radius:14px;padding:14px 22px;
+  font-weight:600;font-size:1.05rem;
+  margin-top:30px;box-shadow:var(--shadow);
+}
+.verdict .pill{background:rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+
+/* two-col scene layout */
+.twocol{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start}
+@media(max-width:860px){.twocol{grid-template-columns:1fr}}
+
+/* close */
+.close-num{font-size:clamp(3rem,8vw,5.2rem);font-weight:600;color:var(--accent-ink);letter-spacing:-.03em;line-height:1}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<button id="themeToggle" aria-label="Toggle colour theme">Light mode</button>
+
+<!-- ============ 1 · COVER ============ -->
+<section class="scene" id="cover">
+  <div class="cover-bg"></div>
+  <div class="wrap">
+    <div class="cover-brand reveal">one<span class="dot">.</span>nz</div>
+    <div class="kicker reveal d1">Retail · Membership · Programme Review</div>
+    <h1 class="reveal d1">Growth Fund Trial<br><span class="green">Programme Review</span></h1>
+    <p class="lede reveal d2" style="margin-top:20px">Two stores. Four weeks. A $300-a-sale fund that reps deploy as Phone Dollars to close acquisition deals. Here's what actually happened — the good, the gaps, and the call we need to make.</p>
+    <div class="cover-meta reveal d3">
+      <span class="chip"><b>8 Jun – 3 Jul 2026</b> · configured 3&nbsp;wks, measured into W4</span>
+      <span class="chip"><b>Albany</b> · 10 active reps</span>
+      <span class="chip"><b>Sylvia Park</b> · 13 active reps</span>
+      <span class="chip">Internal — leadership read</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · AGENDA ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">What we'll cover</div>
+    <h2 class="reveal">The honest read, in order</h2>
+    <ol class="agenda reveal d1">
+      <li>Executive summary <span>the verdict up front</span></li>
+      <li>How the fund works <span>mechanics in 60 seconds</span></li>
+      <li>Headline results <span>193 sales vs ~167 expected</span></li>
+      <li>Weekly trajectory <span>build, peak, fade</span></li>
+      <li>Deployments &amp; data integrity <span>the BAU adjustment, explained</span></li>
+      <li>ROI <span>the range, and why it's a range</span></li>
+      <li>Sylvia Park <span>what working looks like</span></li>
+      <li>Albany <span>an adoption gap, not a mechanism failure</span></li>
+      <li>Individual standouts <span>who moved, and by how much</span></li>
+      <li>What we learned <span>five measurement fixes</span></li>
+      <li>Recommendations <span>continue, don't scale — and a gate</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 3 · EXECUTIVE SUMMARY ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Executive summary</div>
+    <h2 class="reveal">The mechanism works — where reps actually used it</h2>
+    <div class="statgrid">
+      <div class="stat reveal d1">
+        <div class="num"><em>+26</em></div>
+        <div class="lbl">Net incremental acquisitions</div>
+        <div class="sub">+16% vs drift-adjusted baseline (network uplift already netted out)</div>
+      </div>
+      <div class="stat reveal d2">
+        <div class="num">~$40.1k</div>
+        <div class="lbl">Value created at $1,550 CLV</div>
+        <div class="sub">~$25.9k on a conservative $1,000/acq</div>
+      </div>
+      <div class="stat reveal d3">
+        <div class="num"><em>~2.9×</em></div>
+        <div class="lbl">Best-estimate ROI</div>
+        <div class="sub">Conservative floor 1.1× — still at or above break-even</div>
+      </div>
+      <div class="stat reveal d4">
+        <div class="num">1 of 2</div>
+        <div class="lbl">Stores landed it</div>
+        <div class="sub">Sylvia Park +21% carries the result; Albany flat on thin adoption</div>
+      </div>
+    </div>
+    <p class="lede reveal d4">Sylvia Park proves the model; Albany proves adoption — not the mechanic — is the constraint. Measurement gaps (no reason codes before 23&nbsp;Jun, point-of-sale tagging never populated) mean the honest answer is a range, not a number.</p>
+    <div class="verdict reveal d5"><span class="pill">Verdict</span> Continue — don't scale yet. One clean, fully-measured cycle first.</div>
+  </div>
+</section>
+
+<!-- ============ 4 · HOW THE FUND WORKS ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Mechanics</div>
+    <h2 class="reveal">How the Growth Fund works</h2>
+    <p class="lede reveal d1">A rep-level incentive that turns discount budget into a closing tool — earned by beating your own baseline, spent at the counter.</p>
+    <div class="cardgrid">
+      <div class="card reveal d1">
+        <div class="step">1</div>
+        <h3>Start with $300</h3>
+        <p>Every rep opens the trial with a $300 fund balance — real money they can deploy from day one.</p>
+      </div>
+      <div class="card reveal d2">
+        <div class="step">2</div>
+        <h3>Earn +$300 per sale above your own baseline</h3>
+        <p>Each whole acquisition sale above the rep's own 4-week pre-trial baseline (drift-adjusted weekly) tops the fund up by $300. You compete with yourself, not the leaderboard.</p>
+      </div>
+      <div class="card reveal d3">
+        <div class="step">3</div>
+        <h3>Deploy as Phone Dollars at point of sale</h3>
+        <p>The fund is spent at the counter as Phone Dollars to close deals that would otherwise walk.</p>
+      </div>
+    </div>
+    <div class="callout reveal d4">
+      <span class="tag">Trial configuration</span>
+      <p><strong>Two stores</strong> — Albany (10 active reps) and Sylvia Park (13 active reps). Started <strong>8 Jun 2026</strong>, configured for 3 weeks to 28 Jun; activity and measurement continued into W4. Weeks are Monday-anchored; sales data runs to Fri 3 Jul, so <strong>W4 covers 5 of 7 days</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 · HEADLINE RESULTS ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Headline results · 8 Jun – 3 Jul</div>
+    <h2 class="reveal">193 sales against an expectation of ~167</h2>
+    <div class="statgrid">
+      <div class="stat reveal d1">
+        <div class="num">193</div>
+        <div class="lbl">Acquisition IFP sales</div>
+        <div class="sub">Across both trial stores in the measured window</div>
+      </div>
+      <div class="stat reveal d2">
+        <div class="num">~167</div>
+        <div class="lbl">Drift-adjusted expectation</div>
+        <div class="sub">Network was up ~18% in the period — already adjusted out</div>
+      </div>
+      <div class="stat reveal d3">
+        <div class="num"><em>+26</em> <span style="font-size:.55em">(+16%)</span></div>
+        <div class="lbl">Net incremental acquisitions</div>
+        <div class="sub">≈ $40.1k at $1,550 CLV · ~$25.9k at $1,000</div>
+      </div>
+      <div class="stat reveal d4">
+        <div class="num">$18,300</div>
+        <div class="lbl">Rep earnings under the rule</div>
+        <div class="sub">61 rep-week incremental sales × $300</div>
+      </div>
+    </div>
+    <div class="callout warn reveal d5">
+      <span class="tag">Watch this</span>
+      <p>Rep-level payouts ($18.3k) ran <strong>~2.3× the store-level net lift</strong> (~$8k of floored per-rep value) — individual over-baseline wins overlap with other reps' dips. A light netting or store-level gate on payouts is one of the design fixes for the next cycle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 · WEEKLY TRAJECTORY ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Weekly trajectory</div>
+    <h2 class="reveal">Build, peak, fade — and the fade matters</h2>
+    <p class="lede reveal d1">Sales climbed to a W3 peak of 67, then fell back to roughly baseline pace once the configured trial window ended on 28&nbsp;Jun. The incentive was doing work while it was live.</p>
+    <div class="chartbox reveal d2">
+      <svg viewBox="0 0 640 380" role="img" aria-label="Weekly acquisition sales W1 to W4 against adjusted baseline">
+        <!-- gridlines -->
+        <line x1="64" y1="308" x2="616" y2="308" stroke="var(--chart-grid)" stroke-width="1"/>
+        <line x1="64" y1="244" x2="616" y2="244" stroke="var(--chart-grid)" stroke-width="1"/>
+        <line x1="64" y1="180" x2="616" y2="180" stroke="var(--chart-grid)" stroke-width="1"/>
+        <line x1="64" y1="116" x2="616" y2="116" stroke="var(--chart-grid)" stroke-width="1"/>
+        <line x1="64" y1="52"  x2="616" y2="52"  stroke="var(--chart-grid)" stroke-width="1"/>
+        <text class="ax" x="54" y="312" text-anchor="end">0</text>
+        <text class="ax" x="54" y="248" text-anchor="end">20</text>
+        <text class="ax" x="54" y="184" text-anchor="end">40</text>
+        <text class="ax" x="54" y="120" text-anchor="end">60</text>
+        <text class="ax" x="54" y="56"  text-anchor="end">80</text>
+        <!-- bars -->
+        <rect x="99"  y="151.2" width="68" height="156.8" rx="7" fill="var(--green)"/>
+        <rect x="237" y="167.2" width="68" height="140.8" rx="7" fill="var(--green)"/>
+        <rect x="375" y="93.6"  width="68" height="214.4" rx="7" fill="var(--green-bright)"/>
+        <rect x="513" y="202.4" width="68" height="105.6" rx="7" fill="var(--green)" opacity=".45" stroke="var(--green)" stroke-dasharray="5 4" stroke-width="1.5"/>
+        <!-- values -->
+        <text class="val" x="133" y="140" text-anchor="middle">49</text>
+        <text class="val" x="271" y="156" text-anchor="middle">44</text>
+        <text class="valg" x="409" y="82" text-anchor="middle">67</text>
+        <text class="val" x="547" y="191" text-anchor="middle">33</text>
+        <!-- baseline -->
+        <line x1="64" y1="173.6" x2="616" y2="173.6" stroke="var(--alert-yellow)" stroke-width="2" stroke-dasharray="8 6"/>
+        <text class="noteb" x="616" y="166" text-anchor="end" fill="var(--alert-yellow)">adjusted baseline ≈ 42/wk avg (~167 total)</text>
+        <!-- annotations -->
+        <text class="noteb" x="409" y="60" text-anchor="middle">peak</text>
+        <text class="note" x="547" y="222" text-anchor="middle">partial: 5/7 days</text>
+        <text class="note" x="547" y="237" text-anchor="middle">~46/wk pace ≈ baseline</text>
+        <!-- x labels -->
+        <text class="axb" x="133" y="334" text-anchor="middle">W1 · 08 Jun</text>
+        <text class="axb" x="271" y="334" text-anchor="middle">W2 · 15 Jun</text>
+        <text class="axb" x="409" y="334" text-anchor="middle">W3 · 22 Jun</text>
+        <text class="axb" x="547" y="334" text-anchor="middle">W4 · 29 Jun</text>
+        <text class="note" x="547" y="352" text-anchor="middle">post-window · data to Fri 3 Jul</text>
+        <text class="note" x="64" y="366">Acquisition IFP sales, both trial stores · weeks Monday-anchored</text>
+      </svg>
+      <div class="cap">Baseline is drift-adjusted weekly per rep; the dashed line shows the period average (~167 ÷ 4). W2 came in below its own weekly-adjusted baseline. Momentum faded after the configured trial end (28 Jun) — W4's ~46/wk pace is roughly baseline.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · DEPLOYMENTS & DATA INTEGRITY ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Deployments &amp; data integrity</div>
+    <h2 class="reveal">What was actually Growth Fund spend?</h2>
+    <p class="lede reveal d1">Reason codes only exist from 25&nbsp;Jun. Before that, trial-rep loads mix Growth Fund deployments with legitimate business-as-usual service credits — competitor matches, remediation, complaint resolution. So we estimated the split, then validated the method.</p>
+    <div class="chartbox reveal d2">
+      <div class="legend">
+        <span><i style="background:var(--green)"></i> GF-attributable (W1–W2 estimated · W3–W4 coded)</span>
+        <span><i style="background:var(--chart-grey)"></i> BAU service credits / uncoded</span>
+      </div>
+      <svg viewBox="0 0 640 400" role="img" aria-label="Weekly Phone Dollar deployments split into Growth Fund attributable and BAU">
+        <!-- gridlines -->
+        <line x1="64" y1="312" x2="616" y2="312" stroke="var(--chart-grid)"/>
+        <line x1="64" y1="246" x2="616" y2="246" stroke="var(--chart-grid)"/>
+        <line x1="64" y1="180" x2="616" y2="180" stroke="var(--chart-grid)"/>
+        <line x1="64" y1="114" x2="616" y2="114" stroke="var(--chart-grid)"/>
+        <line x1="64" y1="48"  x2="616" y2="48"  stroke="var(--chart-grid)"/>
+        <text class="ax" x="56" y="316" text-anchor="end">$0</text>
+        <text class="ax" x="56" y="250" text-anchor="end">$3.5k</text>
+        <text class="ax" x="56" y="184" text-anchor="end">$7k</text>
+        <text class="ax" x="56" y="118" text-anchor="end">$10.5k</text>
+        <text class="ax" x="56" y="52"  text-anchor="end">$14k</text>
+        <!-- W1: GF 4186 est, nonGF 5200, total 9386 -->
+        <rect x="99" y="233.1" width="68" height="78.9" rx="0" fill="var(--green)" stroke="var(--tint)" stroke-dasharray="5 4" stroke-width="1.5"/>
+        <rect x="99" y="135.0" width="68" height="98.1" fill="var(--chart-grey)"/>
+        <text class="val" x="133" y="124" text-anchor="middle">$9,386</text>
+        <text class="noteb" x="133" y="277" text-anchor="middle" fill="#fff">$4,186</text>
+        <text class="note" x="133" y="291" text-anchor="middle" fill="var(--tint-2)">est.</text>
+        <!-- W2: GF 3775 est, nonGF 3747, total 7522 -->
+        <rect x="237" y="240.8" width="68" height="71.2" fill="var(--green)" stroke="var(--tint)" stroke-dasharray="5 4" stroke-width="1.5"/>
+        <rect x="237" y="170.2" width="68" height="70.7" fill="var(--chart-grey)"/>
+        <text class="val" x="271" y="159" text-anchor="middle">$7,522</text>
+        <text class="noteb" x="271" y="281" text-anchor="middle" fill="#fff">$3,775</text>
+        <text class="note" x="271" y="295" text-anchor="middle" fill="var(--tint-2)">est.</text>
+        <!-- W3: GF coded 1983, rest 11107, total 13090 -->
+        <rect x="375" y="274.6" width="68" height="37.4" fill="var(--green)"/>
+        <rect x="375" y="65.1"  width="68" height="209.4" fill="var(--chart-grey)"/>
+        <text class="val" x="409" y="54" text-anchor="middle">$13,090</text>
+        <text class="noteb" x="409" y="298" text-anchor="middle" fill="#fff">$1,983</text>
+        <!-- W4: GF coded 3863, rest 2974, total 6837 -->
+        <rect x="513" y="239.2" width="68" height="72.8" fill="var(--green)"/>
+        <rect x="513" y="183.1" width="68" height="56.1" fill="var(--chart-grey)"/>
+        <text class="val" x="547" y="172" text-anchor="middle">$6,837</text>
+        <text class="noteb" x="547" y="280" text-anchor="middle" fill="#fff">$3,863</text>
+        <!-- codes-live marker (25 Jun, mid-W3) -->
+        <line x1="409" y1="34" x2="409" y2="46" stroke="var(--accent-ink)" stroke-width="2"/>
+        <text class="noteb" x="416" y="32" fill="var(--accent-ink)">reason codes live 25 Jun (mid-W3)</text>
+        <!-- x labels -->
+        <text class="axb" x="133" y="338" text-anchor="middle">W1</text>
+        <text class="axb" x="271" y="338" text-anchor="middle">W2</text>
+        <text class="axb" x="409" y="338" text-anchor="middle">W3</text>
+        <text class="axb" x="547" y="338" text-anchor="middle">W4</text>
+        <text class="note" x="133" y="356" text-anchor="middle">incl. $2,912 by Albany lead</text>
+        <text class="note" x="133" y="370" text-anchor="middle">Benjamin — known BAU loader</text>
+        <text class="note" x="409" y="356" text-anchor="middle">gap = "leads only" service credits</text>
+        <text class="note" x="409" y="370" text-anchor="middle">Jayson $5,469 · Kiran · Umesh</text>
+        <text class="note" x="547" y="356" text-anchor="middle">clean, fully-coded week</text>
+      </svg>
+      <div class="cap">Phone Dollars loaded by trial-store reps. Green = estimated (W1–W2, dashed) or coded (W3–W4) Growth Fund spend. W3 ledger starts 23 Jun; Mon 22 Jun is uncovered. W5 post-window: $417 GF-coded, outcomes not yet visible — excluded from ROI.</div>
+    </div>
+    <div class="twocol" style="margin-top:26px">
+      <div class="callout reveal d3">
+        <span class="tag">How the BAU adjustment works</span>
+        <p>We took each rep's own Mar–early-Jun business-as-usual loading rate (~$2,300/wk across active reps) and subtracted it from their trial-week loads. What's left is the estimated GF-attributable spend. <strong>Validation:</strong> in W4, with codes live, actual non-GF loading was ~$2,974 against a BAU prediction of ~$2,288 — the method holds.</p>
+      </div>
+      <div class="callout reveal d4">
+        <span class="tag">On the heavy loaders</span>
+        <p>Benjamin (~$1,081/wk), Umesh (~$1,053/wk), Jayson (~$467/wk), Kiran (~$343/wk) and Harmanjit (~$250/wk) are habitual BAU loaders. These are <strong>service credits — appropriate and expected</strong>, not misuse. The point is measurement: without codes we can't cleanly separate them from fund spend.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 · ROI ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Return on investment</div>
+    <h2 class="reveal">The honest answer is a range: 1.1× to 2.9×</h2>
+    <p class="lede reveal d1">Best estimate: $40.1k of CLV against $13.8k of GF-attributable spend ≈ <strong class="green">2.9×</strong>. Count <em>every</em> dollar trial reps loaded ($36.8k) as fund spend and it's still <strong>1.1×</strong> — at or above break-even under the most hostile assumption.</p>
+    <div class="chartbox reveal d2">
+      <svg viewBox="0 0 680 240" role="img" aria-label="ROI range from 1.1x conservative to 2.9x best estimate with markers">
+        <!-- axis -->
+        <line x1="60" y1="150" x2="620" y2="150" stroke="var(--chart-grid)" stroke-width="2"/>
+        <text class="ax" x="60"  y="228" text-anchor="middle">0×</text>
+        <text class="ax" x="140" y="228" text-anchor="middle">1×</text>
+        <text class="ax" x="220" y="228" text-anchor="middle">2×</text>
+        <text class="ax" x="300" y="228" text-anchor="middle">3×</text>
+        <text class="ax" x="380" y="228" text-anchor="middle">4×</text>
+        <text class="ax" x="460" y="228" text-anchor="middle">5×</text>
+        <text class="ax" x="540" y="228" text-anchor="middle">6×</text>
+        <text class="ax" x="620" y="228" text-anchor="middle">7×</text>
+        <!-- honest range band 1.1 - 2.9 -->
+        <rect x="148" y="138" width="144" height="24" rx="12" fill="var(--green)" opacity=".28"/>
+        <!-- break-even -->
+        <line x1="140" y1="132" x2="140" y2="168" stroke="var(--chart-grid)" stroke-width="1.5"/>
+        <!-- scale gate 3x -->
+        <line x1="300" y1="126" x2="300" y2="174" stroke="var(--alert-yellow)" stroke-width="2" stroke-dasharray="6 5"/>
+        <text class="noteb" x="300" y="202" text-anchor="middle" fill="var(--alert-yellow)">≥3× scale gate</text>
+        <!-- markers -->
+        <circle cx="116" cy="150" r="8" fill="var(--chart-grey-2)"/>
+        <text class="note" x="116" y="182" text-anchor="middle">0.7× W4 coded (partial 5/7)</text>
+        <circle cx="148" cy="150" r="9" fill="var(--green)"/>
+        <text class="noteb" x="148" y="108" text-anchor="middle">1.1× conservative floor</text>
+        <text class="note" x="148" y="123" text-anchor="middle">(all trial-rep loads counted)</text>
+        <circle cx="212" cy="150" r="8" fill="var(--green)"/>
+        <text class="note" x="212" y="182" text-anchor="middle" opacity="0">.</text>
+        <text class="noteb" x="196" y="202" text-anchor="end">1.9× at $1,000 CLV</text>
+        <line x1="212" y1="162" x2="204" y2="192" stroke="var(--chart-grid)" stroke-width="1"/>
+        <circle cx="292" cy="150" r="11" fill="var(--green-bright)"/>
+        <text class="valg" x="272" y="128" text-anchor="end">2.9× best estimate</text>
+        <circle cx="572" cy="150" r="8" fill="none" stroke="var(--green-bright)" stroke-width="2.5"/>
+        <text class="noteb" x="572" y="108" text-anchor="middle">~6.4× coded-only</text>
+        <text class="note" x="572" y="123" text-anchor="middle">(denominator artifact — see note)</text>
+        <text class="note" x="60" y="36">Value ÷ GF-attributable spend · value = 26 incremental acquisitions × $1,550 CLV ≈ $40.1k</text>
+      </svg>
+      <div class="cap"><strong>Why show 6.4×?</strong> Dividing $40.1k by only the GF-<em>coded</em> loads (~$6.3k: $5,463 Sylvia Park + $800 Albany) reads ~6.4× — but W1–W2 predate reason codes, so their fund spend can't appear in a coded denominator. It flatters the result; use the 1.1×–2.9× range. W4's 0.7× is 5/7 days and post-window — treat as incomplete, not a trend.</div>
+    </div>
+    <div class="twocol" style="margin-top:26px">
+      <div class="callout reveal d3">
+        <span class="tag">Weekly ROI, best-estimate denominators</span>
+        <p>W1 ~3.6× · W2 negative (sales below baseline) · W3 ~2.8–15× (denominator uncertain; +19.6 incremental acqs ≈ $30.4k on ~$2.0k coded spend) · W4 ~0.7× (partial). The W3 peak is where the fund clearly paid.</p>
+      </div>
+      <div class="callout risk reveal d4">
+        <span class="tag">The caveat that matters most</span>
+        <p>Point-of-sale GF tagging (<code style="font-size:.85em">growth_fund_boost_amount</code>) <strong>never populated</strong> — closed-loop attribution never ran. All ROI here is inferred from incremental sales vs baseline. And <strong>~2/3 of GF-matched loads sat next to upgrades or existing-customer sales</strong>, not new acquisitions — the fund was used as a general close-and-save tool. That's a policy decision we need to make, not a data error.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9 · SYLVIA PARK ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Store story · 1 of 2</div>
+    <h2 class="reveal">Sylvia Park: this is what working looks like</h2>
+    <p class="lede reveal d1">+25 incremental acquisitions (+21% vs adjusted baseline; raw pace 29.5 → 40.1/wk, +36%). Eleven of thirteen reps deployed the fund — 35 coded loads, $5,463 — and usage correlates strongly with lift. Sylvia Park carries virtually the entire programme result, at roughly <strong>7× ROI on coded spend</strong>.</p>
+    <div class="compare reveal d2">
+      <div class="cmp-row">
+        <div class="cmp-label">Incremental acquisitions vs adjusted baseline</div>
+        <div class="cmp-pair">
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="v">+25 (+21%)</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:4%"></span></span><span class="v">+0.9 (flat)</span></div>
+        </div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">Rep adoption — share of active reps who ever deployed</div>
+        <div class="cmp-pair">
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:85%"></span></span><span class="v">11 of 13 (85%)</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:30%"></span></span><span class="v">3 of 10 (30%)</span></div>
+        </div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-label">GF-coded deployments</div>
+        <div class="cmp-pair">
+          <div class="cmp-bar"><span class="who">Sylvia Park</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="v">$5,463 · 35 loads</span></div>
+          <div class="cmp-bar alt"><span class="who">Albany</span><span class="track"><span class="fill" style="width:15%"></span></span><span class="v">$800 · 3 loads</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="footnote reveal d3">Same fund, same rules, same month, same network conditions. The difference between these two rows is adoption.</p>
+  </div>
+</section>
+
+<!-- ============ 10 · ALBANY ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Store story · 2 of 2</div>
+    <h2 class="reveal">Albany: an adoption gap, not a mechanism failure</h2>
+    <div class="twocol" style="margin-top:22px">
+      <div>
+        <p class="lede reveal d1">Albany finished +0.9 incremental — flat. Only 3 of 10 active reps ever deployed the fund (3 coded loads, $800). Its W3 spike (+8) was offset by soft W1 and W4.</p>
+        <p class="reveal d2" style="margin-top:16px">The evidence says the mechanic isn't the problem: <strong>where Albany reps did use the fund, it worked</strong> — Saad went from zero to seven acquisition sales. The fund simply never made it onto most of the floor.</p>
+        <p class="reveal d3" style="margin-top:16px">Factually, for this audience: Albany's engagement was thin outside Saad, and several of the store's large loads were BAU service credits by leads — legitimate, but not fund activity.</p>
+      </div>
+      <div>
+        <div class="stat reveal d2" style="margin-bottom:16px">
+          <div class="num">3 <span style="font-size:.5em">of</span> 10</div>
+          <div class="lbl">Reps who ever deployed</div>
+          <div class="sub">vs 11 of 13 at Sylvia Park</div>
+        </div>
+        <div class="callout reveal d3" style="margin-top:0">
+          <span class="tag">The fix we'd run</span>
+          <p>Apply the Sylvia Park playbook — floor-lead sponsorship and a daily scorecard — before adding any stores. If Albany doesn't move within 2 weeks, swap in a contrast store for the next cycle.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 · INDIVIDUAL STANDOUTS ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">People</div>
+    <h2 class="reveal">The individuals who moved the number</h2>
+    <p class="lede reveal d1">Earnings are under the +$300-per-incremental-sale rule; lift is vs each rep's own pre-trial pace.</p>
+    <div class="people">
+      <div class="person reveal d1">
+        <div class="who"><b>Shuai</b><i>Sylvia Park</i></div>
+        <div class="big">1 → 16 sales</div>
+        <p>The poster child: one acquisition sale in the 4 pre-trial weeks, sixteen during the trial (+15). Biggest coded deployer ($1,276 across 5 loads). Top earner: <strong>$3,600</strong>.</p>
+      </div>
+      <div class="person reveal d2">
+        <div class="who"><b>Taranpreet</b><i>Sylvia Park</i></div>
+        <div class="big">+11 vs own pace</div>
+        <p>Most GF loads (7), consistent W1–W3. Earned <strong>$2,400</strong>.</p>
+      </div>
+      <div class="person reveal d2">
+        <div class="who"><b>Saad</b><i>Albany</i></div>
+        <div class="big">0 → 7 sales</div>
+        <p>Albany's proof the fund works. Earned <strong>$2,100</strong>. (Context: a new rep with a zero baseline.)</p>
+      </div>
+      <div class="person reveal d3">
+        <div class="who"><b>Ashish</b><i>Sylvia Park</i></div>
+        <div class="big">+8.6 vs own pace</div>
+        <p>7 loads. Earned <strong>$1,800</strong>.</p>
+      </div>
+      <div class="person reveal d3">
+        <div class="who"><b>Shaminder</b><i>Sylvia Park</i></div>
+        <div class="big">19–20 sales · +8</div>
+        <p>Highest absolute volume in the trial. Earned <strong>$1,800</strong>.</p>
+      </div>
+      <div class="person reveal d4">
+        <div class="who"><b>Also notable</b><i>Both stores</i></div>
+        <div class="big">Early &amp; adjacent lift</div>
+        <p><strong>Harmanjit</strong> (SP) was the earliest adopter — 13 loads in W1 alone. <strong>Tina</strong> (Albany) lifted +4 without deploying; <strong>Mischa</strong> (Albany) +4 late.</p>
+      </div>
+    </div>
+    <div class="callout warn reveal d5">
+      <span class="tag">Also true — for this room only</span>
+      <p>Some pre-trial stars ran below their own baseline and never used the fund — including Sylvia Park's highest-baseline rep. Albany's engagement was thin outside Saad. And several large loads were BAU service credits by leads (competitor match, remediation, complaints) — <strong>legitimate and expected</strong>, but a reminder of why coded attribution matters. In store-facing material we keep this as a confidence-and-coaching conversation, not a call-out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 · WHAT WE LEARNED ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">What we learned</div>
+    <h2 class="reveal">Five measurement gaps — every one fixable before the next cycle</h2>
+    <div class="list">
+      <div class="item reveal d1">
+        <div class="n">1</div>
+        <div>
+          <h3>No reason codes before 23 Jun</h3>
+          <p>W1–W2 GF spend is a BAU-adjusted <strong>estimate</strong> — a validated method, but an estimate. A fair share of trial-rep loads were legitimate non-GF service credits.</p>
+          <span class="fix">Fix → mandatory GF reason code from day one</span>
+        </div>
+      </div>
+      <div class="item reveal d2">
+        <div class="n">2</div>
+        <div>
+          <h3>Ledger gap on Mon 22 Jun</h3>
+          <p>The goodwill extract ends Sun 21 Jun and the system feed starts Tue 23 Jun — one day uncovered.</p>
+          <span class="fix">Fix → daily goodwill feed</span>
+        </div>
+      </div>
+      <div class="item reveal d3">
+        <div class="n">3</div>
+        <div>
+          <h3>Point-of-sale GF tagging never populated</h3>
+          <p>No closed-loop attribution ran for the entire trial; all ROI is inferred from incremental sales vs baseline.</p>
+          <span class="fix">Fix → wire POS tagging before any scale decision</span>
+        </div>
+      </div>
+      <div class="item reveal d4">
+        <div class="n">4</div>
+        <div>
+          <h3>W4 is partial</h3>
+          <p>Sales data covers 5 of 7 days in W4, and recent cohorts are still maturing — late-trial reads will firm up.</p>
+          <span class="fix">Fix → hold final read until the window matures</span>
+        </div>
+      </div>
+      <div class="item reveal d5">
+        <div class="n">5</div>
+        <div>
+          <h3>App baselines locked on ALL IFPs</h3>
+          <p>The live page's baselines were locked on all IFPs (~4× acquisition-only), so it under-reports rep earnings until re-locked.</p>
+          <span class="fix">Fix → re-lock baselines acquisition-only</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 · RECOMMENDATIONS ============ -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Recommendations</div>
+    <h2 class="reveal">Continue, don't scale — and put a gate on the door</h2>
+    <div class="list">
+      <div class="item reveal d1">
+        <div class="n">1</div>
+        <div>
+          <h3>Run one clean, fully-measured cycle</h3>
+          <p>4–6 weeks at the same two stores. Prove the number with proper instrumentation before spending more.</p>
+        </div>
+      </div>
+      <div class="item reveal d1">
+        <div class="n">2</div>
+        <div>
+          <h3>Fix measurement from day one</h3>
+          <p>Mandatory GF reason code, POS tagging wired and tested, daily goodwill feed, baselines re-locked acquisition-only.</p>
+        </div>
+      </div>
+      <div class="item reveal d2">
+        <div class="n">3</div>
+        <div>
+          <h3>Make the upgrade-vs-acquisition policy call</h3>
+          <p>~2/3 of the fund landed on non-acquisition closes (upgrades, existing-customer saves). Decide whether that's in scope and priced in — or out of bounds — before the next cycle.</p>
+        </div>
+      </div>
+      <div class="item reveal d2">
+        <div class="n">4</div>
+        <div>
+          <h3>Fix Albany adoption with the Sylvia Park playbook</h3>
+          <p>Floor-lead sponsorship and a daily scorecard before adding stores. No movement in 2 weeks → swap in a contrast store.</p>
+        </div>
+      </div>
+      <div class="item reveal d3">
+        <div class="n">5</div>
+        <div>
+          <h3>Add light netting or a store-level gate on payouts</h3>
+          <p>Floored per-rep payouts ($18.3k) ran ~2.3× the ~$8k store-level net lift. Keep the individual incentive; stop paying for offsetting noise.</p>
+        </div>
+      </div>
+      <div class="item gate reveal d4">
+        <div class="n">★</div>
+        <div>
+          <h3>Decision gate</h3>
+          <p>If the clean cycle delivers <strong>ROI ≥ 3× with proper tagging</strong>, scale to 5–6 stores. If it doesn't, we'll know exactly why — because this time we'll have measured it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 · CLOSE ============ -->
+<section class="scene">
+  <div class="cover-bg"></div>
+  <div class="wrap" style="text-align:center">
+    <div class="kicker reveal">The bottom line</div>
+    <div class="close-num reveal d1">+26 acquisitions</div>
+    <p class="lede reveal d2" style="margin:22px auto 0;max-width:52ch">for ~$13.8k of fund spend — a 1.1×–2.9× return with one store doing the heavy lifting. The mechanic earned a second, cleaner look. Let's measure it properly and make the scale call with confidence.</p>
+    <div class="verdict reveal d3" style="margin-top:34px"><span class="pill">Next step</span> One clean 4–6 week cycle · gate at ≥3×</div>
+    <p class="small reveal d4" style="margin-top:44px">Growth Fund Trial · 8 Jun – 3 Jul 2026 · Albany &amp; Sylvia Park<br>Prepared for the Consumer leadership team · figures verified against production data 9 Jul 2026</p>
+  </div>
+</section>
+
+<script>
+/* ---------- brand mark on every scene ---------- */
+document.querySelectorAll('.scene').forEach(function(s){
+  var m = document.createElement('div');
+  m.className = 'mark';
+  m.innerHTML = 'one<span class="dot">.</span>nz';
+  s.appendChild(m);
+});
+
+/* ---------- entrance animations ---------- */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('in-view'); }
+  });
+},{threshold:0.18});
+document.querySelectorAll('.scene').forEach(function(s){ io.observe(s); });
+
+/* ---------- theme toggle (default dark) ---------- */
+var root = document.documentElement;
+var btn = document.getElementById('themeToggle');
+function setLabel(){
+  btn.textContent = root.classList.contains('theme-dark') ? 'Light mode' : 'Dark mode';
+}
+btn.addEventListener('click', function(){
+  root.classList.toggle('theme-dark');
+  root.classList.toggle('theme-light');
+  setLabel();
+});
+setLabel();
+
+/* ---------- scroll progress ---------- */
+var prog = document.getElementById('progress');
+function onScroll(){
+  var h = document.documentElement;
+  var max = h.scrollHeight - h.clientHeight;
+  prog.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+}
+document.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+</script>
+</body>
+</html>
