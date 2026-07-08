@@ -93,6 +93,9 @@ body{
 .scene.in-view .stagger > *:nth-child(4){transition-delay:.54s;}
 .scene.in-view .stagger > *:nth-child(5){transition-delay:.67s;}
 .scene.in-view .stagger > *:nth-child(6){transition-delay:.80s;}
+.scene.in-view .stagger > *:nth-child(7){transition-delay:.93s;}
+.scene.in-view .stagger > *:nth-child(8){transition-delay:1.06s;}
+.scene.in-view .stagger > *:nth-child(9){transition-delay:1.19s;}
 
 /* -------- type -------- */
 .kicker{
@@ -154,6 +157,12 @@ h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
   border:1px solid var(--hairline);border-radius:999px;
   padding:.22rem .7rem;margin-bottom:.8rem;
 }
+.calc{
+  margin-top:.85rem;padding-top:.65rem;
+  border-top:1px dashed var(--hairline);
+  font-size:.82rem;font-weight:600;color:var(--accent);
+  letter-spacing:.01em;
+}
 
 /* -------- bar chart (gap-to-#1) -------- */
 .bars{display:flex;flex-direction:column;gap:.85rem;margin-top:2rem;}
@@ -170,6 +179,46 @@ h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
 }
 .scene.in-view .bar-track > div{width:var(--w) !important;}
 .bar-val{font-size:.95rem;font-weight:600;color:var(--ink);}
+
+/* -------- three-step flow (discount reality) -------- */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.9rem;margin-top:2.4rem;}
+.flow .fcard{flex:1 1 230px;display:flex;flex-direction:column;justify-content:flex-start;}
+.flow .farrow{align-self:center;font-size:2rem;font-weight:300;color:var(--ink-faint);flex:0 0 auto;}
+.fcard.net{border-color:var(--alert-red);}
+.fcard.net:hover{border-color:var(--alert-red);}
+.fcard.net .tag{color:var(--alert-red);border-color:var(--alert-red);}
+.fcard.net h3{color:var(--alert-red);}
+
+/* -------- idea chips & dials -------- */
+.chip-strip{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+.chip{
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:999px;padding:.55rem 1.05rem;
+  font-size:.9rem;font-weight:600;color:var(--ink);
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:none;}
+.dials{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.1rem;}
+.dial{text-align:center;}
+.dial-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.25rem;}
+.dial-num{font-size:clamp(1.5rem,2.6vw,2.15rem);font-weight:600;letter-spacing:-0.02em;color:var(--accent);line-height:1.1;}
+.gauge{background:var(--track);border-radius:6px;height:10px;overflow:hidden;margin-top:.55rem;}
+.gauge > div{
+  height:100%;border-radius:6px;
+  width:0 !important; /* animated in */
+  transition:width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.scene.in-view .gauge > div{width:var(--w) !important;}
+.dial-caption{margin-top:1rem;font-size:.85rem;color:var(--ink-faint);}
+.ms{display:flex;gap:.7rem;align-items:flex-start;margin-top:.9rem;}
+.ms .msn{
+  width:22px;height:22px;border-radius:50%;flex:none;margin-top:.1rem;
+  background:var(--accent-strong);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:600;
+}
+.ms p{font-size:.88rem;color:var(--ink-soft);}
+.ms .ms-body{flex:1;min-width:0;}
 
 /* -------- headline value strip -------- */
 .value-strip{
@@ -190,38 +239,68 @@ h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
 }
 .callout strong{color:var(--ink);}
 
-/* -------- cost table -------- */
-table.costs{
-  width:100%;max-width:620px;border-collapse:collapse;margin:1.6rem 0 2rem;
-  font-size:.98rem;
+/* -------- nine-tile AI gallery -------- */
+.gallery{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.1rem;margin-top:2rem;
 }
-table.costs td{
-  padding:.85rem .4rem;border-bottom:1px solid var(--hairline);
-  color:var(--ink-soft);
+.tile{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.15rem 1.2rem;
+  display:flex;flex-direction:column;
+  transition:border-color .3s ease, transform .3s ease;
 }
-table.costs td:last-child{text-align:right;font-weight:600;color:var(--ink);white-space:nowrap;}
-table.costs tr.total td{color:var(--ink);font-weight:600;border-bottom:none;border-top:2px solid var(--accent);}
-table.costs tr.total td:last-child{color:var(--accent);font-size:1.15rem;}
-
-/* -------- AI loop -------- */
-.loop{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-  gap:1rem;margin-top:1.8rem;counter-reset:loopstep;
+.tile:hover{border-color:var(--accent);transform:translateY(-3px);}
+.tile .tnum{font-size:.72rem;font-weight:600;letter-spacing:.16em;color:var(--accent);margin-bottom:.45rem;}
+.tile h3{font-size:.98rem;margin-bottom:.35rem;}
+.tile p{font-size:.84rem;color:var(--ink-soft);line-height:1.45;}
+.vig{
+  margin-top:auto;padding-top:.9rem;
 }
-.loop .card{position:relative;padding-top:1.9rem;}
-.loop .card::before{
-  counter-increment:loopstep;
-  content:counter(loopstep);
-  position:absolute;top:-14px;left:1.3rem;
-  width:30px;height:30px;border-radius:50%;
-  background:var(--accent-strong);color:#fff;
+.vwin{
+  border:1px solid var(--hairline);border-radius:10px;overflow:hidden;
+  background:var(--bg);
+}
+.vig-bar{display:flex;gap:5px;padding:7px 9px;border-bottom:1px solid var(--hairline);}
+.vig-bar div{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);opacity:.5;}
+.vig-body{padding:9px 10px;display:flex;flex-direction:column;gap:6px;min-height:62px;justify-content:center;}
+.vrow{display:flex;align-items:center;gap:7px;}
+.vline{height:7px;border-radius:4px;flex:none;}
+.vtick{
+  width:13px;height:13px;border-radius:50%;flex:none;
   display:flex;align-items:center;justify-content:center;
-  font-size:.85rem;font-weight:600;
+  font-size:8px;font-weight:700;color:#06231F;
 }
-.loop-back{
-  margin-top:1.1rem;text-align:center;font-size:.9rem;font-weight:600;
-  color:var(--accent);letter-spacing:.04em;
+.vrank{font-size:.58rem;font-weight:700;color:var(--ink-faint);width:11px;flex:none;text-align:center;}
+.vchip{
+  margin-left:auto;flex:none;
+  font-size:.52rem;font-weight:700;letter-spacing:.08em;
+  border-radius:999px;padding:2px 8px;color:#fff;
 }
+.vfile{
+  flex:1;border:1px solid var(--hairline);border-radius:7px;
+  padding:12px 4px;text-align:center;
+  font-size:.55rem;font-weight:700;letter-spacing:.08em;color:var(--ink-faint);
+}
+.vbox{width:10px;height:10px;border:1.5px solid var(--ink-faint);border-radius:3px;flex:none;}
+.vava{width:12px;height:12px;border-radius:50%;flex:none;margin-left:auto;}
+.vbars{display:flex;align-items:flex-end;gap:5px;height:44px;flex:1;}
+.vbars div{flex:1;max-width:16px;border-radius:3px 3px 0 0;}
+.venv{
+  width:36px;height:28px;flex:none;
+  border:1.5px solid var(--ink-faint);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--ink-faint);
+}
+.vsql{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.6rem;color:var(--accent);letter-spacing:.02em;}
+.signoff{
+  margin-top:3rem;padding-top:1.4rem;
+  border-top:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;
+  font-size:.85rem;color:var(--ink-faint);
+}
+.signoff .so-mark{font-weight:600;color:var(--ink-soft);}
+.signoff .so-mark .dot{color:var(--green-bright);}
 
 /* -------- agenda -------- */
 .agenda{display:flex;flex-direction:column;gap:1.1rem;margin-top:2.2rem;}
@@ -238,17 +317,6 @@ table.costs tr.total td:last-child{color:var(--accent);font-size:1.15rem;}
   background:var(--card);border:1px solid var(--hairline);
   border-radius:999px;padding:.3rem .95rem;font-size:.92rem;
 }
-
-/* -------- flywheel close -------- */
-.flywheel{
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
-  gap:.5rem .3rem;margin:2.2rem 0;font-weight:600;font-size:clamp(.95rem,1.8vw,1.15rem);
-}
-.flywheel .fstep{
-  background:var(--card);border:1px solid var(--card-border);
-  border-radius:999px;padding:.5rem 1.1rem;white-space:nowrap;
-}
-.flywheel .farrow{color:var(--accent);padding:0 .25rem;}
 
 ul.clean{list-style:none;margin-top:1rem;}
 ul.clean li{
@@ -272,6 +340,8 @@ ul.clean li strong{color:var(--ink);}
   .scene{padding:8vh 6vw;}
   .bar-row{grid-template-columns:4rem 1fr 3.4rem;}
   .mark{right:6vw;}
+  .flow .farrow{display:none;}
+  .dials{gap:.6rem;}
 }
 </style>
 </head>
@@ -297,27 +367,34 @@ ul.clean li strong{color:var(--ink);}
 <section class="scene" id="agenda">
   <div class="scene-inner">
     <div class="kicker">Agenda</div>
-    <h2>Three chapters, ten minutes.</h2>
+    <h2>Four chapters, ten minutes.</h2>
     <div class="agenda stagger">
       <div class="card">
         <div class="num">1</div>
         <div>
-          <h3>Why we launched it</h3>
-          <p>The prize we're chasing, and the competitive problem a headline discount can't solve.</p>
+          <h3>Why</h3>
+          <p>The $1b prize we're chasing, and why a public discount can't win it.</p>
         </div>
       </div>
       <div class="card">
         <div class="num">2</div>
         <div>
-          <h3>Where the value is created</h3>
-          <p>Measured returns — retention, saves, acquisition and customer quality — against honest, fully loaded costs.</p>
+          <h3>The idea</h3>
+          <p>Phone Dollars — personalised, private value, dialled per customer and invisible to rivals.</p>
         </div>
       </div>
       <div class="card">
         <div class="num">3</div>
         <div>
-          <h3>The most AI-enabled loyalty programme on the planet</h3>
-          <p>One AI platform running the whole operating loop — with people making every decision that matters.</p>
+          <h3>The value</h3>
+          <p>~$25m a year of value against $3.6m fully loaded cost — a ~7&times; return.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">4</div>
+        <div>
+          <h3>The AI-enabled machine</h3>
+          <p>Nine AI systems running the whole operating loop — and how it's governed: AI recommends, people decide.</p>
         </div>
       </div>
     </div>
@@ -369,27 +446,23 @@ ul.clean li strong{color:var(--ink);}
   <div class="scene-inner">
     <div class="kicker">Why &middot; the competitive reality</div>
     <h2>Phone discounting is instantly matched.</h2>
-    <p class="lede">We've proven it over years. A shelf-price cut is public — rivals mirror it within days. It's brilliant at moving volume <em>between</em> carriers and terrible at building loyalty.</p>
-    <div class="grid-3 stagger" style="margin-top:2.2rem;">
-      <div class="card">
-        <div class="tag">Step 1</div>
-        <h3>We cut the shelf price</h3>
-        <p>The offer is advertised, public, and identical for everyone who walks in.</p>
+    <div class="flow stagger">
+      <div class="card fcard">
+        <div><span class="tag">Step 1</span></div>
+        <h3>Carrier discounts the phone price</h3>
       </div>
-      <div class="card">
-        <div class="tag">Step 2</div>
-        <h3>Rivals match in days</h3>
-        <p>Because it's visible, matching it is trivial. The playing field re-levels almost immediately.</p>
+      <div class="farrow">&rarr;</div>
+      <div class="card fcard">
+        <div><span class="tag">Step 2</span></div>
+        <h3>Rivals match within days</h3>
       </div>
-      <div class="card">
-        <div class="tag">Net result</div>
-        <h3 style="color:var(--alert-red, #D31F3F);">Margin destruction, no share shift</h3>
-        <p>Everyone pays more to stand still. Nobody becomes more loyal.</p>
+      <div class="farrow">&rarr;</div>
+      <div class="card fcard net">
+        <div><span class="tag">Net result</span></div>
+        <h3>Margin destruction. No share shift.</h3>
       </div>
     </div>
-    <div class="callout" style="margin-top:2.2rem;">
-      <strong>The conclusion we drew:</strong> we needed a smarter way to defend our own base <em>and</em> acquire from competitors' bases — one that can't simply be copied off a shelf.
-    </div>
+    <p class="footline">Proven over years: public offers move volume between carriers — they don't build loyalty.</p>
   </div>
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
@@ -399,21 +472,64 @@ ul.clean li strong{color:var(--ink);}
   <div class="scene-inner">
     <div class="kicker">The idea</div>
     <h2>Phone Dollars — value that's personal, not public.</h2>
-    <p class="lede">A dollar-equivalent loyalty currency — <strong class="accent">1 Phone Dollar = $1</strong> — held in a customer's One Wallet. It's loaded <strong style="color:var(--ink);">dynamically and personalised</strong>, not advertised on a shelf. Because the value is targeted and private, it can't be matched like a headline discount.</p>
-    <div class="grid-2 stagger" style="margin-top:2.2rem;">
-      <div class="card">
-        <div class="tag">Defend</div>
-        <h3>Retention</h3>
-        <p>We load value to our own customers who are most at risk of leaving — sized to the risk. The right amount, to the right person, at the right moment.</p>
-      </div>
-      <div class="card">
-        <div class="tag">Attack</div>
-        <h3>Acquisition</h3>
-        <p>Competitors' customers who check <span class="pill-url">whatsinmywallet.one.nz</span> find a personalised balance already waiting for them — a reason to switch that only they can see.</p>
-      </div>
+    <div class="chip-strip stagger">
+      <div class="chip">$1 Phone Dollar = $1 off your phone</div>
+      <div class="chip">Loaded dynamically</div>
+      <div class="chip">Personalised to the customer's value</div>
+      <div class="chip">Can't be matched by competitors</div>
     </div>
-    <div class="callout" style="margin-top:2.2rem;">
-      <strong>Value customers can see and feel</strong> — real dollars towards the transaction that matters most: their next phone.
+    <div class="grid-2 stagger" style="margin-top:1.8rem;">
+      <div class="card">
+        <div class="tag">Defend &middot; Retention</div>
+        <div class="dials">
+          <div class="dial">
+            <div class="dial-label">Customer 1</div>
+            <div class="dial-num" data-count="125">$0</div>
+            <div class="gauge"><div style="--w:19%; width:19%; background:#00A45F;"></div></div>
+          </div>
+          <div class="dial">
+            <div class="dial-label">Customer 2</div>
+            <div class="dial-num" data-count="340">$0</div>
+            <div class="gauge"><div style="--w:52%; width:52%; background:#00A45F;"></div></div>
+          </div>
+          <div class="dial">
+            <div class="dial-label">Customer 3</div>
+            <div class="dial-num" data-count="650">$0</div>
+            <div class="gauge"><div style="--w:92%; width:92%; background:#12CB77;"></div></div>
+          </div>
+        </div>
+        <p class="dial-caption">Value dialled to the risk — sized per customer.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Attack &middot; Acquisition</div>
+        <div class="ms">
+          <div class="msn">1</div>
+          <div class="ms-body"><p>Competitors' customers register at <span class="pill-url">whatsinmywallet.one.nz</span> — their number unlocks a personalised discount.</p></div>
+        </div>
+        <div class="ms">
+          <div class="msn">2</div>
+          <div class="ms-body">
+            <div class="dials" style="margin-top:.2rem;">
+              <div class="dial">
+                <div class="dial-label">Prospect 1</div>
+                <div class="dial-num" data-count="650">$0</div>
+                <div class="gauge"><div style="--w:57%; width:57%; background:#00A45F;"></div></div>
+              </div>
+              <div class="dial">
+                <div class="dial-label">Prospect 2</div>
+                <div class="dial-num" data-count="850">$0</div>
+                <div class="gauge"><div style="--w:74%; width:74%; background:#00A45F;"></div></div>
+              </div>
+              <div class="dial">
+                <div class="dial-label">Prospect 3</div>
+                <div class="dial-num" data-count="1150">$0</div>
+                <div class="gauge"><div style="--w:92%; width:92%; background:#12CB77;"></div></div>
+              </div>
+            </div>
+            <p class="dial-caption">Bigger dials for bigger prizes — invisible to their carrier.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="mark">one<span class="dot">.</span>nz</div>
@@ -423,7 +539,7 @@ ul.clean li strong{color:var(--ink);}
 <section class="scene" id="headline">
   <div class="scene-inner" style="text-align:center;">
     <div class="kicker">The value equation</div>
-    <h2>Every dollar in returns four.</h2>
+    <h2>Every dollar in returns seven.</h2>
     <div class="value-strip stagger">
       <div class="vs-item">
         <div class="big-num" style="color:var(--ink);">$3.6m</div>
@@ -431,18 +547,20 @@ ul.clean li strong{color:var(--ink);}
       </div>
       <div class="value-arrow">&rarr;</div>
       <div class="vs-item">
-        <div class="big-num">~$15m+</div>
+        <div class="big-num">~$25m+</div>
         <div class="vs-lab">Annual quantified value</div>
       </div>
       <div class="value-arrow">&rarr;</div>
       <div class="vs-item">
-        <div class="big-num">~4.2&times;</div>
+        <div class="big-num">~7&times;</div>
         <div class="vs-lab">Return on TCO</div>
       </div>
     </div>
+    <p style="font-size:.9rem;color:var(--ink-faint);margin:-1rem 0 2rem;">$10.8m retention + $5.7m saves + $8.9m acquisition &asymp; $25.4m a year</p>
     <div class="callout" style="margin:0 auto;text-align:left;">
-      <strong>Measured outcomes, not modelled assumptions</strong> — every figure here is observed in production data: live campaign tracking, attributed media, and matched control groups.
+      <strong>Counted in production, valued by convention</strong> — the customer counts (8,000 retained, 4,200 saves, 300&rarr;550 monthly connections) are observed in production; the value applies a $1,350 customer-lifetime-value convention.
     </div>
+    <p class="footline">Plus unquantified: brand differentiation, price-rise resilience, and Unlock / Enterprise share protection.</p>
   </div>
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
@@ -454,97 +572,157 @@ ul.clean li strong{color:var(--ink);}
     <h2>Four drivers, all observed in production.</h2>
     <div class="grid-2 stagger" style="margin-top:1.8rem;">
       <div class="card">
-        <div class="cnum">~$4.8m/yr</div>
+        <div class="cnum">~$10.8m/yr</div>
         <h3>Reduced churn on the engaged base</h3>
-        <p>~200k engaged customers churn <strong style="color:var(--ink);">4pp lower</strong> than matched control — roughly 8,000 customers retained a year at $600 annual margin each.</p>
+        <p>~200k engaged customers churn <strong style="color:var(--ink);">4pp lower</strong> than matched control — roughly 8,000 customers retained a year.</p>
+        <p class="calc">8,000 &times; $1,350 CLV = $10.8m/yr</p>
       </div>
       <div class="card">
-        <div class="cnum">~$2.5m/yr</div>
+        <div class="cnum">~$5.7m/yr</div>
         <h3>At-risk save campaigns</h3>
-        <p>50–100k at-risk customers targeted monthly, delivering 200–500 saves a month — a mid-point of 4,200 saves a year at $600 each.</p>
+        <p>50–100k at-risk customers targeted monthly, delivering 200–500 saves a month.</p>
+        <p class="calc">4,200 saves/yr &times; $1,350 = $5.7m/yr</p>
       </div>
       <div class="card">
-        <div class="cnum">~$7.9m/yr</div>
+        <div class="cnum">~$8.9m/yr</div>
         <h3>WhatsInMyWallet acquisition</h3>
-        <p>$90k/month of media drives ~5,000 wallets and ~300 month-1 connections, doubling to ~550 over months 2–5. That's $660k of LTV per $90k spend — a <strong style="color:var(--ink);">7.3&times; media ROI</strong>.</p>
+        <p>~5,000 wallets created a month &rarr; ~300 month-1 connections, doubling over months 2–5 (~550).</p>
+        <p class="calc">&asymp;$740k lifetime value per $90k month of media (&asymp;8&times; media ROI) &rarr; &asymp;$8.9m/yr</p>
       </div>
       <div class="card">
         <div class="cnum">2&times;+ attach</div>
         <h3>Quality of acquired customers</h3>
-        <p>Broadband attach &gt;10% and second-mobile attach ~48% — over double standard acquisition. Multi-product cohorts churn at 3–4% versus 26% for mobile-only.</p>
+        <p>Broadband attach &gt;10% and second-mobile attach ~48% — over double standard acquisition. Multi-product cohorts churn at roughly <strong style="color:var(--ink);">half the rate</strong> of a single-line customer.</p>
       </div>
     </div>
   </div>
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
 
-<!-- ======================= 8 · HONEST COSTS ======================= -->
-<section class="scene" id="costs">
+<!-- ======================= 8 · THE AI-ENABLED MACHINE ======================= -->
+<section class="scene" id="ai-machine">
   <div class="scene-inner">
-    <div class="kicker">The honest cost line</div>
-    <h2>Fully loaded, nothing hidden.</h2>
-    <table class="costs">
-      <tr>
-        <td>Capex (including embedded FTE)</td>
-        <td>$2.0m</td>
-      </tr>
-      <tr>
-        <td>Programme team — 9 roles @ $175k average</td>
-        <td>$1.6m</td>
-      </tr>
-      <tr class="total">
-        <td>Total annual cost of ownership</td>
-        <td>$3.6m</td>
-      </tr>
-    </table>
-    <h3 style="margin-bottom:.3rem;">And strategic value that isn't in the numbers:</h3>
-    <ul class="clean stagger">
-      <li><strong>Brand differentiation</strong> — the only NZ telco with a tangible, dollar-equivalent loyalty currency.</li>
-      <li><strong>A stickier base</strong> that absorbs annual price increases.</li>
-      <li><strong>The foundational mechanic</strong> for Unlock and Enterprise share protection.</li>
-    </ul>
-  </div>
-  <div class="mark">one<span class="dot">.</span>nz</div>
-</section>
-
-<!-- ======================= 9 · AI — THE CLAIM ======================= -->
-<section class="scene" id="ai-loop">
-  <div class="scene-inner">
-    <div class="kicker">Chapter three</div>
+    <div class="kicker">The AI-enabled machine</div>
     <h2>Arguably the most AI-enabled loyalty programme on the planet.</h2>
-    <p class="lede">The <strong style="color:var(--ink);">Membership Workbench</strong> — one AI platform that runs the whole operating loop, end to end.</p>
-    <div class="loop stagger">
-      <div class="card">
-        <h3>Team meetings</h3>
-        <p>Recorded &rarr; AI drafts the actions and decisions &rarr; owners are auto-notified.</p>
+    <p class="lede">The <strong style="color:var(--ink);">Membership Workbench</strong> — nine AI systems running the operating loop end to end.</p>
+    <div class="gallery stagger">
+
+      <div class="tile">
+        <div class="tnum">01</div>
+        <h3>Live data foundation</h3>
+        <p>Every base, campaign and channel file lands, self-checks and warms the reports daily.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:72%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:56%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:64%; background:var(--track);"></div></div>
+        </div></div></div>
       </div>
-      <div class="card">
-        <h3>Audience selection</h3>
-        <p>AI scores churn risk and uplift, excludes collections, and grounds targeting in a living knowledge base of what worked.</p>
+
+      <div class="tile">
+        <div class="tnum">02</div>
+        <h3>Priority audience selection</h3>
+        <p>AI scores churn risk &amp; uplift, excludes collections, grounds cohorts in a living knowledge base.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vrank">1</div><div class="vline" style="width:82%; background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vrank">2</div><div class="vline" style="width:60%; background:#00A45F;"></div></div>
+          <div class="vrow"><div class="vrank">3</div><div class="vline" style="width:38%; background:var(--track);"></div></div>
+        </div></div></div>
       </div>
-      <div class="card">
+
+      <div class="tile">
+        <div class="tnum">03</div>
         <h3>Campaign build</h3>
-        <p>Loading files and offer values generated by the platform.</p>
+        <p>Loading files &amp; offer values generated per cohort, ready to send.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:center;gap:8px;">
+          <div class="vfile">CSV</div>
+          <div class="vfile">CSV</div>
+          <div class="vfile">CSV</div>
+        </div></div></div>
       </div>
-      <div class="card">
+
+      <div class="tile">
+        <div class="tnum">04</div>
         <h3>Post-implementation review</h3>
-        <p>Lift vs control measured; per-cohort verdicts written <em>back</em> into the knowledge base the next campaign reads.</p>
+        <p>Lift vs control measured; verdicts written back into the knowledge base the next campaign reads.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:44%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">CONTINUE</div></div>
+          <div class="vrow"><div class="vline" style="width:36%; background:var(--track);"></div><div class="vchip" style="background:#D31F3F;">RESTRICT</div></div>
+          <div class="vrow"><div class="vline" style="width:50%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">CONTINUE</div></div>
+        </div></div></div>
       </div>
-      <div class="card">
+
+      <div class="tile">
+        <div class="tnum">05</div>
+        <h3>Team meetings</h3>
+        <p>Recorded, transcribed; AI drafts actions &amp; decisions, notifies owners.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:56%; background:var(--track);"></div><div class="vava" style="background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:44%; background:var(--track);"></div><div class="vava" style="background:#95EEB4;"></div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:62%; background:var(--track);"></div><div class="vava" style="background:#00A45F;"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">06</div>
         <h3>Reporting</h3>
-        <p>Automated scorecards, weekly wraps, and rep emails.</p>
+        <p>Scorecards, weekly wraps, rep emails — automated.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:flex-end;gap:12px;">
+          <div class="vbars">
+            <div style="height:40%; background:#00A45F;"></div>
+            <div style="height:65%; background:#12CB77;"></div>
+            <div style="height:50%; background:#00A45F;"></div>
+            <div style="height:85%; background:#12CB77;"></div>
+          </div>
+          <div class="venv">&#9993;</div>
+        </div></div></div>
       </div>
-      <div class="card">
+
+      <div class="tile">
+        <div class="tnum">07</div>
+        <h3>Device pricing engine</h3>
+        <p>Reads our offers vs Spark/2degrees, porting and churn; recommends per-model offers inside guardrails humans lock.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:34%; background:var(--track);"></div><div class="vline" style="width:14%; background:var(--track); margin-left:auto;"></div></div>
+          <div class="vrow"><div class="vline" style="width:42%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">REC $150</div></div>
+          <div class="vrow"><div class="vline" style="width:30%; background:var(--track);"></div><div class="vline" style="width:14%; background:var(--track); margin-left:auto;"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">08</div>
         <h3>Presentations</h3>
-        <p>This deck was built by the workbench's AI Studio — the loop even briefs its own board.</p>
+        <p>The AI Studio builds and edits decks conversationally — this deck was built by it.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;gap:8px;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center;">
+            <div style="width:80%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+            <div style="width:68%; height:10px; background:#00A45F; border-radius:8px 8px 2px 8px; margin-left:auto;"></div>
+            <div style="width:58%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+          </div>
+          <div style="flex:1;border:1px solid var(--hairline);border-radius:6px;padding:7px;display:flex;flex-direction:column;gap:5px;justify-content:center;">
+            <div class="vline" style="width:70%; height:8px; background:#12CB77;"></div>
+            <div class="vline" style="width:92%; background:var(--track);"></div>
+            <div class="vline" style="width:80%; background:var(--track);"></div>
+          </div>
+        </div></div></div>
       </div>
+
+      <div class="tile">
+        <div class="tnum">09</div>
+        <h3>Customer questions &amp; insights analysis</h3>
+        <p>A deep data agent answers plain-English questions with read-only SQL over the production warehouse.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div style="width:72%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+          <div class="vsql">SELECT saves FROM campaigns&hellip;</div>
+          <div class="vrow"><div class="vline" style="width:54%; background:var(--track);"></div><div class="vava" style="background:#12CB77; margin-left:0;"></div></div>
+        </div></div></div>
+      </div>
+
     </div>
-    <div class="loop-back">&#8635;&nbsp; 6 feeds back into 1 — the loop never stops learning</div>
   </div>
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
 
-<!-- ======================= 10 · AI — HUMAN IN THE LOOP ======================= -->
+<!-- ======================= 9 · GOVERNANCE — HUMAN IN THE LOOP ======================= -->
 <section class="scene" id="human">
   <div class="scene-inner">
     <div class="kicker">Governance</div>
@@ -557,40 +735,19 @@ ul.clean li strong{color:var(--ink);}
       </div>
       <div class="card">
         <div class="tag">Targeting</div>
-        <h3>At-risk cohorts</h3>
-        <p>The platform proposes cohorts with expected lift. <strong style="color:var(--ink);">Marketers approve the send.</strong></p>
+        <h3>Dynamic targeting</h3>
+        <p>The platform reviews over 800,000 pay-monthly connections against every metric and recommends individualised Phone Dollar boosts to protect and save — driving customer retention and IFP uptake dynamically for the greatest ROI. <strong style="color:var(--ink);">Marketers approve the send.</strong></p>
       </div>
       <div class="card">
         <div class="tag">Insight</div>
         <h3>Deep data agent</h3>
-        <p>Answers plain-English questions with read-only SQL over the production warehouse — analysis on demand, no risk to data.</p>
+        <p>Ask almost any question about the programme and get a highly data-driven response and recommendation — via read-only SQL over the production warehouse.</p>
       </div>
     </div>
-    <div class="callout" style="margin-top:2.2rem;">
-      <strong>Significant automation, zero unsupervised spend.</strong> Every dollar loaded is inside human-set guardrails, with a person signing off.
+    <div class="signoff">
+      <span>Phone Dollars &middot; One NZ &middot; July 2026</span>
+      <span class="so-mark">one<span class="dot">.</span>nz</span>
     </div>
-  </div>
-  <div class="mark">one<span class="dot">.</span>nz</div>
-</section>
-
-<!-- ======================= 11 · CLOSE ======================= -->
-<section class="scene" id="close">
-  <div class="scene-inner" style="text-align:center;">
-    <div class="kicker">Close</div>
-    <h2>The flywheel keeps turning.</h2>
-    <div class="flywheel stagger">
-      <span class="fstep">One Wallet</span><span class="farrow">&middot;</span>
-      <span class="fstep">One Upgrade</span><span class="farrow">&middot;</span>
-      <span class="fstep">Trade-in</span><span class="farrow">&rarr;</span>
-      <span class="fstep">Footfall</span><span class="farrow">&rarr;</span>
-      <span class="fstep">Acquisition &amp; connections</span><span class="farrow">&rarr;</span>
-      <span class="fstep">Margin</span><span class="farrow">&rarr;</span>
-      <span class="fstep">More customers</span>
-    </div>
-    <p class="lede" style="margin:1.8rem auto 0;max-width:34em;">A loyalty currency competitors can't see, an operating loop that learns from every campaign, and a base that grows stickier every cycle.</p>
-    <div class="big-num" style="margin-top:2.6rem;font-size:clamp(2rem,4.5vw,3.2rem);">Value you can see &amp; feel.</div>
-    <p style="margin-top:2.4rem;font-weight:600;font-size:1.3rem;">one<span style="color:var(--green-bright);">.</span>nz</p>
-    <p class="footline">Thank you, Mark. Questions welcome any time.</p>
   </div>
 </section>
 
@@ -608,17 +765,40 @@ ul.clean li strong{color:var(--ink);}
     setTheme(root.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark');
   });
 
+  // ---------- count-up dials (runs once per scene entry) ----------
+  function runDials(scene){
+    if (scene.dataset.dialsDone) return;
+    var nums = scene.querySelectorAll('.dial-num[data-count]');
+    if (!nums.length) return;
+    scene.dataset.dialsDone = '1';
+    nums.forEach(function(el){
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var dur = 1400, start = null;
+      function step(ts){
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = '$' + Math.round(target * eased).toLocaleString('en-NZ');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
   // ---------- scene entrance ----------
   var scenes = document.querySelectorAll('.scene');
   if ('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if (e.isIntersecting){ e.target.classList.add('in-view'); }
+        if (e.isIntersecting){
+          e.target.classList.add('in-view');
+          runDials(e.target);
+        }
       });
     }, { threshold: 0.22 });
     scenes.forEach(function(s){ io.observe(s); });
   } else {
-    scenes.forEach(function(s){ s.classList.add('in-view'); });
+    scenes.forEach(function(s){ s.classList.add('in-view'); runDials(s); });
   }
 })();
 </script>
