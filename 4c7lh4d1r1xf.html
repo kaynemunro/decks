@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>June Strategy Reflections — One Wallet</title>
+<style>
+/* ============ One NZ scroll-deck ============ */
+:root{
+  --green:#00A45F;
+  --green-bright:#12CB77;
+  --green-soft:#95EEB4;
+  --green-tint:#CDFBDD;
+  --deep:#0A3833;
+  --deepest:#06231F;
+  --grey-ink:#323232;
+  --grey-mid:#5A6376;
+  --grey-line:#E1E4E9;
+  --grey-bg:#F8F9FA;
+  --alert-red:#D31F3F;
+  --alert-yellow:#FFD600;
+}
+html.theme-dark{
+  --bg:#06231F;
+  --bg-alt:#0A3833;
+  --card:rgba(255,255,255,0.045);
+  --card-border:rgba(149,238,180,0.14);
+  --ink:#F8F9FA;
+  --ink-soft:rgba(248,249,250,0.72);
+  --ink-faint:rgba(248,249,250,0.45);
+  --accent:#12CB77;
+  --accent-strong:#00A45F;
+  --track:rgba(255,255,255,0.09);
+  --hairline:rgba(149,238,180,0.16);
+  --shadow:0 18px 50px rgba(0,0,0,0.35);
+}
+html.theme-light{
+  --bg:#F8F9FA;
+  --bg-alt:#FFFFFF;
+  --card:#FFFFFF;
+  --card-border:#E1E4E9;
+  --ink:#323232;
+  --ink-soft:#5A6376;
+  --ink-faint:#9AA1AC;
+  --accent:#00A45F;
+  --accent-strong:#00A45F;
+  --track:#E1E4E9;
+  --hairline:#E1E4E9;
+  --shadow:0 18px 50px rgba(10,56,51,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+}
+::selection{background:var(--green);color:#fff;}
+
+/* -------- scenes -------- */
+.scene{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:9vh 7vw;
+  position:relative;
+  overflow:hidden;
+}
+.scene-inner{
+  max-width:1060px;
+  width:100%;
+  margin:0 auto;
+  opacity:0;
+  transform:translateY(34px);
+  transition:opacity .85s cubic-bezier(.2,.65,.25,1), transform .85s cubic-bezier(.2,.65,.25,1);
+}
+.scene.in-view .scene-inner{opacity:1;transform:translateY(0);}
+.scene:nth-child(even){background:var(--bg-alt);transition:background .4s ease;}
+
+/* stagger children */
+.stagger > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.scene.in-view .stagger > *{opacity:1;transform:translateY(0);}
+.scene.in-view .stagger > *:nth-child(1){transition-delay:.15s;}
+.scene.in-view .stagger > *:nth-child(2){transition-delay:.28s;}
+.scene.in-view .stagger > *:nth-child(3){transition-delay:.41s;}
+.scene.in-view .stagger > *:nth-child(4){transition-delay:.54s;}
+.scene.in-view .stagger > *:nth-child(5){transition-delay:.67s;}
+.scene.in-view .stagger > *:nth-child(6){transition-delay:.80s;}
+.scene.in-view .stagger > *:nth-child(7){transition-delay:.93s;}
+.scene.in-view .stagger > *:nth-child(8){transition-delay:1.06s;}
+.scene.in-view .stagger > *:nth-child(9){transition-delay:1.19s;}
+
+/* -------- type -------- */
+.kicker{
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.1rem;
+}
+h1{font-size:clamp(2.4rem,5.4vw,4.1rem);font-weight:600;line-height:1.1;letter-spacing:-0.02em;}
+h2{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:600;line-height:1.16;letter-spacing:-0.015em;margin-bottom:1.2rem;}
+h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
+.lede{font-size:clamp(1.05rem,1.7vw,1.28rem);color:var(--ink-soft);max-width:46em;}
+.accent{color:var(--accent);}
+.big-num{
+  font-size:clamp(2.6rem,6vw,4.4rem);
+  font-weight:600;letter-spacing:-0.03em;line-height:1;
+  color:var(--accent);
+}
+.num-label{
+  font-size:.78rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-top:.45rem;
+}
+
+/* -------- one.nz mark -------- */
+.mark{
+  position:absolute;bottom:2.2rem;right:7vw;
+  font-weight:600;font-size:.95rem;color:var(--ink-faint);
+  letter-spacing:.01em;user-select:none;
+}
+.mark .dot{color:var(--green-bright);}
+
+/* -------- theme toggle -------- */
+.theme-toggle{
+  position:fixed;top:1.1rem;right:1.2rem;z-index:99;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--ink-soft);
+  border-radius:999px;padding:.42rem .95rem;
+  font-family:inherit;font-size:.78rem;font-weight:600;letter-spacing:.05em;
+  cursor:pointer;backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* -------- next button -------- */
+.next-btn{
+  margin-top:2.4rem;align-self:flex-start;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--accent);
+  border-radius:999px;padding:.6rem 1.4rem;
+  font-family:inherit;font-size:.88rem;font-weight:600;letter-spacing:.02em;
+  cursor:pointer;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.next-btn:hover{border-color:var(--accent);transform:translateY(-2px);}
+
+/* -------- cards & grids -------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:1.6rem 1.7rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;}
+.card .cnum{font-size:1.9rem;font-weight:600;color:var(--accent);letter-spacing:-0.02em;margin-bottom:.35rem;}
+.card p{font-size:.95rem;color:var(--ink-soft);}
+.card h3{margin-bottom:.5rem;}
+.tag{
+  display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:.22rem .7rem;margin-bottom:.8rem;
+}
+.card.down{border-color:rgba(211,31,63,.35);}
+.card.down:hover{border-color:var(--alert-red);}
+.card.down .tag{color:var(--alert-red);border-color:var(--alert-red);}
+.card.down .cnum{color:var(--alert-red);}
+
+/* -------- bar chart -------- */
+.bars{display:flex;flex-direction:column;gap:.85rem;margin-top:2rem;}
+.bar-row{display:grid;grid-template-columns:5.2rem 1fr 4.5rem;align-items:center;gap:1rem;}
+.bar-row.wide{grid-template-columns:11rem 1fr 4.5rem;}
+.bar-label{font-size:.82rem;font-weight:600;color:var(--ink-soft);text-align:right;}
+.bar-track{
+  background:var(--track);border-radius:8px;height:30px;
+  overflow:hidden;position:relative;
+}
+.bar-track > div{
+  height:100%;border-radius:8px;
+  width:0 !important; /* animated in */
+  transition:width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.scene.in-view .bar-track > div{width:var(--w) !important;}
+.bar-val{font-size:.95rem;font-weight:600;color:var(--ink);}
+
+/* -------- idea chips -------- */
+.chip-strip{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:1.6rem;}
+.chip{
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:999px;padding:.55rem 1.05rem;
+  font-size:.9rem;font-weight:600;color:var(--ink);
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:none;}
+.chip-arrow{font-size:1.5rem;font-weight:300;color:var(--ink-faint);flex:none;}
+
+/* -------- numbered mini-steps -------- */
+.ms{display:flex;gap:.7rem;align-items:flex-start;margin-top:.9rem;}
+.ms .msn{
+  width:22px;height:22px;border-radius:50%;flex:none;margin-top:.1rem;
+  background:var(--accent-strong);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:600;
+}
+.ms p{font-size:.92rem;color:var(--ink-soft);}
+.ms p strong{color:var(--ink);}
+.ms .ms-body{flex:1;min-width:0;}
+
+.callout{
+  border-left:4px solid var(--accent-strong);
+  background:var(--card);
+  border-radius:0 14px 14px 0;
+  padding:1.2rem 1.5rem;
+  font-size:1.02rem;color:var(--ink-soft);
+  max-width:52em;
+}
+.callout strong{color:var(--ink);}
+
+/* -------- upside tiles -------- */
+.gallery{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.1rem;margin-top:2rem;
+}
+.tile{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.15rem 1.2rem;
+  display:flex;flex-direction:column;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.tile:hover{border-color:var(--accent);transform:translateY(-3px);}
+.tile .tnum{font-size:1.6rem;font-weight:600;letter-spacing:-0.02em;color:var(--accent);margin-bottom:.4rem;}
+.tile h3{font-size:.98rem;margin-bottom:.35rem;}
+.tile p{font-size:.84rem;color:var(--ink-soft);line-height:1.45;}
+.trend{display:inline-block;margin-top:.35rem;font-size:.78rem;color:var(--ink-faint);font-variant-numeric:tabular-nums;}
+.trend b{color:var(--accent);font-weight:600;}
+
+/* -------- agenda / lessons -------- */
+.agenda{display:flex;flex-direction:column;gap:1.1rem;margin-top:2.2rem;}
+.agenda .card{display:flex;align-items:center;gap:1.4rem;padding:1.2rem 1.7rem;}
+.agenda .num{
+  font-size:2.2rem;font-weight:600;color:var(--accent);
+  min-width:2.6rem;letter-spacing:-0.03em;
+}
+.agenda p{color:var(--ink-soft);font-size:.92rem;margin-top:.15rem;}
+
+/* -------- signoff -------- */
+.signoff{
+  margin-top:3rem;padding-top:1.4rem;
+  border-top:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;
+  font-size:.85rem;color:var(--ink-faint);
+}
+.signoff .so-mark{font-weight:600;color:var(--ink-soft);}
+.signoff .so-mark .dot{color:var(--green-bright);}
+
+ul.clean{list-style:none;margin-top:1rem;}
+ul.clean li{
+  padding:.5rem 0 .5rem 1.7rem;position:relative;color:var(--ink-soft);font-size:1rem;
+}
+ul.clean li::before{
+  content:"";position:absolute;left:0;top:.95rem;
+  width:9px;height:9px;border-radius:50%;background:var(--accent-strong);
+}
+ul.clean li strong{color:var(--ink);}
+
+.footline{margin-top:2.2rem;font-size:.9rem;color:var(--ink-faint);}
+.scroll-hint{
+  position:absolute;bottom:2.1rem;left:50%;transform:translateX(-50%);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.45;transform:translate(-50%,0);}50%{opacity:1;transform:translate(-50%,6px);}}
+
+@media (max-width:640px){
+  .scene{padding:8vh 6vw;}
+  .bar-row{grid-template-columns:4rem 1fr 3.4rem;}
+  .bar-row.wide{grid-template-columns:7rem 1fr 3.4rem;}
+  .mark{right:6vw;}
+  .chip-arrow{display:none;}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">Light</button>
+
+<!-- ======================= 1 · COVER ======================= -->
+<section class="scene" id="cover">
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">Product &amp; Marketing Update &middot; July 2026</div>
+      <h1>June Strategy<br>Reflections</h1>
+      <p class="lede" style="margin-top:1.4rem;">What we tried, what we found, what we learned.</p>
+      <p class="footline">One Wallet product and marketing update &middot; July 2026 &middot; scroll to begin</p>
+      <button class="next-btn">Next &rarr;</button>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 2 · THE INTENT ======================= -->
+<section class="scene" id="intent">
+  <div class="scene-inner">
+    <div class="kicker">The intent</div>
+    <h2>We believed the A&amp;R budget could work harder.</h2>
+    <p class="lede">Redirect our large A&amp;R phone-discounting budget away from <strong class="accent">retaining customers already likely to stay</strong> — and towards <strong class="accent">acquisition and base growth</strong>.</p>
+    <div class="chip-strip stagger">
+      <div class="chip">Reduce above-the-line discounts — open to anyone</div>
+      <div class="chip-arrow">&rarr;</div>
+      <div class="chip">Prioritise incremental acquisition</div>
+      <div class="chip-arrow">&rarr;</div>
+      <div class="chip">The Connect More, Get More $500 phone offer</div>
+    </div>
+    <button class="next-btn">What we found &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+
+<!-- ======================= 4 · THE HEADLINE ======================= -->
+<section class="scene" id="headline">
+  <div class="scene-inner">
+    <div class="kicker">What we found</div>
+    <h2>The best growth month of the half.</h2>
+    <div style="display:flex;align-items:center;gap:2.4rem;flex-wrap:wrap;">
+      <div style="flex:0 0 auto;">
+        <div class="big-num" data-count="3968" data-prefix="+">+0</div>
+        <div class="num-label">Net adds &middot; June</div>
+      </div>
+      <p class="lede" style="flex:1 1 300px;margin:0;"><strong class="accent">+160% vs May.</strong><br><span style="font-size:.85em;">≈ +3,400 excluding the UNLOCK staff migration — the best month of the half either way (+130% vs May).</span></p>
+    </div>
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-label">Feb</div>
+        <div class="bar-track"><div style="--w:62%; width:62%; background:#5A6376;"></div></div>
+        <div class="bar-val">2,477</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Mar</div>
+        <div class="bar-track"><div style="--w:72%; width:72%; background:#5A6376;"></div></div>
+        <div class="bar-val">2,873</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Apr</div>
+        <div class="bar-track"><div style="--w:49%; width:49%; background:#5A6376;"></div></div>
+        <div class="bar-val">1,945</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">May</div>
+        <div class="bar-track"><div style="--w:38%; width:38%; background:#5A6376;"></div></div>
+        <div class="bar-val">1,526</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun</div>
+        <div class="bar-track"><div style="--w:100%; width:100%; background:#12CB77;"></div></div>
+        <div class="bar-val">3,968</div>
+      </div>
+    </div>
+    <p class="footline">Net base growth by month, 2026. Ex-UNLOCK nets out 576 staff lines migrated onto consumer plans ahead of an end-June deadline.</p>
+    <button class="next-btn">How efficient? &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 5 · EFFICIENCY ======================= -->
+<section class="scene" id="efficiency">
+  <div class="scene-inner">
+    <div class="kicker">Efficiency</div>
+    <h2>Half the cost per customer added.</h2>
+    <div style="display:flex;align-items:center;gap:2.4rem;flex-wrap:wrap;">
+      <div style="flex:0 0 auto;">
+        <div class="big-num" data-count="1215" data-prefix="&asymp;$">&asymp;$0</div>
+        <div class="num-label">Discount $ per net add &middot; June, ex-UNLOCK</div>
+      </div>
+      <p class="lede" style="flex:1 1 300px;margin:0;"><strong class="accent">&minus;49% vs May.</strong></p>
+    </div>
+    <div class="bars">
+      <div class="bar-row">
+        <div class="bar-label">Apr</div>
+        <div class="bar-track"><div style="--w:83%; width:83%; background:#5A6376;"></div></div>
+        <div class="bar-val">$1,975</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">May</div>
+        <div class="bar-track"><div style="--w:100%; width:100%; background:#D31F3F;"></div></div>
+        <div class="bar-val">$2,392</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Jun</div>
+        <div class="bar-track"><div style="--w:51%; width:51%; background:#12CB77;"></div></div>
+        <div class="bar-val">&asymp;$1,215</div>
+      </div>
+    </div>
+    <p class="footline">Total spend was up — as planned. The point: each dollar bought materially more growth.</p>
+    <button class="next-btn">The upsides &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 7 · UPSIDES ======================= -->
+<section class="scene" id="upsides">
+  <div class="scene-inner">
+    <div class="kicker">What we found &middot; upsides</div>
+    <h2>The engine ran better on less ATL.</h2>
+    <div class="gallery stagger">
+      <div class="tile">
+        <div class="tnum">+8%</div>
+        <h3>IFP sales grew month on month</h3>
+        <p>With ATL down 32%.<br><span class="trend">Apr 9,175 · May 8,357 · <b>Jun 9,020</b></span></p>
+      </div>
+      <div class="tile">
+        <div class="tnum">39% &rarr; 48%</div>
+        <h3>Mobile attach rate grew</h3>
+        <p>The share of IFP purchases where the home added another mobile (weekly, through June).<br><span class="trend">Monthly: May 42.7% &rarr; <b>Jun 45.7%</b></span></p>
+      </div>
+      <div class="tile">
+        <div class="tnum">&asymp; +16&ndash;17%</div>
+        <h3>Added-line volume grew</h3>
+        <p>The count of added-line events vs May, ex-UNLOCK — the volume behind the rate above.<br><span class="trend">Apr 4,545 · May 4,597 · <b>Jun 5,383</b></span></p>
+      </div>
+      <div class="tile">
+        <div class="tnum">3.11% &rarr; 3.55%</div>
+        <h3>Store conversion</h3>
+        <p>On flat footfall.<br><span class="trend">May 3.11% &rarr; <b>Jun 3.55%</b> (+0.44pp, 54 stores)</span></p>
+      </div>
+      <div class="tile">
+        <div class="tnum">+13.4%</div>
+        <h3>App MAU</h3>
+        <p>Monthly active users, June.<br><span class="trend">Apr 86,982 · May 87,273 · <b>Jun 98,928</b></span></p>
+      </div>
+    </div>
+    <button class="next-btn">The downsides &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 8 · DOWNSIDES ======================= -->
+<section class="scene" id="downsides">
+  <div class="scene-inner">
+    <div class="kicker">What we found &middot; downsides</div>
+    <h2>What went the wrong way.</h2>
+    <div class="grid-2 stagger">
+      <div class="card down">
+        <div class="tag">Churn</div>
+        <h3>Voluntary churn up — port-out-led</h3>
+        <p>Voluntary churn rose <strong style="color:var(--ink);">+4%</strong>; 2degrees took &asymp;46% of ports. Likely drivers: their phone discounting (our <strong style="color:var(--ink);">&minus;$500</strong> S26 gap) and our price rise still flowing through — sending price-sensitive customers to the cheapest plans in market.</p>
+      </div>
+      <div class="card down">
+        <div class="tag">Timing</div>
+        <h3>June boosts hit the bill wave — and hurt</h3>
+        <p>Same boost as April — the <em>moment</em> changed: April rode the price-rise comms window; June landed on the first raised bills. <strong style="color:var(--ink);">+0.89pp worse</strong> than control on price-risen segments.</p>
+      </div>
+      <div class="card down">
+        <div class="tag">Media</div>
+        <h3>Media mix backwards</h3>
+        <p>Search (38.6&times;) trimmed; VOD (0&times;) up-weighted — and the paid CTA was re-pointed from WhatsInMyWallet to plan pages, breaking conversion tracking.</p>
+      </div>
+      <div class="card down">
+        <div class="tag">Wallets</div>
+        <h3>Wallet creation — the CTA re-point</h3>
+        <p>The marketing call-to-action was re-pointed away from <strong style="color:var(--ink);">whatsinmywallet.one.nz</strong> — sending paid traffic away from where wallets get created (and tracked).</p>
+      </div>
+    </div>
+    <button class="next-btn">What we learned &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 9 · LESSONS ======================= -->
+<section class="scene" id="lessons">
+  <div class="scene-inner">
+    <div class="kicker">What we learned</div>
+    <h2>Six lessons we'll keep.</h2>
+    <div class="agenda stagger">
+      <div class="card">
+        <div class="num">1</div>
+        <div>
+          <h3>Reward the multi-line home — grow without the A&amp;R hit.</h3>
+          <p>Our most effective base growth came from rewarding multi-line connection with earned value — none of it hits A&amp;R in the month.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <div>
+          <h3>Ride the comms window, never the bill wave.</h3>
+          <p>At-risk boosts worked in the initial comms window; after the bills landed we needed to avoid the high-risk impacted base — still effective for low &amp; mid risk.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <div>
+          <h3>The Growth Fund works when it's used.</h3>
+          <p>Sylvia Park activated it and grew acquisition significantly; Albany largely didn't — and didn't grow.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">4</div>
+        <div>
+          <h3>Execution and adoption win on the day.</h3>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">5</div>
+        <div>
+          <h3>Stay competitive on the key offers.</h3>
+          <p>We were too far out of market on the S26 (&minus;$500 to Spark).</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num">6</div>
+        <div>
+          <h3>Run it again in February&ndash;March.</h3>
+          <p>Base growth at the FY close — without the A&amp;R impact, timed to a comms window.</p>
+        </div>
+      </div>
+    </div>
+    <button class="next-btn">Why it gets better &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+
+
+
+<!-- ======================= 13 · QUALITY OF GROWTH ======================= -->
+<section class="scene" id="quality">
+  <div class="scene-inner">
+    <div class="kicker">The quality of the growth</div>
+    <h2>The best growth month of the half &mdash; and it&rsquo;s only going to get better.</h2>
+    <p class="lede">June&rsquo;s growth wasn&rsquo;t just the biggest of the half &mdash; it was the best quality. Multi-product sales grew from <strong class="accent">39% to 48%</strong> of IFP purchases through the month, and the more connected the home, <strong class="accent">the longer they stay with us</strong>.</p>
+    <div class="bars">
+      <div class="bar-row wide">
+        <div class="bar-label">Single mobile</div>
+        <div class="bar-track"><div style="--w:100%; width:100%; background:#D31F3F;"></div></div>
+        <div class="bar-val">22</div>
+      </div>
+      <div class="bar-row wide">
+        <div class="bar-label">Mobile + broadband</div>
+        <div class="bar-track"><div style="--w:59%; width:59%; background:#FFD600;"></div></div>
+        <div class="bar-val">13</div>
+      </div>
+      <div class="bar-row wide">
+        <div class="bar-label">Multi-mobile home</div>
+        <div class="bar-track"><div style="--w:55%; width:55%; background:#12CB77;"></div></div>
+        <div class="bar-val">12</div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:2rem;"><strong>The compounding effect:</strong> a single-mobile customer churns at nearly twice the rate of a multi-product home. Every June add that connected a second line or broadband is a customer we expect to keep significantly longer &mdash; so the base we built in June keeps paying back in lower churn from here.</div>
+    <p class="footline">Annualised all-reason churn % by household product holding, segment fixed at the start-of-window snapshot (cohort method). Multi-product attach: 39% &rarr; 48% weekly through June.</p>
+    <button class="next-btn">The close &rarr;</button>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 14 · CLOSE ======================= -->
+<section class="scene" id="close">
+  <div class="scene-inner" style="text-align:center;">
+    <div class="kicker">The close</div>
+    <h1 style="max-width:16ch;margin:0 auto;">Grow the base on <span class="accent">earned value</span>, not public discounts.</h1>
+    <div class="signoff" style="max-width:820px;margin-left:auto;margin-right:auto;">
+      <span>One Wallet product and marketing update &middot; One NZ &middot; July 2026</span>
+      <span class="so-mark">one<span class="dot">.</span>nz</span>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  // ---------- theme toggle ----------
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function setTheme(mode){
+    root.classList.remove('theme-dark','theme-light');
+    root.classList.add(mode);
+    btn.textContent = mode === 'theme-dark' ? 'Light' : 'Dark';
+  }
+  btn.addEventListener('click', function(){
+    setTheme(root.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark');
+  });
+
+  // ---------- count-up dials (runs once per scene entry) ----------
+  function runDials(scene){
+    if (scene.dataset.dialsDone) return;
+    var nums = scene.querySelectorAll('[data-count]');
+    if (!nums.length) return;
+    scene.dataset.dialsDone = '1';
+    nums.forEach(function(el){
+      var target = parseFloat(el.getAttribute('data-count'));
+      var prefix = el.getAttribute('data-prefix') || '';
+      var suffix = el.getAttribute('data-suffix') || '';
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      var dur = 1400, start = null;
+      function fmt(v){
+        return decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString('en-NZ');
+      }
+      function step(ts){
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + fmt(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // ---------- Next buttons advance to the next scene ----------
+  [].slice.call(document.querySelectorAll('.next-btn')).forEach(function(b){
+    b.addEventListener('click', function(){
+      var sec = b.closest('section');
+      if (sec && sec.nextElementSibling) sec.nextElementSibling.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // ---------- scene entrance ----------
+  var scenes = document.querySelectorAll('.scene');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          e.target.classList.add('in-view');
+          runDials(e.target);
+        }
+      });
+    }, { threshold: 0.22 });
+    scenes.forEach(function(s){ io.observe(s); });
+  } else {
+    scenes.forEach(function(s){ s.classList.add('in-view'); runDials(s); });
+  }
+})();
+</script>
+</body>
+</html>
