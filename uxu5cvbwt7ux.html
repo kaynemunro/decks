@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="theme-dark">
+<html lang="en" class="theme-light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -347,6 +347,36 @@ ul.clean li strong{color:var(--ink);}
 }
 @keyframes hintPulse{0%,100%{opacity:.45;transform:translate(-50%,0);}50%{opacity:1;transform:translate(-50%,6px);}}
 
+/* -------- proposition scene · Phone Dollars product imagery -------- */
+.prop-wrap{display:grid;grid-template-columns:minmax(270px,330px) 1fr;gap:clamp(1.6rem,4vw,3.2rem);align-items:center;margin-top:2.2rem;}
+.prop-phone-col{position:relative;justify-self:center;}
+.prop-phone{width:min(300px,78vw);background:#020806;border:9px solid #11241a;border-radius:40px;padding:18px 16px 22px;box-shadow:0 30px 70px rgba(0,0,0,.45);position:relative;}
+html.theme-light .prop-phone{box-shadow:0 26px 60px rgba(10,56,51,.22);}
+.pp-notch{width:100px;height:18px;background:#11241a;border-radius:0 0 14px 14px;margin:-18px auto 14px;}
+.pp-card{background:linear-gradient(135deg,#00A45F,#12CB77);border-radius:18px;padding:16px 16px 14px;text-align:left;}
+.pp-brand{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);}
+.pp-brand span{color:#06231F;}
+.pp-lab{font-size:.64rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:12px;}
+.pp-bal{font-size:2.7rem;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;}
+.pp-note{font-size:.68rem;color:rgba(255,255,255,.9);margin-top:6px;font-weight:600;}
+.pp-feed{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.pp-row{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid rgba(149,238,180,.16);border-radius:12px;padding:8px 10px;font-size:.78rem;color:rgba(255,255,255,.78);}
+.pp-row b{margin-left:auto;color:#12CB77;font-size:.8rem;}
+.pp-ico{width:22px;height:22px;border-radius:50%;background:rgba(18,203,119,.16);color:#12CB77;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex:none;}
+.pp-pill{display:inline-block;margin-top:12px;background:rgba(18,203,119,.14);color:#12CB77;font-size:.7rem;font-weight:600;padding:6px 12px;border-radius:20px;}
+.prop-coin{position:absolute;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#12CB77,#00A45F);color:#06231F;font-weight:800;font-size:1.15rem;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,164,95,.35);z-index:2;animation:coinFloat 4s ease-in-out infinite;}
+.prop-coin.c1{top:-14px;left:-20px;}
+.prop-coin.c2{bottom:58px;right:-24px;width:36px;height:36px;font-size:.95rem;animation-delay:1.3s;}
+.prop-coin.c3{top:38%;left:-30px;width:30px;height:30px;font-size:.8rem;animation-delay:2.2s;}
+@keyframes coinFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.prop-points{display:flex;flex-direction:column;gap:1rem;}
+.prop-point{display:flex;gap:1rem;align-items:flex-start;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:1rem 1.2rem;transition:border-color .3s ease, transform .3s ease;}
+.prop-point:hover{border-color:var(--accent);transform:translateY(-2px);}
+.pp-badge{width:40px;height:40px;border-radius:12px;flex:none;background:rgba(18,203,119,.12);border:1px solid rgba(18,203,119,.3);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;}
+.prop-point h3{font-size:1rem;margin-bottom:.2rem;}
+.prop-point p{font-size:.88rem;color:var(--ink-soft);}
+@media (max-width:860px){.prop-wrap{grid-template-columns:1fr;}.prop-coin{display:none;}}
+
 @media (max-width:640px){
   .scene{padding:8vh 6vw;}
   .bar-row{grid-template-columns:4rem 1fr 3.4rem;}
@@ -357,9 +387,9 @@ ul.clean li strong{color:var(--ink);}
 
 /* ============================================================
    Ported Legends scenes — namespaced under .lg
-   Same #06110C black ground as the rest of the deck, so every
-   scene now sits on one consistent background. Ported scenes
-   keep their black ground in BOTH themes.
+   Same #06110C black ground as the rest of the deck in dark
+   mode; fully theme-aware, with light-theme overrides at the
+   end of this block so the toggle flips EVERY scene.
    ============================================================ */
 section.scene.lg{
   --lime:#19D17F;--bright:#00C472;--first:#2bbf78;--orange:#f5a623;--blue:#3aa0ff;
@@ -398,7 +428,7 @@ section.scene.lg{
 .lg .track .tt{font-size:clamp(15px,1.9vw,20px);font-weight:700;} .lg .track .tt small{display:block;font-size:12px;font-weight:400;color:var(--muted);}
 .lg .track .tm{font-size:13px;color:var(--muted);text-align:right;} .lg .track .tm b{color:var(--bright);font-size:20px;}
 .lg .grid{display:grid;grid-template-columns:repeat(40,1fr);gap:4px;}
-.lg .grid .dot{aspect-ratio:1;border-radius:50%;background:#1c2c24;transform:scale(0);transition:transform .3s ease;}
+.lg .grid .dot{aspect-ratio:1;border-radius:50%;background:var(--dotbase,#1c2c24);transform:scale(0);transition:transform .3s ease;}
 .lg .grid .dot.show{transform:scale(1);}
 .lg .grid .dot.first{background:var(--first);} .lg .grid .dot.mob{background:var(--orange);} .lg .grid .dot.bb{background:var(--blue);}
 .lg .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px;justify-content:center;}
@@ -421,11 +451,28 @@ section.scene.lg{
 @media (max-width:640px){
   .lg .grid{grid-template-columns:repeat(25,1fr);}
 }
+
+/* ---- light theme for the ported .lg scenes ---- */
+/* the handset mock keeps its dark device UI in both themes */
+.lg .phone{--lime:#19D17F;--bright:#00C472;--muted:#8fae9f;}
+html.theme-light section.scene.lg{
+  background:var(--bg);color:var(--ink);
+  --lime:#00A45F;--bright:#00A45F;--rose:#D31F3F;
+  --muted:#5A6376;--ink2:#FFFFFF;--dotbase:#E1E4E9;
+}
+html.theme-light .lg .track,
+html.theme-light .lg .offers span{border-color:#E1E4E9;box-shadow:0 10px 26px rgba(10,56,51,.06);}
+html.theme-light .lg .brow .bw{background:#E1E4E9;}
+html.theme-light .lg .ask>div{border-color:rgba(0,164,95,.25);box-shadow:0 10px 26px rgba(10,56,51,.06);}
+html.theme-light .lg .next{background:rgba(0,164,95,.08);border-color:rgba(0,164,95,.35);}
+html.theme-light .lg .next:hover{background:rgba(0,164,95,.16);}
+html.theme-light .lg .signoff{border-top-color:#E1E4E9;color:var(--ink-faint);}
+html.theme-light .lg .signoff .so-mark{color:var(--ink-soft);}
 </style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">Light</button>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">Dark</button>
 
 <!-- ======================= 1 · COVER ======================= -->
 <section class="scene" id="cover">
@@ -558,7 +605,70 @@ section.scene.lg{
   <div class="mark">one<span class="dot">.</span>nz</div>
 </section>
 
-<!-- ======================= 5 · THE IDEA ======================= -->
+<!-- ======================= 5 · WHAT IT IS — THE PROPOSITION ======================= -->
+<section class="scene" id="proposition">
+  <div class="scene-inner">
+    <div class="kicker">The idea &middot; what it is</div>
+    <h2>A wallet of <span class="accent">real dollars</span> for your next phone.</h2>
+    <p class="lede">Phone Dollars build in a customer's One Wallet every month — then we boost them precisely where they change a decision.</p>
+    <div class="prop-wrap">
+      <div class="prop-phone-col">
+        <div class="prop-coin c1">$</div>
+        <div class="prop-coin c2">$</div>
+        <div class="prop-coin c3">$</div>
+        <div class="prop-phone" aria-hidden="true">
+          <div class="pp-notch"></div>
+          <div class="pp-card">
+            <div class="pp-brand">one<span>.</span>nz &middot; One Wallet</div>
+            <div class="pp-lab">Phone Dollars balance</div>
+            <div class="pp-bal dial-num" data-count="248">$0</div>
+            <div class="pp-note">$1 Phone Dollar = $1 off your next phone</div>
+          </div>
+          <div class="pp-feed stagger">
+            <div class="pp-row"><span class="pp-ico">%</span><span>Monthly bill bonus</span><b>+2&ndash;6%</b></div>
+            <div class="pp-row"><span class="pp-ico">+</span><span>Added a line &middot; CMGM</span><b>+$360</b></div>
+            <div class="pp-row"><span class="pp-ico">&#9889;</span><span>Targeted boost</span><b>+$200</b></div>
+          </div>
+          <div class="pp-pill">Growing every month &uarr;</div>
+        </div>
+      </div>
+      <div class="prop-points stagger">
+        <div class="prop-point">
+          <div class="pp-badge">$</div>
+          <div>
+            <h3>Any New Zealander with a mobile number</h3>
+            <p>Anyone can hold a One Wallet — customer or not. Ongoing earning kicks in on a One NZ Pay Monthly plan.</p>
+          </div>
+        </div>
+        <div class="prop-point">
+          <div class="pp-badge">%</div>
+          <div>
+            <h3>2&ndash;6% of the bill back, every month</h3>
+            <p>A bill bonus in Phone Dollars just for staying — the wallet grows on its own.</p>
+          </div>
+        </div>
+        <div class="prop-point">
+          <div class="pp-badge">+</div>
+          <div>
+            <h3>Connect More, Get More</h3>
+            <p>A bonus for every extra line or connection added — averaging <strong style="color:var(--ink);">~$360&ndash;$520</strong> per earn event.</p>
+          </div>
+        </div>
+        <div class="prop-point">
+          <div class="pp-badge">&#9889;</div>
+          <div>
+            <h3>Targeted bonus boosts</h3>
+            <p>AI sizes boosts per customer to maximise ROI — churn saves typically <strong style="color:var(--ink);">~$200</strong>, acquisition <strong style="color:var(--ink);">~$250</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="footline">Boost values from live campaign data: save stims run $100&ndash;$400 (workhorse $100&ndash;$200); acquisition boosts cluster at ~$250, tail to ~$550.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 6 · THE IDEA ======================= -->
 <section class="scene" id="idea">
   <div class="scene-inner">
     <div class="kicker">The idea</div>
