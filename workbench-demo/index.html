@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>One NZ Membership Workbench — demo</title>
+<style>
+  :root { --green:#00A45F; --deep:#0B4A32; --ink:#101410; --paper:#0E1512; --card:#182420; --line:#2A3A33; --text:#EDF5F0; --dim:#9FB4A9; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--paper); color: var(--text); font-family: "Euclid Circular A", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+  .stage { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 18px 18px 0; }
+  .frame { position: relative; width: min(100%, calc((100vh - 220px) * 16 / 9)); aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #0a0f0c; border: 1px solid var(--line); box-shadow: 0 24px 80px rgba(0,0,0,.5); }
+  .frame img, .frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s; }
+  .frame .on { opacity: 1; }
+  .frame img.on { animation: drift 26s ease-in-out infinite alternate; } /* stills get a slow drift; clips move for real */
+  @keyframes drift { from { transform: scale(1); } to { transform: scale(1.035); } }
+  @media (prefers-reduced-motion: reduce) { .frame img.on { animation: none; } }
+  .spot { position: absolute; border: 2.5px solid var(--green); border-radius: 10px; box-shadow: 0 0 0 9999px rgba(4,10,7,.42), 0 0 26px rgba(0,164,95,.55); transition: all .5s; pointer-events: none; }
+  .rail { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; padding: 12px 16px 0; }
+  .chip { font-size: 11px; letter-spacing: .04em; padding: 4px 11px; border-radius: 999px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--dim); }
+  .chip[data-active="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  .panel { padding: 12px 18px 16px; max-width: 900px; margin: 0 auto; width: 100%; }
+  .kicker { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--green); font-weight: 600; }
+  .cap { margin-top: 6px; font-size: 17px; line-height: 1.55; min-height: 78px; }
+  .bar { margin-top: 10px; height: 3px; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--green); transition: width .4s; }
+  .ctl { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+  .ctl button { height: 34px; min-width: 34px; border-radius: 8px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--text); font-size: 15px; }
+  .ctl button:hover { background: rgba(0,164,95,.16); }
+  .ctl button:focus-visible { outline: 2px solid var(--green); outline-offset: 1px; }
+  .count { margin-left: auto; font-size: 12px; color: var(--dim); font-variant-numeric: tabular-nums; }
+  #splash { position: fixed; inset: 0; background: linear-gradient(160deg, #0B1F16, #0E1512 55%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 18px; text-align: center; padding: 24px; z-index: 10; }
+  #splash h1 { font-size: clamp(22px, 4vw, 34px); font-weight: 650; letter-spacing: -.015em; max-width: 22ch; text-wrap: balance; }
+  #splash p { color: var(--dim); max-width: 52ch; line-height: 1.6; font-size: 15px; }
+  #play { margin-top: 8px; font-size: 17px; font-weight: 650; padding: 14px 34px; border-radius: 999px; border: 0; cursor: pointer; background: var(--green); color: #fff; box-shadow: 0 10px 34px rgba(0,164,95,.35); }
+  #play:hover { filter: brightness(1.08); }
+  .brand { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--green); font-weight: 600; }
+  #err { color: #E8A13C; font-size: 13px; }
+</style>
+</head>
+<body>
+<div id="splash">
+  <div class="brand">One NZ · Membership Workbench</div>
+  <h1>Arguably the world's most AI-enabled loyalty programme</h1>
+  <p>A five-minute narrated tour of the real platform — the data, the AI analysts, the pricing engine, the closed retention loop, and the automations that run it. Sound on.</p>
+  <button id="play">▶ &nbsp;Play the demo</button>
+  <div id="err"></div>
+</div>
+
+<div class="rail" id="rail"></div>
+<div class="stage"><div class="frame" id="frame">
+  <img id="imgA" alt="" /><img id="imgB" alt="" />
+  <video id="vidA" muted playsinline preload="auto"></video>
+  <video id="vidB" muted playsinline preload="auto"></video>
+  <div class="spot" id="spot" style="display:none"></div>
+</div></div>
+<div class="panel">
+  <div class="kicker" id="kicker">&nbsp;</div>
+  <div class="cap" id="cap"></div>
+  <div class="bar"><span id="bar"></span></div>
+  <div class="ctl">
+    <button id="prev" title="Previous" aria-label="Previous">‹</button>
+    <button id="pause" title="Pause" aria-label="Pause">❚❚</button>
+    <button id="next" title="Next" aria-label="Next">›</button>
+    <button id="mute" title="Mute" aria-label="Mute">🔊</button>
+    <button id="restart" title="Restart" aria-label="Restart">⟲</button>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  let data;
+  try { data = await (await fetch("scenes.json")).json(); }
+  catch { $("err").textContent = "Couldn't load scenes.json — is the site fully published?"; return; }
+  const scenes = data.scenes || [];
+  document.title = data.title || document.title;
+
+  let i = 0, paused = false, muted = false, audio = null, timer = null, flip = false, activeVid = null;
+  let sceneToken = 0; // invalidates any stale timers/handlers left over from a previous scene
+  const chapters = [...new Set(scenes.map((s) => s.chapter))];
+  const rail = $("rail");
+  chapters.forEach((c) => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.textContent = c;
+    b.onclick = () => go(scenes.findIndex((s) => s.chapter === c));
+    rail.appendChild(b);
+  });
+
+  const stopAudio = () => {
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (audio) { audio.onended = null; audio.onerror = null; try { audio.pause(); } catch {} audio = null; }
+    try { window.speechSynthesis?.cancel(); } catch {}
+  };
+
+  function render(s) {
+    [...rail.children].forEach((b) => b.dataset.active = String(b.textContent === s.chapter));
+    $("kicker").textContent = s.chapter;
+    $("cap").textContent = s.caption;
+    $("count").textContent = (s.idx + 1) + " / " + scenes.length;
+    $("bar").style.width = Math.round(((s.idx + 1) / scenes.length) * 100) + "%";
+    // Cross-fade media: a motion clip when the scene has one (seeking past the
+    // page-load segment via videoStart, manually looping back to it), else the
+    // still with a slow drift. Any video problem falls back to the still.
+    const side = flip ? "A" : "B"; flip = !flip;
+    const stopVid = (v) => { if (!v) return; try { v.onended = null; v.onerror = null; v.onloadeddata = null; v.pause(); } catch {} };
+    const showOnly = (el) => { ["imgA","imgB","vidA","vidB"].forEach((id) => { const m = $(id); if (m !== el) m.classList.remove("on"); }); el.classList.add("on"); };
+    const still = () => { stopVid(activeVid); activeVid = null; const im = $("img" + side); im.src = s.screen; showOnly(im); };
+    if (s.video) {
+      const v = $("vid" + side);
+      stopVid(activeVid); activeVid = v;
+      v.poster = s.screen;
+      v.onerror = still;
+      v.onended = () => { try { v.currentTime = s.videoStart || 0; v.play().catch(() => {}); } catch {} };
+      const seekPlay = () => { try { v.currentTime = s.videoStart || 0; } catch {} v.play().then(() => showOnly(v)).catch(still); };
+      if (v.src && v.src.endsWith(s.video) && v.readyState >= 2) seekPlay();
+      else { v.onloadeddata = seekPlay; v.src = s.video; }
+      // If the clip can't start quickly (slow network / unsupported codec), show the still meanwhile.
+      setTimeout(() => { if (activeVid === v && v.paused) still(); }, 2500);
+    } else still();
+    // Spotlight.
+    const spot = $("spot");
+    if (s.spot) {
+      spot.style.display = "block";
+      spot.style.left = (s.spot.x * 100) + "%"; spot.style.top = (s.spot.y * 100) + "%";
+      spot.style.width = (s.spot.w * 100) + "%"; spot.style.height = (s.spot.h * 100) + "%";
+    } else spot.style.display = "none";
+  }
+
+  function narrate(s) {
+    const words = s.caption.split(/\s+/).length;
+    const fallbackMs = Math.max(3800, words * 360 + 1800);
+    // Minimum scene duration — a zero-length TTS fallback can't rush the show.
+    const minMs = Math.max(7000, words * 300);
+    const tN = Date.now();
+    const tok = sceneToken;
+    const next = () => {
+      if (paused || tok !== sceneToken) return; // stale timer from a previous scene → no-op
+      const left = minMs - (Date.now() - tN);
+      if (left > 0) { timer = setTimeout(next, left); return; }
+      go(i + 1);
+    };
+    const speak = () => {
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(s.caption);
+        u.rate = 1.02; u.onend = next;
+        window.speechSynthesis.speak(u);
+        timer = setTimeout(next, fallbackMs + 8000);
+      } catch { timer = setTimeout(next, fallbackMs); }
+    };
+    if (muted) { timer = setTimeout(next, fallbackMs); return; }
+    audio = new Audio("narration/" + s.audioId + ".mp3");
+    audio.onended = next;
+    audio.onerror = () => speak();
+    audio.play().catch(() => speak());
+    timer = setTimeout(next, fallbackMs + 15000); // safety net
+  }
+
+  function go(to) {
+    sceneToken++;
+    stopAudio();
+    if (to < 0) to = 0;
+    if (to >= scenes.length) { $("splash").style.display = "flex"; $("play").textContent = "↺  Play it again"; i = 0; return; }
+    i = to;
+    const s = scenes[i];
+    render(s); narrate(s);
+  }
+
+  $("play").onclick = () => { $("splash").style.display = "none"; paused = false; go(i); };
+  $("prev").onclick = () => go(i - 1);
+  $("next").onclick = () => go(i + 1);
+  $("pause").onclick = () => {
+    paused = !paused;
+    $("pause").textContent = paused ? "▶" : "❚❚";
+    if (paused) stopAudio(); else go(i);
+  };
+  $("mute").onclick = () => { muted = !muted; $("mute").textContent = muted ? "🔇" : "🔊"; stopAudio(); if (!paused) go(i); };
+  $("restart").onclick = () => go(0);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") go(i + 1);
+    else if (e.key === "ArrowLeft") go(i - 1);
+    else if (e.key === " ") { e.preventDefault(); $("pause").click(); }
+  });
+  // Preload the first few screens for a clean start.
+  scenes.slice(0, 4).forEach((s) => { const im = new Image(); im.src = s.screen; });
+})();
+</script>
+</body>
+</html>
