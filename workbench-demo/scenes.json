@@ -17,7 +17,7 @@
    "audioId": "shcl6hs",
    "screen": "screens/s1.png",
    "video": "screens/s1.webm",
-   "videoStart": 61.016999999999996
+   "videoStart": 60.732
   },
   {
    "idx": 2,
@@ -53,7 +53,7 @@
    "audioId": "sh4iq98",
    "screen": "screens/s5.png",
    "video": "screens/s5.webm",
-   "videoStart": 64.229
+   "videoStart": 64.861
   },
   {
    "idx": 6,
@@ -158,7 +158,7 @@
    "audioId": "sreyimc",
    "screen": "screens/s16.png",
    "video": "screens/s16.webm",
-   "videoStart": 62.239
+   "videoStart": 60.648999999999994
   },
   {
    "idx": 17,
