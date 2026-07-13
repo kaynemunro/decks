@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Membership &amp; Experience Design — Tribe Overview</title>
+<style>
+/* ============ One NZ scroll-deck · Board Brief visual system ============ */
+:root{
+  --green:#00A45F;
+  --green-bright:#12CB77;
+  --green-soft:#95EEB4;
+  --green-tint:#CDFBDD;
+  --deep:#0A3833;
+  --deepest:#06231F;
+  --grey-ink:#323232;
+  --grey-mid:#5A6376;
+  --grey-line:#E1E4E9;
+  --grey-bg:#F8F9FA;
+  --alert-red:#D31F3F;
+  --alert-yellow:#FFD600;
+}
+/* one consistent near-black ground on EVERY scene in dark mode */
+html.theme-dark{
+  --bg:#06110C;
+  --bg-alt:#06110C;
+  --card:rgba(255,255,255,0.045);
+  --card-border:rgba(149,238,180,0.14);
+  --ink:#F8F9FA;
+  --ink-soft:rgba(248,249,250,0.72);
+  --ink-faint:rgba(248,249,250,0.45);
+  --accent:#12CB77;
+  --accent-strong:#00A45F;
+  --track:rgba(255,255,255,0.09);
+  --hairline:rgba(149,238,180,0.16);
+  --shadow:0 18px 50px rgba(0,0,0,0.35);
+}
+html.theme-light{
+  --bg:#F8F9FA;
+  --bg-alt:#FFFFFF;
+  --card:#FFFFFF;
+  --card-border:#E1E4E9;
+  --ink:#323232;
+  --ink-soft:#5A6376;
+  --ink-faint:#9AA1AC;
+  --accent:#00A45F;
+  --accent-strong:#00A45F;
+  --track:#E1E4E9;
+  --hairline:#E1E4E9;
+  --shadow:0 18px 50px rgba(10,56,51,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+}
+::selection{background:var(--green);color:#fff;}
+
+/* -------- scenes -------- */
+.scene{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:9vh 7vw;
+  position:relative;
+  overflow:hidden;
+}
+.scene-inner{
+  max-width:1060px;
+  width:100%;
+  margin:0 auto;
+  opacity:0;
+  transform:translateY(34px);
+  transition:opacity .85s cubic-bezier(.2,.65,.25,1), transform .85s cubic-bezier(.2,.65,.25,1);
+}
+.scene.in-view .scene-inner{opacity:1;transform:translateY(0);}
+.scene:nth-child(even){background:var(--bg-alt);transition:background .4s ease;}
+
+/* stagger children */
+.stagger > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.scene.in-view .stagger > *{opacity:1;transform:translateY(0);}
+.scene.in-view .stagger > *:nth-child(1){transition-delay:.15s;}
+.scene.in-view .stagger > *:nth-child(2){transition-delay:.28s;}
+.scene.in-view .stagger > *:nth-child(3){transition-delay:.41s;}
+.scene.in-view .stagger > *:nth-child(4){transition-delay:.54s;}
+.scene.in-view .stagger > *:nth-child(5){transition-delay:.67s;}
+.scene.in-view .stagger > *:nth-child(6){transition-delay:.80s;}
+.scene.in-view .stagger > *:nth-child(7){transition-delay:.93s;}
+.scene.in-view .stagger > *:nth-child(8){transition-delay:1.06s;}
+
+/* -------- type · big strong statements -------- */
+.kicker{
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.1rem;
+}
+h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:700;line-height:1.05;letter-spacing:-0.02em;}
+h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:700;line-height:1.08;letter-spacing:-0.018em;margin-bottom:1.2rem;max-width:22ch;}
+h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
+.lede{font-size:clamp(1.05rem,1.7vw,1.28rem);color:var(--ink-soft);max-width:46em;}
+.accent{color:var(--accent);}
+
+/* -------- one.nz mark -------- */
+.mark{
+  position:absolute;bottom:2.2rem;right:7vw;
+  font-weight:600;font-size:.95rem;color:var(--ink-faint);
+  letter-spacing:.01em;user-select:none;
+}
+.mark .dot{color:var(--green-bright);}
+
+/* -------- slide numbers -------- */
+.pageno{
+  position:absolute;bottom:2.2rem;left:7vw;
+  font-size:.78rem;font-weight:600;letter-spacing:.12em;
+  color:var(--ink-faint);user-select:none;
+}
+
+/* -------- theme toggle -------- */
+.theme-toggle{
+  position:fixed;top:1.1rem;right:1.2rem;z-index:99;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--ink-soft);
+  border-radius:999px;padding:.42rem .95rem;
+  font-family:inherit;font-size:.78rem;font-weight:600;letter-spacing:.05em;
+  cursor:pointer;backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* -------- cards & grids -------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:1.6rem 1.7rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;}
+.card .cnum{font-size:clamp(2rem,3.4vw,2.9rem);font-weight:700;color:var(--accent);letter-spacing:-0.02em;margin-bottom:.35rem;line-height:1;}
+.card p{font-size:.95rem;color:var(--ink-soft);}
+.card h3{margin-bottom:.5rem;}
+.card p b, .card p strong{color:var(--ink);font-weight:600;}
+.tag{
+  display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:.22rem .7rem;margin-bottom:.8rem;
+}
+.icon-badge{
+  width:40px;height:40px;border-radius:12px;flex:none;margin-bottom:.9rem;
+  background:rgba(18,203,119,.12);border:1px solid rgba(18,203,119,.3);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;
+}
+
+/* -------- agenda chips (cover) -------- */
+.chip-strip{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem;}
+.chip{
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:999px;padding:.55rem 1.05rem;
+  font-size:.9rem;font-weight:600;color:var(--ink);
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:none;}
+.chip b{color:var(--accent);font-weight:600;}
+
+/* -------- clean lists (deliverables) -------- */
+ul.clean{list-style:none;margin-top:.6rem;}
+ul.clean li{
+  padding:.45rem 0 .45rem 1.7rem;position:relative;color:var(--ink-soft);font-size:.95rem;
+  border-bottom:1px solid var(--hairline);
+}
+ul.clean li:last-child{border-bottom:0;padding-bottom:0;}
+ul.clean li::before{
+  content:"";position:absolute;left:0;top:.95rem;
+  width:9px;height:9px;border-radius:50%;background:var(--accent-strong);
+}
+
+/* -------- highlight tiles -------- */
+.hl-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-top:1.6rem;}
+.hl{
+  display:flex;gap:.9rem;align-items:flex-start;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:16px;padding:1rem 1.2rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.hl:hover{border-color:var(--accent);transform:translateY(-2px);}
+.hl .tick{
+  flex:none;width:26px;height:26px;border-radius:50%;margin-top:.1rem;
+  background:rgba(18,203,119,.14);border:1px solid rgba(18,203,119,.3);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;
+}
+.hl p{font-size:.9rem;color:var(--ink-soft);}
+.hl b{color:var(--ink);font-weight:600;}
+
+/* -------- notes / footlines -------- */
+.placeholder-note{
+  margin-top:1.8rem;font-size:.85rem;color:var(--ink-faint);
+  border-left:3px solid var(--alert-yellow);padding-left:.85rem;max-width:70ch;
+}
+.footline{margin-top:2.2rem;font-size:.9rem;color:var(--ink-faint);}
+.scroll-hint{
+  position:absolute;bottom:2.1rem;left:50%;transform:translateX(-50%);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.45;transform:translate(-50%,0);}50%{opacity:1;transform:translate(-50%,6px);}}
+
+/* -------- signoff strip (closing) -------- */
+.signoff{
+  margin-top:3rem;padding-top:1.4rem;
+  border-top:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;
+  font-size:.85rem;color:var(--ink-faint);
+}
+.signoff .so-mark{font-weight:600;color:var(--ink-soft);}
+.signoff .so-mark .dot{color:var(--green-bright);}
+
+/* -------- One Wallet proposition scene · phone mock (ported from Board Brief) -------- */
+.prop-wrap{display:grid;grid-template-columns:minmax(270px,330px) 1fr;gap:clamp(1.6rem,4vw,3.2rem);align-items:center;margin-top:2.2rem;}
+.prop-phone-col{position:relative;justify-self:center;}
+.prop-phone{width:min(300px,78vw);background:#020806;border:9px solid #11241a;border-radius:40px;padding:18px 16px 22px;box-shadow:0 30px 70px rgba(0,0,0,.45);position:relative;}
+html.theme-light .prop-phone{box-shadow:0 26px 60px rgba(10,56,51,.22);}
+.pp-notch{width:100px;height:18px;background:#11241a;border-radius:0 0 14px 14px;margin:-18px auto 14px;}
+.pp-card{background:linear-gradient(135deg,#00A45F,#12CB77);border-radius:18px;padding:16px 16px 14px;text-align:left;}
+.pp-brand{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);}
+.pp-brand span{color:#06231F;}
+.pp-lab{font-size:.64rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:12px;}
+.pp-bal{font-size:2.7rem;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;}
+.pp-note{font-size:.68rem;color:rgba(255,255,255,.9);margin-top:6px;font-weight:600;}
+.pp-feed{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.pp-row{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid rgba(149,238,180,.16);border-radius:12px;padding:8px 10px;font-size:.78rem;color:rgba(255,255,255,.78);}
+.pp-row b{margin-left:auto;color:#12CB77;font-size:.8rem;}
+.pp-ico{width:22px;height:22px;border-radius:50%;background:rgba(18,203,119,.16);color:#12CB77;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex:none;}
+.pp-pill{display:inline-block;margin-top:12px;background:rgba(18,203,119,.14);color:#12CB77;font-size:.7rem;font-weight:600;padding:6px 12px;border-radius:20px;}
+.prop-coin{position:absolute;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#12CB77,#00A45F);color:#06231F;font-weight:800;font-size:1.15rem;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,164,95,.35);z-index:2;animation:coinFloat 4s ease-in-out infinite;}
+.prop-coin.c1{top:-14px;left:-20px;}
+.prop-coin.c2{bottom:58px;right:-24px;width:36px;height:36px;font-size:.95rem;animation-delay:1.3s;}
+.prop-coin.c3{top:38%;left:-30px;width:30px;height:30px;font-size:.8rem;animation-delay:2.2s;}
+@keyframes coinFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.prop-points{display:flex;flex-direction:column;gap:1rem;}
+.prop-point{display:flex;gap:1rem;align-items:flex-start;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:1rem 1.2rem;transition:border-color .3s ease, transform .3s ease;}
+.prop-point:hover{border-color:var(--accent);transform:translateY(-2px);}
+.pp-badge{width:40px;height:40px;border-radius:12px;flex:none;background:rgba(18,203,119,.12);border:1px solid rgba(18,203,119,.3);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;}
+.prop-point h3{font-size:1rem;margin-bottom:.2rem;}
+.prop-point p{font-size:.88rem;color:var(--ink-soft);}
+.prop-point p strong{color:var(--ink);}
+@media (max-width:860px){.prop-wrap{grid-template-columns:1fr;}.prop-coin{display:none;}}
+
+@media (max-width:640px){
+  .scene{padding:8vh 6vw;}
+  .mark{right:6vw;}
+  .pageno{left:6vw;}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">Dark</button>
+
+<!-- ======================= 1 · COVER ======================= -->
+<section class="scene" id="cover">
+  <div class="pageno">01 / 12</div>
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">Tribe overview &middot; Draft</div>
+      <h1>Membership &amp;<br>Experience Design</h1>
+      <p class="lede" style="margin-top:1.4rem;">Who we are, how we're set up, and what we've delivered for New Zealanders over the last six months.</p>
+      <div class="chip-strip">
+        <div class="chip"><b>01</b> Our purpose</div>
+        <div class="chip"><b>02</b> How we're structured</div>
+        <div class="chip"><b>03</b> One Wallet</div>
+        <div class="chip"><b>04</b> What we shipped</div>
+      </div>
+      <p class="footline">One NZ &middot; scroll to begin</p>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 2 · PURPOSE ======================= -->
+<section class="scene" id="purpose">
+  <div class="pageno">02 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">01 &middot; Our purpose</div>
+    <h2>Why the tribe <span class="accent">exists</span></h2>
+    <p class="lede">We exist to operate and drive <strong style="color:var(--ink);font-weight:600;">One Wallet as a Membership Programme</strong>. Every stream in the tribe works towards the same outcome: members who stay longer, do more with us, and tell their mates — because their One Wallet keeps rewarding them.</p>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card">
+        <div class="icon-badge">&hearts;</div>
+        <h3>Drive the programme</h3>
+        <p>Grow One Wallet membership and engagement — building Phone Dollar propositions, offers and partnerships that give every member a clear reason to stay and earn more with us.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">&#10022;</div>
+        <h3>Design the experience</h3>
+        <p>Make One Wallet the home of membership — simple, human experiences across every touchpoint, so joining, earning and spending Phone Dollars feels effortless.</p>
+      </div>
+      <div class="card">
+        <div class="icon-badge">&#9650;</div>
+        <h3>Operate it brilliantly</h3>
+        <p>Run One Wallet at scale — the platforms, controls and insight that keep the programme safe, measurable and always improving across the base.</p>
+      </div>
+    </div>
+    <p class="placeholder-note">Draft framing of the three pillars — refine wording with the tribe if needed; the mission line is as agreed.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 3 · STRUCTURE ======================= -->
+<section class="scene" id="structure">
+  <div class="pageno">03 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">02 &middot; How we're structured</div>
+    <h2>One tribe, <span class="accent">five streams</span></h2>
+    <p class="lede">Cross-functional streams with clear missions, working to a shared tribe roadmap.</p>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card">
+        <div class="tag">Stream</div>
+        <h3>Membership Marketing</h3>
+        <p>Drives awareness, acquisition and engagement campaigns across the membership base.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Stream</div>
+        <h3>Product &amp; Propositions</h3>
+        <p>Shapes the membership offer — benefits, partners and pricing that keep members coming back.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Stream</div>
+        <h3>Delivery Operations</h3>
+        <p>Keeps the engine running — release delivery, operational readiness and day-to-day service health.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Stream</div>
+        <h3>Data &amp; Enablement</h3>
+        <p>Provides the insight, tooling and platforms that let every stream measure, learn and move faster.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Stream</div>
+        <h3>Design</h3>
+        <p>Owns the end-to-end member experience — research, service design and UI across all channels.</p>
+      </div>
+    </div>
+    <p class="placeholder-note">Add headcounts and any chapter/guild structure that sits across the streams.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 4 · ONE WALLET OVERVIEW (ported from Board Brief) ======================= -->
+<section class="scene" id="one-wallet">
+  <div class="pageno">04 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">03 &middot; One Wallet &middot; what it is</div>
+    <h2>A wallet of <span class="accent">real dollars</span> for your next phone.</h2>
+    <p class="lede">Phone Dollars build in a customer's One Wallet every month — then we boost them precisely where they change a decision. This is the platform every stream in the tribe builds on.</p>
+    <div class="prop-wrap">
+      <div class="prop-phone-col">
+        <div class="prop-coin c1">$</div>
+        <div class="prop-coin c2">$</div>
+        <div class="prop-coin c3">$</div>
+        <div class="prop-phone" aria-hidden="true">
+          <div class="pp-notch"></div>
+          <div class="pp-card">
+            <div class="pp-brand">one<span>.</span>nz &middot; One Wallet</div>
+            <div class="pp-lab">Phone Dollars balance</div>
+            <div class="pp-bal" data-count="248">$0</div>
+            <div class="pp-note">$1 Phone Dollar = $1 off your next phone</div>
+          </div>
+          <div class="pp-feed stagger">
+            <div class="pp-row"><span class="pp-ico">%</span><span>Monthly bill bonus</span><b>+2&ndash;6%</b></div>
+            <div class="pp-row"><span class="pp-ico">+</span><span>Added a line &middot; CMGM</span><b>+$300</b></div>
+            <div class="pp-row"><span class="pp-ico">&#9889;</span><span>AI targeted boost</span><b>+$200</b></div>
+          </div>
+          <div class="pp-pill">Growing every month &uarr;</div>
+        </div>
+      </div>
+      <div class="prop-points stagger">
+        <div class="prop-point">
+          <div class="pp-badge">$</div>
+          <div>
+            <h3>Any New Zealander with a mobile number</h3>
+            <p>Anyone can hold a One Wallet — customer or not. Ongoing earning kicks in on a One NZ Pay Monthly plan.</p>
+          </div>
+        </div>
+        <div class="prop-point">
+          <div class="pp-badge">%</div>
+          <div>
+            <h3>2&ndash;6% of the bill back, every month</h3>
+            <p>A bill bonus in Phone Dollars just for staying — the wallet grows on its own.</p>
+          </div>
+        </div>
+        <div class="prop-point">
+          <div class="pp-badge">+</div>
+          <div>
+            <h3>Connect More, Get More</h3>
+            <p>A bonus for every extra mobile or broadband connection added — <strong>~$300</strong>.</p>
+          </div>
+        </div>
+        <div class="prop-point">
+          <div class="pp-badge">&#9889;</div>
+          <div>
+            <h3>Targeted bonus boosts</h3>
+            <p>AI sizes boosts per customer to maximise ROI — churn saves typically <strong>~$100&ndash;$300</strong>, acquisition <strong>~$200&ndash;$600</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="footline">Boost values from live campaign data: churn saves typically $100&ndash;$300; acquisition boosts $200&ndash;$600.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 6 · DATA & PRODUCT DELIVERABLES ======================= -->
+<section class="scene" id="shipped-data-product">
+  <div class="pageno">05 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">04 &middot; What we shipped</div>
+    <h2>Foundational <span class="accent">builds</span></h2>
+    <p class="lede">The foundations that unlock the programme — new offers enabled, and the operational muscle to run them at scale.</p>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card">
+        <div class="tag">Unlock</div>
+        <h3>New Proposition enablement</h3>
+        <ul class="clean">
+          <li>Offer enablement</li>
+          <li>Scalability</li>
+          <li>Insights and reporting</li>
+          <li>Ongoing management</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="tag">Offers</div>
+        <h3>New offer enablement</h3>
+        <ul class="clean">
+          <li>Prepay auto renew offer</li>
+          <li>Prepay ongoing earn offer</li>
+          <li>Roaming offer</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="tag">Offers</div>
+        <h3>Always on offer management</h3>
+        <ul class="clean">
+          <li>Offer lifecycle management</li>
+          <li>Offer distribution</li>
+          <li>Audience tagging</li>
+          <li>Frontline support</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="tag">Operations</div>
+        <h3>Operational improvements</h3>
+        <ul class="clean">
+          <li>Wallet lifecycle validation</li>
+          <li>Shared Save persistence</li>
+          <li>Fraud operational controls</li>
+          <li>Offer reason code auditability &amp; Toolkit</li>
+          <li>Wallet DB business event</li>
+          <li>Rescind automation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 7 · MARKETING & DESIGN DELIVERABLES ======================= -->
+<section class="scene" id="shipped-marketing-design">
+  <div class="pageno">06 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">04 &middot; What we shipped</div>
+    <h2>Marketing &amp; Design: <span class="accent">back in market</span></h2>
+    <p class="lede">Always-on campaigns and our first ATL Phone Dollars offer — all driving programme performance.</p>
+    <div class="hl-list stagger">
+      <div class="hl"><div class="tick">&#10003;</div><p><b>Back in market:</b> monthly acquisition and retention campaigns are live again, driving programme performance.</p></div>
+      <div class="hl"><div class="tick">&#10003;</div><p><b>Behaviour-driving comms:</b> more Membership-specific communications aimed at programme behaviours — lifting trade-in assessment and Bill Bonus engagement.</p></div>
+      <div class="hl"><div class="tick">&#10003;</div><p><b>Phone Dollars in eshop:</b> customers can now log in and see their Phone Dollar balance in eshop — a huge unlock for visibility of value.</p></div>
+      <div class="hl"><div class="tick">&#10003;</div><p><b>Juicy June ATL:</b> our first Phone Dollars-only offer — $500 Phone Dollars when you join on an eligible Pay Monthly plan.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 7 · BRAND ACTIVATIONS ======================= -->
+<section class="scene" id="activations">
+  <div class="pageno">07 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">04 &middot; What we shipped</div>
+    <h2>Phone Dollars, <span class="accent">out in the crowd</span></h2>
+    <p class="lede">We've taken the programme to New Zealanders in person — real-world activations built to drive awareness and engagement with Phone Dollars.</p>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card">
+        <div class="tag">Debut</div>
+        <h3>Fieldays</h3>
+        <p>Phone Dollars made its debut at Fieldays — introducing the programme to thousands of Kiwis face to face.</p>
+      </div>
+      <div class="card">
+        <div class="tag">Activation</div>
+        <h3>The Boat Show</h3>
+        <p>On the ground at the boat show, putting Phone Dollars in front of a whole new audience.</p>
+      </div>
+      <div class="card">
+        <div class="tag">All season</div>
+        <h3>Warriors home games</h3>
+        <p>At every Warriors home game all season — activations that keep members engaged and bring new fans into the programme.</p>
+      </div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 8 · STANDALONE · 52 RETENTION CAMPAIGNS ======================= -->
+<section class="scene" id="retention-campaigns">
+  <div class="pageno">08 / 12</div>
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">04 &middot; What we shipped</div>
+      <h2>Keeping our members <span class="accent">close</span></h2>
+      <div style="font-size:clamp(4.5rem,13vw,9.5rem);font-weight:700;line-height:1;letter-spacing:-0.03em;color:var(--accent);margin:1.2rem 0 1.4rem;">52</div>
+      <p class="lede">Campaigns delivered to existing customers over the last 4&ndash;6 months — all driving customer retention.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 8 · STANDALONE · 22 ACQUISITION CAMPAIGNS ======================= -->
+<section class="scene" id="acquisition-campaigns">
+  <div class="pageno">09 / 12</div>
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">04 &middot; What we shipped</div>
+      <h2>Bringing new members <span class="accent">in</span></h2>
+      <div style="font-size:clamp(4.5rem,13vw,9.5rem);font-weight:700;line-height:1;letter-spacing:-0.03em;color:var(--accent);margin:1.2rem 0 1.4rem;">22</div>
+      <p class="lede">Acquisition campaigns in the last 6 months &mdash; all driving non-customer Wallet conversion.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 9 · STANDALONE · JUICY JUNE $500 ======================= -->
+<section class="scene" id="juicy-june">
+  <div class="pageno">10 / 12</div>
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">04 &middot; What we shipped</div>
+      <h2>Our first-ever ATL <span class="accent">Phone Dollars-only</span> offer</h2>
+      <div style="font-size:clamp(4.5rem,13vw,9.5rem);font-weight:700;line-height:1;letter-spacing:-0.03em;color:var(--accent);margin:1.2rem 0 1.4rem;">$500</div>
+      <p class="lede">Phone Dollars with Juicy June &mdash; when you join on an eligible Pay Monthly plan.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 10 · STANDALONE · 30% ENGAGED ======================= -->
+<section class="scene" id="engaged">
+  <div class="pageno">11 / 12</div>
+  <div class="scene-inner">
+    <div class="stagger">
+      <div class="kicker">04 &middot; What we shipped</div>
+      <h2>A huge engagement <span class="accent">milestone</span></h2>
+      <div style="font-size:clamp(4.5rem,13vw,9.5rem);font-weight:700;line-height:1;letter-spacing:-0.03em;color:var(--accent);margin:1.2rem 0 1.4rem;">30%</div>
+      <p class="lede">Of the eligible consumer base is now engaged with the programme — a huge milestone, with so much mahi behind it.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- ======================= 8 · CLOSING ======================= -->
+<section class="scene" id="closing">
+  <div class="pageno">12 / 12</div>
+  <div class="scene-inner">
+    <div class="kicker">What's next</div>
+    <h2>Thanks — over to the <span class="accent">mahi ahead</span></h2>
+    <p class="footline" style="color:var(--accent);font-weight:600;font-size:1.1rem;">For every New Zealander</p>
+    <div class="signoff">
+      <span>Membership &amp; Experience Design &middot; One NZ &middot; July 2026</span>
+      <span class="so-mark">one<span class="dot">.</span>nz</span>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<script>
+(function(){
+  // ---------- theme toggle ----------
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function setTheme(mode){
+    root.classList.remove('theme-dark','theme-light');
+    root.classList.add(mode);
+    btn.textContent = mode === 'theme-dark' ? 'Light' : 'Dark';
+  }
+  btn.addEventListener('click', function(){
+    setTheme(root.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark');
+  });
+
+  // ---------- count-up balance (runs once per scene entry) ----------
+  function runDials(scene){
+    if (scene.dataset.dialsDone) return;
+    var nums = scene.querySelectorAll('[data-count]');
+    if (!nums.length) return;
+    scene.dataset.dialsDone = '1';
+    nums.forEach(function(el){
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var dur = 1400, start = null;
+      function step(ts){
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = '$' + Math.round(target * eased).toLocaleString('en-NZ');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // ---------- scene entrance ----------
+  var scenes = document.querySelectorAll('.scene');
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          e.target.classList.add('in-view');
+          runDials(e.target);
+        }
+      });
+    }, { threshold: 0.22 });
+    scenes.forEach(function(s){ io.observe(s); });
+  } else {
+    scenes.forEach(function(s){ s.classList.add('in-view'); runDials(s); });
+  }
+})();
+</script>
+</body>
+</html>
