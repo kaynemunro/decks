@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Growth Fund — The Next Phase</title>
+<style>
+/* ============ ONE NZ DECK — GROWTH FUND NEXT PHASE (RECOMMENDATION) ============ */
+:root{
+  --green:#00A45F; --green-bright:#12CB77; --tint:#95EEB4; --tint-2:#CDFBDD;
+  --alert-red:#D31F3F; --alert-yellow:#FFD600;
+}
+.theme-dark{
+  --bg:#06231F; --bg-2:#0A3833; --card:#0A3833; --card-2:#0D423A;
+  --ink:#F8F9FA; --ink-soft:#AEC4BD; --ink-faint:#7E968F;
+  --line:rgba(255,255,255,.12); --line-soft:rgba(255,255,255,.07);
+  --chart-grid:rgba(255,255,255,.10); --chart-grey:#3A5751; --chart-grey-2:#54736C;
+  --accent-ink:#12CB77; --stat-ink:#CDFBDD; --shadow:0 18px 48px rgba(0,0,0,.35); --red-soft:#FF6D89;
+}
+.theme-light{
+  --bg:#F8F9FA; --bg-2:#FFFFFF; --card:#FFFFFF; --card-2:#F1F4F3;
+  --ink:#323232; --ink-soft:#5A6376; --ink-faint:#8A93A0;
+  --line:#E1E4E9; --line-soft:#EDF0F2; --chart-grid:#E1E4E9; --chart-grey:#C9D0D6; --chart-grey-2:#AAB4BC;
+  --accent-ink:#00A45F; --stat-ink:#0A3833; --shadow:0 18px 48px rgba(10,56,51,.10); --red-soft:#D31F3F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;transition:background .35s ease,color .35s ease;}
+::selection{background:var(--green);color:#fff}
+.scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:88px 24px;position:relative;overflow:hidden;}
+.scene:nth-child(even){background:var(--bg-2)}
+.wrap{width:100%;max-width:1120px;position:relative;z-index:2}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.scene.in-view .reveal{opacity:1;transform:translateY(0)}
+.scene.in-view .reveal.d1{transition-delay:.08s}.scene.in-view .reveal.d2{transition-delay:.16s}
+.scene.in-view .reveal.d3{transition-delay:.24s}.scene.in-view .reveal.d4{transition-delay:.32s}.scene.in-view .reveal.d5{transition-delay:.40s}
+.kicker{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px;}
+h1{font-size:clamp(2.3rem,5.4vw,3.9rem);font-weight:600;line-height:1.08;letter-spacing:-.015em}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;line-height:1.15;letter-spacing:-.01em;margin-bottom:14px}
+h3{font-size:1.08rem;font-weight:600;margin-bottom:6px}
+.lede{font-size:clamp(1.02rem,1.7vw,1.2rem);color:var(--ink-soft);max-width:60ch}
+p{color:var(--ink-soft)}
+strong{color:var(--ink);font-weight:600}
+.green{color:var(--accent-ink)}
+.small{font-size:.85rem;color:var(--ink-faint)}
+.footnote{font-size:.8rem;color:var(--ink-faint);margin-top:14px;max-width:80ch}
+.mark{position:absolute;bottom:26px;right:30px;font-weight:600;font-size:.95rem;color:var(--ink-faint);letter-spacing:-.01em;z-index:3;user-select:none;}
+.mark .dot{color:var(--green)}
+#themeToggle{position:fixed;top:18px;right:18px;z-index:50;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font:600 .8rem "Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif;cursor:pointer;box-shadow:var(--shadow);transition:background .3s,color .3s,border-color .3s;}
+#themeToggle:hover{border-color:var(--green)}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--green);width:0;z-index:60;transition:width .12s linear}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin:34px 0 26px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 24px 22px;box-shadow:var(--shadow);}
+.stat .num{font-size:clamp(1.8rem,3.2vw,2.6rem);font-weight:600;color:var(--stat-ink);line-height:1.05;letter-spacing:-.02em}
+.stat .num em{font-style:normal;color:var(--accent-ink)}
+.stat .lbl{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
+.stat .sub{font-size:.85rem;color:var(--ink-soft);margin-top:6px}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:30px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);}
+.card .step{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;font-weight:600;font-size:.95rem;margin-bottom:12px;}
+.card p{font-size:.93rem}
+.callout{border-left:4px solid var(--green);background:var(--card);border-radius:0 16px 16px 0;padding:20px 24px;margin-top:28px;box-shadow:var(--shadow);}
+.callout.warn{border-left-color:var(--alert-yellow)}
+.callout.risk{border-left-color:var(--alert-red)}
+.callout p{font-size:.95rem}
+.callout .tag{font-size:.68rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:6px}
+.agenda{list-style:none;margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 36px;counter-reset:ag}
+.agenda li{counter-increment:ag;display:flex;gap:16px;align-items:baseline;padding:13px 4px;border-bottom:1px solid var(--line-soft);font-size:1rem;color:var(--ink);font-weight:500;}
+.agenda li::before{content:counter(ag,decimal-leading-zero);font-size:.78rem;font-weight:600;color:var(--accent-ink);letter-spacing:.06em;}
+.agenda li span{font-size:.82rem;color:var(--ink-faint);font-weight:400}
+.tablebox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px 14px;box-shadow:var(--shadow);margin-top:22px;overflow-x:auto}
+.tablebox h3{margin-bottom:10px;font-size:.95rem}
+table.dt{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+.dt th{font-size:.68rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:bottom}
+.dt td{padding:9px 10px;border-bottom:1px solid var(--line-soft);color:var(--ink-soft);vertical-align:top}
+.dt td:first-child{color:var(--ink);font-weight:500;white-space:nowrap}
+.dt th.num,.dt td.num{text-align:right;white-space:nowrap}
+.dt tr.total td{font-weight:600;color:var(--ink);border-top:2px solid var(--line);border-bottom:none;background:var(--card-2)}
+.chip{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.06em;padding:3px 10px;border-radius:999px;background:var(--card-2);color:var(--ink-soft);border:1px solid var(--line)}
+.chip.lg{background:rgba(18,203,119,.16);color:var(--tint-2);border-color:rgba(18,203,119,.3)}
+.chip.sm{background:rgba(149,238,180,.10);color:var(--tint)}
+.list{display:grid;gap:14px;margin-top:28px}
+.item{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow);}
+.item .n{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.95rem;margin-top:2px;}
+.item.gate .n{background:var(--alert-yellow);color:#0A3833}
+.item h3{margin-bottom:2px}
+.item p{font-size:.9rem}
+.fix{display:inline-block;margin-top:6px;font-size:.78rem;font-weight:600;color:var(--accent-ink)}
+.cover-bg{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(1100px 560px at 82% -10%,rgba(0,164,95,.28),transparent 62%),radial-gradient(760px 480px at -8% 108%,rgba(18,203,119,.16),transparent 60%);}
+.theme-light .cover-bg{background:radial-gradient(1100px 560px at 82% -10%,rgba(0,164,95,.14),transparent 62%),radial-gradient(760px 480px at -8% 108%,rgba(18,203,119,.10),transparent 60%);}
+.cover-brand{font-weight:600;font-size:1.25rem;margin-bottom:60px}
+.cover-brand .dot{color:var(--green)}
+.cover-meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.chipmeta{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 18px;font-size:.85rem;font-weight:500;color:var(--ink-soft);}
+.chipmeta b{color:var(--accent-ink);font-weight:600}
+.verdict{display:inline-flex;align-items:center;gap:12px;background:var(--green);color:#fff;border-radius:14px;padding:14px 22px;font-weight:600;font-size:1.05rem;margin-top:30px;box-shadow:var(--shadow);flex-wrap:wrap}
+.verdict .pill{background:rgba(255,255,255,.2);border-radius:999px;padding:3px 12px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media(max-width:860px){.twocol{grid-template-columns:1fr}}
+.close-num{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:600;color:var(--accent-ink);letter-spacing:-.03em;line-height:1}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:30px}
+.tl{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.tl .when{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:8px}
+.tl p{font-size:.88rem}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="themeToggle" aria-label="Toggle colour theme">Light mode</button>
+
+<!-- 1 · COVER -->
+<section class="scene" id="cover">
+  <div class="cover-bg"></div>
+  <div class="wrap">
+    <div class="cover-brand reveal">one<span class="dot">.</span>nz</div>
+    <div class="kicker reveal d1">Retail · Membership · Recommendation</div>
+    <h1 class="reveal d1">Growth Fund<br><span class="green">The Next Phase</span></h1>
+    <p class="lede reveal d2" style="margin-top:20px">The trial proved the mechanic. Now we scale it properly: one clean month, a representative six-store mix, monthly targets that are simpler to run — with weekly scoreboards so nobody waits to see how they tracked.</p>
+    <div class="cover-meta reveal d3">
+      <span class="chipmeta"><b>August 2026</b> · 1st–31st, one full month</span>
+      <span class="chipmeta"><b>6 stores</b> · 3 large-format + 3 smaller</span>
+      <span class="chipmeta">Monthly targets · weekly scoreboards</span>
+      <span class="chipmeta">Internal — for store leads &amp; retail leadership</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · THE PROOF -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Where we got to · 8 Jun – 3 Jul</div>
+    <h2 class="reveal">The mechanic works — Sylvia Park proved it</h2>
+    <div class="statgrid">
+      <div class="stat reveal d1"><div class="num"><em>+16%</em></div><div class="lbl">Net incremental (both stores)</div><div class="sub">193 sales vs ~167 expected, network uplift netted out</div></div>
+      <div class="stat reveal d2"><div class="num">+21%</div><div class="lbl">Sylvia Park</div><div class="sub">11 of 13 reps deployed — adoption carried the result</div></div>
+      <div class="stat reveal d3"><div class="num">1.1–2.9×</div><div class="lbl">ROI range</div><div class="sub">At or above break-even on the most hostile read</div></div>
+      <div class="stat reveal d4"><div class="num">$18,300</div><div class="lbl">Earned by the team</div><div class="sub">Sylvia Park $13,500 · Albany $4,800</div></div>
+    </div>
+    <p class="lede reveal d4">Albany was flat (+1) — an <strong>adoption</strong> gap, not a mechanic problem. Where Albany reps used it, it worked (Saad went 0 → 7 sales). The job now is to prove it across store types, and to run it in a way we can actually manage.</p>
+  </div>
+</section>
+
+<!-- 3 · THE RECOMMENDATION -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">The recommendation, up front</div>
+    <h2 class="reveal">One clean month, six stores, monthly targets</h2>
+    <div class="cardgrid">
+      <div class="card reveal d1"><div class="step">1</div><h3>A representative six</h3><p>3 large-format, high-volume stores + 3 smaller, lower-volume — so we read the fund across store types, not just off our best team.</p></div>
+      <div class="card reveal d2"><div class="step">2</div><h3>Run it monthly</h3><p>One monthly target and one monthly allocation per rep — set at the start and left alone. Far less admin, and it stops the weekly over-pay.</p></div>
+      <div class="card reveal d3"><div class="step">3</div><h3>Weekly scoreboards</h3><p>Stores still see how they tracked week-by-week vs run-rate. Their pay just isn't re-cut weekly. The gamification that worked stays.</p></div>
+    </div>
+    <div class="verdict reveal d4"><span class="pill">The ask</span> August 1–31 · 6 stores · monthly targets + weekly scoreboards · entitlement gate closed first · Albany back in, clean</div>
+  </div>
+</section>
+
+<!-- 4 · WHY MONTHLY -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Why monthly</div>
+    <h2 class="reveal">It's easier to run — and it's what the review already recommended</h2>
+    <div class="twocol" style="margin-top:24px">
+      <div class="callout reveal d1"><span class="tag">Less admin, fewer errors</span><p>Weekly balances proved cumbersome to monitor and manage — the review's own words. Set the target and the fund once a month and most of the moving parts disappear.</p></div>
+      <div class="callout reveal d2"><span class="tag">It stops us over-paying</span><p>Paying weekly wins while ignoring down-weeks cost <strong>~2.3× the store-level lift</strong> — $18,300 earned against ~$8k of true store value. One monthly reconciliation nets that out.</p></div>
+    </div>
+    <div class="callout warn reveal d3"><span class="tag">The one thing we protect</span><p>Sylvia Park's win was partly built on the weekly buzz — tracking and gamifying every sale. So we keep the <strong>weekly scoreboard</strong> and move only the <strong>pay settlement</strong> to monthly. Reps still see progress every week; they just aren't re-cut every week.</p></div>
+  </div>
+</section>
+
+<!-- 5 · THE STORE MIX -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">The store mix · recommended</div>
+    <h2 class="reveal">A representative six — and why each earns its place</h2>
+    <div class="tablebox reveal d1">
+      <table class="dt">
+        <thead><tr><th>Store</th><th>Format</th><th>Region</th><th>Why it's in</th></tr></thead>
+        <tbody>
+          <tr><td>Sylvia Park</td><td><span class="chip lg">Large</span></td><td>Auckland</td><td>Our proven benchmark (+21%, 85% adoption). Tests whether monthly settlement keeps the magic.</td></tr>
+          <tr><td>Albany</td><td><span class="chip lg">Large</span></td><td>Auckland</td><td>Trial continuity; refresh clears in July so it reads clean from Aug. Tests the adoption push with the Sylvia Park playbook.</td></tr>
+          <tr><td>Riccarton</td><td><span class="chip lg">Large</span></td><td>Canterbury</td><td>A fresh, non-Auckland high-volume read — no trial familiarity, tests the mechanic in a different market.</td></tr>
+          <tr><td>Pukekohe</td><td><span class="chip sm">Smaller</span></td><td>Auckland</td><td>Lower-volume Auckland store — pairs with the Auckland large stores on the same market and Retail 3.0 cohort.</td></tr>
+          <tr><td>Timaru</td><td><span class="chip sm">Smaller</span></td><td>Canterbury</td><td>Small South Island store — pairs within-region with Riccarton for a clean large-vs-small read.</td></tr>
+          <tr><td>Paraparaumu</td><td><span class="chip sm">Smaller</span></td><td>Wellington</td><td>Adds a third region so the read isn't Auckland-only — a genuinely provincial, lower-volume test.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote reveal d2"><strong>Selection logic:</strong> continuity (keep the proven stores) · format &amp; volume spread (3 large + 3 small) · region spread (Auckland, Canterbury, Wellington) · pair large + small within a region so market conditions are shared · hold Retail 3.0 status balanced across the two size tiers · exclude any store mid-refresh/opening at 1 Aug. <strong>Retail to confirm:</strong> actual volume ranking, Retail 3.0 status, and that none are mid-change in August. Happy to widen toward the review's ~10 by adding a Wellington large (e.g. Queensgate) and two more smaller stores.</p>
+  </div>
+</section>
+
+<!-- 6 · INITIAL LOAD -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">The monthly pot · recommended initial load</div>
+    <h2 class="reveal">$600 to open — sized to a month of closes</h2>
+    <p class="lede reveal d1">Reps deploy Phone Dollars by plan tier to close a deal: <strong>$100 (Small)</strong>, <strong>$200 (Medium)</strong>, <strong>$300 (One Plan)</strong>. The initial load should cover a realistic month of those closes — then the earn rate tops it up.</p>
+    <div class="twocol" style="margin-top:22px">
+      <div class="card reveal d2">
+        <h3>How we size it</h3>
+        <p>Expected fund-assisted closes per month × the blended plan value. Engaged trial reps used the fund ~4–6 times a month; a blended deploy sits around $200 (mostly Medium/One Plan on the acquisition deals we want). 4–6 × ~$200 ≈ <strong>$500–$1,000</strong>.</p>
+      </div>
+      <div class="card reveal d3">
+        <h3>The recommendation</h3>
+        <p><strong>$600 standard initial load</strong>, tiered by store volume: <strong>$750–$900</strong> high-volume large-format, <strong>$400–$500</strong> smaller-format, <strong>floor $300</strong>. Then <strong>+$300 earned per acquisition above baseline</strong> tops the fund up so strong reps never run dry. <strong>Per-agent cap ~$1,500/month.</strong></p>
+      </div>
+    </div>
+    <div class="callout reveal d4"><span class="tag">Why $600, not the trial's $300</span><p>The trial opened reps at $300 for a 3-week window and the keen ones ran it down. A full month, fronted up front, needs roughly double — enough for ~one close a week plus a couple of competitive saves — without over-funding the floor. Indicative store pots: a ~13-rep large store ≈ <strong>$8–9k</strong>; a ~5-rep small store ≈ <strong>$2–2.5k</strong>; the six together ≈ <strong>$25–30k</strong> initial load for the month, plus earned top-ups.</p></div>
+  </div>
+</section>
+
+<!-- 7 · GUARDRAILS -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Guardrails</div>
+    <h2 class="reveal">Replacing the weekly brake — on purpose</h2>
+    <p class="lede reveal d1">The weekly model had an automatic brake: overspend and you opened lean the next week. Monthly loses that, so we rebuild it explicitly.</p>
+    <div class="cardgrid">
+      <div class="card reveal d1"><div class="step">1</div><h3>Hard per-agent cap</h3><p>~$1,500/month, enforced at the till — a load can't exceed the rep's remaining allocation.</p></div>
+      <div class="card reveal d2"><div class="step">2</div><h3>Store-level pool cap</h3><p>The store pot is the sum of rep allocations — so one rep can't drain the store.</p></div>
+      <div class="card reveal d3"><div class="step">3</div><h3>Spend-pace tripwire</h3><p>Flags any rep spending faster than the month is elapsing — a coaching signal, never an auto-cut.</p></div>
+    </div>
+    <div class="callout reveal d4"><span class="tag">Month end</span><p>Unspent allocation lapses; the ledger resets clean. We'll put one question to the group: a small recognition for reps who beat target <em>without</em> burning their fund — so we reward the Sylvia Park discipline rather than quietly penalising it.</p></div>
+  </div>
+</section>
+
+<!-- 8 · WHAT WE'RE BUILDING -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">What we're building</div>
+    <h2 class="reveal">The capability changes, in plain terms</h2>
+    <div class="list">
+      <div class="item reveal d1"><div class="n">1</div><div><h3>Monthly engine</h3><p>Switch targets, allocation and settlement from weekly to a single monthly cycle. One target, one fronted allocation, one reconciliation at month end. Retire the weekly carry-over machinery.</p></div></div>
+      <div class="item gate reveal d2"><div class="n">2</div><div><h3>Entitlement gate at point of sale</h3><p>Only reps on the locked monthly roster can deploy in WhatsInMyWallet — a non-entitled rep simply can't load. This closes the ~$2,160 of non-entitled deployments we saw, at source.</p></div></div>
+      <div class="item reveal d3"><div class="n">3</div><div><h3>Caps, pool &amp; tripwire</h3><p>Per-agent monthly cap, store-level pool cap, and a mid-month spend-pace flag — the guardrails that replace the weekly brake.</p></div></div>
+      <div class="item reveal d4"><div class="n">4</div><div><h3>Reason code + tagging</h3><p>Mandatory Growth Fund reason code from day one, point-of-sale tagging wired up, and a daily deployment feed — so every deployment is attributable and the acquisition/retention split is visible.</p></div></div>
+      <div class="item reveal d5"><div class="n">5</div><div><h3>Weekly scoreboard + clean baselines</h3><p>Weekly report becomes pace-vs-run-rate only (no re-cut pay), and baselines re-lock on acquisition-only sales (they were ~4× too high on all-IFPs).</p></div></div>
+    </div>
+    <p class="footnote reveal d5">Full technical build-list — config keys, tables, functions and endpoints — is in the written recommendation.</p>
+  </div>
+</section>
+
+<!-- 9 · ROSTER CONFIRMATION -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">The thing we must get right</div>
+    <h2 class="reveal">Store managers confirm exactly who's in</h2>
+    <p class="lede reveal d1">The biggest thing to manage is <strong>who is and isn't included at each store</strong>. Entitlement is only as good as the roster it's locked from — so managers confirm it, in writing, as part of the briefing.</p>
+    <div class="cardgrid">
+      <div class="card reveal d1"><div class="step">1</div><h3>Pre-fill</h3><p>Each store manager gets their current team list, pre-populated from our records — names and email addresses.</p></div>
+      <div class="card reveal d2"><div class="step">2</div><h3>Confirm, add, remove</h3><p>In the briefing, the manager ticks who's in, adds anyone missing (name + email), and removes anyone who shouldn't be — via a simple form / Teams link.</p></div>
+      <div class="card reveal d3"><div class="step">3</div><h3>Lock</h3><p>Confirmed rosters lock the entitlement list for the month. No confirmation, no go-live — it's the gate on the door.</p></div>
+    </div>
+    <div class="callout reveal d4"><span class="tag">How</span><p>A per-store confirmation form (Microsoft Form or a one-click link from the workbench, pre-filled and editable — no login needed), completed during the manager briefing and stamped against the store. It feeds the month-start entitlement lock directly.</p></div>
+  </div>
+</section>
+
+<!-- 10 · TIMELINE -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">The plan</div>
+    <h2 class="reveal">July sets it up · August runs clean · September decides</h2>
+    <div class="timeline">
+      <div class="tl reveal d1"><div class="when">Through July</div><p>Fix the plumbing — reason code, point-of-sale tagging, daily feed, acquisition-only baselines. Brief managers &amp; confirm rosters. Fund keeps running for the current teams as promised.</p></div>
+      <div class="tl reveal d2"><div class="when">1–31 August</div><p>The clean month. Six stores, monthly targets + allocations locked on day one, weekly scoreboards out every week. Entitlement gate live.</p></div>
+      <div class="tl reveal d3"><div class="when">Early September</div><p>Read the month. If it clears <strong>ROI ≥ 2.5×</strong> with proper tagging, we've got the evidence for a full rollout.</p></div>
+      <div class="tl reveal d4"><div class="when">September+</div><p>Full rollout, gated on the August result — this time measured properly, so the scale call is made with confidence.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · CALLUM'S QUESTIONS -->
+<section class="scene">
+  <div class="wrap">
+    <div class="kicker reveal">Straight answers</div>
+    <h2 class="reveal">The three questions from the review</h2>
+    <div class="list">
+      <div class="item reveal d1"><div class="n">1</div><div><h3>Shuai (Leo) — real, but not clean</h3><p>1 → 16 sales and top earner ($3,600), but he moved part-time → Full Time on 15 June. More hours mid-trial inflate his lift against a part-time baseline. We footnote him and never bank it as clean evidence — and a locked, standing baseline set at month start prevents this next time.</p></div></div>
+      <div class="item gate reveal d2"><div class="n">2</div><div><h3>Misuse — closed at source</h3><p>~$2,160 of deployments came from reps <strong>not</strong> on the entitled list. The point-of-sale entitlement gate stops that at the till; Brian owns the human side — Educate, Coach, Correct, formal process if it persists.</p></div></div>
+      <div class="item reveal d3"><div class="n">3</div><div><h3>Albany — in, clean</h3><p>The distortion (refresh, new store, Retail 3.0) is a July event. Run the measured month in August and Albany reads clean — so we keep them in as a normal store <em>and</em> give them the adoption push, without baking chaos into the numbers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · CLOSE -->
+<section class="scene">
+  <div class="cover-bg"></div>
+  <div class="wrap" style="text-align:center">
+    <div class="kicker reveal">The bottom line</div>
+    <div class="close-num reveal d1">Prove it once, properly.</div>
+    <p class="lede reveal d2" style="margin:22px auto 0;max-width:56ch">One clean August month, six representative stores, monthly targets that are simpler and fairer to run, weekly scoreboards that keep the buzz — and a gate on the door so we only scale what we've actually measured.</p>
+    <div class="verdict reveal d3" style="margin-top:34px"><span class="pill">Next step</span> Your green light on the six stores, the monthly basis, the entitlement gate, and Albany back in — and we're away.</div>
+    <p class="small reveal d4" style="margin-top:44px">Growth Fund — The Next Phase · Recommendation for retail store leads &amp; leadership · built on the 8 Jun – 3 Jul trial (Albany &amp; Sylvia Park)</p>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.scene').forEach(function(s){var m=document.createElement('div');m.className='mark';m.innerHTML='one<span class="dot">.</span>nz';s.appendChild(m);});
+var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in-view');}});},{threshold:0.18});
+document.querySelectorAll('.scene').forEach(function(s){io.observe(s);});
+var root=document.documentElement,btn=document.getElementById('themeToggle');
+function setLabel(){btn.textContent=root.classList.contains('theme-dark')?'Light mode':'Dark mode';}
+btn.addEventListener('click',function(){root.classList.toggle('theme-dark');root.classList.toggle('theme-light');setLabel();});
+setLabel();
+var prog=document.getElementById('progress');
+function onScroll(){var h=document.documentElement,max=h.scrollHeight-h.clientHeight;prog.style.width=(max>0?(h.scrollTop/max)*100:0)+'%';}
+document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+</script>
+</body>
+</html>
