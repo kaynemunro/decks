@@ -7,8 +7,8 @@
    "caption": "This is the Membership Workbench — the operating system for One NZ's loyalty programme. It's built on one idea: embrace AI everywhere, and put as much data as possible behind every decision. Everything you're about to see was built in plain English — describing what we needed and letting AI write it. Let me show you around.",
    "audioId": "sqklc7g",
    "screen": "screens/s0.png",
-   "video": "screens/s0.webm",
-   "videoStart": 62.01
+   "video": "screens/s0.mp4",
+   "videoStart": 61.952
   },
   {
    "idx": 1,
@@ -16,302 +16,347 @@
    "caption": "The workbench runs the whole loop, and every step is driven by data: files land, reports write themselves, AI analysts read the numbers and recommend, campaigns go to market, results are measured against controls, and every lesson is remembered for next time. Here's each step, on the real screens, with the real data.",
    "audioId": "shcl6hs",
    "screen": "screens/s1.png",
-   "video": "screens/s1.webm",
-   "videoStart": 60.732
+   "video": "screens/s1.mp4",
+   "videoStart": 60.812
   },
   {
    "idx": 2,
-   "chapter": "Data in",
-   "caption": "It all starts here, in the Data Hub. The entire platform runs off a handful of files — the customer base, redemptions, device sales, prospects — uploaded weekly. Every file is scrubbed for personal customer data on the way in, and a weekly scan sweeps the whole platform to find and remove any PII that slipped through, emailing a summary if it does. Each file self-checks, warms every report downstream, and one upload makes the whole workbench current.",
-   "audioId": "s1oxdzy7",
+   "chapter": "Finding your way",
+   "caption": "A quick word on the new layout. The left-hand menu leads with the three daily reads — Weekly Report, CX NPS and CX Questions — then five groups that match how the team works: Analytics for the reporting stack, Campaigns for planning and tracking, AI Tools for the engines and simulators, Team and Delivery for how we run, and Data and Admin for the plumbing underneath. A dot flags anything in beta or newly landed, and search jumps you straight to any page from anywhere.",
+   "audioId": "s137upst",
    "screen": "screens/s2.png",
-   "video": "screens/s2.webm",
-   "videoStart": 60.73
+   "video": "screens/s2.mp4",
+   "videoStart": 62.654999999999994
   },
   {
    "idx": 3,
-   "chapter": "Reports write themselves",
-   "caption": "The Weekly Report opens the week: KPIs, trends and an executive commentary written by the AI analyst over the actual numbers — measured on complete weeks only, with the data traps engineered out. What used to take hours now completes in minutes, with a thorough analysis of every metric, movement and insight — ready when you log in.",
-   "audioId": "s1kb1mi3",
+   "chapter": "Data in",
+   "caption": "It all starts here, in the Data Hub. The entire platform runs off a handful of files — the customer base, redemptions, device sales, prospects — uploaded weekly. Every file is scrubbed for personal customer data on the way in, and a weekly scan sweeps the whole platform to find and remove any PII that slipped through, emailing a summary if it does. Each file self-checks, warms every report downstream, and one upload makes the whole workbench current.",
+   "audioId": "s1oxdzy7",
    "screen": "screens/s3.png",
-   "video": "screens/s3.webm",
-   "videoStart": 60.848
+   "video": "screens/s3.mp4",
+   "videoStart": 61.212999999999994
   },
   {
    "idx": 4,
-   "chapter": "Ask anything",
-   "caption": "But the real power is this: you don't file a ticket, you just ask. This is the Membership AI assistant. Type any question about the programme — like how the June at-risk stim campaigns performed — and it investigates like a senior analyst: live, read-only SQL over the production warehouse, multi-step reasoning, then a full written answer. Here's a real one it ran — the numbers, the tables, and the analysis behind them, all straight from the data.",
-   "audioId": "sjr2y6a",
+   "chapter": "Reports write themselves",
+   "caption": "The Weekly Report opens the week. It leads with the TLDR — the week in a handful of ranked headlines the AI analyst writes and then stress-tests against its own numbers, editable before it goes anywhere — then the scorecard, commentary on every chart, each in-market campaign tracked against its control, and our top-plan offers lined up against Spark and 2degrees. All measured on complete weeks only, with the data traps engineered out — ready when you log in.",
+   "audioId": "smelkw1",
    "screen": "screens/s4.png",
-   "video": "screens/s4.webm",
-   "videoStart": 129.662
+   "video": "screens/s4.mp4",
+   "videoStart": 151.495
   },
   {
    "idx": 5,
-   "chapter": "It remembers",
-   "caption": "Here's what makes it different: memory. Every verified finding and campaign lesson is stored as institutional knowledge the AI recalls before every analysis — how a cohort responded to a boost campaign, how customers responded to a price change in the churn results, how a shift in media channel moved the volume of prospects created. Learn it once, and every future action and recommendation is aware of it. The platform gets smarter the longer you use it.",
-   "audioId": "sh4iq98",
+   "chapter": "Ask anything",
+   "caption": "But the real power is this: you don't file a ticket, you just ask. This is the Membership AI assistant. Type any question about the programme — like how the June at-risk stim campaigns performed — and it investigates like a senior analyst: live, read-only SQL over the production warehouse, multi-step reasoning, then a full written answer. Here's a real one it ran — the numbers, the tables, and the analysis behind them, all straight from the data.",
+   "audioId": "sjr2y6a",
    "screen": "screens/s5.png",
-   "video": "screens/s5.webm",
-   "videoStart": 64.861
+   "video": "screens/s5.mp4",
+   "videoStart": 129.21200000000002
   },
   {
    "idx": 6,
    "chapter": "It remembers",
-   "caption": "And the analysts are trainable. When you correct an analysis or override a recommendation, your reasoning becomes proposed training — approve it, and the analyst applies it from the next run. Your best analyst's judgment, scaled to every report, every week.",
-   "audioId": "s1mpgdfm",
+   "caption": "Here's what makes it different: memory. Every verified finding and campaign lesson is stored as institutional knowledge the AI recalls before every analysis — how a cohort responded to a boost campaign, how customers responded to a price change in the churn results, how a shift in media channel moved the volume of prospects created. Learn it once, and every future action and recommendation is aware of it. The platform gets smarter the longer you use it.",
+   "audioId": "sh4iq98",
    "screen": "screens/s6.png",
-   "video": "screens/s6.webm",
-   "videoStart": 63.479
+   "video": "screens/s6.mp4",
+   "videoStart": 65.37299999999999
   },
   {
    "idx": 7,
-   "chapter": "The customer",
-   "caption": "The customer side: NPS tracked and explained — promoters, detractors, and what moved them — alongside customer verbatims themed by AI. When a metric moves, the voice of the customer usually already knows why.",
-   "audioId": "s61zabh",
+   "chapter": "It remembers",
+   "caption": "And the analysts are trainable. When you correct an analysis or override a recommendation, your reasoning becomes proposed training — approve it, and the analyst applies it from the next run. Your best analyst's judgment, scaled to every report, every week.",
+   "audioId": "s1mpgdfm",
    "screen": "screens/s7.png",
-   "video": "screens/s7.webm",
-   "videoStart": 60.573
+   "video": "screens/s7.mp4",
+   "videoStart": 64.246
   },
   {
    "idx": 8,
    "chapter": "The customer",
-   "caption": "And the questions customers actually ask, in their own words — themed, counted and trended. Watch a theme rise here and you're seeing next month's churn driver, or next month's product idea, arriving early.",
-   "audioId": "sq04rl4",
+   "caption": "The customer side: NPS tracked and explained — promoters, detractors, and what moved them — alongside customer verbatims themed by AI. When a metric moves, the voice of the customer usually already knows why.",
+   "audioId": "s61zabh",
    "screen": "screens/s8.png",
-   "video": "screens/s8.webm",
-   "videoStart": 120.848
+   "video": "screens/s8.mp4",
+   "videoStart": 61.327
   },
   {
    "idx": 9,
-   "chapter": "Market radar",
-   "caption": "The Scanner watches the market for us: competitor device offers, plan changes and campaigns, swept from public sources and logged with dates and receipts. Every one lands on a live timeline — a Gantt of everything in market — and is human-reviewed before it feeds a pricing decision. Market intelligence without the intern hours.",
-   "audioId": "sm1plkh",
+   "chapter": "The customer",
+   "caption": "And the questions customers actually ask, in their own words — themed, counted and trended. Watch a theme rise here and you're seeing next month's churn driver, or next month's product idea, arriving early.",
+   "audioId": "sq04rl4",
    "screen": "screens/s9.png",
-   "video": "screens/s9.webm",
-   "videoStart": 62.022
+   "video": "screens/s9.mp4",
+   "videoStart": 61
   },
   {
    "idx": 10,
-   "chapter": "Pricing engine",
-   "caption": "The Device Pricing Engine reads our phone offers against Spark and 2degrees, joins them to porting, churn and trading volumes, and recommends a price for every channel we own — with guardrails a human locks.",
-   "audioId": "s64rgl7",
+   "chapter": "Market radar",
+   "caption": "The Scanner watches the market for us: competitor device offers, plan changes and campaigns, swept from public sources and logged with dates and receipts. Every one lands on a live timeline — a Gantt of everything in market — and is human-reviewed before it feeds a pricing decision. Market intelligence without the intern hours.",
+   "audioId": "sm1plkh",
    "screen": "screens/s10.png",
-   "video": "screens/s10.webm",
-   "videoStart": 61.004,
-   "spot": {
-    "x": 0.165,
-    "y": 0.35,
-    "w": 0.82,
-    "h": 0.3622222222222222
-   }
+   "video": "screens/s10.mp4",
+   "videoStart": 63
   },
   {
    "idx": 11,
    "chapter": "Pricing engine",
-   "caption": "The pricing desk turns that into a weekly ritual: accept, override with a reason, or hold — one click to maintain current pricing. Every decision is logged with an owner, scored later against what actually happened, and the port-flow radar underneath separates real competitive losses from noise. This is millions of dollars of discount spend, steered on evidence.",
-   "audioId": "sb7tcz2",
+   "caption": "The Device Pricing Engine opens with a verdict: one sentence on whether we're winning or losing connections, measured on the whole base, and the single biggest exposure. Net ports by plan band, our offers against Spark and 2degrees, and an AI read over the live data back it up — and one toggle splits the page into a management read and an operating desk, so readers read and operators operate.",
+   "audioId": "s17f6opz",
    "screen": "screens/s11.png",
-   "video": "screens/s11.webm",
-   "videoStart": 62.187
+   "video": "screens/s11.mp4",
+   "videoStart": 61.3,
+   "spot": {
+    "x": 0.208125,
+    "y": 0.37333333333333335,
+    "w": 0.74875,
+    "h": 0.021666666666666667
+   }
   },
   {
    "idx": 12,
-   "chapter": "Retention loop",
-   "caption": "Retention runs as a closed loop. AI scores every customer's churn risk and likely response, excludes the unwinnable, and grounds each cohort in a knowledge base of what's actually worked before. Loading files and offer values generate per cohort, ready to send.",
-   "audioId": "s79gopg",
+   "chapter": "Pricing engine",
+   "caption": "The pricing desk turns that into a weekly ritual: accept, override with a reason, or hold — one click to maintain current pricing. Every decision is logged with an owner, scored later against what actually happened, and the port-flow radar underneath separates real competitive losses from noise. This is millions of dollars of discount spend, steered on evidence.",
+   "audioId": "sb7tcz2",
    "screen": "screens/s12.png",
-   "video": "screens/s12.webm",
-   "videoStart": 63.705999999999996
+   "video": "screens/s12.mp4",
+   "videoStart": 62.239
   },
   {
    "idx": 13,
    "chapter": "Retention loop",
-   "caption": "Then the loop closes: every campaign is measured against a held-out control, week by week, and the verdicts — what lifted, what didn't, and why — are written back into the knowledge base the next campaign reads. The programme literally learns from every send.",
-   "audioId": "s19nnepw",
+   "caption": "Retention runs as a closed loop. AI scores every customer's churn risk and likely response, excludes the unwinnable, and grounds each cohort in a knowledge base of what's actually worked before. Loading files and offer values generate per cohort, ready to send.",
+   "audioId": "s79gopg",
    "screen": "screens/s13.png",
-   "video": "screens/s13.webm",
-   "videoStart": 64.143
+   "video": "screens/s13.mp4",
+   "videoStart": 64.332
   },
   {
    "idx": 14,
-   "chapter": "Acquisition",
-   "caption": "Acquisition is tracked end to end: prospects created as people visit What's In My Wallet, their conversion onto our network, the attach of additional mobile and broadband lines that follows, and the full customer lifetime value created — all monitored week by week.",
-   "audioId": "s17gjje2",
+   "chapter": "Retention loop",
+   "caption": "Then the loop closes: every campaign is measured against a held-out control, week by week, and the verdicts — what lifted, what didn't, and why — are written back into the knowledge base the next campaign reads. The programme literally learns from every send.",
+   "audioId": "s19nnepw",
    "screen": "screens/s14.png",
-   "video": "screens/s14.webm",
-   "videoStart": 60.562999999999995
+   "video": "screens/s14.mp4",
+   "videoStart": 63.962
   },
   {
    "idx": 15,
    "chapter": "Acquisition",
-   "caption": "The acquisition Funnel Simulator monitors the Phone Dollar boosts and hero device offer values served to prospects as they create their first Phone Dollars account — and the conversion rate each boost level actually delivers, so we optimise the value we give against the customer lifetime value we acquire.",
-   "audioId": "ssj1s4f",
+   "caption": "Acquisition gets the same closed loop. Prospect Stim reads what converts prospects into customers — the conversion drivers, the device offers they're served in What's In My Wallet, and the cohorts worth targeting — and writes each campaign's verdict back into its own knowledge base, so the next send starts from evidence.",
+   "audioId": "sm6pakc",
    "screen": "screens/s15.png",
-   "video": "screens/s15.webm",
-   "videoStart": 60.863
+   "video": "screens/s15.mp4",
+   "videoStart": 60.918
   },
   {
    "idx": 16,
-   "chapter": "The reporting stack",
-   "caption": "Behind all of that sits a full reporting stack — everything the programme touches, tracked and monitored. Advertising and revenue spend, acquisition volume, engagement, balances, redemption, churn, channel and store performance, media, and brand awareness. Here's the A and R report; let me sweep through the rest.",
-   "audioId": "sreyimc",
+   "chapter": "Acquisition",
+   "caption": "Acquisition is tracked end to end: prospects created as people visit What's In My Wallet, their conversion onto our network, the attach of additional mobile and broadband lines that follows, and the full customer lifetime value created — all monitored week by week.",
+   "audioId": "s17gjje2",
    "screen": "screens/s16.png",
-   "video": "screens/s16.webm",
-   "videoStart": 60.648999999999994
+   "video": "screens/s16.mp4",
+   "videoStart": 60.834999999999994
   },
   {
    "idx": 17,
-   "chapter": "The reporting stack",
-   "caption": "Engagement — how actively the base uses the wallet, with the engaged-base line that leads retention, plus sign-ins, cohorts and redemption behaviour, all live.",
-   "audioId": "s55vb",
+   "chapter": "Acquisition",
+   "caption": "The acquisition Funnel Simulator monitors the Phone Dollar boosts and hero device offer values served to prospects as they create their first Phone Dollars account — and the conversion rate each boost level actually delivers, so we optimise the value we give against the customer lifetime value we acquire.",
+   "audioId": "ssj1s4f",
    "screen": "screens/s17.png",
-   "video": "screens/s17.webm",
-   "videoStart": 60.843999999999994
+   "video": "screens/s17.mp4",
+   "videoStart": 95.708
   },
   {
    "idx": 18,
-   "chapter": "The reporting stack",
-   "caption": "Redemption: Phone Dollars being spent, what customers redeem on, and the attach behaviour around every redemption — tracked against target.",
-   "audioId": "sepdyv",
+   "chapter": "Acquisition",
+   "caption": "And in store, the Growth Fund puts acquisition money where it measurably works: store-level grants, tagged ledger spend, and incremental sales read against controls and maturation windows — so the return on every dollar granted is the defensible number, not the hopeful one.",
+   "audioId": "swn1cq5",
    "screen": "screens/s18.png",
-   "video": "screens/s18.webm",
-   "videoStart": 60.977999999999994
+   "video": "screens/s18.mp4",
+   "videoStart": 87.11399999999999
   },
   {
    "idx": 19,
    "chapter": "The reporting stack",
-   "caption": "Balances — Phone Dollars, trade-in credit and earned bonuses across the base, each distribution on its own full-width view so you can see exactly where value sits.",
-   "audioId": "s1ce0qfe",
+   "caption": "Behind all of that sits a full reporting stack — everything the programme touches, tracked and monitored. Advertising and revenue spend, acquisition volume, engagement, balances, redemption, churn, channel and store performance, media, and brand awareness. Here's the A and R report; let me sweep through the rest.",
+   "audioId": "sreyimc",
    "screen": "screens/s19.png",
-   "video": "screens/s19.webm",
-   "videoStart": 60.744
+   "video": "screens/s19.mp4",
+   "videoStart": 150.846
   },
   {
    "idx": 20,
    "chapter": "The reporting stack",
-   "caption": "Churn: leavers split by reason and by destination carrier, measured on complete weeks only — with an AI brief that grades its own previous calls before it makes new ones.",
-   "audioId": "saesb0n",
+   "caption": "Engagement — how actively the base uses the wallet, with the engaged-base line that leads retention, plus sign-ins, cohorts and redemption behaviour, all live.",
+   "audioId": "s55vb",
    "screen": "screens/s20.png",
-   "video": "screens/s20.webm",
-   "videoStart": 240.709
+   "video": "screens/s20.mp4",
+   "videoStart": 61.126999999999995
   },
   {
    "idx": 21,
    "chapter": "The reporting stack",
-   "caption": "Channel: store and channel performance on the metrics that matter — the conversion rate on footfall by store and by region, and the attach rate of secondary mobile and broadband lines at IFP sale, by store, region and rep. Best practice becomes visible, and portable.",
-   "audioId": "s17lydfg",
+   "caption": "Redemption: Phone Dollars being spent, what customers redeem on, and the attach behaviour around every redemption — tracked against target.",
+   "audioId": "sepdyv",
    "screen": "screens/s21.png",
-   "video": "screens/s21.webm",
-   "videoStart": 61.154999999999994
+   "video": "screens/s21.mp4",
+   "videoStart": 61.242
   },
   {
    "idx": 22,
    "chapter": "The reporting stack",
-   "caption": "Media — spend and conversions by campaign and channel, matched to real customer records, so return is measured on connections, not clicks.",
-   "audioId": "s1ecc5g7",
+   "caption": "Balances — Phone Dollars, trade-in credit and earned bonuses across the base, each distribution on its own full-width view so you can see exactly where value sits.",
+   "audioId": "s1ce0qfe",
    "screen": "screens/s22.png",
-   "video": "screens/s22.webm",
-   "videoStart": 61.177
+   "video": "screens/s22.mp4",
+   "videoStart": 61.259
   },
   {
    "idx": 23,
    "chapter": "The reporting stack",
-   "caption": "And brand awareness — the funnel from awareness to consideration, for customers and non-customers, tied back to the media that drove it. Every one of these refreshes itself from the weekly data drop — nobody builds a deck.",
-   "audioId": "sm90nm0",
+   "caption": "Churn: leavers split by reason and by destination carrier, measured on complete weeks only — with an AI brief that grades its own previous calls before it makes new ones.",
+   "audioId": "saesb0n",
    "screen": "screens/s23.png",
-   "video": "screens/s23.webm",
-   "videoStart": 60.845
+   "video": "screens/s23.mp4",
+   "videoStart": 95.137
   },
   {
    "idx": 24,
-   "chapter": "The team",
-   "caption": "It runs the team, too. At the push of a button the AI drafts the meeting agenda — pulled from the week's KPIs and trends, and any overdue actions or status updates on roadmap delivery and campaigns. Meetings are recorded and transcribed; it writes the summary, decisions and actions, and assigns owners — and you can pull up any previous meeting and everything it captured.",
-   "audioId": "svtknxc",
+   "chapter": "The reporting stack",
+   "caption": "Channel: store and channel performance on the metrics that matter — the conversion rate on footfall by store and by region, and the attach rate of secondary mobile and broadband lines at IFP sale, by store, region and rep. Best practice becomes visible, and portable.",
+   "audioId": "s17lydfg",
    "screen": "screens/s24.png",
-   "video": "screens/s24.webm",
-   "videoStart": 60.901999999999994
+   "video": "screens/s24.mp4",
+   "videoStart": 61.345
   },
   {
    "idx": 25,
-   "chapter": "The team",
-   "caption": "Team goals link to live performance data, and cover our what, how, personal and AI goals — so each member can see exactly what they're driving for the programme, and how they're tracking toward it.",
-   "audioId": "s10apwf5",
+   "chapter": "The reporting stack",
+   "caption": "Media — spend and conversions by campaign and channel, matched to real customer records, so return is measured on connections, not clicks.",
+   "audioId": "s1ecc5g7",
    "screen": "screens/s25.png",
-   "video": "screens/s25.webm",
-   "videoStart": 60.833999999999996
+   "video": "screens/s25.mp4",
+   "videoStart": 61.397999999999996
   },
   {
    "idx": 26,
-   "chapter": "The team",
-   "caption": "And delivery is tracked on the roadmap — every feature and build on one timeline, with status, owner and next milestone. This is the programme's whole build plan, in a single view.",
-   "audioId": "suy7efl",
+   "chapter": "The reporting stack",
+   "caption": "And the stack keeps growing as the programme does. Connect More Get More tracks the earn side of the ledger, with a leakage and abuse watch and a rep leaderboard. Trade-In follows every device that comes back — values, margins and the misgrade rate. And the campaign brief turns the offer matrix into a live, presentable source of truth.",
+   "audioId": "sjacz9w",
    "screen": "screens/s26.png",
-   "video": "screens/s26.webm",
-   "videoStart": 60.808
+   "video": "screens/s26.mp4",
+   "videoStart": 60.840999999999994
   },
   {
    "idx": 27,
-   "chapter": "The team",
-   "caption": "Campaign planning and monitoring sit on one timeline: what's live, what's queued, and how each is tracking — with briefs, assets and load files attached to the plan, and results attached to the campaign.",
-   "audioId": "s4zuhsx",
+   "chapter": "The reporting stack",
+   "caption": "And brand awareness — the funnel from awareness to consideration, for customers and non-customers, tied back to the media that drove it. Every one of these refreshes itself from the weekly data drop — nobody builds a deck.",
+   "audioId": "sm90nm0",
    "screen": "screens/s27.png",
-   "video": "screens/s27.webm",
-   "videoStart": 60.979
+   "video": "screens/s27.mp4",
+   "videoStart": 61.020999999999994
   },
   {
    "idx": 28,
-   "chapter": "AI studio",
-   "caption": "There's even an AI presentation studio. Describe the deck you want — or just speak it — and it builds an on-brand presentation for you, on live data. Every deck gets a shareable web link with a seven-day expiry, so you can send it to anyone, no login required.",
-   "audioId": "s1tid8ft",
+   "chapter": "The team",
+   "caption": "It runs the team, too. At the push of a button the AI drafts the meeting agenda — pulled from the week's KPIs and trends, and any overdue actions or status updates on roadmap delivery and campaigns. Meetings are recorded and transcribed; it writes the summary, decisions and actions, and assigns owners — and you can pull up any previous meeting and everything it captured.",
+   "audioId": "svtknxc",
    "screen": "screens/s28.png",
-   "video": "screens/s28.webm",
-   "videoStart": 60.76
+   "video": "screens/s28.mp4",
+   "videoStart": 60.927
   },
   {
    "idx": 29,
-   "chapter": "AI studio",
-   "caption": "Here's a real one — an executive brief we published straight from the workbench. Scroll through and it's the full story: the numbers, the charts, the recommendation, all on-brand and ready for the room.",
-   "audioId": "s1jl2c0q",
+   "chapter": "The team",
+   "caption": "Decisions get a home of their own. Every meeting can be recorded, transcribed and processed — the AI pulls out the summary, the actions and the calls made — and each decision lands in one canonical, sortable log with its owner. Six months from now, you'll know exactly what was decided, and why.",
+   "audioId": "sm4hbxe",
    "screen": "screens/s29.png",
-   "video": "screens/s29.webm",
-   "videoStart": 60.968999999999994
+   "video": "screens/s29.mp4",
+   "videoStart": 60.779999999999994
   },
   {
    "idx": 30,
-   "chapter": "It runs itself",
-   "caption": "Underneath it all, automations do the routine: reminders, notifications, digests, scheduled refreshes — each visible, each toggleable, none requiring code. The platform does the chasing so people do the thinking.",
-   "audioId": "snajp38",
+   "chapter": "The team",
+   "caption": "Team goals link to live performance data, and cover our what, how, personal and AI goals — so each member can see exactly what they're driving for the programme, and how they're tracking toward it.",
+   "audioId": "s10apwf5",
    "screen": "screens/s30.png",
-   "video": "screens/s30.webm",
-   "videoStart": 60.659
+   "video": "screens/s30.mp4",
+   "videoStart": 60.864
   },
   {
    "idx": 31,
-   "chapter": "It runs itself",
-   "caption": "And it improves itself. Feedback is the front door — spot an issue or want a feature, log it here. Features ship in minutes, not weeks, and anything that teaches us something becomes memory. The users of the tool are also its product managers.",
-   "audioId": "s11cxl7p",
+   "chapter": "The team",
+   "caption": "And delivery is tracked on the roadmap — every feature and build on one timeline, with status, owner and next milestone. This is the programme's whole build plan, in a single view.",
+   "audioId": "suy7efl",
    "screen": "screens/s31.png",
-   "video": "screens/s31.webm",
-   "videoStart": 60.717999999999996
+   "video": "screens/s31.mp4",
+   "videoStart": 61.044
   },
   {
    "idx": 32,
-   "chapter": "It runs itself",
-   "caption": "And because it all runs on AI, the AI bill is managed like any other cost. The AI Credits view tags every model call by feature and tracks daily spend against a guard — with a maximum AI spend cap on any single task, so a runaway usage loop simply can't happen. The stacked bars break the cost out by each AI agent at work, so spend is always transparent — and each analyst's model is a setting, not a rebuild.",
-   "audioId": "sehhhb2",
+   "chapter": "The team",
+   "caption": "Campaign planning and monitoring sit on one timeline: what's live, what's queued, and how each is tracking — with briefs, assets and load files attached to the plan, and results attached to the campaign.",
+   "audioId": "s4zuhsx",
    "screen": "screens/s32.png",
-   "video": "screens/s32.webm",
-   "videoStart": 66.955
+   "video": "screens/s32.mp4",
+   "videoStart": 61.391
   },
   {
    "idx": 33,
+   "chapter": "AI studio",
+   "caption": "There's even an AI presentation studio. Describe the deck you want — or just speak it — and it builds an on-brand presentation for you, on live data. One click publishes any deck to a public link you can send to anyone, no login required — and republishing an edited deck keeps the same link current.",
+   "audioId": "s1322h16",
+   "screen": "screens/s33.png",
+   "video": "screens/s33.mp4",
+   "videoStart": 60.989999999999995
+  },
+  {
+   "idx": 34,
+   "chapter": "AI studio",
+   "caption": "Here's a real one — an executive brief we published straight from the workbench. Scroll through and it's the full story: the numbers, the charts, the recommendation, all on-brand and ready for the room.",
+   "audioId": "s1jl2c0q",
+   "screen": "screens/s34.png",
+   "video": "screens/s34.mp4",
+   "videoStart": 61.184
+  },
+  {
+   "idx": 35,
+   "chapter": "It runs itself",
+   "caption": "Underneath it all, automations do the routine: reminders, notifications, digests, scheduled refreshes — each visible, each toggleable, none requiring code. The platform does the chasing so people do the thinking.",
+   "audioId": "snajp38",
+   "screen": "screens/s35.png",
+   "video": "screens/s35.mp4",
+   "videoStart": 61.348
+  },
+  {
+   "idx": 36,
+   "chapter": "It runs itself",
+   "caption": "And it improves itself. Feedback is the front door — spot an issue or want a feature, log it here. Features ship in minutes, not weeks, and anything that teaches us something becomes memory. The users of the tool are also its product managers.",
+   "audioId": "s11cxl7p",
+   "screen": "screens/s36.png",
+   "video": "screens/s36.mp4",
+   "videoStart": 61.401999999999994
+  },
+  {
+   "idx": 37,
+   "chapter": "It runs itself",
+   "caption": "And because it all runs on AI, the AI bill is managed like any other cost. The AI Credits view tags every model call by feature and tracks daily spend against a guard — with a maximum AI spend cap on any single task, so a runaway usage loop simply can't happen. The stacked bars break the cost out by each AI agent at work, so spend is always transparent — and each analyst's model is a setting, not a rebuild.",
+   "audioId": "sehhhb2",
+   "screen": "screens/s37.png",
+   "video": "screens/s37.mp4",
+   "videoStart": 65.509
+  },
+  {
+   "idx": 38,
    "chapter": "The point",
    "caption": "And that's just a highlight reel — a sample of what the workbench does, not the whole of it. The point is the pattern: a programme that embraces AI at every step and puts data behind every decision. It runs on live production data, it was built in plain English, and it costs less per month than a single analyst-day. This isn't software we bought — it's a capability we grew. Any team with data and decisions can build one. The only question is who builds theirs next.",
    "audioId": "s176rs1k",
-   "screen": "screens/s33.png",
-   "video": "screens/s33.webm",
-   "videoStart": 60.964
+   "screen": "screens/s38.png",
+   "video": "screens/s38.mp4",
+   "videoStart": 61.245999999999995
   }
  ]
 }
