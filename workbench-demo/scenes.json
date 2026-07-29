@@ -181,181 +181,172 @@
   {
    "idx": 19,
    "chapter": "The reporting stack",
-   "caption": "Behind all of that sits a full reporting stack — everything the programme touches, tracked and monitored. Advertising and revenue spend, acquisition volume, engagement, balances, redemption, churn, channel and store performance, media, and brand awareness. Here's the A and R report; let me sweep through the rest.",
-   "audioId": "sreyimc",
+   "caption": "Engagement — how actively the base uses the wallet, with the engaged-base line that leads retention, plus sign-ins, cohorts and redemption behaviour, all live.",
+   "audioId": "s55vb",
    "screen": "screens/s19.png",
    "video": "screens/s19.mp4",
-   "videoStart": 150.846
+   "videoStart": 61.126999999999995
   },
   {
    "idx": 20,
    "chapter": "The reporting stack",
-   "caption": "Engagement — how actively the base uses the wallet, with the engaged-base line that leads retention, plus sign-ins, cohorts and redemption behaviour, all live.",
-   "audioId": "s55vb",
+   "caption": "Redemption: Phone Dollars being spent, what customers redeem on, and the attach behaviour around every redemption — tracked against target.",
+   "audioId": "sepdyv",
    "screen": "screens/s20.png",
    "video": "screens/s20.mp4",
-   "videoStart": 61.126999999999995
+   "videoStart": 61.242
   },
   {
    "idx": 21,
    "chapter": "The reporting stack",
-   "caption": "Redemption: Phone Dollars being spent, what customers redeem on, and the attach behaviour around every redemption — tracked against target.",
-   "audioId": "sepdyv",
+   "caption": "Balances — Phone Dollars, trade-in credit and earned bonuses across the base, each distribution on its own full-width view so you can see exactly where value sits.",
+   "audioId": "s1ce0qfe",
    "screen": "screens/s21.png",
    "video": "screens/s21.mp4",
-   "videoStart": 61.242
+   "videoStart": 61.259
   },
   {
    "idx": 22,
    "chapter": "The reporting stack",
-   "caption": "Balances — Phone Dollars, trade-in credit and earned bonuses across the base, each distribution on its own full-width view so you can see exactly where value sits.",
-   "audioId": "s1ce0qfe",
+   "caption": "Churn: leavers split by reason and by destination carrier, measured on complete weeks only — with an AI brief that grades its own previous calls before it makes new ones.",
+   "audioId": "saesb0n",
    "screen": "screens/s22.png",
    "video": "screens/s22.mp4",
-   "videoStart": 61.259
+   "videoStart": 95.137
   },
   {
    "idx": 23,
    "chapter": "The reporting stack",
-   "caption": "Churn: leavers split by reason and by destination carrier, measured on complete weeks only — with an AI brief that grades its own previous calls before it makes new ones.",
-   "audioId": "saesb0n",
+   "caption": "Channel: store and channel performance on the metrics that matter — the conversion rate on footfall by store and by region, and the attach rate of secondary mobile and broadband lines at IFP sale, by store, region and rep. Best practice becomes visible, and portable.",
+   "audioId": "s17lydfg",
    "screen": "screens/s23.png",
    "video": "screens/s23.mp4",
-   "videoStart": 95.137
+   "videoStart": 61.345
   },
   {
    "idx": 24,
    "chapter": "The reporting stack",
-   "caption": "Channel: store and channel performance on the metrics that matter — the conversion rate on footfall by store and by region, and the attach rate of secondary mobile and broadband lines at IFP sale, by store, region and rep. Best practice becomes visible, and portable.",
-   "audioId": "s17lydfg",
+   "caption": "Media — spend and conversions by campaign and channel, matched to real customer records, so return is measured on connections, not clicks.",
+   "audioId": "s1ecc5g7",
    "screen": "screens/s24.png",
    "video": "screens/s24.mp4",
-   "videoStart": 61.345
+   "videoStart": 61.397999999999996
   },
   {
    "idx": 25,
    "chapter": "The reporting stack",
-   "caption": "Media — spend and conversions by campaign and channel, matched to real customer records, so return is measured on connections, not clicks.",
-   "audioId": "s1ecc5g7",
+   "caption": "And the stack keeps growing as the programme does. Connect More Get More tracks the earn side of the ledger, with a leakage and abuse watch and a rep leaderboard. Trade-In follows every device that comes back — values, margins and the misgrade rate. And the campaign brief turns the offer matrix into a live, presentable source of truth.",
+   "audioId": "sjacz9w",
    "screen": "screens/s25.png",
    "video": "screens/s25.mp4",
-   "videoStart": 61.397999999999996
+   "videoStart": 60.840999999999994
   },
   {
    "idx": 26,
    "chapter": "The reporting stack",
-   "caption": "And the stack keeps growing as the programme does. Connect More Get More tracks the earn side of the ledger, with a leakage and abuse watch and a rep leaderboard. Trade-In follows every device that comes back — values, margins and the misgrade rate. And the campaign brief turns the offer matrix into a live, presentable source of truth.",
-   "audioId": "sjacz9w",
+   "caption": "And brand awareness — the funnel from awareness to consideration, for customers and non-customers, tied back to the media that drove it. Every one of these refreshes itself from the weekly data drop — nobody builds a deck.",
+   "audioId": "sm90nm0",
    "screen": "screens/s26.png",
    "video": "screens/s26.mp4",
-   "videoStart": 60.840999999999994
+   "videoStart": 61.020999999999994
   },
   {
    "idx": 27,
-   "chapter": "The reporting stack",
-   "caption": "And brand awareness — the funnel from awareness to consideration, for customers and non-customers, tied back to the media that drove it. Every one of these refreshes itself from the weekly data drop — nobody builds a deck.",
-   "audioId": "sm90nm0",
+   "chapter": "The team",
+   "caption": "It runs the team, too. At the push of a button the AI drafts the meeting agenda — pulled from the week's KPIs and trends, and any overdue actions or status updates on roadmap delivery and campaigns. Meetings are recorded and transcribed; it writes the summary, decisions and actions, and assigns owners — and you can pull up any previous meeting and everything it captured.",
+   "audioId": "svtknxc",
    "screen": "screens/s27.png",
    "video": "screens/s27.mp4",
-   "videoStart": 61.020999999999994
+   "videoStart": 60.927
   },
   {
    "idx": 28,
    "chapter": "The team",
-   "caption": "It runs the team, too. At the push of a button the AI drafts the meeting agenda — pulled from the week's KPIs and trends, and any overdue actions or status updates on roadmap delivery and campaigns. Meetings are recorded and transcribed; it writes the summary, decisions and actions, and assigns owners — and you can pull up any previous meeting and everything it captured.",
-   "audioId": "svtknxc",
+   "caption": "Decisions get a home of their own. Every meeting can be recorded, transcribed and processed — the AI pulls out the summary, the actions and the calls made — and each decision lands in one canonical, sortable log with its owner. Six months from now, you'll know exactly what was decided, and why.",
+   "audioId": "sm4hbxe",
    "screen": "screens/s28.png",
    "video": "screens/s28.mp4",
-   "videoStart": 60.927
+   "videoStart": 60.779999999999994
   },
   {
    "idx": 29,
    "chapter": "The team",
-   "caption": "Decisions get a home of their own. Every meeting can be recorded, transcribed and processed — the AI pulls out the summary, the actions and the calls made — and each decision lands in one canonical, sortable log with its owner. Six months from now, you'll know exactly what was decided, and why.",
-   "audioId": "sm4hbxe",
+   "caption": "Team goals link to live performance data, and cover our what, how, personal and AI goals — so each member can see exactly what they're driving for the programme, and how they're tracking toward it.",
+   "audioId": "s10apwf5",
    "screen": "screens/s29.png",
    "video": "screens/s29.mp4",
-   "videoStart": 60.779999999999994
+   "videoStart": 60.864
   },
   {
    "idx": 30,
    "chapter": "The team",
-   "caption": "Team goals link to live performance data, and cover our what, how, personal and AI goals — so each member can see exactly what they're driving for the programme, and how they're tracking toward it.",
-   "audioId": "s10apwf5",
+   "caption": "And delivery is tracked on the roadmap — every feature and build on one timeline, with status, owner and next milestone. This is the programme's whole build plan, in a single view.",
+   "audioId": "suy7efl",
    "screen": "screens/s30.png",
    "video": "screens/s30.mp4",
-   "videoStart": 60.864
+   "videoStart": 61.044
   },
   {
    "idx": 31,
    "chapter": "The team",
-   "caption": "And delivery is tracked on the roadmap — every feature and build on one timeline, with status, owner and next milestone. This is the programme's whole build plan, in a single view.",
-   "audioId": "suy7efl",
+   "caption": "Campaign planning and monitoring sit on one timeline: what's live, what's queued, and how each is tracking — with briefs, assets and load files attached to the plan, and results attached to the campaign.",
+   "audioId": "s4zuhsx",
    "screen": "screens/s31.png",
    "video": "screens/s31.mp4",
-   "videoStart": 61.044
+   "videoStart": 61.391
   },
   {
    "idx": 32,
-   "chapter": "The team",
-   "caption": "Campaign planning and monitoring sit on one timeline: what's live, what's queued, and how each is tracking — with briefs, assets and load files attached to the plan, and results attached to the campaign.",
-   "audioId": "s4zuhsx",
+   "chapter": "AI studio",
+   "caption": "There's even an AI presentation studio. Describe the deck you want — or just speak it — and it builds an on-brand presentation for you, on live data. One click publishes any deck to a public link you can send to anyone, no login required — and republishing an edited deck keeps the same link current.",
+   "audioId": "s1322h16",
    "screen": "screens/s32.png",
    "video": "screens/s32.mp4",
-   "videoStart": 61.391
+   "videoStart": 60.989999999999995
   },
   {
    "idx": 33,
    "chapter": "AI studio",
-   "caption": "There's even an AI presentation studio. Describe the deck you want — or just speak it — and it builds an on-brand presentation for you, on live data. One click publishes any deck to a public link you can send to anyone, no login required — and republishing an edited deck keeps the same link current.",
-   "audioId": "s1322h16",
+   "caption": "Here's a real one — an executive brief we published straight from the workbench. Scroll through and it's the full story: the numbers, the charts, the recommendation, all on-brand and ready for the room.",
+   "audioId": "s1jl2c0q",
    "screen": "screens/s33.png",
    "video": "screens/s33.mp4",
-   "videoStart": 60.989999999999995
+   "videoStart": 61.184
   },
   {
    "idx": 34,
-   "chapter": "AI studio",
-   "caption": "Here's a real one — an executive brief we published straight from the workbench. Scroll through and it's the full story: the numbers, the charts, the recommendation, all on-brand and ready for the room.",
-   "audioId": "s1jl2c0q",
+   "chapter": "It runs itself",
+   "caption": "Underneath it all, automations do the routine: reminders, notifications, digests, scheduled refreshes — each visible, each toggleable, none requiring code. The platform does the chasing so people do the thinking.",
+   "audioId": "snajp38",
    "screen": "screens/s34.png",
    "video": "screens/s34.mp4",
-   "videoStart": 61.184
+   "videoStart": 61.348
   },
   {
    "idx": 35,
    "chapter": "It runs itself",
-   "caption": "Underneath it all, automations do the routine: reminders, notifications, digests, scheduled refreshes — each visible, each toggleable, none requiring code. The platform does the chasing so people do the thinking.",
-   "audioId": "snajp38",
+   "caption": "And it improves itself. Feedback is the front door — spot an issue or want a feature, log it here. Features ship in minutes, not weeks, and anything that teaches us something becomes memory. The users of the tool are also its product managers.",
+   "audioId": "s11cxl7p",
    "screen": "screens/s35.png",
    "video": "screens/s35.mp4",
-   "videoStart": 61.348
+   "videoStart": 61.401999999999994
   },
   {
    "idx": 36,
    "chapter": "It runs itself",
-   "caption": "And it improves itself. Feedback is the front door — spot an issue or want a feature, log it here. Features ship in minutes, not weeks, and anything that teaches us something becomes memory. The users of the tool are also its product managers.",
-   "audioId": "s11cxl7p",
-   "screen": "screens/s36.png",
-   "video": "screens/s36.mp4",
-   "videoStart": 61.401999999999994
-  },
-  {
-   "idx": 37,
-   "chapter": "It runs itself",
    "caption": "And because it all runs on AI, the AI bill is managed like any other cost. The AI Credits view tags every model call by feature and tracks daily spend against a guard — with a maximum AI spend cap on any single task, so a runaway usage loop simply can't happen. The stacked bars break the cost out by each AI agent at work, so spend is always transparent — and each analyst's model is a setting, not a rebuild.",
    "audioId": "sehhhb2",
-   "screen": "screens/s37.png",
-   "video": "screens/s37.mp4",
+   "screen": "screens/s36.png",
+   "video": "screens/s36.mp4",
    "videoStart": 65.509
   },
   {
-   "idx": 38,
+   "idx": 37,
    "chapter": "The point",
    "caption": "And that's just a highlight reel — a sample of what the workbench does, not the whole of it. The point is the pattern: a programme that embraces AI at every step and puts data behind every decision. It runs on live production data, it was built in plain English, and it costs less per month than a single analyst-day. This isn't software we bought — it's a capability we grew. Any team with data and decisions can build one. The only question is who builds theirs next.",
    "audioId": "s176rs1k",
-   "screen": "screens/s38.png",
-   "video": "screens/s38.mp4",
+   "screen": "screens/s37.png",
+   "video": "screens/s37.mp4",
    "videoStart": 61.245999999999995
   }
  ]
