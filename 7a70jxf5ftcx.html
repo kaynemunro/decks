@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en-NZ" class="theme-light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibe Coding Loyalty Operations</title>
+<style>
+/* ============ One NZ scroll-deck · dark edition ============ */
+:root{
+  --green:#00A45F;
+  --green-bright:#12CB77;
+  --green-soft:#95EEB4;
+  --green-tint:#CDFBDD;
+  --deep:#0A3833;
+  --deepest:#06231F;
+  --grey-ink:#323232;
+  --grey-mid:#5A6376;
+  --grey-line:#E1E4E9;
+  --grey-bg:#F8F9FA;
+  --alert-red:#D31F3F;
+  --alert-yellow:#FFD600;
+}
+/* one consistent near-black ground on EVERY scene in dark mode */
+html.theme-dark{
+  --bg:#06110C;
+  --bg-alt:#06110C;
+  --card:rgba(255,255,255,0.045);
+  --card-border:rgba(149,238,180,0.14);
+  --ink:#F8F9FA;
+  --ink-soft:rgba(248,249,250,0.72);
+  --ink-faint:rgba(248,249,250,0.45);
+  --accent:#12CB77;
+  --accent-strong:#00A45F;
+  --track:rgba(255,255,255,0.09);
+  --hairline:rgba(149,238,180,0.16);
+  --shadow:0 18px 50px rgba(0,0,0,0.35);
+}
+html.theme-light{
+  --bg:#F8F9FA;
+  --bg-alt:#FFFFFF;
+  --card:#FFFFFF;
+  --card-border:#E1E4E9;
+  --ink:#323232;
+  --ink-soft:#5A6376;
+  --ink-faint:#9AA1AC;
+  --accent:#00A45F;
+  --accent-strong:#00A45F;
+  --track:#E1E4E9;
+  --hairline:#E1E4E9;
+  --shadow:0 18px 50px rgba(10,56,51,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+}
+::selection{background:var(--green);color:#fff;}
+
+/* -------- scenes -------- */
+.scene{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:9vh 7vw;
+  position:relative;
+  overflow:hidden;
+}
+.scene-inner{
+  max-width:1060px;
+  width:100%;
+  margin:0 auto;
+  opacity:0;
+  transform:translateY(34px);
+  transition:opacity .85s cubic-bezier(.2,.65,.25,1), transform .85s cubic-bezier(.2,.65,.25,1);
+}
+.scene.in-view .scene-inner{opacity:1;transform:translateY(0);}
+.scene:nth-child(even){background:var(--bg-alt);transition:background .4s ease;}
+
+/* stagger children */
+.stagger > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.scene.in-view .stagger > *{opacity:1;transform:translateY(0);}
+.scene.in-view .stagger > *:nth-child(1){transition-delay:.15s;}
+.scene.in-view .stagger > *:nth-child(2){transition-delay:.28s;}
+.scene.in-view .stagger > *:nth-child(3){transition-delay:.41s;}
+.scene.in-view .stagger > *:nth-child(4){transition-delay:.54s;}
+.scene.in-view .stagger > *:nth-child(5){transition-delay:.67s;}
+.scene.in-view .stagger > *:nth-child(6){transition-delay:.80s;}
+.scene.in-view .stagger > *:nth-child(7){transition-delay:.93s;}
+.scene.in-view .stagger > *:nth-child(8){transition-delay:1.06s;}
+.scene.in-view .stagger > *:nth-child(9){transition-delay:1.19s;}
+.scene.in-view .stagger > *:nth-child(10){transition-delay:1.32s;}
+.scene.in-view .stagger > *:nth-child(11){transition-delay:1.45s;}
+.scene.in-view .stagger > *:nth-child(12){transition-delay:1.58s;}
+.scene.in-view .stagger > *:nth-child(13){transition-delay:1.71s;}
+
+/* -------- type · big strong statements -------- */
+.kicker{
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.1rem;
+}
+h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:600;line-height:1.05;letter-spacing:-0.02em;}
+h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:600;line-height:1.08;letter-spacing:-0.018em;margin-bottom:1.2rem;max-width:20ch;}
+h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
+.lede{font-size:clamp(1.05rem,1.7vw,1.28rem);color:var(--ink-soft);max-width:42em;}
+.accent{color:var(--accent);}
+.big-num{
+  font-size:clamp(2.6rem,6vw,4.4rem);
+  font-weight:600;letter-spacing:-0.03em;line-height:1;
+  color:var(--accent);
+}
+
+/* -------- one.nz mark -------- */
+.mark{
+  position:absolute;bottom:2.2rem;right:7vw;
+  font-weight:600;font-size:.95rem;color:var(--ink-faint);
+  letter-spacing:.01em;user-select:none;
+}
+.mark .dot{color:var(--green-bright);}
+.slide-num{
+  position:absolute;bottom:2.2rem;left:7vw;
+  font-size:.75rem;font-weight:600;letter-spacing:.08em;
+  color:var(--ink-faint);user-select:none;
+}
+@media (max-width:640px){.slide-num{left:6vw;}}
+
+/* -------- theme toggle -------- */
+.theme-toggle{
+  position:fixed;top:1.1rem;right:1.2rem;z-index:99;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--ink-soft);
+  border-radius:999px;padding:.42rem .95rem;
+  font-family:inherit;font-size:.78rem;font-weight:600;letter-spacing:.05em;
+  cursor:pointer;backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* -------- cards & grids -------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:1.6rem 1.7rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;}
+.card .cnum{font-size:1.9rem;font-weight:600;color:var(--accent);letter-spacing:-0.02em;margin-bottom:.35rem;}
+.card p{font-size:.95rem;color:var(--ink-soft);}
+.card h3{margin-bottom:.5rem;}
+.tag{
+  display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:.22rem .7rem;margin-bottom:.8rem;
+}
+.calc{
+  margin-top:.85rem;padding-top:.65rem;
+  border-top:1px dashed var(--hairline);
+  font-size:.82rem;font-weight:600;color:var(--accent);
+  letter-spacing:.01em;
+}
+
+/* -------- bar chart (gap-to-#1) -------- */
+.bars{display:flex;flex-direction:column;gap:.85rem;margin-top:2rem;}
+.bar-row{display:grid;grid-template-columns:5.2rem 1fr 4.5rem;align-items:center;gap:1rem;}
+.bar-label{font-size:.82rem;font-weight:600;color:var(--ink-soft);text-align:right;}
+.bar-track{
+  background:var(--track);border-radius:8px;height:30px;
+  overflow:hidden;position:relative;
+}
+.bar-track > div{
+  height:100%;border-radius:8px;
+  width:0 !important; /* animated in */
+  transition:width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.scene.in-view .bar-track > div{width:var(--w) !important;}
+/* sequential pull-out: one, two, three, four, five */
+.bars .bar-row:nth-child(1) .bar-track > div{transition-delay:.05s;}
+.bars .bar-row:nth-child(2) .bar-track > div{transition-delay:.5s;}
+.bars .bar-row:nth-child(3) .bar-track > div{transition-delay:.95s;}
+.bars .bar-row:nth-child(4) .bar-track > div{transition-delay:1.4s;}
+.bars .bar-row:nth-child(5) .bar-track > div{transition-delay:1.85s;}
+.bar-val{font-size:.95rem;font-weight:600;color:var(--ink);}
+
+/* -------- three-step flow (discount reality) -------- */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.9rem;margin-top:2.4rem;}
+.flow .fcard{flex:1 1 230px;display:flex;flex-direction:column;justify-content:flex-start;}
+.flow .farrow{align-self:center;font-size:2rem;font-weight:300;color:var(--ink-faint);flex:0 0 auto;}
+.fcard.net{border-color:var(--alert-red);}
+.fcard.net:hover{border-color:var(--alert-red);}
+.fcard.net .tag{color:var(--alert-red);border-color:var(--alert-red);}
+.fcard.net h3{color:var(--alert-red);}
+
+/* -------- idea chips & dials -------- */
+.chip-strip{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+.chip{
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:999px;padding:.55rem 1.05rem;
+  font-size:.9rem;font-weight:600;color:var(--ink);
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:none;}
+.dials{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.1rem;}
+.dial{text-align:center;}
+.dial-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.25rem;}
+.dial-num{font-size:clamp(1.5rem,2.6vw,2.15rem);font-weight:600;letter-spacing:-0.02em;color:var(--accent);line-height:1.1;}
+.gauge{background:var(--track);border-radius:6px;height:10px;overflow:hidden;margin-top:.55rem;}
+.gauge > div{
+  height:100%;border-radius:6px;
+  width:0 !important; /* animated in */
+  transition:width 1.2s cubic-bezier(.2,.7,.2,1);
+}
+.scene.in-view .gauge > div{width:var(--w) !important;}
+.dial-caption{margin-top:1rem;font-size:.85rem;color:var(--ink-faint);}
+.ms{display:flex;gap:.7rem;align-items:flex-start;margin-top:.9rem;}
+.ms .msn{
+  width:22px;height:22px;border-radius:50%;flex:none;margin-top:.1rem;
+  background:var(--accent-strong);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:600;
+}
+.ms p{font-size:.88rem;color:var(--ink-soft);}
+.ms .ms-body{flex:1;min-width:0;}
+
+/* -------- headline value strip -------- */
+.value-strip{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  gap:1.4rem;margin:2.4rem 0;
+}
+.value-strip .vs-item{text-align:center;}
+.value-strip .vs-lab{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:.4rem;}
+.value-arrow{font-size:2rem;color:var(--accent);font-weight:300;}
+
+/* -------- four-drivers popup (inside value headline) -------- */
+.drivers-toggle{
+  display:inline-block;margin-bottom:1.6rem;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--accent);border-radius:999px;
+  padding:.6rem 1.35rem;
+  font-family:inherit;font-size:.92rem;font-weight:600;letter-spacing:.02em;
+  cursor:pointer;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.drivers-toggle:hover{border-color:var(--accent);transform:translateY(-2px);}
+.drivers-panel{margin:0 0 1.8rem;text-align:left;}
+.drivers-panel[hidden]{display:none !important;}
+
+/* -------- nine-tile AI gallery -------- */
+.gallery{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.1rem;margin-top:2rem;
+}
+.tile{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.15rem 1.2rem;
+  display:flex;flex-direction:column;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.tile:hover{border-color:var(--accent);transform:translateY(-3px);}
+.tile .tnum{font-size:.72rem;font-weight:600;letter-spacing:.16em;color:var(--accent);margin-bottom:.45rem;}
+.tile h3{font-size:.98rem;margin-bottom:.35rem;}
+.tile p{font-size:.84rem;color:var(--ink-soft);line-height:1.45;}
+.vig{
+  margin-top:auto;padding-top:.9rem;
+}
+.vwin{
+  border:1px solid var(--hairline);border-radius:10px;overflow:hidden;
+  background:var(--bg);
+}
+.vig-bar{display:flex;gap:5px;padding:7px 9px;border-bottom:1px solid var(--hairline);}
+.vig-bar div{width:7px;height:7px;border-radius:50%;background:var(--ink-faint);opacity:.5;}
+.vig-body{padding:9px 10px;display:flex;flex-direction:column;gap:6px;min-height:62px;justify-content:center;}
+.vrow{display:flex;align-items:center;gap:7px;}
+.vline{height:7px;border-radius:4px;flex:none;}
+.vtick{
+  width:13px;height:13px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:600;color:#06231F;
+}
+.vrank{font-size:.58rem;font-weight:600;color:var(--ink-faint);width:11px;flex:none;text-align:center;}
+.vchip{
+  margin-left:auto;flex:none;
+  font-size:.52rem;font-weight:600;letter-spacing:.08em;
+  border-radius:999px;padding:2px 8px;color:#fff;
+}
+.vfile{
+  flex:1;border:1px solid var(--hairline);border-radius:7px;
+  padding:12px 4px;text-align:center;
+  font-size:.55rem;font-weight:600;letter-spacing:.08em;color:var(--ink-faint);
+}
+.vbox{width:10px;height:10px;border:1.5px solid var(--ink-faint);border-radius:3px;flex:none;}
+.vava{width:12px;height:12px;border-radius:50%;flex:none;margin-left:auto;}
+.vbars{display:flex;align-items:flex-end;gap:5px;height:44px;flex:1;}
+.vbars div{flex:1;max-width:16px;border-radius:3px 3px 0 0;}
+.venv{
+  width:36px;height:28px;flex:none;
+  border:1.5px solid var(--ink-faint);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--ink-faint);
+}
+.vsql{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.6rem;color:var(--accent);letter-spacing:.02em;}
+.signoff{
+  margin-top:3rem;padding-top:1.4rem;
+  border-top:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;
+  font-size:.85rem;color:var(--ink-faint);
+}
+.signoff .so-mark{font-weight:600;color:var(--ink-soft);}
+.signoff .so-mark .dot{color:var(--green-bright);}
+
+/* -------- agenda -------- */
+.agenda{display:flex;flex-direction:column;gap:1.1rem;margin-top:2.2rem;}
+.agenda .card{display:flex;align-items:center;gap:1.4rem;padding:1.4rem 1.7rem;}
+.agenda .num{
+  font-size:2.2rem;font-weight:600;color:var(--accent);
+  min-width:2.6rem;letter-spacing:-0.03em;
+}
+.agenda p{color:var(--ink-soft);font-size:.95rem;margin-top:.15rem;}
+
+/* -------- two-panel idea -------- */
+.pill-url{
+  display:inline-block;font-weight:600;color:var(--accent);
+  background:var(--card);border:1px solid var(--hairline);
+  border-radius:999px;padding:.3rem .95rem;font-size:.92rem;
+}
+
+ul.clean{list-style:none;margin-top:1rem;}
+ul.clean li{
+  padding:.5rem 0 .5rem 1.7rem;position:relative;color:var(--ink-soft);font-size:1rem;
+}
+ul.clean li::before{
+  content:"";position:absolute;left:0;top:.95rem;
+  width:9px;height:9px;border-radius:50%;background:var(--accent-strong);
+}
+ul.clean li strong{color:var(--ink);}
+
+/* -------- then → now paired rows (slide 6) -------- */
+.tn-head{display:grid;grid-template-columns:1fr auto 1fr;gap:1.1rem;padding:0 1.4rem;margin-top:2.2rem;}
+.tn-head span{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+.tn-rows{display:flex;flex-direction:column;gap:.85rem;margin-top:.7rem;}
+.tn-row{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.1rem;
+  background:var(--card);border:1px solid var(--card-border);border-radius:16px;
+  padding:1rem 1.4rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.tn-row:hover{border-color:var(--accent);transform:translateY(-2px);}
+.tn-then{font-size:.95rem;color:var(--ink-soft);}
+.tn-now{font-size:.95rem;font-weight:600;color:var(--accent);}
+.tn-arrow{font-size:1.35rem;color:var(--accent);font-weight:300;line-height:1;}
+@media (max-width:720px){
+  .tn-head{display:none;}
+  .tn-row{grid-template-columns:1fr;gap:.3rem;}
+  .tn-arrow{transform:rotate(90deg);justify-self:start;}
+}
+
+.footline{margin-top:2.2rem;font-size:.9rem;color:var(--ink-faint);}
+.scroll-hint{
+  position:absolute;bottom:2.1rem;left:50%;transform:translateX(-50%);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.45;transform:translate(-50%,0);}50%{opacity:1;transform:translate(-50%,6px);}}
+
+/* -------- proposition scene · Phone Dollars product imagery -------- */
+.prop-wrap{display:grid;grid-template-columns:minmax(270px,330px) 1fr;gap:clamp(1.6rem,4vw,3.2rem);align-items:center;margin-top:2.2rem;}
+.prop-phone-col{position:relative;justify-self:center;}
+.prop-phone{width:min(300px,78vw);background:#020806;border:9px solid #11241a;border-radius:40px;padding:18px 16px 22px;box-shadow:0 30px 70px rgba(0,0,0,.45);position:relative;}
+html.theme-light .prop-phone{box-shadow:0 26px 60px rgba(10,56,51,.22);}
+.pp-notch{width:100px;height:18px;background:#11241a;border-radius:0 0 14px 14px;margin:-18px auto 14px;}
+.pp-card{background:linear-gradient(135deg,#00A45F,#12CB77);border-radius:18px;padding:16px 16px 14px;text-align:left;}
+.pp-brand{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);}
+.pp-brand span{color:#06231F;}
+.pp-lab{font-size:.64rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:12px;}
+.pp-bal{font-size:2.7rem;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;}
+.pp-note{font-size:.68rem;color:rgba(255,255,255,.9);margin-top:6px;font-weight:600;}
+.pp-feed{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.pp-row{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid rgba(149,238,180,.16);border-radius:12px;padding:8px 10px;font-size:.78rem;color:rgba(255,255,255,.78);}
+.pp-row b{margin-left:auto;color:#12CB77;font-size:.8rem;}
+.pp-ico{width:22px;height:22px;border-radius:50%;background:rgba(18,203,119,.16);color:#12CB77;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;flex:none;}
+.pp-pill{display:inline-block;margin-top:12px;background:rgba(18,203,119,.14);color:#12CB77;font-size:.7rem;font-weight:600;padding:6px 12px;border-radius:20px;}
+.prop-coin{position:absolute;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#12CB77,#00A45F);color:#06231F;font-weight:800;font-size:1.15rem;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,164,95,.35);z-index:2;animation:coinFloat 4s ease-in-out infinite;}
+.prop-coin.c1{top:-14px;left:-20px;}
+.prop-coin.c2{bottom:58px;right:-24px;width:36px;height:36px;font-size:.95rem;animation-delay:1.3s;}
+.prop-coin.c3{top:38%;left:-30px;width:30px;height:30px;font-size:.8rem;animation-delay:2.2s;}
+@keyframes coinFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+.prop-points{display:flex;flex-direction:column;gap:1rem;}
+.prop-point{display:flex;gap:1rem;align-items:flex-start;background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:1rem 1.2rem;transition:border-color .3s ease, transform .3s ease;}
+.prop-point:hover{border-color:var(--accent);transform:translateY(-2px);}
+.pp-badge{width:40px;height:40px;border-radius:12px;flex:none;background:rgba(18,203,119,.12);border:1px solid rgba(18,203,119,.3);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;}
+.prop-point h3{font-size:1rem;margin-bottom:.2rem;}
+.prop-point p{font-size:.88rem;color:var(--ink-soft);}
+@media (max-width:860px){.prop-wrap{grid-template-columns:1fr;}.prop-coin{display:none;}}
+
+@media (max-width:640px){
+  .scene{padding:8vh 6vw;}
+  .bar-row{grid-template-columns:4rem 1fr 3.4rem;}
+  .mark{right:6vw;}
+  .flow .farrow{display:none;}
+  .dials{gap:.6rem;}
+}
+
+/* ============================================================
+   Ported Legends scenes — namespaced under .lg
+   Same #06110C black ground as the rest of the deck in dark
+   mode; fully theme-aware, with light-theme overrides at the
+   end of this block so the toggle flips EVERY scene.
+   ============================================================ */
+section.scene.lg{
+  --lime:#19D17F;--bright:#00C472;--first:#2bbf78;--orange:#f5a623;--blue:#3aa0ff;
+  --muted:#8fae9f;--muted2:#5e7a6c;--ink2:#0B1F16;--rose:#ff7a6b;
+  background:#06110C;color:#fff;
+}
+.lg .scene-inner{
+  max-width:1080px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.lg .kicker{font-size:clamp(12px,1.4vw,15px);letter-spacing:.3em;text-transform:uppercase;color:var(--lime);font-weight:600;margin-bottom:18px;}
+.lg h2{font-size:clamp(28px,4.6vw,58px);font-weight:800;line-height:1.03;letter-spacing:-.015em;max-width:18ch;margin-bottom:0;}
+.lg .sub{font-size:clamp(16px,2vw,23px);color:var(--muted);max-width:44ch;line-height:1.5;margin-top:20px;font-weight:400;}
+.lg .big{color:var(--bright);} .lg .rose{color:var(--rose);}
+.lg .stat{font-size:clamp(52px,11vw,128px);font-weight:800;line-height:1;letter-spacing:-.03em;background:linear-gradient(92deg,var(--bright),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lg .statlbl{font-size:clamp(14px,1.7vw,19px);color:var(--muted);margin-top:10px;max-width:30ch;}
+.lg .next{margin-top:30px;background:rgba(25,209,127,.12);border:1px solid rgba(25,209,127,.4);color:var(--lime);font-size:14px;font-weight:600;padding:11px 22px;border-radius:30px;cursor:pointer;transition:.2s;font-family:inherit;}
+.lg .next:hover{background:rgba(25,209,127,.22);}
+.lg .row{display:flex;gap:clamp(14px,2.5vw,50px);flex-wrap:wrap;justify-content:center;align-items:center;margin-top:30px;}
+.lg .phone{width:min(290px,72vw);background:#020806;border:10px solid #11241a;border-radius:42px;padding:22px 20px 28px;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:6px auto 0;}
+.lg .phone .notch{width:110px;height:20px;background:#11241a;border-radius:0 0 16px 16px;margin:-22px auto 16px;}
+.lg .phone .pdlogo{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-weight:600;}
+.lg .phone .balrow{margin:14px 0 4px;color:var(--muted);font-size:13px;}
+.lg .phone .bal{font-size:52px;font-weight:800;color:#fff;letter-spacing:-.02em;} .lg .phone .bal .d{color:var(--bright);}
+.lg .phone .bar{height:8px;border-radius:6px;background:#11241a;margin:16px 0 6px;overflow:hidden;}
+.lg .phone .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--lime));transition:width 2.2s ease;}
+.lg .phone .pill{display:inline-block;margin-top:12px;background:rgba(25,209,127,.14);color:var(--lime);font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;}
+.lg .keepline{margin-top:26px;font-size:clamp(18px,2.4vw,26px);color:var(--muted);}
+.lg .keepline b,.lg .keepline strong{color:var(--lime);}
+.lg .offers{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:26px;}
+.lg .offers span{background:var(--ink2);border:1px solid rgba(255,255,255,.1);border-radius:30px;padding:10px 18px;font-size:clamp(13px,1.6vw,17px);font-weight:600;opacity:0;transform:translateY(10px);transition:.5s;}
+.lg .offers span.show{opacity:1;transform:none;} .lg .offers b{color:var(--bright);}
+.lg .tracks{width:100%;max-width:1040px;margin-top:22px;display:flex;flex-direction:column;gap:18px;}
+.lg .track{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:14px 18px;text-align:left;}
+.lg .track .th{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.lg .track .tt{font-size:clamp(15px,1.9vw,20px);font-weight:600;} .lg .track .tt small{display:block;font-size:12px;font-weight:400;color:var(--muted);}
+.lg .track .tm{font-size:13px;color:var(--muted);text-align:right;} .lg .track .tm b{color:var(--bright);font-size:20px;}
+.lg .grid{display:grid;grid-template-columns:repeat(40,1fr);gap:4px;}
+.lg .grid .dot{aspect-ratio:1;border-radius:50%;background:var(--dotbase,#1c2c24);transform:scale(0);transition:transform .3s ease;}
+.lg .grid .dot.show{transform:scale(1);}
+.lg .grid .dot.first{background:var(--first);} .lg .grid .dot.mob{background:var(--orange);} .lg .grid .dot.bb{background:var(--blue);}
+.lg .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px;justify-content:center;}
+.lg .legend span{display:inline-flex;align-items:center;gap:6px;} .lg .legend i{width:11px;height:11px;border-radius:50%;display:inline-block;}
+.lg .lg-bars{width:min(680px,92vw);margin-top:28px;}
+.lg .brow{display:flex;align-items:center;gap:14px;margin:12px 0;}
+.lg .brow .lab{width:34%;text-align:right;font-size:clamp(13px,1.6vw,16px);color:var(--muted);}
+.lg .brow .bw{flex:1;background:var(--ink2);border-radius:10px;overflow:hidden;height:38px;}
+.lg .brow .bw i{display:block;height:100%;width:0;border-radius:10px;transition:width 1.3s ease;}
+.lg .brow .val{width:64px;font-weight:800;font-size:18px;text-align:left;}
+.lg .ask{display:flex;flex-direction:column;gap:14px;width:100%;max-width:820px;margin-top:26px;text-align:left;}
+.lg .ask>div{display:flex;gap:16px;align-items:flex-start;background:var(--ink2);border:1px solid rgba(25,209,127,.16);border-radius:16px;padding:16px 20px;opacity:0;transform:translateY(12px);transition:.6s;}
+.lg .ask>div.show{opacity:1;transform:none;}
+.lg .ask .num{flex:none;width:34px;height:34px;border-radius:50%;background:rgba(25,209,127,.16);color:var(--lime);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.lg .ask b{display:block;font-size:clamp(15px,1.85vw,20px);margin-bottom:4px;}
+.lg .ask p{font-size:13.5px;color:var(--muted);line-height:1.45;}
+/* signoff strip on the final ported scene — fixed legible colours on the dark ground in both themes */
+.lg .signoff{width:100%;max-width:820px;border-top-color:rgba(255,255,255,.14);color:rgba(255,255,255,.5);}
+.lg .signoff .so-mark{color:rgba(255,255,255,.8);}
+@media (max-width:640px){
+  .lg .grid{grid-template-columns:repeat(25,1fr);}
+}
+
+/* ---- light theme for the ported .lg scenes ---- */
+/* the handset mock keeps its dark device UI in both themes */
+.lg .phone{--lime:#19D17F;--bright:#00C472;--muted:#8fae9f;}
+html.theme-light section.scene.lg{
+  background:var(--bg);color:var(--ink);
+  --lime:#00A45F;--bright:#00A45F;--rose:#D31F3F;
+  --muted:#5A6376;--ink2:#FFFFFF;--dotbase:#E1E4E9;
+}
+html.theme-light .lg .track,
+html.theme-light .lg .offers span{border-color:#E1E4E9;box-shadow:0 10px 26px rgba(10,56,51,.06);}
+html.theme-light .lg .brow .bw{background:#E1E4E9;}
+html.theme-light .lg .ask>div{border-color:rgba(0,164,95,.25);box-shadow:0 10px 26px rgba(10,56,51,.06);}
+html.theme-light .lg .next{background:rgba(0,164,95,.08);border-color:rgba(0,164,95,.35);}
+html.theme-light .lg .next:hover{background:rgba(0,164,95,.16);}
+html.theme-light .lg .signoff{border-top-color:#E1E4E9;color:var(--ink-faint);}
+html.theme-light .lg .signoff .so-mark{color:var(--ink-soft);}
+
+/* -------- myth vs learning registers (Act 6) -------- */
+.myth-tag{color:var(--accent);border-color:var(--hairline);}
+.scene.learn .scene-inner{
+  border-left:3px solid var(--accent-strong);
+  padding-left:2.2rem;
+}
+.learn-tag{
+  color:var(--ink);
+  border-color:var(--accent-strong);
+  background:var(--card);
+}
+.scene.learn h2{max-width:24ch;}
+.scene.demo .scene-inner{text-align:left;}
+.scene.demo h2{max-width:none;}
+@media (max-width:720px){
+  .scene.learn .scene-inner{padding-left:1.2rem;}
+}
+
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" type="button">Dark</button>
+
+<section class="scene" id="cover">
+  <div class="scene-inner">
+    <div class="kicker">A working session for loyalty programme owners</div>
+    <h1>Vibe coding <span class="accent">loyalty operations</span>.</h1>
+    <p class="lede" style="margin-top:1.6rem;">How anyone, with a voice, can build a full analytics and AI loyalty operations platform — what it cost, what it took, and the key things we learned along the way.</p>
+    <div class="chip-strip">
+      <div class="chip">Two hours</div>
+      <div class="chip">Training, not a showcase</div>
+      <div class="chip">Leave able to get started</div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<section class="scene" id="contents">
+  <div class="scene-inner">
+    <div class="kicker">The run of show today</div>
+    <h2>The workshop agenda — <span class="accent">two objectives, two parts</span>.</h2>
+    <div class="agenda stagger">
+      <div class="card"><div class="num">1</div><div><h3>Where this came from — and why loyalty cares</h3><p>A new programme with no reporting, and the objective that forced the issue.</p></div></div>
+      <div class="card"><div class="num">2</div><div><h3>What the Membership Workbench is</h3><p>The feature surface, and five demos out of thirty-two.</p></div></div>
+      <div class="card"><div class="num">3</div><div><h3>The actual point: one place, one memory</h3><p>Open discussion. This is the part that matters.</p></div></div>
+      <div class="card"><div class="num">4</div><div><h3>What we're doing today</h3><p>Two objectives, stated plainly.</p></div></div>
+      <div class="card" style="border-color:var(--accent);"><div class="num">5</div><div><h3><span class="accent">Part one</span> — how easy it is to get going</h3><p>The tool chain, end to end. Then we build something you choose.</p></div></div>
+      <div class="card" style="border-color:var(--accent);"><div class="num">6</div><div><h3><span class="accent">Part two</span> — myths and learnings</h3><p>Twelve things people believe. Ten of them are wrong. Two of them cost me.</p></div></div>
+      <div class="card"><div class="num">7</div><div><h3>Your setup checklist</h3><p>What to do on Monday.</p></div></div>
+      <div class="card"><div class="num">8</div><div><h3>The compounding effect</h3><p>Why the first build is not the point.</p></div></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a1-origin">
+  <div class="scene-inner">
+    <div class="kicker">Act 1 · Where this came from</div>
+    <h2>A brand-new programme, and <span class="accent">no reporting at all</span>.</h2>
+    <p class="lede">Phone Dollars in One Wallet launched with no or minimal standard reporting, no or minimal dashboards — and a long list of insight needs we couldn't keep up with.</p>
+    <div class="grid-2 stagger" style="margin-top:2.4rem;">
+      <div class="card"><div class="tag">The downside</div><h3>Nothing to work with</h3><p>No numbers on a Monday. No baseline. No way to tell whether anything we did was working.</p></div>
+      <div class="card"><div class="tag">The upside</div><h3>Nothing to defend</h3><p>No incumbent report to displace. No "the existing dashboard says otherwise". And a very high personal motivation to solve it.</p></div>
+    </div>
+    <p class="footline">Most of you have the opposite problem: reporting that exists, is trusted — but is possibly not as integrated or AI-enabled as it could be?</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a1-loyalty">
+  <div class="scene-inner">
+    <div class="kicker">Act 1 · Why loyalty specifically</div>
+    <h2>Loyalty isn't incidentally data-driven. <span class="accent">It's structurally data-driven.</span></h2>
+    <p class="lede">The whole discipline is four verbs — and every one of them is an analytics question before it is a marketing activity.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>Optimise</h3><p>Which offer, at which value, to which cohort?</p></div>
+      <div class="card"><h3>Cross-sell</h3><p>Who is ready, and what evidence says so?</p></div>
+      <div class="card"><h3>Upsell</h3><p>Where is the opportunity, and what are the best times to convert it?</p></div>
+      <div class="card"><h3>Retain</h3><p>Who is leaving, why, and what actually changes it?</p></div>
+    </div>
+    <p class="footline">Which means analytics quality is not a support function. It is the programme's operating capability.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a1-objective">
+  <div class="scene-inner">
+    <div class="kicker">Act 1 · The objective that drove it</div>
+    <h2>Stimulate the customers most at risk — <span class="accent">at real scale</span>.</h2>
+    <p class="lede">Not small discounts. At times there has been in the order of $600m on issue across the programme.</p>
+    <div class="value-strip" style="margin-top:2.6rem;">
+      <div class="vs-item"><div class="big-num">$600m</div><div class="vs-lab">On issue, at peak</div></div>
+      <div class="value-arrow">&rarr;</div>
+      <div class="vs-item"><div class="big-num">2pp</div><div class="vs-lab">Better targeting</div></div>
+      <div class="value-arrow">&rarr;</div>
+      <div class="vs-item"><div class="big-num">&gt;&gt;</div><div class="vs-lab">Everything in this deck</div></div>
+    </div>
+    <p class="footline">At that scale, a two-point improvement in targeting is worth more than the entire cost of everything I am about to show you, by orders of magnitude. That asymmetry exists in every programme in this room.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a1-thennow">
+  <div class="scene-inner">
+    <div class="kicker">Act 1 · And it is moving underneath us</div>
+    <h2>What I started with, and <span class="accent">how I'd start today</span>.</h2>
+    <div class="tn-head"><span>Then</span><span class="tn-arrow" style="visibility:hidden;">&rarr;</span><span>Now</span></div>
+    <div class="tn-rows stagger">
+      <div class="tn-row"><div class="tn-then">Replit's agent doing everything in the browser</div><div class="tn-arrow">&rarr;</div><div class="tn-now">Replit for the scaffold, infrastructure and hosting</div></div>
+      <div class="tn-row"><div class="tn-then">Typing prompts</div><div class="tn-arrow">&rarr;</div><div class="tn-now">Speaking them &mdash; several times the context per instruction</div></div>
+      <div class="tn-row"><div class="tn-then">One long conversation</div><div class="tn-arrow">&rarr;</div><div class="tn-now">Recorded stakeholder sessions feeding structured briefs</div></div>
+      <div class="tn-row"><div class="tn-then">Whatever the model could hold in its head</div><div class="tn-arrow">&rarr;</div><div class="tn-now">Written specs, a project constitution, a test suite</div></div>
+      <div class="tn-row"><div class="tn-then">The model doing its best</div><div class="tn-arrow">&rarr;</div><div class="tn-now">The model reading the rules you wrote, and obeying them</div></div>
+    </div>
+    <p class="footline">Everything I'm about to show you took longer than it needs to today. That's not a caveat — it's the point. The floor keeps rising, and you get the upgrade for free.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a2-intro">
+  <div class="scene-inner">
+    <div class="kicker">Act 2 · What it is</div>
+    <h2>A reporting platform — with <span class="accent">an AI analyst on every report</span>.</h2>
+    <p class="lede">Data goes in as ordinary exports. Reports compute. An analyst reads the same numbers you can see and writes the commentary. You can talk back to it.</p>
+    <div class="chip-strip" style="margin-top:2rem;">
+      <div class="chip">Built by a loyalty GM</div>
+      <div class="chip">Not an IT programme</div>
+      <div class="chip">In spare time</div>
+      <div class="chip">Single-handed</div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+<section class="scene" id="ai-machine">
+  <div class="scene-inner">
+    <div class="kicker">The AI-enabled machine</div>
+    <h2 style="max-width:none;">Arguably the most AI-enabled loyalty programme <span class="accent">on the planet</span>.</h2>
+    <p class="lede">The <strong style="color:var(--ink);">Membership Workbench</strong> — fourteen AI systems running the operating loop end to end.</p>
+    <div class="gallery stagger">
+
+      <div class="tile">
+        <div class="tnum">01</div>
+        <h3>Live data foundation</h3>
+        <p>Every base, campaign and channel file lands, self-checks and warms the reports daily.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:72%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:56%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:64%; background:var(--track);"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">02</div>
+        <h3>Priority audience selection</h3>
+        <p>AI scores churn risk &amp; uplift, excludes collections, grounds cohorts in a living knowledge base.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vrank">1</div><div class="vline" style="width:82%; background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vrank">2</div><div class="vline" style="width:60%; background:#00A45F;"></div></div>
+          <div class="vrow"><div class="vrank">3</div><div class="vline" style="width:38%; background:var(--track);"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">03</div>
+        <h3>Campaign build</h3>
+        <p>Loading files &amp; offer values generated per cohort, ready to send.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:center;gap:8px;">
+          <div class="vfile">CSV</div>
+          <div class="vfile">CSV</div>
+          <div class="vfile">CSV</div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">04</div>
+        <h3>Post-implementation review</h3>
+        <p>Lift vs control measured; verdicts written back into the knowledge base the next campaign reads.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:44%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">CONTINUE</div></div>
+          <div class="vrow"><div class="vline" style="width:36%; background:var(--track);"></div><div class="vchip" style="background:#D31F3F;">RESTRICT</div></div>
+          <div class="vrow"><div class="vline" style="width:50%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">CONTINUE</div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">05</div>
+        <h3>Team meetings</h3>
+        <p>Recorded, transcribed; AI drafts a summary, decisions &amp; actions, assigns them to owners — and follows up on due dates automatically.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:56%; background:var(--track);"></div><div class="vava" style="background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:44%; background:var(--track);"></div><div class="vava" style="background:#95EEB4;"></div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:62%; background:var(--track);"></div><div class="vava" style="background:#00A45F;"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">06</div>
+        <h3>Reporting</h3>
+        <p>Scorecards, weekly wraps and automated emails to stakeholders — with AI analysis and recommendations built in.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:flex-end;gap:12px;">
+          <div class="vbars">
+            <div style="height:40%; background:#00A45F;"></div>
+            <div style="height:65%; background:#12CB77;"></div>
+            <div style="height:50%; background:#00A45F;"></div>
+            <div style="height:85%; background:#12CB77;"></div>
+          </div>
+          <div class="venv">&#9993;</div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">07</div>
+        <h3>Device pricing engine</h3>
+        <p>Reads our offers vs Spark/2degrees, porting and churn; recommends per-model offers inside guardrails humans lock.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:34%; background:var(--track);"></div><div class="vline" style="width:14%; background:var(--track); margin-left:auto;"></div></div>
+          <div class="vrow"><div class="vline" style="width:42%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">REC $150</div></div>
+          <div class="vrow"><div class="vline" style="width:30%; background:var(--track);"></div><div class="vline" style="width:14%; background:var(--track); margin-left:auto;"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">08</div>
+        <h3>Presentations by voice</h3>
+        <p>The AI Studio builds presentations — e.g. this deck — by voice, grounded in live data, insights and analysis.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;gap:8px;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center;">
+            <div style="width:80%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+            <div style="width:68%; height:10px; background:#00A45F; border-radius:8px 8px 2px 8px; margin-left:auto;"></div>
+            <div style="width:58%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+          </div>
+          <div style="flex:1;border:1px solid var(--hairline);border-radius:6px;padding:7px;display:flex;flex-direction:column;gap:5px;justify-content:center;">
+            <div class="vline" style="width:70%; height:8px; background:#12CB77;"></div>
+            <div class="vline" style="width:92%; background:var(--track);"></div>
+            <div class="vline" style="width:80%; background:var(--track);"></div>
+          </div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">09</div>
+        <h3>Data-powered insights &amp; analysis</h3>
+        <p>A deep data agent answers plain-English questions with read-only SQL over the production warehouse.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div style="width:72%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+          <div class="vsql">SELECT saves FROM campaigns&hellip;</div>
+          <div class="vrow"><div class="vline" style="width:54%; background:var(--track);"></div><div class="vava" style="background:#12CB77; margin-left:0;"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">10</div>
+        <h3>Delivery roadmap</h3>
+        <p>Every feature and build tracked live in the workbench — status, owner and next milestone in one view.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:46%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">LIVE</div></div>
+          <div class="vrow"><div class="vline" style="width:38%; background:var(--track);"></div><div class="vchip" style="background:#12CB77;">IN BUILD</div></div>
+          <div class="vrow"><div class="vline" style="width:52%; background:var(--track);"></div><div class="vchip" style="background:#5A6376;">NEXT</div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">11</div>
+        <h3>Campaign planning &amp; monitoring</h3>
+        <p>Campaigns planned and monitored on one timeline — what's live, what's queued, and how each is tracking.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:36%; background:#00A45F;"></div></div>
+          <div class="vrow"><div class="vline" style="width:30%; background:#12CB77; margin-left:24%;"></div></div>
+          <div class="vrow"><div class="vline" style="width:28%; background:#95EEB4; margin-left:48%;"></div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">12</div>
+        <h3>Team goals</h3>
+        <p>Every team goal tracked in the workbench — each linked to live performance data, so progress is never a guess.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:48%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">92%</div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:40%; background:var(--track);"></div><div class="vchip" style="background:#12CB77;">78%</div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:54%; background:var(--track);"></div><div class="vchip" style="background:#5A6376;">54%</div></div>
+        </div></div></div>
+      </div>
+
+      <div class="tile">
+        <div class="tnum">13</div>
+        <h3>AI consumption analysis</h3>
+        <p>Our spend on LLMs and AI services is tracked daily through the platform — cost per system, per model, per day.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:flex-end;gap:12px;">
+          <div class="vbars">
+            <div style="height:35%; background:#00A45F;"></div>
+            <div style="height:55%; background:#00A45F;"></div>
+            <div style="height:42%; background:#12CB77;"></div>
+            <div style="height:70%; background:#12CB77;"></div>
+            <div style="height:50%; background:#00A45F;"></div>
+          </div>
+          <div class="vchip" style="background:#00A45F;">$/DAY</div>
+        </div></div></div>
+      </div>
+
+
+      <div class="tile">
+        <div class="tnum">14</div>
+        <h3>Train the AI &amp; living memory</h3>
+        <p>Correct any analyst in plain language, like briefing a junior. The lesson is stored and applied on every run after.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:78%; background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vline" style="width:52%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vline" style="width:66%; background:var(--track);"></div></div>
+        </div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene demo" id="a2-demo">
+  <div class="scene-inner">
+    <div class="kicker">Act 2 · Showcase</div>
+    <h2>Five of <span class="accent">thirty-two</span>.</h2>
+    <div class="chip-strip" style="margin-top:2rem;">
+      <div class="chip">At-Risk Stims</div>
+      <div class="chip">NPS Heartbeat</div>
+      <div class="chip">Weekly Report</div>
+      <div class="chip">Train AI &middot; Market Offers</div>
+      <div class="chip">Memory</div>
+    </div>
+    <p class="footline">There are twenty-seven more. The point isn't the tour — it's that none of these is individually remarkable, and the next scene explains why that doesn't matter.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a3-notfeatures">
+  <div class="scene-inner">
+    <div class="kicker">Act 3 · The actual point</div>
+    <h2>None of that is the interesting part.</h2>
+    <p class="lede">Every feature you just saw can be bought. Any of you could buy a churn dashboard tomorrow, and several of you already have.</p>
+    <p class="lede" style="margin-top:1.4rem;">What you cannot buy is the next slide.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a3-memory">
+  <div class="scene-inner">
+    <div class="kicker">Act 3 · One place, one memory</div>
+    <h2>The smartest member of your team, <span class="accent">available to anyone</span>.</h2>
+    <p class="lede">When the data, the meetings, the market knowledge, the campaign history, the decisions and the reasoning behind them all live in one place — you have something no org chart gives you.</p>
+    <div class="grid-3 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>It has the numbers</h3><p>Every report, every upload, every period.</p></div>
+      <div class="card"><h3>It has the history</h3><p>What we tried, what happened, what we decided and why.</p></div>
+      <div class="card"><h3>It has the corrections</h3><p>Every time someone told it that it was wrong — and it remembers.</p></div>
+    </div>
+    <p class="footline">It doesn't forget. It doesn't leave. It doesn't have a bad week.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a3-context">
+  <div class="scene-inner">
+    <div class="kicker">Act 3 · Why this works at all</div>
+    <h2>Context is <span class="accent">the whole game</span>.</h2>
+    <p class="lede">The biggest lever on what you get out of an LLM is not which model you pick. It's how much relevant context you can put in front of it.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>Everything downstream depends on it</h3><p>It's why voice matters. It's why memory matters. It's why the meetings go in.</p></div>
+      <div class="card"><h3>And why one place beats five pilots</h3><p>Five disconnected AI pilots in five functions don't compound. They interfere.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene demo" id="a3-discuss">
+  <div class="scene-inner">
+    <div class="kicker">Act 3 · Over to you</div>
+    <h2>Three questions.</h2>
+    <div class="agenda stagger" style="margin-top:2rem;">
+      <div class="card"><div class="num">1</div><div><h3>Where does the knowledge in your programme actually live right now?</h3></div></div>
+      <div class="card"><div class="num">2</div><div><h3>What happens to it when the people holding it leave?</h3></div></div>
+      <div class="card"><div class="num">3</div><div><h3>What would you ask a team member who had read every campaign review, every verbatim and every decision you've ever made?</h3></div></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a4-objectives">
+  <div class="scene-inner">
+    <div class="kicker">Act 4 · What we're doing today</div>
+    <h2>This is a training session, <span class="accent">not a showcase</span>.</h2>
+    <div class="grid-2 stagger" style="margin-top:2.4rem;">
+      <div class="card"><div class="num" style="font-size:2.2rem;font-weight:600;color:var(--accent);">1</div><h3>Equip anyone who hasn't started, to start</h3><p>Some of you in this room are further along than I am. Say so, and jump in — this works better as a conversation than a lecture.</p></div>
+      <div class="card"><div class="num" style="font-size:2.2rem;font-weight:600;color:var(--accent);">2</div><h3>Hand over the learnings — especially the pitfalls</h3><p>Some of these cost me real time. One of them put wrong numbers in front of decision-makers. You shouldn't have to repeat any of it.</p></div>
+    </div>
+    <p class="footline">Part one is how to get going. Part two is everything I wish someone had told me first.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a5-chain">
+  <div class="scene-inner">
+    <div class="kicker">Act 5 · Part one</div>
+    <h2>Conversation to deployed, <span class="accent">end to end</span>.</h2>
+    <div class="flow stagger" style="margin-top:2.4rem;">
+      <div class="card fcard"><div class="tag">01</div><h3>Record the room</h3><p>Granola captures the stakeholder session.</p></div>
+      <div class="card fcard"><div class="tag">02</div><h3>Speak the intent</h3><p>Wispr Flow into Claude, on top of the transcript.</p></div>
+      <div class="card fcard"><div class="tag">03</div><h3>Get the brief</h3><p>Requirements and a build plan you can argue with.</p></div>
+      <div class="card fcard" style="border-color:var(--accent);"><div class="tag">04</div><h3>Confirm — and cut</h3><p>Your job. No technical skill required.</p></div>
+    </div>
+    <div class="flow stagger" style="margin-top:1rem;">
+      <div class="card fcard"><div class="tag">05</div><h3>Split the work</h3><p>What Replit stands up, what Claude builds.</p></div>
+      <div class="card fcard"><div class="tag">06</div><h3>Build on a branch</h3><p>Claude works, GitHub holds it.</p></div>
+      <div class="card fcard"><div class="tag">07</div><h3>Review the PR</h3><p>Read what changed and why.</p></div>
+      <div class="card fcard"><div class="tag">08</div><h3>Merge — it deploys</h3><p>Live, with the schema migrated.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a5-tools">
+  <div class="scene-inner">
+    <div class="kicker">Act 5 · The honest recipe</div>
+    <h2>Six tools. <span class="accent">Each earns its place.</span></h2>
+    <div class="grid-2 stagger" style="margin-top:2rem;">
+      <div class="card"><div class="tag">Granola</div><h3>Records and transcribes the room</h3><p>Nobody takes notes. The argument itself becomes the input — not somebody's recollection of it.</p></div>
+      <div class="card"><div class="tag">Wispr Flow</div><h3>Turns speech into the prompt</h3><p>Not about speed. About context density — see the next scene.</p></div>
+      <div class="card"><div class="tag">Claude</div><h3>Designs it, then builds it</h3><p>Reads and changes a whole codebase coherently, and explains what it did in English you can check.</p></div>
+      <div class="card"><div class="tag">Replit</div><h3>Stands the thing up</h3><p>App, database, storage, hosting, deploys. Removes the reason business-led builds die on day one: there is no infrastructure project.</p></div>
+      <div class="card"><div class="tag">GitHub</div><h3>Holds the code and the history</h3><p>The undo button, the audit trail, and the thing that calms your security team down.</p></div>
+      <div class="card"><div class="tag">APIs</div><h3>Capabilities on tap</h3><p>Claude, OpenAI, voice, email. Things you'd once have scoped as projects are now a key and an afternoon.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a5-voice">
+  <div class="scene-inner">
+    <div class="kicker">Act 5 · Why voice, specifically</div>
+    <h2>Voice isn't faster. It's <span class="accent">denser</span>.</h2>
+    <p class="lede">The obvious reason to talk instead of type is the wrong one. You speak three to five times more than you'd type — and per Act 3, context is the whole game.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>What you type</h3><p>"Add a churn view cut by tenure band."</p></div>
+      <div class="card" style="border-color:var(--accent);"><h3>What you say</h3><p>The same ask, plus why you want it, what you tried in 2024, which definition of churn you mean, who's going to read it, what it must not do, and the argument two people had about it in the room.</p></div>
+    </div>
+    <p class="footline">Then extend it: put six people in a room, record the whole disagreement, feed the disagreement in. No written brief has ever captured that.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene demo" id="a5-build">
+  <div class="scene-inner">
+    <div class="kicker">Act 5 · Live</div>
+    <h2>Your turn. <span class="accent">Pick something.</span></h2>
+    <p class="lede">A brand-new small build, or an extension to the Workbench. You choose, I'll voice it in, and we ship it before the break.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a6-intro">
+  <div class="scene-inner">
+    <div class="kicker">Act 6 · Part two</div>
+    <h2>Twelve things people believe. <span class="accent">Ten are wrong. Two cost me.</span></h2>
+    <p class="lede">Grouped by the objection underneath them, because that's how they actually arrive.</p>
+    <div class="chip-strip" style="margin-top:2rem;">
+      <div class="chip">A · I haven't got what it takes</div>
+      <div class="chip">B · It won't be trustworthy</div>
+      <div class="chip">C · It costs too much</div>
+      <div class="chip">D · I'll be stuck with it</div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a6-fam-a">
+  <div class="scene-inner">
+    <div class="kicker">Family A</div>
+    <h2>"I haven't got <span class="accent">what it takes</span>."</h2>
+    <p class="lede">Hands up if you've heard a version of this inside your own business in the last six months.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-a1">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 01</div>
+    <h2>"You need <span class="accent">PII</span>."</h2>
+    <p class="lede">You don't. What you need is behaviour, tenure, plan, channel, spend band, engagement recency — almost none of which is identity. Masked or hashed keys carry the joins perfectly well.</p>
+    <div class="card" style="margin-top:2rem;border-color:var(--accent);">
+      <h3>And here's the part that matters strategically</h3>
+      <p>The moment you drop identity from the dataset, the governance conversation changes character. It stops being "can we do this at all" and becomes "how do we control access to it" — a conversation your risk functions already know how to have.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-a2">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 02 · the big one</div>
+    <h2>"My data would have to be <span class="accent">properly structured first</span>."</h2>
+    <p class="lede">This is the objection that stops most people before they start. It is also the one the technology has most comprehensively solved.</p>
+    <div class="grid-3 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>It does the joins</h3><p>Across inconsistent exports with different keys and different naming.</p></div>
+      <div class="card"><h3>It infers the taxonomy</h3><p>Works out what the columns mean, and asks when it can't.</p></div>
+      <div class="card"><h3>It reconciles the mess</h3><p>The part that used to need an analyst and six weeks.</p></div>
+    </div>
+    <p class="footline">You are not data-poor. You are export-poor — and that's a five-minute problem, not a five-million-dollar one.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-a3">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 03</div>
+    <h2>"You'd need <span class="accent">engineers</span>."</h2>
+    <p class="lede">Built single-handed, in spare time, by someone whose actual job is running a loyalty programme.</p>
+    <div class="card" style="margin-top:2rem;border-color:var(--accent);">
+      <h3>The constraint was never coding ability</h3>
+      <p>It was knowing which churn definition is the right one. No engineer you hire will know that, and no consultant will learn it in the time you have. The scarce input is domain judgement — which is exactly why this has to be you, and not a project you commission.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a6-fam-b">
+  <div class="scene-inner">
+    <div class="kicker">Family B</div>
+    <h2>"It won't be <span class="accent">trustworthy</span>."</h2>
+    <p class="lede">The most reasonable objection in the set — and the one where two of my answers are confessions rather than rebuttals.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-b1">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 04</div>
+    <h2>"It'll make <span class="accent">calculation errors</span>."</h2>
+    <p class="lede">The opposite — and for reasons you can inspect rather than take on faith.</p>
+    <div class="grid-3 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>It narrates, it doesn't compute</h3><p>The analysts are handed already-computed figures and asked to explain them. They never do their own arithmetic.</p></div>
+      <div class="card"><h3>A deterministic check runs over every output</h3><p>Not AI marking its own homework. Code pulls every percentage, dollar and count out of what the AI wrote and verifies each one against the source. Failures force a regeneration.</p></div>
+      <div class="card"><h3>It shows its working, every time</h3><p>Ask how it got there and it plays the method back. Try getting that out of a spreadsheet somebody built in 2022.</p></div>
+    </div>
+    <p class="footline">More reliable, more repeatable, and — the word that matters most — more investigatable.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene learn" id="a6-b2">
+  <div class="scene-inner">
+    <div class="tag learn-tag">Learning · not a myth</div>
+    <h2>It will not catch a <span class="accent">wrong method</span>. That one is on you.</h2>
+    <p class="lede">We cut churn rates by customer attribute off a single snapshot. It produced three confidently wrong answers, and they reached decision-makers.</p>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card"><h3>A 28&times; "lock-in" effect</h3><p>That wasn't real.</p></div>
+      <div class="card"><h3>A 26% vs 3% split</h3><p>That wasn't real either.</p></div>
+      <div class="card"><h3>Tenure looking protective</h3><p>When it is, in fact, the opposite.</p></div>
+    </div>
+    <p class="lede" style="margin-top:2rem;">The cause wasn't the AI. The banding fields get wiped when a customer disconnects, so a single-snapshot rate is an artefact of the data model, not a finding. The fix wasn't a better model — it was a <strong style="color:var(--ink);">written rule</strong> that every analyst now obeys.</p>
+    <p class="footline">AI amplifies your rigour, or the absence of it. It will never tell you your method is wrong — but it will tell fifteen people your wrong answer, very persuasively, in beautiful English.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene learn" id="a6-b3">
+  <div class="scene-inner">
+    <div class="tag learn-tag">Learning · not a myth</div>
+    <h2>Define your KPIs <span class="accent">before you build on them</span>.</h2>
+    <p class="lede">Write down what each one means and exactly how it's calculated — then make that definition the single source the whole platform reads.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>Otherwise you get the classic failure</h3><p>Churn computed three different ways on three different pages. All defensible. None reconcilable. And a room full of people arguing about which number is right instead of what to do about it.</p></div>
+      <div class="card" style="border-color:var(--accent);"><h3>It propagates either way</h3><p>Every AI analyst downstream inherits your definition. Get it right once and that spreads. Get it wrong once and so does that.</p></div>
+    </div>
+    <p class="footline">A few hours of work, and the highest-return few hours in the entire build.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-b4">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 05</div>
+    <h2>"It won't be <span class="accent">documented</span>."</h2>
+    <p class="lede">Better documented than most conventional internal builds — for a structural reason. The documentation is written as the work happens, not reconstructed afterwards.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>Every change explains itself</h3><p>Each one arrives as a pull request describing what it does and why. Code review is captured. The architecture is written down in plain English.</p></div>
+      <div class="card"><h3>And the lessons are captured live</h3><p>Eighty-odd hard-won production notes, written at the moment they were learned, while the detail was still fresh.</p></div>
+    </div>
+    <p class="footline">Which answers the question you're all about to ask: if I got hit by a bus tomorrow, the handover already exists.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-b5">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 06</div>
+    <h2>"It won't be <span class="accent">safe</span>."</h2>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card"><h3>Deployment is your choice</h3><p>Private or public, per environment. Your call, not a vendor's.</p></div>
+      <div class="card"><h3>It sits on standard cloud infrastructure</h3><p>And passed our own security team's review.</p></div>
+      <div class="card"><h3>With no PII, the risk surface is a different shape</h3><p>Which is exactly why Myth 01 is worth the effort.</p></div>
+    </div>
+    <div class="card" style="margin-top:1.6rem;">
+      <h3>Then show the controls rather than asserting them</h3>
+      <p>An email allowlist as the single gate. Magic-link authentication. Twelve permission groups. Every login and every page visit logged.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene learn" id="a6-b5b">
+  <div class="scene-inner">
+    <div class="tag learn-tag">The learning attached to that one</div>
+    <h2>I brought them in <span class="accent">far too late</span>.</h2>
+    <p class="lede">I stood up a proof of concept. It quietly became business-critical to the programme. And only then did privacy, security and architecture properly find out.</p>
+    <p class="lede" style="margin-top:1.2rem;">They were alarmed, and they were right to be — not because it was unsafe, but because they had no way to assess it and no hand in shaping it.</p>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>Bring them in at week two</h3><p>Not month eight. Give them a document they can read in five minutes. Name your own failure modes before they do.</p></div>
+      <div class="card" style="border-color:var(--accent);"><h3>Agree the graduation trigger up front</h3><p>At what point does this stop being a proof of concept and get real engineering rigour? Naming that in advance is the single most reassuring thing you can offer a security function.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a6-fam-c">
+  <div class="scene-inner">
+    <div class="kicker">Family C</div>
+    <h2>"It'll cost too much and <span class="accent">take too long</span>."</h2>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-c">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myths 07, 08, 09</div>
+    <h2>What it <span class="accent">actually</span> cost.</h2>
+    <div class="grid-3 stagger" style="margin-top:2.4rem;">
+      <div class="card"><div class="big-num" style="font-size:clamp(2rem,4vw,3rem);">~$10k</div><div class="vs-lab" style="margin-top:.4rem;">NZD in credits, to build all of it</div><p style="margin-top:.8rem;">The bulk of it Replit. That is the whole build, from nothing to what you saw in Act 2.</p></div>
+      <div class="card"><div class="big-num" style="font-size:clamp(2rem,4vw,3rem);">~$200</div><div class="vs-lab" style="margin-top:.4rem;">Per month, to keep adding features</div><p style="margin-top:.8rem;">A Claude licence. New features have landed in the last few weeks on exactly this.</p></div>
+      <div class="card"><div class="big-num" style="font-size:clamp(2rem,4vw,3rem);">&lt;$500</div><div class="vs-lab" style="margin-top:.4rem;">USD per month to run</div><p style="margin-top:.8rem;">Against many millions of rows — including every token for the analysis, the reports, the summaries and the scheduled emails.</p></div>
+    </div>
+    <div class="card" style="margin-top:1.6rem;border-color:var(--accent);">
+      <h3>And on "it'll be a long build"</h3>
+      <p>A conversation about a feature in the morning. It builds while you're in and out of meetings. You're testing it over dinner. The unit of work changed: the expensive part is now deciding what you want, and the cheap part is having it.</p>
+    </div>
+    <p class="footline">The cost is also completely observable — every AI call is logged with its model, tokens and spend, pivoted by purpose and by day. You always know what you're spending and on what.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a6-fam-d">
+  <div class="scene-inner">
+    <div class="kicker">Family D</div>
+    <h2>"I'll be <span class="accent">stuck with it</span>."</h2>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-d1">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myth 10</div>
+    <h2>"It'll go out of date and become <span class="accent">a burden</span>."</h2>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>It gets better by being told things</h3><p>Every AI analysis carries a <strong style="color:var(--ink);">Train AI</strong> button. You speak to the analyst exactly as you'd brief a junior team member — "say which window you measured, and stop calling it a lock-in effect" — and it applies from the next run on. No ticket. No release. No developer.</p></div>
+      <div class="card" style="border-color:var(--accent);"><h3>And every model upgrade is a free platform upgrade</h3><p>When the underlying models improve their reasoning and their context windows, your platform gets better overnight without you doing anything.</p></div>
+    </div>
+    <p class="footline">This is the first category of software most people in this room will own that improves while they sleep. Conventional software decays from the day it ships.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene myth" id="a6-d2">
+  <div class="scene-inner">
+    <div class="tag myth-tag">Myths 11 and 12</div>
+    <h2>"You'll be locked in." <span class="accent">To the opposite, actually.</span></h2>
+    <div class="grid-2 stagger" style="margin-top:2.2rem;">
+      <div class="card"><h3>Not locked to one model</h3><p>The provider is a toggle in the settings, with per-feature overrides on top. And the platform itself can be built and maintained by Claude, by Codex, by Replit's own agent — interchangeably. What they're all working on is ordinary code.</p></div>
+      <div class="card"><h3>Not locked to one platform</h3><p>It's a standard application in your own repository, under your company's account. Storage is abstracted. The database is standard Postgres. You can lift the whole thing out and run it elsewhere.</p></div>
+    </div>
+    <p class="footline">You are dramatically freer than you are under any vendor contract you currently hold. How long does your present analytics vendor's exit clause take to execute?</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a7-setup">
+  <div class="scene-inner">
+    <div class="kicker">Act 7 · Monday</div>
+    <h2>Get set up. <span class="accent">Half a day, mostly waiting for approvals.</span></h2>
+    <div class="grid-2 stagger" style="margin-top:2rem;">
+      <div class="card"><div class="tag">01</div><h3>Replit</h3><p>A licence under your business entity's name — not a personal account. Do this properly on day one; retrofitting ownership later is painful, and it's the first thing finance and security will ask.</p></div>
+      <div class="card"><div class="tag">02</div><h3>Claude</h3><p>A business licence if you don't already have one.</p></div>
+      <div class="card"><div class="tag">03</div><h3>GitHub</h3><p>Access through your company, and a repository you own.</p></div>
+      <div class="card"><div class="tag">04</div><h3>Granola</h3><p>Or whatever your business already permits for meeting capture.</p></div>
+      <div class="card"><div class="tag">05</div><h3>Wispr Flow</h3><p>Voice input on the machine you'll actually work on.</p></div>
+      <div class="card"><div class="tag">06</div><h3>API keys</h3><p>Claude or OpenAI to start. Others as you need them.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a7-before">
+  <div class="scene-inner">
+    <div class="kicker">Act 7 · Before you build anything</div>
+    <h2>Five things, <span class="accent">in this order</span>.</h2>
+    <div class="agenda stagger" style="margin-top:2rem;">
+      <div class="card"><div class="num">1</div><div><h3>Pick one report somebody reads on a Monday</h3><p>Not a platform. One report — ideally one that currently takes a day to produce. Platforms accrete from useful things; they don't get designed in advance, and starting with a platform is the most common way this fails.</p></div></div>
+      <div class="card"><div class="num">2</div><div><h3>Identify the exports that feed it</h3><p>Confirm you can get them without raising a project.</p></div></div>
+      <div class="card"><div class="num">3</div><div><h3>Strip the PII</h3><p>Before anything goes anywhere.</p></div></div>
+      <div class="card"><div class="num">4</div><div><h3>Write down your KPI definitions</h3><p>And exactly how each is calculated.</p></div></div>
+      <div class="card"><div class="num">5</div><div><h3>Name one ally each in privacy, security and architecture</h3><p>And tell them what you're doing this week — not next quarter.</p></div></div>
+    </div>
+    <p class="footline">Then: record the conversation, voice the intent, read the brief and cut something, split the build, ship it — and use it for a fortnight before you build the second thing.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="a8-compound">
+  <div class="scene-inner">
+    <div class="kicker">Act 8 · The close</div>
+    <h2>The first build <span class="accent">is not the point</span>.</h2>
+    <p class="lede">Every report you add, every meeting you capture, every campaign review, every decision and its reasoning, every correction you give an analyst — it all lands in the same memory. So every feature after the first one starts from more knowledge than the one before it.</p>
+    <div class="bars stagger" style="margin-top:2.6rem;">
+      <div class="bar-row"><div class="bar-label">Report 1</div><div class="bar-track"><div style="width:96%;background:var(--track-fill,#1B7C53);" data-w="96%"></div></div><div class="bar-val">Weeks</div></div>
+      <div class="bar-row"><div class="bar-label">Report 2</div><div class="bar-track"><div style="width:62%;background:#00A45F;" data-w="62%"></div></div><div class="bar-val">Days</div></div>
+      <div class="bar-row"><div class="bar-label">Report 3</div><div class="bar-track"><div style="width:34%;background:#12CB77;" data-w="34%"></div></div><div class="bar-val">A day</div></div>
+      <div class="bar-row"><div class="bar-label">Report 5</div><div class="bar-track"><div style="width:14%;background:#95EEB4;" data-w="14%"></div></div><div class="bar-val">A morning</div></div>
+    </div>
+    <p class="footline">Not because the tools improved. Because the context, the definitions, the conventions and the domain knowledge were already there. The curve only bends if you build in one place, against one memory.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<section class="scene" id="closing">
+  <div class="scene-inner">
+    <div class="kicker">Where that leaves you</div>
+    <h2>Nobody's advantage is <span class="accent">the data</span>.</h2>
+    <p class="lede">Every loyalty programme in this country has broadly the same data. The advantage is the accumulated institutional reasoning about it — and that is the one asset no vendor can sell you and no competitor can copy, because it's made of your own arguments.</p>
+    <h2 style="margin-top:2.6rem;">You're not building software. You're building <span class="accent">what your programme knows</span> — in a form that doesn't leave when people do.</h2>
+    <div class="signoff">
+      <div class="so-mark">one<span class="dot">.</span>nz</div>
+      <div>Membership Workbench &middot; built in spare time, single-handed</div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function setTheme(mode){
+    root.classList.remove('theme-dark','theme-light');
+    root.classList.add(mode);
+    btn.textContent = mode === 'theme-dark' ? 'Light' : 'Dark';
+  }
+  btn.addEventListener('click', function(){
+    setTheme(root.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark');
+  });
+
+  // Bars are held at width:0 by the stylesheet (with !important) and released on entry,
+  // so the growth reads as motion rather than a static chart.
+  function runBars(scene){
+    if (scene.dataset.barsDone) return;
+    var fills = scene.querySelectorAll('.bar-track > div[data-w]');
+    if (!fills.length) return;
+    scene.dataset.barsDone = '1';
+    fills.forEach(function(el){
+      el.style.setProperty('width', el.getAttribute('data-w'), 'important');
+    });
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in-view');
+      runBars(e.target);
+    });
+  }, { threshold: 0.18 });
+
+  var scenes = document.querySelectorAll('.scene');
+  scenes.forEach(function(s){ io.observe(s); });
+
+  // slide numbers — auto-counted so they stay correct as scenes change
+  scenes.forEach(function(s, i){
+    var n = document.createElement('div');
+    n.className = 'slide-num';
+    n.textContent = (i + 1) + ' / ' + scenes.length;
+    s.appendChild(n);
+  });
+})();
+</script>
+</body>
+</html>
