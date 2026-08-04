@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<!--
+  ONE NZ · VIBE-CODED SOFTWARE — LOYALTY GM WORKSHOP
+  Rebuilt from the original workshop deck in the reference-deck archetype system.
+  CSS layered: LAYER 1 tokens → LAYER 2 primitives → LAYER 3 one block per archetype.
+  Rhythm rule: no two adjacent scenes share a shape; dark grounds every 3–5 scenes.
+  Figures carried over from the original workshop deck; costs are the author's own numbers.
+-->
+<html lang="en-NZ" class="theme-light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vibe coding loyalty operations · GM workshop</title>
+<style>
+/* ========================================================================================
+   LAYER 1 · DESIGN TOKENS — both themes authored together.
+   ======================================================================================== */
+html.theme-light{
+  --bg:#FFFFFF; --bg-sunk:#F8F9FA; --surface:#FFFFFF; --surface-2:#F8F9FA;
+  --ink:#323232; --ink-2:#5A6376; --ink-3:rgba(90,99,118,.58);
+  --hair:#E1E4E9; --hair-2:rgba(50,50,50,.14);
+  --green:#00A45F; --green-txt:#1B7C53; --green-lift:#12CB77;
+  --green-mid:#95EEB4; --green-pale:#CDFBDD; --green-deep:#0A3833; --green-deeper:#06231F;
+  --green-wash:rgba(0,164,95,.07); --green-line:rgba(0,164,95,.26); --green-fog:rgba(0,164,95,.14);
+  --ground:#06231F; --ground-2:#0A3833; --g-ink:#FFFFFF; --g-ink-2:rgba(255,255,255,.64);
+  --g-hair:rgba(149,238,180,.20); --g-accent:#95EEB4; --g-wash:rgba(149,238,180,.07);
+  --alert:#D31F3F; --warn:#FFD600;
+  --lift:0 1px 2px rgba(10,56,51,.04),0 10px 28px -14px rgba(10,56,51,.14);
+}
+html.theme-dark{
+  --bg:#06231F; --bg-sunk:#06231F; --surface:#0A3833; --surface-2:rgba(149,238,180,.045);
+  --ink:#FFFFFF; --ink-2:rgba(255,255,255,.66); --ink-3:rgba(255,255,255,.40);
+  --hair:rgba(149,238,180,.18); --hair-2:rgba(149,238,180,.30);
+  --green:#12CB77; --green-txt:#95EEB4; --green-lift:#12CB77;
+  --green-mid:#95EEB4; --green-pale:#CDFBDD; --green-deep:#0A3833; --green-deeper:#06231F;
+  --green-wash:rgba(18,203,119,.10); --green-line:rgba(149,238,180,.30); --green-fog:rgba(18,203,119,.18);
+  --ground:#0A3833; --ground-2:#06231F; --g-ink:#FFFFFF; --g-ink-2:rgba(255,255,255,.66);
+  --g-hair:rgba(149,238,180,.22); --g-accent:#95EEB4; --g-wash:rgba(149,238,180,.06);
+  --alert:#D31F3F; --warn:#FFD600;
+  --lift:0 1px 2px rgba(6,35,31,.30),0 12px 32px -14px rgba(6,35,31,.60);
+}
+:root{
+  --font:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --t-micro:11px; --t-label:13px; --t-small:15px; --t-body:17px; --t-lead:21px;
+  --t-h4:24px; --t-h3:30px; --t-h2:40px; --t-h1:56px; --t-display:80px; --t-mega:176px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pad-x:88px; --pad-y:54px;
+}
+/* ========================================================================================
+   LAYER 2 · PRIMITIVES — hierarchy from SIZE, GROUND, COLOUR, CASE, SPACE, DENSITY.
+   ======================================================================================== */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); font-weight:400; color:var(--ink); background:var(--bg);
+  -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;
+  transition:background-color .32s var(--ease),color .32s var(--ease);
+}
+a{color:var(--green-txt);text-decoration:none;border-bottom:1px solid var(--green-line)}
+a:hover{color:var(--green)}
+.scene{
+  position:relative; min-height:100vh; padding:var(--pad-y) var(--pad-x) 34px;
+  display:grid; grid-template-rows:auto 1fr auto; gap:28px;
+  background:var(--bg); border-top:1px solid var(--hair); overflow:hidden;
+}
+.scene:first-of-type{border-top:0}
+.scene--sunk{background:var(--bg-sunk)}
+.scene--ground{background:var(--ground); border-top:0; color:var(--g-ink)}
+.scene--ground .t-micro,.scene--ground .eyebrow{color:var(--g-accent)}
+.scene--ground h1,.scene--ground h2,.scene--ground h3,.scene--ground h4{color:var(--g-ink)}
+.scene--ground .t-body,.scene--ground .lede,.scene--ground .note{color:var(--g-ink-2)}
+.scene--ground .mark{color:var(--g-ink-2)} .scene--ground .pg{color:var(--g-ink-2)}
+.scene--ground::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 88% -10%,var(--g-wash),transparent 62%);
+}
+.scene--ground>*{position:relative}
+.scene-head{display:grid;gap:14px;padding-right:150px}
+.scene-body{display:grid;min-height:0}
+.scene-foot{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding-top:18px;border-top:1px solid var(--hair);
+}
+.scene--ground .scene-foot{border-top-color:var(--g-hair)}
+.pg{font-size:var(--t-micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.mark{font-size:var(--t-label);font-weight:500;letter-spacing:-.01em;color:var(--ink-2)}
+.mark i{font-style:normal;color:var(--green)}
+.t-micro{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--green-txt);line-height:1.3}
+.t-label{font-size:var(--t-label);font-weight:500;color:var(--ink-2);line-height:1.4}
+.t-small{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.t-body{font-size:var(--t-body);color:var(--ink-2);line-height:1.58;max-width:66ch;text-wrap:pretty}
+.lede{font-size:var(--t-lead);color:var(--ink-2);line-height:1.5;max-width:56ch;text-wrap:pretty}
+.note{font-size:var(--t-label);color:var(--ink-3);line-height:1.5;max-width:74ch}
+h1,h2,h3,h4,p,ul,ol,li,figure,blockquote,dl,dd,dt{margin:0;padding:0;list-style:none}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.022em;line-height:1.04;color:var(--ink);text-wrap:balance}
+.t-h1{font-size:var(--t-h1)} .t-h2{font-size:var(--t-h2)} .t-h3{font-size:var(--t-h3);letter-spacing:-.015em;line-height:1.14}
+.t-h4{font-size:var(--t-h4);letter-spacing:-.012em;line-height:1.22;font-weight:600}
+.t-display{font-size:var(--t-display);letter-spacing:-.03em;line-height:.98}
+.t-mega{font-size:var(--t-mega);font-weight:500;letter-spacing:-.045em;line-height:.84}
+.num{font-variant-numeric:tabular-nums;font-weight:500;letter-spacing:-.02em}
+.q-ink{color:var(--ink)} .q-2{color:var(--ink-2)} .q-3{color:var(--ink-3)} .q-g{color:var(--green-txt)}
+.rule{height:1px;background:var(--hair);border:0}
+.scene--ground .rule{background:var(--g-hair)}
+.rule-accent{height:3px;width:56px;background:var(--green);border-radius:2px}
+.scene--ground .rule-accent{background:var(--g-accent)}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--hair);font-size:var(--t-label);font-weight:500;color:var(--ink);background:var(--surface);
+}
+.chip--fill{background:var(--green-wash);border-color:var(--green-line);color:var(--green-txt)}
+.delta{display:inline-flex;align-items:baseline;gap:6px;font-size:var(--t-label);font-weight:500;color:var(--green-txt)}
+.delta--down{color:var(--alert)}
+.delta--watch{color:var(--ink)}
+.tick{display:inline-block;width:0;height:0;border:5px solid transparent;border-bottom:7px solid currentColor;transform:translateY(-1px)}
+.tick--down{border-bottom:0;border-top:7px solid currentColor}
+.panel{background:var(--surface);border:1px solid var(--hair);border-radius:18px;padding:26px 28px}
+.panel-dark{background:var(--green-deep);border-radius:18px;padding:28px 30px;color:#FFFFFF}
+.panel-dark .t-micro{color:var(--g-accent)} .panel-dark .t-small,.panel-dark .t-body{color:rgba(255,255,255,.66)}
+.stack{display:grid;gap:12px} .stack-airy{display:grid;gap:32px} .row{display:flex;gap:14px;flex-wrap:wrap}
+#themeToggle{
+  position:fixed;top:26px;right:32px;z-index:50;font:inherit;font-size:var(--t-label);font-weight:500;
+  padding:10px 20px;border-radius:999px;cursor:pointer;color:var(--ink);
+  background:var(--surface);border:1px solid var(--hair);box-shadow:var(--lift);
+  transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease);
+}
+#themeToggle:hover{border-color:var(--green-line);color:var(--green-txt)}
+#themeToggle:focus-visible{outline:3px solid var(--green-line);outline-offset:2px}
+.anim{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim{opacity:1;transform:none}
+.anim-grow{transform-origin:left center;transform:scaleX(.001);transition:transform .8s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim-grow{transform:scaleX(1)}
+.anim-rise{transform-origin:bottom center;transform:scaleY(.001);transition:transform .75s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim-rise{transform:scaleY(1)}
+.anim-draw{stroke-dasharray:var(--len,2000);stroke-dashoffset:var(--len,2000);transition:stroke-dashoffset 1.5s var(--ease);transition-delay:var(--d,.1s)}
+.in-view .anim-draw{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){
+  .anim,.anim-grow,.anim-rise,.anim-draw{opacity:1!important;transform:none!important;stroke-dashoffset:0!important;transition:none!important}
+  body,#themeToggle{transition:none}
+}
+/* ========================================================================================
+   LAYER 3 · ARCHETYPE BLOCKS
+   ======================================================================================== */
+/* --- cover.hero — opening scene only --------------------------------------------------- */
+.cover-body{grid-template-rows:1fr auto;align-content:stretch;gap:48px}
+.cover-title{font-size:104px;letter-spacing:-.035em;line-height:.96;align-self:end;max-width:20ch}
+.cover-title span{display:block;color:var(--g-ink-2)}
+.cover-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-top:30px;border-top:1px solid var(--g-hair)}
+.cover-meta dt{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--g-accent);margin-bottom:10px}
+.cover-meta dd{font-size:var(--t-body);color:var(--g-ink);line-height:1.45}
+.cover-stamp{display:inline-flex;align-items:center;gap:12px;align-self:start;padding:10px 18px 10px 14px;border:1px solid var(--g-hair);border-radius:999px;font-size:var(--t-label);font-weight:500;color:var(--g-ink)}
+.cover-stamp b{font-weight:500;color:var(--g-accent)}
+.cover-mark{font-size:34px;font-weight:500;letter-spacing:-.02em;color:var(--g-ink)}
+.cover-mark i{font-style:normal;color:var(--g-accent)}
+/* --- agenda.index — ordered sections only ----------------------------------------------- */
+.index-body{grid-template-columns:270px 1fr;gap:64px;align-items:start}
+.index-list{display:grid;grid-auto-rows:1fr;align-content:stretch;height:100%}
+.index-row{display:grid;grid-template-columns:112px 1fr 210px;gap:32px;align-items:center;padding:22px 0;border-top:1px solid var(--hair)}
+.index-row:last-child{border-bottom:1px solid var(--hair)}
+.index-num{font-size:52px;font-weight:500;letter-spacing:-.03em;color:var(--green);line-height:1}
+.index-row h3{font-size:var(--t-h3)}
+.index-row .t-small{margin-top:7px}
+.index-scenes{font-size:var(--t-label);font-weight:500;color:var(--ink-3);text-align:right;letter-spacing:.04em}
+.index-aside{display:grid;gap:20px;padding-right:20px}
+/* --- stat.hero — one figure carries the scene; never two in a row ----------------------- */
+.stat-body{grid-template-rows:1fr auto;gap:44px}
+.stat-focus{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:72px;align-items:end;padding-bottom:8px}
+.stat-figure{display:grid;gap:18px}
+.stat-figure .t-mega{color:var(--ink)}
+.stat-caption{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+.stat-caption .t-h4{color:var(--ink)}
+.stat-delta{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:999px;background:var(--green-wash);border:1px solid var(--green-line);color:var(--green-txt);font-size:var(--t-body);font-weight:500}
+.stat-side{display:grid;gap:22px;padding-bottom:14px;border-left:1px solid var(--hair);padding-left:36px}
+.stat-rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair-2)}
+.stat-rail div{padding:26px 30px 4px;border-left:1px solid var(--hair)}
+.stat-rail div:first-child{padding-left:0;border-left:0}
+.stat-rail .num{display:block;font-size:38px;color:var(--ink);margin:12px 0 6px}
+/* --- compare.thennow — two real columns and a spine; never five cards with arrows -------- */
+.compare-body{grid-template-rows:auto 1fr;gap:0}
+.compare-heads{display:grid;grid-template-columns:1fr 84px 1fr;gap:0;padding-bottom:16px}
+.compare-heads span:last-child{text-align:left}
+.compare-rows{display:grid;grid-auto-rows:1fr;align-content:stretch;position:relative}
+.compare-rows::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - .5px);width:1px;background:var(--hair-2)}
+.compare-row{display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;border-top:1px solid var(--hair)}
+.compare-row:last-child{border-bottom:1px solid var(--hair)}
+.compare-then{padding:22px 40px 22px 0;font-size:var(--t-lead);color:var(--ink-3);letter-spacing:-.008em}
+.compare-now{padding:22px 0 22px 40px;font-size:var(--t-lead);font-weight:500;color:var(--ink);letter-spacing:-.012em}
+.compare-node{display:grid;place-items:center;position:relative;z-index:1}
+.compare-node span{width:30px;height:30px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.compare-node svg{width:14px;height:14px;stroke:#FFFFFF;stroke-width:2;fill:none}
+html.theme-dark .compare-node svg{stroke:#06231F}
+/* --- divider.act — the reusable reset; the only archetype meant to repeat verbatim ------- */
+.act-body{grid-template-columns:1fr auto;align-items:end;gap:60px}
+/* max-width in px, not ch — ch resolves against this element's font-size, not the child's */
+.act-copy{display:grid;gap:26px;align-content:end;padding-bottom:12px;max-width:640px}
+.act-copy h2{font-size:72px;letter-spacing:-.032em;line-height:1;color:var(--g-ink)}
+.act-num{font-size:300px;font-weight:500;line-height:.72;letter-spacing:-.06em;color:transparent;
+  -webkit-text-stroke:1.5px var(--g-hair);opacity:.9;transform:translateX(14px)}
+.act-list{display:flex;gap:26px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--g-hair)}
+.act-list span{font-size:var(--t-label);color:var(--g-ink-2)}
+.act-list span b{font-weight:500;color:var(--g-accent);margin-right:9px}
+/* --- system.flow — sources → engine → outputs with one feedback loop -------------------- */
+.flow-body{grid-template-rows:1fr auto;gap:26px}
+.flow-diagram{display:grid;grid-template-columns:1fr 76px 1.2fr 76px 1fr;align-items:stretch;min-height:0}
+.flow-col{display:grid;grid-auto-rows:1fr;gap:12px;align-content:stretch}
+.flow-node{position:relative;display:grid;align-content:center;gap:5px;padding:14px 18px;background:var(--surface);border:1px solid var(--hair);border-radius:12px}
+.flow-node b{font-size:var(--t-body);font-weight:500;color:var(--ink);letter-spacing:-.01em}
+.flow-node span{font-size:var(--t-label);color:var(--ink-3)}
+.flow-col--in .flow-node::after{content:"";position:absolute;left:100%;top:50%;width:38px;height:1px;background:var(--hair-2)}
+.flow-bus{position:relative}
+.flow-bus::before{content:"";position:absolute;left:38px;top:12.5%;bottom:12.5%;width:1px;background:var(--hair-2)}
+.flow-bus::after{content:"";position:absolute;left:38px;right:9px;top:50%;height:1px;background:var(--green)}
+.flow-bus .flow-arrow{position:absolute;right:0;top:50%;transform:translateY(-50%);width:0;height:0;border:6px solid transparent;border-left:10px solid var(--green)}
+.flow-bus--out::before{top:12.5%;bottom:12.5%}
+.flow-bus--out::after{left:0;right:auto;width:38px;background:var(--green)}
+.flow-bus--out .flow-arrow{display:none}
+.flow-engine{position:relative;background:var(--green-deep);border-radius:16px;padding:22px 26px;display:grid;align-content:start;gap:0;color:#FFFFFF}
+.flow-engine::after{content:"";position:absolute;left:100%;top:50%;width:38px;height:1px;background:var(--green)}
+.flow-engine>.t-micro{color:var(--g-accent)}
+.flow-engine h3{color:#FFFFFF;font-size:var(--t-h4);margin:12px 0 18px}
+.flow-engine li{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--g-hair)}
+.flow-engine li b{font-size:var(--t-body);font-weight:500;color:#FFFFFF}
+.flow-engine li span{font-size:var(--t-label);color:rgba(255,255,255,.62)}
+.flow-col--out .flow-node{border-color:var(--green-line)}
+.flow-col--out .flow-node::before{content:"";position:absolute;right:100%;top:50%;width:38px;height:1px;background:var(--green)}
+.flow-col--out .flow-node::after{content:"";position:absolute;right:100%;top:50%;transform:translate(10px,-50%);width:0;height:0;border:5px solid transparent;border-left:9px solid var(--green)}
+.flow-loop{display:grid;grid-template-columns:1fr 76px 1.2fr 76px 1fr}
+.flow-loop-path{grid-column:3/6;position:relative;height:46px;border:1px solid var(--green-line);border-top:0;border-radius:0 0 16px 16px}
+.flow-loop-path::after{content:"";position:absolute;left:-6px;top:-9px;width:0;height:0;border:5px solid transparent;border-bottom:9px solid var(--green)}
+.flow-loop-label{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:var(--bg);padding:0 14px;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--green-txt);white-space:nowrap}
+.flow-caption{display:flex;justify-content:space-between;gap:40px;padding-top:18px;border-top:1px solid var(--hair)}
+/* --- inventory.chips — aggregate figure anchors a dense unordered field ------------------ */
+.inv-body{grid-template-columns:330px 1fr;gap:72px;align-items:stretch}
+.inv-count{display:grid;align-content:space-between;gap:26px;border-right:1px solid var(--hair);padding-right:52px}
+.inv-count .t-mega{font-size:150px;color:var(--green);display:block;margin-bottom:14px}
+.inv-count-sub{display:grid;gap:16px}
+.inv-count-row{display:flex;justify-content:space-between;gap:18px;padding:14px 0;border-top:1px solid var(--hair);font-size:var(--t-label);color:var(--ink-2)}
+.inv-count-row b{font-weight:500;color:var(--ink)}
+.inv-field{display:flex;flex-wrap:wrap;align-content:space-between;gap:12px 12px;padding:6px 0}
+.inv-field .chip{font-size:var(--t-body);padding:12px 20px}
+.inv-field .chip i{width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+.inv-field .chip--quiet{color:var(--ink-3);border-style:dashed}
+.inv-field .chip--quiet i{background:var(--hair-2)}
+/* --- capability.set — four sizes, three treatments; replaces the identical-card grid ----- */
+.cap-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:1.25fr 1fr .85fr;gap:12px;min-height:0}
+.cap{display:grid;border-radius:16px;border:1px solid var(--hair);background:var(--surface);padding:16px 22px;align-content:space-between;gap:16px}
+.cap h3{font-size:var(--t-h4)} .cap p{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.cap--lead{grid-column:1/7;grid-row:1/3;background:var(--green-deep);border-color:var(--green-deep);color:#FFFFFF;padding:26px 32px}
+.cap--lead h3{font-size:44px;color:#FFFFFF;letter-spacing:-.026em;line-height:1.06;max-width:20ch}
+.cap--lead p{font-size:var(--t-body);color:rgba(255,255,255,.68);max-width:44ch}
+.cap--lead .t-micro{color:var(--g-accent)}
+.cap-lead-stat{display:flex;align-items:baseline;gap:16px;padding-top:18px;border-top:1px solid var(--g-hair)}
+.cap-lead-stat .num{font-size:64px;color:#FFFFFF;line-height:.9}
+.cap-lead-stat span{font-size:var(--t-label);color:rgba(255,255,255,.66);max-width:16ch}
+.cap--wide{grid-column:7/13;grid-row:1/2;grid-template-columns:1fr 168px;align-items:center;gap:30px}
+.cap-meter{display:grid;gap:9px}
+.cap-meter .num{font-size:34px;color:var(--green-txt)}
+.cap-meter-track{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+/* display:block is load-bearing: inline boxes ignore width/height */
+.cap-meter-fill{display:block;height:100%;background:var(--green);border-radius:3px}
+.cap--mid1{grid-column:7/10;grid-row:2/3} .cap--mid2{grid-column:10/13;grid-row:2/3}
+.cap--mid1 h3,.cap--mid2 h3{font-size:var(--t-lead)}
+.cap--min{grid-row:3/4;grid-template-columns:auto 1fr;align-items:center;gap:22px;background:transparent;border:0;border-top:1px solid var(--hair);border-radius:0;padding:18px 0 0}
+.cap--min h3{font-size:var(--t-body);white-space:nowrap}
+.cap--min p{font-size:var(--t-label)}
+.cap--min1{grid-column:1/7} .cap--min2{grid-column:7/13}
+/* --- quote.pull — ground scene, one voice at 56px; never stack two ----------------------- */
+.quote-body{grid-template-columns:110px 1fr;gap:44px;align-items:center}
+.quote-glyph{font-size:200px;line-height:.62;font-weight:500;color:var(--g-accent);opacity:.36;align-self:start;padding-top:22px}
+.quote-main{display:grid;gap:44px;max-width:1000px}
+.quote-main blockquote{font-size:56px;font-weight:400;line-height:1.13;letter-spacing:-.026em;color:var(--g-ink);text-wrap:pretty}
+.quote-by{display:flex;align-items:center;gap:18px;padding-top:26px;border-top:1px solid var(--g-hair)}
+.quote-by .t-body{color:var(--g-ink)}
+.quote-avatar{width:46px;height:46px;border-radius:50%;background:var(--g-wash);border:1px solid var(--g-hair);display:grid;place-items:center;font-size:var(--t-label);font-weight:500;color:var(--g-accent);flex:none}
+/* --- process.pipeline — sequential steps with a current position; order matters ---------- */
+.pipe-body{grid-template-rows:1fr auto;gap:26px}
+.pipe{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-content:center;height:100%}
+.pipe-step{display:grid;grid-template-rows:132px 44px 1fr;text-align:center;justify-items:center}
+.pipe-when{display:grid;align-content:end;gap:8px;padding-bottom:20px}
+.pipe-when .num{font-size:44px;color:var(--ink-3);line-height:1}
+.pipe-node-row{position:relative;display:grid;place-items:center;justify-self:stretch;width:100%}
+.pipe-node-row::before,.pipe-node-row::after{content:"";position:absolute;top:50%;height:2px;transform:translateY(-1px);background:var(--hair-2)}
+.pipe-node-row::before{left:0;right:50%} .pipe-node-row::after{left:50%;right:0}
+.pipe-step:first-child .pipe-node-row::before,.pipe-step:last-child .pipe-node-row::after{display:none}
+.pipe-step--done .pipe-node-row::before,.pipe-step--done .pipe-node-row::after,
+.pipe-step--current .pipe-node-row::before{background:var(--green)}
+.pipe-node{width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid var(--hair-2);position:relative;z-index:1}
+.pipe-step--done .pipe-node{background:var(--green);border-color:var(--green)}
+.pipe-step--done .pipe-when .num{color:var(--green-txt)}
+.pipe-step--current .pipe-node{background:var(--green);border-color:var(--green);box-shadow:0 0 0 7px var(--green-fog)}
+.pipe-step--current .pipe-when .num{color:var(--ink);font-size:56px}
+.pipe-copy{display:grid;gap:8px;padding:22px 16px 0;max-width:230px}
+.pipe-copy h3{font-size:var(--t-h4);color:var(--ink-3)}
+.pipe-step--done .pipe-copy h3,.pipe-step--current .pipe-copy h3{color:var(--ink)}
+.pipe-here{margin-top:14px;justify-self:center;padding:6px 14px;border-radius:999px;background:var(--green);color:#FFFFFF;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase}
+html.theme-dark .pipe-here{color:#06231F}
+.pipe-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-top:20px;border-top:1px solid var(--hair)}
+.pipe-legend{display:flex;gap:26px;flex-wrap:wrap}
+.pipe-legend span{display:inline-flex;align-items:center;gap:9px;font-size:var(--t-label);color:var(--ink-2)}
+.pipe-legend i{width:12px;height:12px;border-radius:50%;flex:none;background:var(--green)}
+.pipe-legend i.hollow{background:var(--bg);border:2px solid var(--hair-2)}
+.pipe-legend i.now{box-shadow:0 0 0 4px var(--green-fog)}
+/* --- proof.three — stepped: the lead proof is physically bigger ---------------------------- */
+.proof-body{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-items:stretch}
+.proof-item{display:grid;grid-template-rows:auto 1fr auto;gap:22px;padding:0 46px;border-left:1px solid var(--hair)}
+.proof-item:first-child{padding-left:0;border-left:0}
+.proof-item:last-child{padding-right:0}
+.proof-rank{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--ink-3)}
+.proof-fig{font-weight:500;letter-spacing:-.035em;line-height:.9;color:var(--ink);align-self:end}
+.proof-item--lead .proof-fig{font-size:124px;color:var(--green)}
+.proof-item--2 .proof-fig{font-size:88px}
+.proof-item--3 .proof-fig{font-size:88px}
+/* line-height .9 — glyphs overhang the box; the title needs margin, not gap */
+.proof-item h3{font-size:var(--t-h4);margin-top:34px}
+.proof-item--lead h3{font-size:var(--t-h3)}
+.proof-ev{padding-top:18px;border-top:1px solid var(--hair);font-size:var(--t-small);color:var(--ink-3);line-height:1.5}
+/* --- hero.statement — one sentence, once per deck, at the hinge --------------------------- */
+.say-body{grid-template-rows:1fr auto;gap:40px;align-content:stretch}
+.say-main{display:grid;align-content:center;justify-items:start;gap:40px;max-width:1150px}
+.say-main p{font-size:76px;font-weight:400;line-height:1.1;letter-spacing:-.03em;color:var(--ink);text-wrap:pretty}
+.say-main p b{font-weight:500}
+.say-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:60px;padding-top:24px;border-top:1px solid var(--hair)}
+.scene--ground .say-main p{color:var(--g-ink)}
+.scene--ground .say-foot{border-top-color:var(--g-hair)}
+.scene--ground .say-main p b{color:var(--g-accent)}
+/* --- scorecard.table — dense by design; one of two homes for alert colour ---------------- */
+.score-body{grid-template-rows:auto 1fr auto;gap:0}
+.score-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.score-table th{
+  text-align:left;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--ink-3);padding:0 20px 14px 0;border-bottom:1px solid var(--hair-2);vertical-align:bottom;
+}
+.score-table th.n,.score-table td.n{text-align:right;padding-right:0;padding-left:20px}
+.score-table td{padding:18px 20px 18px 0;border-bottom:1px solid var(--hair);vertical-align:baseline}
+.score-table tbody tr:hover{background:var(--surface-2)}
+.score-measure{font-size:var(--t-lead);font-weight:500;color:var(--ink);letter-spacing:-.01em}
+.score-measure small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-3);margin-top:6px;letter-spacing:0}
+.score-val{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.score-flag{display:inline-flex;align-items:center;gap:9px;font-size:var(--t-label);font-weight:500;color:var(--ink-2);white-space:nowrap}
+.score-flag::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--green);flex:none}
+.score-flag--watch::before{background:var(--warn)}
+.score-flag--miss::before{background:var(--alert)}
+.score-legend{display:flex;gap:34px;flex-wrap:wrap;padding-top:26px}
+/* --- risk.register — the second home for alert colour; severity is a state --------------- */
+.risk-body{grid-template-rows:1fr auto;gap:22px}
+.risk-list{display:grid;grid-auto-rows:1fr;align-content:stretch}
+.risk{display:grid;grid-template-columns:14px minmax(0,1.3fr) 132px minmax(0,1.5fr) 150px;gap:30px;align-items:start;padding:22px 0;border-top:1px solid var(--hair)}
+.risk:last-child{border-bottom:1px solid var(--hair)}
+.risk-bar{align-self:stretch;border-radius:3px;background:var(--hair-2)}
+.risk--high .risk-bar{background:var(--alert)}
+.risk--watch .risk-bar{background:var(--warn)}
+.risk h3{font-size:var(--t-lead);letter-spacing:-.01em}
+.risk h3 small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-3);margin-top:7px}
+.risk-grade{display:grid;gap:7px}
+.risk-grade b{font-size:var(--t-label);font-weight:500;color:var(--ink)}
+.risk-grade span{font-size:var(--t-micro);font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.risk-fix{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.risk-owner{display:grid;gap:6px;text-align:right}
+.risk-owner b{font-size:var(--t-label);font-weight:500;color:var(--ink)}
+.risk-owner span{font-size:var(--t-label);color:var(--ink-3)}
+.risk-legend{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-top:20px;border-top:1px solid var(--hair)}
+.risk-legend .keys{display:flex;gap:26px;flex-wrap:wrap}
+.risk-legend .keys span{display:inline-flex;align-items:center;gap:9px;font-size:var(--t-label);color:var(--ink-2)}
+.risk-legend .keys i{width:4px;height:14px;border-radius:2px;flex:none}
+/* --- decisions.asks — deliberately form-like; each row is one ask with owner and date ---- */
+.ask-body{grid-template-rows:1fr auto;gap:24px}
+.ask-list{display:grid;grid-auto-rows:1fr;align-content:stretch}
+.ask{display:grid;grid-template-columns:56px minmax(0,1.5fr) minmax(0,1fr) 250px;gap:36px;align-items:start;padding:18px 0;border-top:1px solid var(--hair)}
+.ask:last-child{border-bottom:1px solid var(--hair)}
+.ask-num{font-size:var(--t-h3);font-weight:500;color:var(--green);line-height:1.1}
+.ask-main{display:grid;gap:10px}
+.ask-main h3{font-size:var(--t-h4)}
+.ask-why{display:grid;gap:8px;padding-top:6px}
+.ask-decide{display:grid;gap:14px;padding:18px 20px;background:var(--surface-2);border:1px solid var(--hair);border-radius:12px}
+.ask-decide dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px}
+.ask-decide dt{font-size:var(--t-micro);font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.ask-decide dd{font-size:var(--t-label);font-weight:500;color:var(--ink);text-align:right}
+.ask-decide .ask-box{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid var(--hair);font-size:var(--t-label);color:var(--ink-2)}
+.ask-decide .ask-box i{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--hair-2);flex:none}
+/* --- CHART FRAME + chart.bar.h — ranked comparison, proportional fills ------------------- */
+.chart-body{grid-template-rows:1fr auto;gap:30px}
+.chart-plot{display:grid;align-content:stretch;min-height:0}
+.chart-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-top:20px;border-top:1px solid var(--hair)}
+.chart-legend{display:flex;gap:26px;flex-wrap:wrap}
+.chart-key{display:inline-flex;align-items:center;gap:9px;font-size:var(--t-label);color:var(--ink-2)}
+.chart-key i{width:12px;height:12px;border-radius:3px;background:var(--green);flex:none}
+.barh{display:grid;grid-auto-rows:1fr;align-content:stretch;height:100%;gap:0}
+.barh-row{display:grid;grid-template-columns:238px 1fr 128px;gap:28px;align-items:center;padding:14px 0;border-bottom:1px solid var(--hair)}
+.barh-row:first-child{border-top:1px solid var(--hair)}
+.barh-label{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.barh-label small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-3);margin-top:4px}
+.barh-track{position:relative;height:34px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.barh-fill{position:absolute;inset:0 auto 0 0;background:var(--green);border-radius:4px}
+.barh-fill--muted{background:var(--green-deep)}
+.barh-fill--soft{background:var(--green-mid)}
+.barh-val{font-size:var(--t-h4);font-weight:500;color:var(--ink);text-align:right}
+.barh-val small{display:block;font-size:var(--t-label);font-weight:500;color:var(--green-txt);margin-top:5px}
+/* --- closing.end — the ground returns; next steps ARE the close --------------------------- */
+.end-body{grid-template-rows:1fr auto;gap:48px}
+.end-main{display:grid;align-content:center;gap:34px;max-width:900px}
+.end-main h2{font-size:88px;letter-spacing:-.034em;line-height:1.02;color:var(--g-ink)}
+.end-next{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;padding-top:32px;border-top:1px solid var(--g-hair)}
+.end-next div{display:grid;gap:10px}
+.end-next b{font-size:var(--t-body);font-weight:500;color:var(--g-ink)}
+.end-next span{font-size:var(--t-label);color:var(--g-ink-2)}
+/* --- method.notes — the quietest register; last scene of any deck with numbers ------------ */
+.meth-body{grid-template-rows:1fr auto;gap:26px}
+.meth-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-content:start;min-height:0}
+.meth-col{padding:0 40px;border-left:1px solid var(--hair)}
+.meth-col:first-child{padding-left:0;border-left:0} .meth-col:last-child{padding-right:0}
+.meth-item{display:grid;gap:7px;padding:16px 0;border-bottom:1px solid var(--hair)}
+.meth-item:first-child{padding-top:0}
+.meth-item dt{font-size:var(--t-label);font-weight:500;color:var(--ink)}
+.meth-item dd{font-size:var(--t-label);color:var(--ink-2);line-height:1.5}
+.meth-item code{font-family:inherit;font-size:var(--t-label);color:var(--green-txt);letter-spacing:-.005em}
+.meth-foot{display:flex;justify-content:space-between;gap:40px;padding-top:20px;border-top:1px solid var(--hair-2)}
+</style>
+</head>
+<body>
+<button id="themeToggle" type="button" aria-pressed="false">Dark</button>
+<main>
+<!-- SCENE 01 · cover.hero — dark ground, oversized title, meta rail. Opening only. -->
+<section class="scene scene--ground scene-cover">
+  <header class="scene-head">
+    <span class="cover-stamp anim"><b>Working session</b> · training, not a showcase</span>
+  </header>
+  <div class="scene-body cover-body">
+    <h1 class="cover-title anim" style="--d:.06s">Vibe coding loyalty operations.<span>What it cost, what it took, what we learned.</span></h1>
+    <dl class="cover-meta anim" style="--d:.16s">
+      <div><dt>Prepared for</dt><dd>Loyalty programme owners &amp; GMs</dd></div>
+      <div><dt>Format</dt><dd>Two hours · leave able to get started</dd></div>
+      <div><dt>The claim</dt><dd>Anyone, with a voice, can build a full analytics and AI loyalty platform</dd></div>
+    </dl>
+  </div>
+  <footer class="scene-foot">
+    <span class="pg">01 / 19</span>
+    <span class="cover-mark">one<i>.</i>nz</span>
+  </footer>
+</section>
+
+<!-- SCENE 02 · agenda.index — asymmetric numbered index, rows stretch 1fr. -->
+<section class="scene scene-index">
+  <header class="scene-head">
+    <span class="t-micro anim">The run of show</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Four parts, two objectives.</h2>
+  </header>
+  <div class="scene-body index-body">
+    <aside class="index-aside anim" style="--d:.1s">
+      <div class="rule-accent"></div>
+      <p class="t-small">Objective one: equip anyone who hasn't started, to start. Objective two: hand over the learnings — especially the two that cost me. This works better as a conversation than a lecture.</p>
+    </aside>
+    <ol class="index-list">
+      <li class="index-row anim" style="--d:.12s">
+        <span class="index-num num">01</span>
+        <div><h3>Where this came from</h3><p class="t-small">A new programme with no reporting, the objective that forced the issue, and how the tooling moved underneath us.</p></div>
+        <span class="index-scenes">Scenes 03–04</span>
+      </li>
+      <li class="index-row anim" style="--d:.18s">
+        <span class="index-num num">02</span>
+        <div><h3>What the Membership Workbench is</h3><p class="t-small">The system end to end, fourteen AI systems, the tool chain — and why one place with one memory is the actual point.</p></div>
+        <span class="index-scenes">Scenes 05–12</span>
+      </li>
+      <li class="index-row anim" style="--d:.24s">
+        <span class="index-num num">03</span>
+        <div><h3>Myths and learnings</h3><p class="t-small">Twelve things people believe. Ten are wrong. Two of them cost me, and they're graded honestly.</p></div>
+        <span class="index-scenes">Scenes 13–14</span>
+      </li>
+      <li class="index-row anim" style="--d:.3s">
+        <span class="index-num num">04</span>
+        <div><h3>Monday, and the compounding effect</h3><p class="t-small">Your setup checklist, what to do before you build anything, and why the first build is not the point.</p></div>
+        <span class="index-scenes">Scenes 15–19</span>
+      </li>
+    </ol>
+  </div>
+  <footer class="scene-foot"><span class="pg">02 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 03 · stat.hero — the objective that drove all of it. One figure carries the scene. -->
+<section class="scene scene--sunk scene-stat">
+  <header class="scene-head">
+    <span class="t-micro anim">Where this came from · the objective</span>
+    <h2 class="t-h3 anim" style="--d:.04s">Stimulate the customers most at risk — at real scale.</h2>
+  </header>
+  <div class="scene-body stat-body">
+    <div class="stat-focus">
+      <div class="stat-figure">
+        <span class="t-mega anim num" style="--d:.08s">$600m</span>
+        <div class="stat-caption anim" style="--d:.16s">
+          <span class="t-h4">On issue across the programme, at peak</span>
+          <span class="stat-delta"><span class="tick"></span>2pp better targeting pays for everything here</span>
+        </div>
+      </div>
+      <div class="stat-side anim" style="--d:.22s">
+        <p class="t-body">At that scale, a two-point improvement in targeting is worth more than the entire cost of everything in this deck, by orders of magnitude. That asymmetry exists in every programme in this room.</p>
+        <p class="note">Phone Dollars in One Wallet launched with minimal standard reporting — nothing to work with, but also nothing to defend.</p>
+      </div>
+    </div>
+    <div class="stat-rail anim" style="--d:.3s">
+      <div><span class="t-micro q-3">Built by</span><span class="num">1 GM</span><span class="t-label">single-handed, in spare time</span></div>
+      <div><span class="t-micro q-3">AI systems live</span><span class="num">14</span><span class="t-label">running the operating loop</span></div>
+      <div><span class="t-micro q-3">Reports &amp; features</span><span class="num">32</span><span class="t-label">five demoed today</span></div>
+      <div><span class="t-micro q-3">Build cost</span><span class="num">~$10k</span><span class="t-label">NZD in credits, all of it</span></div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">03 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 04 · compare.thennow — the ground is moving underneath us. -->
+<section class="scene scene-compare">
+  <header class="scene-head">
+    <span class="t-micro anim">And it is moving underneath us</span>
+    <h2 class="t-h1 anim" style="--d:.05s">What I started with, and how I'd start today.</h2>
+  </header>
+  <div class="scene-body compare-body">
+    <div class="compare-heads anim" style="--d:.1s">
+      <span class="t-micro q-3">Then</span><span></span><span class="t-micro">Now</span>
+    </div>
+    <div class="compare-rows">
+      <div class="compare-row anim" style="--d:.13s">
+        <p class="compare-then">Replit's agent doing everything in the browser</p>
+        <span class="compare-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="compare-now">Replit for the scaffold, infrastructure and hosting</p>
+      </div>
+      <div class="compare-row anim" style="--d:.18s">
+        <p class="compare-then">Typing prompts</p>
+        <span class="compare-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="compare-now">Speaking them — several times the context per instruction</p>
+      </div>
+      <div class="compare-row anim" style="--d:.23s">
+        <p class="compare-then">One long conversation</p>
+        <span class="compare-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="compare-now">Recorded stakeholder sessions feeding structured briefs</p>
+      </div>
+      <div class="compare-row anim" style="--d:.28s">
+        <p class="compare-then">Whatever the model could hold in its head</p>
+        <span class="compare-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="compare-now">Written specs, a project constitution, a test suite</p>
+      </div>
+      <div class="compare-row anim" style="--d:.33s">
+        <p class="compare-then">The model doing its best</p>
+        <span class="compare-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="compare-now">The model reading the rules you wrote, and obeying them</p>
+      </div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">04 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 05 · divider.act — full-bleed reset between acts. -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act one</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">What we built.</h2>
+      <p class="t-body anim" style="--d:.12s">A reporting platform with an AI analyst on every report — and why one place with one memory is the part you cannot buy.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>06</b>The system</span><span><b>07</b>Fourteen AI systems</span><span><b>08</b>The tool chain</span><span><b>09</b>Why voice</span><span><b>10</b>Brief to deployed</span><span><b>11</b>What it cost</span>
+      </div>
+    </div>
+    <span class="act-num num anim" style="--d:.1s">01</span>
+  </div>
+  <footer class="scene-foot"><span class="pg">05 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 06 · system.flow — where a piece of analysis actually comes from. -->
+<section class="scene scene-flow">
+  <header class="scene-head">
+    <span class="t-micro anim">The Membership Workbench · end to end</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Everything lands in one place, with one memory.</h2>
+  </header>
+  <div class="scene-body flow-body">
+    <div class="flow-diagram">
+      <div class="flow-col flow-col--in">
+        <div class="flow-node anim" style="--d:.08s"><b>Data exports</b><span>Base, campaign and channel files, landed daily</span></div>
+        <div class="flow-node anim" style="--d:.12s"><b>Meetings</b><span>Recorded, transcribed, decisions extracted</span></div>
+        <div class="flow-node anim" style="--d:.16s"><b>Market knowledge</b><span>Offers, pricing, porting and churn context</span></div>
+        <div class="flow-node anim" style="--d:.2s"><b>Corrections</b><span>Every time someone tells an analyst it's wrong</span></div>
+      </div>
+      <div class="flow-bus anim" style="--d:.24s"><span class="flow-arrow"></span></div>
+      <div class="flow-engine anim" style="--d:.28s">
+        <span class="t-micro">The engine</span>
+        <h3>One workbench, three layers, every night</h3>
+        <ul>
+          <li><b>1 · Data foundation</b><span>Files self-check, reconcile and warm the reports</span></li>
+          <li><b>2 · AI analysts</b><span>Read the computed figures and write the commentary — they never do their own arithmetic</span></li>
+          <li><b>3 · Living memory</b><span>History, definitions, verdicts and lessons, applied on every run</span></li>
+        </ul>
+      </div>
+      <div class="flow-bus flow-bus--out anim" style="--d:.32s"></div>
+      <div class="flow-col flow-col--out">
+        <div class="flow-node anim" style="--d:.34s"><b>Reports &amp; scorecards</b><span>Weekly wraps, commentary built in</span></div>
+        <div class="flow-node anim" style="--d:.38s"><b>Campaign files</b><span>Cohorts and offer values, ready to send</span></div>
+        <div class="flow-node anim" style="--d:.42s"><b>Stakeholder emails</b><span>Scheduled, with recommendations</span></div>
+        <div class="flow-node anim" style="--d:.46s"><b>Presentations</b><span>Built by voice, grounded in live data</span></div>
+      </div>
+    </div>
+    <div class="flow-loop anim" style="--d:.5s">
+      <div class="flow-loop-path"><span class="flow-loop-label">Campaign verdicts return to the memory the next build reads</span></div>
+    </div>
+    <div class="flow-caption anim" style="--d:.54s">
+      <p class="t-small" style="max-width:52ch">Any single output here can be bought. The loop cannot: five disconnected AI pilots in five functions don't compound — they interfere.</p>
+      <p class="note" style="text-align:right;max-width:38ch">Context is the whole game. It's why voice matters, why memory matters, and why the meetings go in.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">06 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 07 · inventory.chips — the fourteen AI systems as a countable field. -->
+<section class="scene scene--sunk scene-inv">
+  <header class="scene-head">
+    <span class="t-micro anim">The AI-enabled machine</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Fourteen AI systems, running the loop end to end.</h2>
+  </header>
+  <div class="scene-body inv-body">
+    <div class="inv-count anim" style="--d:.1s">
+      <div><span class="t-mega num">14</span><p class="t-label">AI systems live in the Workbench</p></div>
+      <div class="inv-count-sub">
+        <span class="inv-count-row">Reports &amp; features<b>32</b></span>
+        <span class="inv-count-row">Demoed today<b>5</b></span>
+        <span class="inv-count-row">Engineers hired<b>0</b></span>
+        <span class="inv-count-row">Production lessons captured<b>~80</b></span>
+      </div>
+    </div>
+    <div class="inv-field">
+      <span class="chip anim" style="--d:.14s"><i></i>Live data foundation</span>
+      <span class="chip anim" style="--d:.16s"><i></i>Priority audience selection</span>
+      <span class="chip anim" style="--d:.18s"><i></i>Campaign build</span>
+      <span class="chip anim" style="--d:.2s"><i></i>Post-implementation review</span>
+      <span class="chip anim" style="--d:.22s"><i></i>Team meeting capture &amp; actions</span>
+      <span class="chip anim" style="--d:.24s"><i></i>Reporting &amp; weekly wraps</span>
+      <span class="chip anim" style="--d:.26s"><i></i>Device pricing engine</span>
+      <span class="chip anim" style="--d:.28s"><i></i>Presentations by voice</span>
+      <span class="chip anim" style="--d:.3s"><i></i>Deep data agent · read-only SQL</span>
+      <span class="chip anim" style="--d:.32s"><i></i>Delivery roadmap</span>
+      <span class="chip anim" style="--d:.34s"><i></i>Campaign planning &amp; monitoring</span>
+      <span class="chip anim" style="--d:.36s"><i></i>Team goals, linked to live data</span>
+      <span class="chip anim" style="--d:.38s"><i></i>AI consumption analysis · $/day</span>
+      <span class="chip chip--fill anim" style="--d:.4s"><i></i>Train the AI · living memory</span>
+      <p class="note anim" style="--d:.46s;flex:1 0 100%">None of these is individually remarkable — every one can be bought. The last chip is the exception: correct any analyst in plain language, like briefing a junior, and the lesson is stored and applied on every run after. That one compounds.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">07 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 08 · capability.set — six tools, not equally important. -->
+<section class="scene scene-cap">
+  <header class="scene-head">
+    <span class="t-micro anim">The honest recipe</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Six tools. Each earns its place.</h2>
+  </header>
+  <div class="scene-body cap-grid">
+    <div class="cap cap--lead anim" style="--d:.08s">
+      <div>
+        <span class="t-micro">The one that matters · Claude</span>
+        <h3 style="margin-top:14px">Designs it, then builds it — and explains what it did in English you can check</h3>
+      </div>
+      <p>Reads and changes a whole codebase coherently. The constraint was never coding ability — it was knowing which churn definition is the right one. That scarce input is yours, which is why this has to be you and not a project you commission.</p>
+      <div class="cap-lead-stat">
+        <span class="num">~$200</span>
+        <span>a month to keep adding features</span>
+      </div>
+    </div>
+    <div class="cap cap--wide anim" style="--d:.14s">
+      <div><h3>Wispr Flow · voice input</h3><p>Not about speed — about context density. You speak far more context than you'd ever type.</p></div>
+      <div class="cap-meter">
+        <span class="num">3–5×</span>
+        <span class="cap-meter-track"><span class="cap-meter-fill anim-grow" style="width:80%;--d:.24s"></span></span>
+        <span class="t-label q-3">context per instruction vs typing</span>
+      </div>
+    </div>
+    <div class="cap cap--mid1 anim" style="--d:.2s">
+      <div><h3>Replit</h3><p>App, database, storage, hosting, deploys. There is no infrastructure project — the reason business-led builds usually die on day one.</p></div>
+      <span class="chip chip--fill">The bulk of the ~$10k build cost</span>
+    </div>
+    <div class="cap cap--mid2 anim" style="--d:.26s">
+      <div><h3>GitHub</h3><p>The undo button, the audit trail, and the thing that calms your security team down.</p></div>
+      <span class="chip">Every change arrives as a PR</span>
+    </div>
+    <div class="cap cap--min cap--min1 anim" style="--d:.32s"><h3>Granola</h3><p>Records and transcribes the room. The argument itself becomes the input — not somebody's recollection of it.</p></div>
+    <div class="cap cap--min cap--min2 anim" style="--d:.36s"><h3>APIs</h3><p>Claude, OpenAI, voice, email. Things you'd once have scoped as projects are now a key and an afternoon.</p></div>
+  </div>
+  <footer class="scene-foot"><span class="pg">08 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 09 · quote.pull — temperature change after the systems run. -->
+<section class="scene scene--ground scene-quote">
+  <header class="scene-head"><span class="t-micro anim">Why voice, specifically</span></header>
+  <div class="scene-body quote-body">
+    <span class="quote-glyph anim" aria-hidden="true">&ldquo;</span>
+    <figure class="quote-main">
+      <blockquote class="anim" style="--d:.08s">Voice isn't faster. It's denser. You say the ask, plus why you want it, what you tried last year, which definition you mean, and the argument two people had about it in the room.</blockquote>
+      <figcaption class="quote-by anim" style="--d:.18s">
+        <span class="quote-avatar" aria-hidden="true">GM</span>
+        <span class="t-body">The loyalty GM who built it<br><span class="t-label" style="color:var(--g-ink-2)">No written brief has ever captured a disagreement. A recording does.</span></span>
+      </figcaption>
+    </figure>
+  </div>
+  <footer class="scene-foot"><span class="pg">09 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 10 · process.pipeline — conversation to deployed; order matters, current position marked. -->
+<section class="scene scene-pipe">
+  <header class="scene-head">
+    <span class="t-micro anim">How a build actually runs</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Conversation to deployed, end to end.</h2>
+  </header>
+  <div class="scene-body pipe-body">
+    <div class="pipe">
+      <div class="pipe-step pipe-step--done anim" style="--d:.08s">
+        <div class="pipe-when"><span class="t-micro q-3">The room</span><span class="num">01</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Record it</h3><p class="t-small">Granola captures the stakeholder session — the whole disagreement.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--done anim" style="--d:.13s">
+        <div class="pipe-when"><span class="t-micro q-3">Minutes</span><span class="num">02</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Speak the intent</h3><p class="t-small">Wispr Flow into Claude, on top of the transcript.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--done anim" style="--d:.18s">
+        <div class="pipe-when"><span class="t-micro q-3">Same day</span><span class="num">03</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Get the brief — and cut</h3><p class="t-small">Requirements you can argue with. Confirming and cutting is your job. No technical skill required.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--current anim" style="--d:.23s">
+        <div class="pipe-when"><span class="t-micro">While you're in meetings</span><span class="num">04</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Build on a branch</h3><p class="t-small">Claude works, Replit hosts, GitHub holds it.</p><span class="pipe-here">The cheap part</span></div>
+      </div>
+      <div class="pipe-step anim" style="--d:.28s">
+        <div class="pipe-when"><span class="t-micro q-3">Over dinner</span><span class="num">05</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Review the PR</h3><p class="t-small">Read what changed and why, in plain English.</p></div>
+      </div>
+      <div class="pipe-step anim" style="--d:.33s">
+        <div class="pipe-when"><span class="t-micro q-3">One click</span><span class="num">06</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Merge — it deploys</h3><p class="t-small">Live, with the schema migrated.</p></div>
+      </div>
+    </div>
+    <div class="pipe-foot anim" style="--d:.4s">
+      <div class="pipe-legend">
+        <span><i></i>Decided by you</span>
+        <span><i class="now"></i>Done by the machine</span>
+        <span><i class="hollow"></i>Checked by you</span>
+      </div>
+      <p class="note" style="text-align:right;max-width:50ch">The unit of work changed: the expensive part is now deciding what you want, and the cheap part is having it.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">10 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 11 · proof.three — what it actually cost; the lead figure is the argument. -->
+<section class="scene scene--sunk scene-proof">
+  <header class="scene-head">
+    <span class="t-micro anim">Myths 07, 08, 09 · “it costs too much and takes too long”</span>
+    <h2 class="t-h1 anim" style="--d:.05s">What it actually cost.</h2>
+  </header>
+  <div class="scene-body proof-body">
+    <div class="proof-item proof-item--lead anim" style="--d:.1s">
+      <span class="proof-rank">The whole build</span>
+      <div><span class="proof-fig num">~$10k</span><h3>NZD in credits, from nothing to all of it</h3></div>
+      <p class="proof-ev">The bulk of it Replit. That is the entire platform in act one — fourteen AI systems, thirty-two reports and features.</p>
+    </div>
+    <div class="proof-item proof-item--2 anim" style="--d:.18s">
+      <span class="proof-rank">To keep adding</span>
+      <div><span class="proof-fig num">~$200</span><h3>Per month, for new features</h3></div>
+      <p class="proof-ev">A Claude licence. New features have landed in the last few weeks on exactly this.</p>
+    </div>
+    <div class="proof-item proof-item--3 anim" style="--d:.26s">
+      <span class="proof-rank">To run</span>
+      <div><span class="proof-fig num">&lt;$500</span><h3>USD per month, fully observable</h3></div>
+      <p class="proof-ev">Against many millions of rows — every token for analysis, reports, summaries and scheduled emails. Every AI call is logged with its model, tokens and spend.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">11 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 12 · hero.statement — the hinge of the argument, on the dark ground. -->
+<section class="scene scene--ground scene-say">
+  <header class="scene-head"><span class="t-micro anim">The actual point</span></header>
+  <div class="scene-body say-body">
+    <div class="say-main">
+      <div class="rule-accent anim"></div>
+      <p class="anim" style="--d:.1s">Every feature you saw can be bought. What you cannot buy is <b>one place, with one memory, that doesn't leave when people do.</b></p>
+    </div>
+    <div class="say-foot anim" style="--d:.2s">
+      <p class="t-body" style="max-width:44ch">It has the numbers, the history, and every correction anyone ever gave it. It doesn't forget. It doesn't have a bad week.</p>
+      <p class="note" style="text-align:right;max-width:26ch">The smartest member of your team, available to anyone.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">12 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 13 · scorecard.table — the twelve beliefs, graded. Density is the point.
+     Alert colours appear ONLY on the two rows that are genuinely learnings, not myths. -->
+<section class="scene scene-score">
+  <header class="scene-head">
+    <span class="t-micro anim">Part three · grouped by the objection underneath them</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Twelve beliefs. Ten wrong. Two cost me.</h2>
+  </header>
+  <div class="scene-body score-body">
+    <table class="score-table anim" style="--d:.1s">
+      <thead>
+        <tr><th scope="col" style="width:30%">The belief</th><th scope="col">What's actually true</th><th scope="col" class="n" style="width:15%">Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="score-measure">“You need PII”<small>Family A · I haven't got what it takes</small></span></td>
+          <td><span class="score-val">Behaviour, tenure, plan and spend band carry the analysis; hashed keys carry the joins. Dropping identity turns “can we do this” into “how do we control access” — a conversation risk teams already know.</span></td>
+          <td class="n"><span class="score-flag">Myth — busted</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">“My data must be structured first”<small>The one that stops most people</small></span></td>
+          <td><span class="score-val">The technology does the joins, infers the taxonomy and reconciles the mess. You are not data-poor, you are export-poor — a five-minute problem, not a five-million-dollar one.</span></td>
+          <td class="n"><span class="score-flag">Myth — busted</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">“You'd need engineers”<small>Family A</small></span></td>
+          <td><span class="score-val">Built single-handed, in spare time. The scarce input is domain judgement — knowing which churn definition is right — and no hire arrives with that.</span></td>
+          <td class="n"><span class="score-flag">Myth — busted</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">“It'll make calculation errors”<small>Family B · it won't be trustworthy</small></span></td>
+          <td><span class="score-val">Analysts narrate already-computed figures; a deterministic check verifies every number in every output against the source and forces a regeneration on failure. More investigatable than any spreadsheet.</span></td>
+          <td class="n"><span class="score-flag">Myth — busted</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">It will not catch a wrong method<small>Single-snapshot churn cuts — three confidently wrong answers reached decision-makers</small></span></td>
+          <td><span class="score-val">The AI amplifies your rigour or the absence of it. The fix was a written rule every analyst now obeys — not a better model. Detail on the next scene.</span></td>
+          <td class="n"><span class="score-flag score-flag--miss">Learning — cost me</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">“It won't be documented or safe”<small>Family B</small></span></td>
+          <td><span class="score-val">Every change ships as a PR that explains itself; ~80 production lessons captured live. Allowlist, magic links, twelve permission groups, every login logged — and it passed our own security review.</span></td>
+          <td class="n"><span class="score-flag">Myth — busted</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">I brought governance in too late<small>A PoC quietly became business-critical before privacy and security found out</small></span></td>
+          <td><span class="score-val">They were right to be alarmed — they had no way to assess it. Bring them in at week two, and agree the graduation trigger up front. Detail on the next scene.</span></td>
+          <td class="n"><span class="score-flag score-flag--watch">Learning — nearly cost me</span></td>
+        </tr>
+        <tr>
+          <td><span class="score-measure">“I'll be stuck with it”<small>Family D · lock-in, decay, burden</small></span></td>
+          <td><span class="score-val">The provider is a toggle; the code is ordinary code in your own repo on standard Postgres. And every model upgrade is a free platform upgrade — it improves while you sleep. Conventional software decays from the day it ships.</span></td>
+          <td class="n"><span class="score-flag">Myth — busted</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="score-legend anim" style="--d:.2s">
+      <span class="score-flag">Myth — no longer worth arguing about</span>
+      <span class="score-flag score-flag--watch">Learning — avoidable if you act early</span>
+      <span class="score-flag score-flag--miss">Learning — put wrong numbers in front of decision-makers</span>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">13 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 14 · risk.register — the pitfalls you inherit, honestly graded. Red and yellow live
+     here because severity is a state. Never colour a risk row green. -->
+<section class="scene scene--sunk scene-risk">
+  <header class="scene-head">
+    <span class="t-micro anim">Everything I wish someone had told me first</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Four pitfalls, honestly graded.</h2>
+  </header>
+  <div class="scene-body risk-body">
+    <div class="risk-list">
+      <div class="risk risk--high anim" style="--d:.1s">
+        <span class="risk-bar"></span>
+        <h3>A wrong method, told persuasively<small>Single-snapshot churn cuts produced a 28× “lock-in effect”, a 26% vs 3% split and a protective tenure story — none real</small></h3>
+        <span class="risk-grade"><b>Happened</b><span>Likelihood</span></span>
+        <p class="risk-fix">Banding fields get wiped on disconnect, so the rate was an artefact of the data model. The AI will never tell you your method is wrong — it will tell fifteen people your wrong answer in beautiful English. The fix is a written rule every analyst obeys.</p>
+        <span class="risk-owner"><b>You · method rigour</b><span>Before any churn cut ships</span></span>
+      </div>
+      <div class="risk risk--watch anim" style="--d:.18s">
+        <span class="risk-bar"></span>
+        <h3>KPIs undefined before you build on them<small>Churn computed three ways on three pages — all defensible, none reconcilable</small></h3>
+        <span class="risk-grade"><b>Likely</b><span>Likelihood</span></span>
+        <p class="risk-fix">Write down what each KPI means and exactly how it's calculated, then make that the single source the whole platform reads. Every analyst downstream inherits the definition — right or wrong, it propagates. The highest-return few hours in the build.</p>
+        <span class="risk-owner"><b>You · definitions doc</b><span>Before the first report</span></span>
+      </div>
+      <div class="risk risk--watch anim" style="--d:.26s">
+        <span class="risk-bar"></span>
+        <h3>Governance finds out after it matters<small>My proof of concept quietly became business-critical before privacy, security and architecture knew</small></h3>
+        <span class="risk-grade"><b>Near miss</b><span>Likelihood</span></span>
+        <p class="risk-fix">Bring them in at week two, not month eight. Give them a document they can read in five minutes, name your own failure modes first, and agree the graduation trigger — the point where the PoC gets real engineering rigour — up front.</p>
+        <span class="risk-owner"><b>Privacy · Security · Arch</b><span>Week two</span></span>
+      </div>
+      <div class="risk anim" style="--d:.34s">
+        <span class="risk-bar"></span>
+        <h3>Starting with a platform<small>The most common way business-led builds fail</small></h3>
+        <span class="risk-grade"><b>Avoidable</b><span>Likelihood</span></span>
+        <p class="risk-fix">Platforms accrete from useful things; they don't get designed in advance. Pick one report somebody reads on a Monday — ideally one that takes a day to produce — and use it for a fortnight before you build the second thing.</p>
+        <span class="risk-owner"><b>You · scope</b><span>Build one, then wait</span></span>
+      </div>
+    </div>
+    <div class="risk-legend anim" style="--d:.42s">
+      <div class="keys">
+        <span><i style="background:var(--alert)"></i>Cost me — wrong numbers reached decision-makers</span>
+        <span><i style="background:var(--warn)"></i>Trending badly unless you act early</span>
+        <span><i style="background:var(--hair-2)"></i>Watch only</span>
+      </div>
+      <p class="note" style="text-align:right;max-width:44ch">Graded on what actually happened, not on how uncomfortable it is to say out loud.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">14 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 15 · divider.act — the reset before the practical close. -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act two</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">Monday.</h2>
+      <p class="t-body anim" style="--d:.12s">Half a day of setup, mostly waiting for approvals — then five things in order before you build anything.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>16</b>Setup &amp; first-build checklist</span><span><b>17</b>The compounding effect</span><span><b>18</b>Where that leaves you</span><span><b>19</b>Method notes</span>
+      </div>
+    </div>
+    <span class="act-num num anim" style="--d:.1s">02</span>
+  </div>
+  <footer class="scene-foot"><span class="pg">15 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 16 · decisions.asks — the Monday checklist as three signable asks. -->
+<section class="scene scene-ask">
+  <header class="scene-head">
+    <span class="t-micro anim">What to actually do</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Three commitments, this week.</h2>
+  </header>
+  <div class="scene-body ask-body">
+    <div class="ask-list">
+      <div class="ask anim" style="--d:.1s">
+        <span class="ask-num num">01</span>
+        <div class="ask-main">
+          <h3>Get the six licences — under your business entity</h3>
+          <p class="t-small">Replit, Claude, GitHub, Granola (or whatever meeting capture you're permitted), Wispr Flow, and an API key or two. Not personal accounts.</p>
+        </div>
+        <div class="ask-why">
+          <span class="t-micro q-3">Why it's first</span>
+          <p class="t-small">Retrofitting ownership later is painful, and it's the first thing finance and security will ask. Half a day, mostly waiting for approvals.</p>
+        </div>
+        <div class="ask-decide">
+          <dl>
+            <dt>Cost</dt><dd>Licences only</dd>
+            <dt>Owner</dt><dd>You</dd>
+            <dt>Do by</dt><dd>Monday</dd>
+          </dl>
+          <span class="ask-box"><i></i>Accounts in the company's name</span>
+        </div>
+      </div>
+      <div class="ask anim" style="--d:.18s">
+        <span class="ask-num num">02</span>
+        <div class="ask-main">
+          <h3>Pick one Monday report and prepare its inputs</h3>
+          <p class="t-small">One report somebody actually reads — ideally one that takes a day to produce. Identify the exports that feed it, confirm you can get them without raising a project, strip the PII, and write down your KPI definitions.</p>
+        </div>
+        <div class="ask-why">
+          <span class="t-micro q-3">Why this shape</span>
+          <p class="t-small">Not a platform. Platforms accrete from useful things. The KPI definitions are the highest-return few hours in the entire build.</p>
+        </div>
+        <div class="ask-decide">
+          <dl>
+            <dt>Cost</dt><dd>A few hours</dd>
+            <dt>Owner</dt><dd>You</dd>
+            <dt>Do by</dt><dd>Before first build</dd>
+          </dl>
+          <span class="ask-box"><i></i>Report, exports, definitions ready</span>
+        </div>
+      </div>
+      <div class="ask anim" style="--d:.26s">
+        <span class="ask-num num">03</span>
+        <div class="ask-main">
+          <h3>Name one ally each in privacy, security and architecture</h3>
+          <p class="t-small">And tell them what you're doing this week — not next quarter. Agree up front the point at which the build graduates from proof of concept to real engineering rigour.</p>
+        </div>
+        <div class="ask-why">
+          <span class="t-micro q-3">Why now</span>
+          <p class="t-small">This is the learning that nearly cost me. Naming the graduation trigger in advance is the single most reassuring thing you can offer a security function.</p>
+        </div>
+        <div class="ask-decide">
+          <dl>
+            <dt>Cost</dt><dd>Three coffees</dd>
+            <dt>Owner</dt><dd>You</dd>
+            <dt>Do by</dt><dd>Week two</dd>
+          </dl>
+          <span class="ask-box"><i></i>Three names, three conversations</span>
+        </div>
+      </div>
+    </div>
+    <p class="note anim" style="--d:.34s">Then: record the conversation, voice the intent, read the brief and cut something, ship it — and use it for a fortnight before you build the second thing.</p>
+  </div>
+  <footer class="scene-foot"><span class="pg">16 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 17 · chart.bar.h — the compounding effect. width% = days ÷ scale-max(16) × 100. -->
+<section class="scene scene--sunk scene-chart scene-barh">
+  <header class="scene-head">
+    <span class="t-micro anim">The close · time to ship each successive report</span>
+    <h2 class="t-h1 anim" style="--d:.05s">The first build is not the point.</h2>
+  </header>
+  <div class="scene-body chart-body">
+    <div class="chart-plot barh">
+      <!-- illustrative durations · scale-max 16 working days -->
+      <div class="barh-row anim" style="--d:.08s">
+        <span class="barh-label">Report 1<small>Everything is new: data, definitions, conventions</small></span>
+        <!-- 15 ÷ 16 = 93.8% -->
+        <span class="barh-track"><span class="barh-fill barh-fill--muted anim-grow" style="width:93.8%;--d:.14s"></span></span>
+        <span class="barh-val num">Weeks</span>
+      </div>
+      <div class="barh-row anim" style="--d:.13s">
+        <span class="barh-label">Report 2<small>The foundation and the definitions already exist</small></span>
+        <!-- 4 ÷ 16 = 25% -->
+        <span class="barh-track"><span class="barh-fill anim-grow" style="width:25%;--d:.19s"></span></span>
+        <span class="barh-val num">Days</span>
+      </div>
+      <div class="barh-row anim" style="--d:.18s">
+        <span class="barh-label">Report 3<small>The conventions are settled; the memory is fuller</small></span>
+        <!-- 1 ÷ 16 = 6.3% -->
+        <span class="barh-track"><span class="barh-fill anim-grow" style="width:6.3%;--d:.24s"></span></span>
+        <span class="barh-val num">A day</span>
+      </div>
+      <div class="barh-row anim" style="--d:.23s">
+        <span class="barh-label">Report 5<small>It starts from more knowledge than the one before</small></span>
+        <!-- 0.5 ÷ 16 = 3.1% -->
+        <span class="barh-track"><span class="barh-fill barh-fill--soft anim-grow" style="width:3.1%;--d:.29s"></span></span>
+        <span class="barh-val num">A morning</span>
+      </div>
+    </div>
+    <div class="chart-foot anim" style="--d:.34s">
+      <p class="t-small" style="max-width:56ch">Not because the tools improved. Because the context, the definitions, the conventions and the domain knowledge were already there. The curve only bends if you build in one place, against one memory.</p>
+      <p class="note" style="text-align:right;max-width:34ch">Durations are indicative of the author's build history, not measured to the day.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">17 / 19</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 18 · closing.end — the frame the cover opened, closed. No thank-you slide. -->
+<section class="scene scene--ground scene-end">
+  <header class="scene-head"><span class="t-micro anim">Where that leaves you</span></header>
+  <div class="scene-body end-body">
+    <div class="end-main">
+      <h2 class="anim" style="--d:.06s">Nobody's advantage is the data.</h2>
+      <p class="t-body anim" style="--d:.12s">Every loyalty programme in this country has broadly the same data. The advantage is the accumulated institutional reasoning about it — the one asset no vendor can sell you and no competitor can copy, because it's made of your own arguments. You're not building software. You're building what your programme knows, in a form that doesn't leave when people do.</p>
+    </div>
+    <div class="end-next anim" style="--d:.2s">
+      <div><b>Monday</b><span>Six licences under the business entity. Half a day, mostly approvals.</span></div>
+      <div><b>Week one</b><span>One Monday report: exports confirmed, PII stripped, KPI definitions written.</span></div>
+      <div><b>Week two</b><span>Three allies named in privacy, security and architecture — and the first build shipped.</span></div>
+    </div>
+  </div>
+  <footer class="scene-foot">
+    <span class="pg">18 / 19</span>
+    <span class="cover-mark">one<i>.</i>nz</span>
+  </footer>
+</section>
+
+<!-- SCENE 19 · method.notes — where every figure in this deck comes from. -->
+<section class="scene scene--sunk scene-meth">
+  <header class="scene-head">
+    <span class="t-micro anim">Method and sources</span>
+    <h2 class="t-h3 anim" style="--d:.05s">How every figure in this deck was arrived at.</h2>
+  </header>
+  <div class="scene-body meth-body">
+    <div class="meth-grid">
+      <dl class="meth-col anim" style="--d:.1s">
+        <div class="meth-item"><dt>$600m on issue</dt><dd>Order-of-magnitude peak value on issue across the Phone Dollars programme, as stated in the original workshop material. Not a period-end balance.</dd></div>
+        <div class="meth-item"><dt>2pp better targeting</dt><dd>The working assumption that motivated the build: <code>value at stake × 0.02 ≫ total platform cost</code>. An asymmetry argument, not a measured result.</dd></div>
+        <div class="meth-item"><dt>14 systems · 32 reports</dt><dd>Counts of AI systems and reports/features live in the Membership Workbench at the time of the workshop.</dd></div>
+      </dl>
+      <dl class="meth-col anim" style="--d:.16s">
+        <div class="meth-item"><dt>~$10k build cost</dt><dd>NZD in platform credits, from nothing to the current Workbench; the bulk of it Replit. Author's own spend records.</dd></div>
+        <div class="meth-item"><dt>~$200 / month to extend</dt><dd>One Claude licence. NZD.</dd></div>
+        <div class="meth-item"><dt>&lt;$500 / month to run</dt><dd>USD, all inference included — analysis, reports, summaries, scheduled emails. Observable in the Workbench's own AI-consumption tracker, per model, per day.</dd></div>
+      </dl>
+      <dl class="meth-col anim" style="--d:.22s">
+        <div class="meth-item"><dt>3–5× voice density</dt><dd>Spoken instructions carry three to five times the context of typed ones — the author's consistent observation, and the reason voice input is in the recipe.</dd></div>
+        <div class="meth-item"><dt>Compounding durations</dt><dd>Weeks → days → a day → a morning: indicative of the author's build history, drawn to a 16-working-day scale. Not measured to the day, and labelled so on the scene.</dd></div>
+        <div class="meth-item"><dt>The two learnings</dt><dd>Both happened. The single-snapshot churn artefact reached decision-makers before it was caught; governance was engaged after the platform was business-critical. Neither is hypothetical.</dd></div>
+      </dl>
+    </div>
+    <div class="meth-foot anim" style="--d:.3s">
+      <p class="t-small" style="max-width:60ch">Anything you'd challenge, challenge here first — that's what this scene is for. Everything else in the deck inherits these definitions.</p>
+      <p class="note" style="text-align:right;max-width:30ch">19 scenes · built in the One NZ archetype system.</p>
+    </div>
+  </div>
+  <footer class="scene-foot">
+    <span class="pg">19 / 19</span>
+    <span class="cover-mark" style="font-size:26px">one<i>.</i>nz</span>
+  </footer>
+</section>
+</main>
+<script>
+/* Entrance only. One observer, one class, no scroll listener. */
+(function(){
+  var scenes=document.querySelectorAll('.scene');
+  if(!('IntersectionObserver' in window)){scenes.forEach(function(s){s.classList.add('in-view')});}
+  else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in-view');io.unobserve(e.target);} });
+    },{threshold:.16,rootMargin:'0px 0px -8% 0px'});
+    scenes.forEach(function(s){io.observe(s)});
+  }
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  btn.addEventListener('click',function(){
+    var dark=root.classList.toggle('theme-dark');
+    root.classList.toggle('theme-light',!dark);
+    btn.textContent=dark?'Light':'Dark';
+    btn.setAttribute('aria-pressed',dark?'true':'false');
+  });
+})();
+</script>
+</body>
+</html>
