@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en-NZ" class="theme-light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Lab — Ship an AI Tool in an Hour</title>
+<style>
+/* ============ One NZ scroll-deck ============ */
+:root{
+  --green:#00A45F;
+  --green-bright:#12CB77;
+  --green-soft:#95EEB4;
+  --green-tint:#CDFBDD;
+  --deep:#0A3833;
+  --deepest:#06231F;
+  --grey-ink:#323232;
+  --grey-mid:#5A6376;
+  --grey-line:#E1E4E9;
+  --grey-bg:#F8F9FA;
+  --alert-red:#D31F3F;
+  --alert-yellow:#FFD600;
+}
+html.theme-dark{
+  --bg:#06110C;
+  --bg-alt:#06110C;
+  --card:rgba(255,255,255,0.045);
+  --card-border:rgba(149,238,180,0.14);
+  --ink:#F8F9FA;
+  --ink-soft:rgba(248,249,250,0.72);
+  --ink-faint:rgba(248,249,250,0.45);
+  --accent:#12CB77;
+  --accent-strong:#00A45F;
+  --track:rgba(255,255,255,0.09);
+  --hairline:rgba(149,238,180,0.16);
+  --shadow:0 18px 50px rgba(0,0,0,0.35);
+}
+html.theme-light{
+  --bg:#F8F9FA;
+  --bg-alt:#FFFFFF;
+  --card:#FFFFFF;
+  --card-border:#E1E4E9;
+  --ink:#323232;
+  --ink-soft:#5A6376;
+  --ink-faint:#9AA1AC;
+  --accent:#00A45F;
+  --accent-strong:#00A45F;
+  --track:#E1E4E9;
+  --hairline:#E1E4E9;
+  --shadow:0 18px 50px rgba(10,56,51,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:"Euclid Circular A", Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+  counter-reset:slide;
+}
+::selection{background:var(--green);color:#fff;}
+
+/* -------- scenes -------- */
+.scene{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:9vh 7vw;
+  position:relative;
+  overflow:hidden;
+  counter-increment:slide;
+}
+/* slide number — bottom-left of every scene */
+.scene::after{
+  content:counter(slide, decimal-leading-zero);
+  position:absolute;bottom:2.2rem;left:7vw;
+  font-size:.78rem;font-weight:600;letter-spacing:.14em;
+  color:var(--ink-faint);user-select:none;
+}
+.scene-inner{
+  max-width:1060px;
+  width:100%;
+  margin:0 auto;
+  opacity:0;
+  transform:translateY(34px);
+  transition:opacity .85s cubic-bezier(.2,.65,.25,1), transform .85s cubic-bezier(.2,.65,.25,1);
+}
+.scene.in-view .scene-inner{opacity:1;transform:translateY(0);}
+.scene:nth-child(even){background:var(--bg-alt);transition:background .4s ease;}
+
+/* stagger children */
+.stagger > *{
+  opacity:0; transform:translateY(22px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.scene.in-view .stagger > *{opacity:1;transform:translateY(0);}
+.scene.in-view .stagger > *:nth-child(1){transition-delay:.15s;}
+.scene.in-view .stagger > *:nth-child(2){transition-delay:.28s;}
+.scene.in-view .stagger > *:nth-child(3){transition-delay:.41s;}
+.scene.in-view .stagger > *:nth-child(4){transition-delay:.54s;}
+.scene.in-view .stagger > *:nth-child(5){transition-delay:.67s;}
+.scene.in-view .stagger > *:nth-child(6){transition-delay:.80s;}
+.scene.in-view .stagger > *:nth-child(7){transition-delay:.93s;}
+.scene.in-view .stagger > *:nth-child(8){transition-delay:1.06s;}
+.scene.in-view .stagger > *:nth-child(9){transition-delay:1.19s;}
+.scene.in-view .stagger > *:nth-child(10){transition-delay:1.32s;}
+
+/* -------- type -------- */
+.kicker{
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.1rem;
+}
+h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:600;line-height:1.05;letter-spacing:-0.02em;}
+h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:600;line-height:1.08;letter-spacing:-0.018em;margin-bottom:1.2rem;max-width:20ch;}
+h3{font-size:1.12rem;font-weight:600;line-height:1.3;}
+.lede{font-size:clamp(1.05rem,1.7vw,1.28rem);color:var(--ink-soft);max-width:42em;}
+.accent{color:var(--accent);}
+.big-num{
+  font-size:clamp(2.6rem,6vw,4.4rem);
+  font-weight:600;letter-spacing:-0.03em;line-height:1;
+  color:var(--accent);
+}
+
+/* -------- one.nz mark -------- */
+.mark{
+  position:absolute;bottom:2.2rem;right:7vw;
+  font-weight:600;font-size:.95rem;color:var(--ink-faint);
+  letter-spacing:.01em;user-select:none;
+}
+.mark .dot{color:var(--green-bright);}
+
+/* -------- theme toggle -------- */
+.theme-toggle{
+  position:fixed;top:1.1rem;right:1.2rem;z-index:99;
+  background:var(--card);border:1px solid var(--card-border);
+  color:var(--ink-soft);
+  border-radius:999px;padding:.42rem .95rem;
+  font-family:inherit;font-size:.78rem;font-weight:600;letter-spacing:.05em;
+  cursor:pointer;backdrop-filter:blur(8px);
+  transition:all .3s ease;
+}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+
+/* -------- cards & grids -------- */
+.card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:1.6rem 1.7rem;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;}
+.card p{font-size:.95rem;color:var(--ink-soft);}
+.card h3{margin-bottom:.5rem;}
+.card em{font-style:normal;color:var(--accent);}
+.tag{
+  display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid var(--hairline);border-radius:999px;
+  padding:.22rem .7rem;margin-bottom:.8rem;
+}
+
+/* -------- app identification icons (accounts scene) --------
+   Small inline-SVG app tiles so people download the RIGHT app.
+   GitHub / Replit / Claude marks are faithful; Granola and
+   Wispr Flow are stylised lettermark tiles in their app colours
+   (their marks don't reduce honestly to hand-drawn SVG). */
+.app-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.45rem;}
+.app-head h3{margin-bottom:0;}
+.app-icon{
+  width:40px;height:40px;border-radius:10px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:600;user-select:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.14);
+}
+
+/* -------- three-across flow -------- */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.9rem;margin-top:2.4rem;}
+.flow .fcard{flex:1 1 210px;display:flex;flex-direction:column;justify-content:flex-start;}
+.flow .farrow{align-self:center;font-size:2rem;font-weight:300;color:var(--ink-faint);flex:0 0 auto;}
+
+/* -------- idea chips -------- */
+.chip-strip{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+.chip{
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:999px;padding:.55rem 1.05rem;
+  font-size:.9rem;font-weight:600;color:var(--ink);
+}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:none;}
+
+/* -------- step tiles (the hour) -------- */
+.gallery{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.1rem;margin-top:2rem;
+}
+.tile{
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.15rem 1.2rem;
+  display:flex;flex-direction:column;
+  transition:border-color .3s ease, transform .3s ease;
+}
+.tile:hover{border-color:var(--accent);transform:translateY(-3px);}
+.tile .tnum{font-size:.72rem;font-weight:600;letter-spacing:.16em;color:var(--accent);margin-bottom:.45rem;}
+.tile h3{font-size:.98rem;margin-bottom:.35rem;}
+.tile p{font-size:.84rem;color:var(--ink-soft);line-height:1.45;}
+
+/* -------- agenda rows -------- */
+.agenda{display:flex;flex-direction:column;gap:1.1rem;margin-top:2.2rem;}
+.agenda .card{display:flex;align-items:center;gap:1.4rem;padding:1.4rem 1.7rem;}
+.agenda .num{
+  font-size:2.2rem;font-weight:600;color:var(--accent);
+  min-width:2.6rem;letter-spacing:-0.03em;
+}
+.agenda .num.when{font-size:1rem;min-width:6.2rem;line-height:1.25;text-transform:uppercase;letter-spacing:.08em;}
+.agenda p{color:var(--ink-soft);font-size:.95rem;margin-top:.15rem;}
+
+/* -------- links to apps -------- */
+.pill-url{
+  display:inline-block;font-weight:600;color:var(--accent);
+  background:var(--card);border:1px solid var(--hairline);
+  border-radius:999px;padding:.3rem .95rem;font-size:.92rem;
+  text-decoration:none;transition:border-color .3s ease;
+}
+.pill-url:hover{border-color:var(--accent);}
+a.applink{color:var(--accent);font-weight:600;text-decoration:none;border-bottom:1px solid var(--hairline);}
+a.applink:hover{border-bottom-color:var(--accent);}
+
+/* -------- prompt blocks --------
+   Meant to be READ OFF A PROJECTOR by 20 people at the back
+   of the room — mono face, generous line-height, size floor. */
+.promptbox{background:var(--bg-alt);border-color:var(--accent);}
+.promptbox .mono{
+  font-family:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:clamp(.82rem,1.05vw,.98rem);
+  line-height:1.75;
+  color:var(--ink);
+}
+.promptbox .mono strong{color:var(--accent);font-weight:600;}
+.mono2{
+  font-family:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size:.86rem;line-height:1.6;color:var(--accent);
+}
+
+/* -------- artefact.slot — screenshot placeholders --------
+   Reserved space for REAL screenshots, dropped in by a human.
+   We never draw an invented interface: a labelled gap is honest,
+   an invented UI gets screenshotted into someone's pack. */
+.shot{
+  margin-top:1.6rem;
+  border:2px dashed var(--hairline);
+  border-radius:16px;
+  background:var(--card);
+  min-height:240px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.5rem;text-align:center;padding:1.4rem 1.6rem;
+}
+.shot .shot-tag{
+  font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);
+}
+.shot p{font-size:.92rem;color:var(--ink-soft);max-width:46em;}
+.shot p strong{color:var(--ink);}
+.shot.short{min-height:170px;}
+
+/* -------- clickpath — where-to-click guide box --------
+   Replaces the screenshot slots: a numbered click path, read
+   off the projector while the facilitator does the step live.
+   Every step names the SCREEN, the BUTTON and WHERE it sits. */
+.clickpath{
+  margin-top:1.4rem;
+  background:var(--card);
+  border:1px solid var(--accent);
+  border-radius:16px;
+  padding:1.2rem 1.5rem;
+}
+.clickpath .cp-head{
+  font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.75rem;
+}
+.clickpath ol{list-style:none;counter-reset:cp;display:flex;flex-direction:column;gap:.5rem;}
+.clickpath li{
+  counter-increment:cp;position:relative;padding-left:2.15rem;
+  font-size:.95rem;color:var(--ink-soft);line-height:1.5;
+}
+.clickpath li::before{
+  content:counter(cp);position:absolute;left:0;top:.12rem;
+  width:1.45rem;height:1.45rem;border-radius:50%;
+  background:var(--accent-strong);color:#fff;
+  font-size:.74rem;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+}
+.clickpath li strong{color:var(--ink);}
+.clickpath li .ui{
+  font-weight:600;color:var(--accent);
+  border:1px solid var(--hairline);border-radius:6px;
+  padding:.02rem .45rem;white-space:nowrap;
+}
+
+ul.clean{list-style:none;margin-top:1rem;}
+ul.clean li{
+  padding:.5rem 0 .5rem 1.7rem;position:relative;color:var(--ink-soft);font-size:1rem;
+}
+ul.clean li::before{
+  content:"";position:absolute;left:0;top:.95rem;
+  width:9px;height:9px;border-radius:50%;background:var(--accent-strong);
+}
+ul.clean li strong{color:var(--ink);}
+
+.footline{margin-top:2.2rem;font-size:.9rem;color:var(--ink-faint);}
+.vs-lab{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);}
+.scroll-hint{
+  position:absolute;bottom:2.1rem;left:50%;transform:translateX(-50%);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{0%,100%{opacity:.45;transform:translate(-50%,0);}50%{opacity:1;transform:translate(-50%,6px);}}
+
+.signoff{
+  margin-top:3rem;padding-top:1.4rem;
+  border-top:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;
+  font-size:.85rem;color:var(--ink-faint);
+}
+.signoff .so-mark{font-weight:600;color:var(--ink-soft);}
+.signoff .so-mark .dot{color:var(--green-bright);}
+
+@media (max-width:640px){
+  .scene{padding:8vh 6vw;}
+  .mark{right:6vw;}
+  .flow .farrow{display:none;}
+  .agenda .num.when{min-width:100%;}
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" type="button">Dark</button>
+
+<!-- SLIDE 1 · pre-work comms — what the facilitator sends, and when.
+     Timing is driven by the ONE hard deadline in the stack: Wispr Flow's
+     14-day unlimited window, which must still be open on lab day. -->
+<section class="scene" id="prework">
+  <div class="scene-inner">
+    <div class="kicker">Before the day · what to send, and when</div>
+    <h2>The invite email, and <span class="accent">when to send it</span>.</h2>
+    <p class="lede">Six signups, one of them paid. The timing matters — most of the free allowances are generous, but one has a clock on it.</p>
+    <div class="agenda stagger" style="margin-top:1.8rem;">
+      <div class="card"><div class="num when">10 days<br>out</div><div><h3>Send the signup email</h3><p>All six accounts, with the links from slide 3. Ten days gives everyone time — and keeps Wispr Flow's <strong style="color:var(--ink);">14-day unlimited window</strong> still open on the day. Tell people: sign up for Wispr <em style="font-style:normal;color:var(--accent);">now, not months early</em>, or the trial lapses before the lab.</p></div></div>
+      <div class="card"><div class="num when">10 days<br>out</div><div><h3>Flag the paid one up front</h3><p>Claude Pro is US$20/month and it's not optional — Claude Code isn't on the free plan. Saying so in the first email gives people time to get a card or expense approval sorted.</p></div></div>
+      <div class="card"><div class="num when">3 days<br>out</div><div><h3>Chaser: Claude Pro active + API key created</h3><p>Everyone should have Pro running and an Anthropic API key from console.anthropic.com (phone verification, one-off US$5 credit) saved somewhere safe. They'll paste it into a vault on the day.</p></div></div>
+      <div class="card"><div class="num when">1 day<br>out</div><div><h3>Green-light reminder</h3><p>Open every app once so login is done. And <strong style="color:var(--ink);">don't build anything in Replit yet</strong> — the free allowance is what we spend in the lab.</p></div></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+  <div class="scroll-hint">Scroll · or press ↓</div>
+</section>
+
+<!-- SLIDE 2 · cover -->
+<section class="scene" id="cover">
+  <div class="scene-inner">
+    <div class="kicker">Build Lab · 60 minutes · solo build</div>
+    <h1>Let's build something. <span class="accent">Right now.</span></h1>
+    <p class="lede" style="margin-top:1.6rem;">A recorded conversation to a working tool that deploys AI to execute a task for you — take some information in, have AI assess it, check its call, produce an outcome. Same tools, same order, your own laptop, your own idea.</p>
+    <div class="chip-strip">
+      <div class="chip">You'll finish with a live URL</div>
+      <div class="chip">You build your own — solo</div>
+      <div class="chip">Nothing to install today</div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 3 · accounts — doubles as the checklist you paste into the invite email -->
+<section class="scene" id="licences">
+  <div class="scene-inner">
+    <div class="kicker">Your six accounts · this slide goes in the invite email</div>
+    <h2>What you signed up for, and <span class="accent">how to check it works</span>.</h2>
+    <div class="grid-2 stagger" style="margin-top:1.8rem;">
+      <div class="card"><div class="tag">Free</div><div class="app-head"><span class="app-icon" style="background:#F26207;" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><rect x="4" y="2.5" width="8" height="6.5" rx="1" fill="#fff"/><rect x="12" y="9" width="8" height="6.5" rx="1" fill="#fff"/><rect x="4" y="15.5" width="8" height="6.5" rx="1" fill="#fff"/></svg></span><h3>Replit</h3></div><p><a class="pill-url" href="https://replit.com" target="_blank" rel="noopener">replit.com</a></p><p style="margin-top:.6rem;"><strong style="color:var(--ink);">Starter plan.</strong> Check: you can see a <strong style="color:var(--ink);">Create App</strong> button on the home screen.</p><p style="margin-top:.5rem;color:var(--accent);">Don't build anything before the day — your allowance is what we're spending.</p></div>
+      <div class="card"><div class="tag">Free</div><div class="app-head"><span class="app-icon" style="background:#24292F;" aria-hidden="true"><svg viewBox="0 0 16 16" width="21" height="21" fill="#fff"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></span><h3>GitHub</h3></div><p><a class="pill-url" href="https://github.com" target="_blank" rel="noopener">github.com</a></p><p style="margin-top:.6rem;"><strong style="color:var(--ink);">Free plan.</strong> Check: you can start a <strong style="color:var(--ink);">New repository</strong>. We'll make it public.</p></div>
+      <div class="card"><div class="tag">Free</div><div class="app-head"><span class="app-icon" style="background:#F7F1E3;color:#1E1E1A;font-size:1.1rem;" aria-hidden="true">g</span><h3>Granola</h3></div><p><a class="pill-url" href="https://granola.ai" target="_blank" rel="noopener">granola.ai</a></p><p style="margin-top:.6rem;"><strong style="color:var(--ink);">Basic plan.</strong> Desktop app installed. Check: you can start a new note and see it transcribing.</p></div>
+      <div class="card"><div class="tag">Free · 14-day clock</div><div class="app-head"><span class="app-icon" style="background:#101014;" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 9c2.7-2.8 5.3 2.8 8 0s5.3 2.8 8 0"/><path d="M4 15c2.7-2.8 5.3 2.8 8 0s5.3 2.8 8 0"/></svg></span><h3>Wispr Flow</h3></div><p><a class="pill-url" href="https://wisprflow.ai" target="_blank" rel="noopener">wisprflow.ai</a></p><p style="margin-top:.6rem;"><strong style="color:var(--ink);">Basic plan</strong> — you get 14 days of unlimited words from signup, so sign up when the invite lands, not before. Check: press your shortcut anywhere and the mic appears.</p></div>
+      <div class="card" style="border-color:var(--accent);"><div class="tag">Paid — and worth it</div><div class="app-head"><span class="app-icon" style="background:#D97757;" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="21"/><line x1="3" y1="12" x2="8" y2="12"/><line x1="16" y1="12" x2="21" y2="12"/><line x1="5.7" y1="5.7" x2="9.2" y2="9.2"/><line x1="14.8" y1="14.8" x2="18.3" y2="18.3"/><line x1="18.3" y1="5.7" x2="14.8" y2="9.2"/><line x1="9.2" y1="14.8" x2="5.7" y2="18.3"/></svg></span><h3>Claude Pro</h3></div><p><a class="pill-url" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a></p><p style="margin-top:.6rem;"><strong style="color:var(--ink);">US$20/month.</strong> This is the engine of the whole hour — Claude Code isn't on the free plan. This is the one to accept paying for. Check: open <strong style="color:var(--ink);">claude.ai/code</strong> and you can connect GitHub.</p></div>
+      <div class="card" style="border-color:var(--accent);"><div class="tag">The key</div><div class="app-head"><span class="app-icon" style="background:var(--card);border:1px solid var(--accent);color:var(--accent);font-size:.72rem;letter-spacing:.06em;box-shadow:none;" aria-hidden="true">API</span><h3>Anthropic API key</h3></div><p><a class="pill-url" href="https://console.anthropic.com" target="_blank" rel="noopener">console.anthropic.com</a></p><p style="margin-top:.6rem;">A new account gets a one-off <strong style="color:var(--ink);">US$5 credit</strong> — phone verification, no card. Go to <strong style="color:var(--ink);">API Keys → Create Key</strong>, copy it, keep it somewhere safe.</p><p style="margin-top:.5rem;color:var(--accent);">This is what lets YOUR app call AI. On the day it goes in a vault — never in code.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 4 · ideation — replaces the fixed Kiwi Rewards brief -->
+<section class="scene" id="idea">
+  <div class="scene-inner">
+    <div class="kicker">What you'll build · two shapes, pick one</div>
+    <h2>Build a <span class="accent">worker</span> — or a <span class="accent">reporter</span>.</h2>
+    <p class="lede">Two shapes of tool, same one-hour build. Pick a task from your own week, then decide which shape it is:</p>
+    <div class="grid-2 stagger" style="margin-top:1.8rem;align-items:stretch;">
+      <div class="card" style="border-color:var(--accent);display:flex;flex-direction:column;">
+        <div class="tag">Option 1 · The worker</div>
+        <h3>It does a task for you</h3>
+        <ul class="clean" style="margin-top:.5rem;">
+          <li><strong>Information goes in</strong> — pasted text, an upload, a form.</li>
+          <li><strong>AI assesses it</strong> — against your rules, your policy, your context.</li>
+          <li><strong>You eyeball the call</strong> — approve, reject, or nudge.</li>
+          <li><strong>An action comes out</strong> — a drafted reply, a decision, something sent.</li>
+        </ul>
+        <div class="chip-strip" style="margin-top:auto;padding-top:1.1rem;">
+          <div class="chip" style="font-size:.8rem;">Complaint in → reply drafted for your sign-off</div>
+          <div class="chip" style="font-size:.8rem;">Meeting notes in → follow-up email you approve</div>
+          <div class="chip" style="font-size:.8rem;">Leave requests in → clash report</div>
+        </div>
+      </div>
+      <div class="card" style="border-color:var(--accent);display:flex;flex-direction:column;">
+        <div class="tag">Option 2 · The reporter</div>
+        <h3>It analyses and reports for you</h3>
+        <ul class="clean" style="margin-top:.5rem;">
+          <li><strong>Data goes in</strong> — a spreadsheet, weekly numbers, an export.</li>
+          <li><strong>AI analyses it</strong> — trends, comparisons, the week-on-week story.</li>
+          <li><strong>It flags what matters</strong> — anomalies, outliers, drafted commentary.</li>
+          <li><strong>A report comes out</strong> — you edit the commentary and send it.</li>
+        </ul>
+        <div class="chip-strip" style="margin-top:auto;padding-top:1.1rem;">
+          <div class="chip" style="font-size:.8rem;">Weekly numbers in → commentary drafted, you edit</div>
+          <div class="chip" style="font-size:.8rem;">Invoices in → anomalies flagged for review</div>
+          <div class="chip" style="font-size:.8rem;">Sales data in → trend report, outliers named</div>
+        </div>
+      </div>
+    </div>
+    <p class="footline">Either way, the test is the same: <strong style="color:var(--ink);">it's repetitive</strong> — happens every week, roughly the same way. <strong style="color:var(--ink);">It needs your context</strong> — your rules and definitions, which is exactly why a plain chat window hasn't already solved it. And <strong style="color:var(--ink);">you check it</strong> before anything goes out.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 5 · the hour -->
+<section class="scene" id="roadmap">
+  <div class="scene-inner">
+    <div class="kicker">The hour · on your own laptop</div>
+    <h2>Eight steps. <span class="accent">You've seen all of them already.</span></h2>
+    <div class="gallery stagger" style="margin-top:1.6rem;">
+      <div class="tile"><div class="tnum">STEP 1 &middot; 6 MIN</div><h3>Talk your idea out</h3><p>Out loud, solo, recorded in Granola.</p></div>
+      <div class="tile"><div class="tnum">STEP 2 &middot; 8 MIN</div><h3>Claude writes your prompts</h3><p>Requirements, a Replit build prompt, a design prompt — instructed by voice.</p></div>
+      <div class="tile"><div class="tnum">STEP 3 &middot; 4 MIN</div><h3>See the wireframe</h3><p>Look and feel before any code.</p></div>
+      <div class="tile"><div class="tnum">STEP 4 &middot; 12 MIN</div><h3>Scaffold it in Replit</h3><p>The longest step. Then poke it in Preview.</p></div>
+      <div class="tile"><div class="tnum">STEP 5 &middot; 4 MIN</div><h3>Key in the vault</h3><p>Your Anthropic API key goes into Secrets.</p></div>
+      <div class="tile"><div class="tnum">STEP 6 &middot; 5 MIN</div><h3>Push to GitHub</h3><p>Your code leaves Replit.</p></div>
+      <div class="tile"><div class="tnum">STEP 7 &middot; 10 MIN</div><h3>Claude Code makes a change</h3><p>One adjustment, in auto mode, via a pull request.</p></div>
+      <div class="tile"><div class="tnum">STEP 8 &middot; 6 MIN</div><h3>Merge &amp; publish</h3><p>Open it on your phone.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 6 · green light -->
+<section class="scene" id="step0">
+  <div class="scene-inner">
+    <div class="kicker">Step 0 &middot; 2 minutes</div>
+    <h2>Green light.</h2>
+    <p class="lede">Hands up if you have all six ready: Granola, Wispr Flow, Replit, GitHub, Claude Pro — and your Anthropic API key saved somewhere you can find it.</p>
+    <div class="card" style="margin-top:2rem;border-color:var(--accent);">
+      <h3>Missing one?</h3>
+      <p style="margin-top:.4rem;">Buddy up with someone who has it installed and shadow them today — you'll still see every step, and you can build your own tomorrow.</p>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 7 · step 1a — what to say before recording -->
+<section class="scene" id="step1-think">
+  <div class="scene-inner">
+    <div class="kicker">Step 1 &middot; before you hit record</div>
+    <h2>Four things to <span class="accent">talk through</span>.</h2>
+    <p class="lede">You're about to describe your tool out loud. Cover these four and the rest of the hour looks after itself:</p>
+    <div class="grid-2 stagger" style="margin-top:1.8rem;">
+      <div class="card"><div class="tag">01</div><h3>The outcome</h3><p>What does this tool produce when it works? A drafted email? A flag list? Be concrete about what "done" looks like.</p></div>
+      <div class="card"><div class="tag">02</div><h3>How it knows it did well</h3><p>What checks should it run on itself? What would make you distrust its answer? Say the failure cases out loud.</p></div>
+      <div class="card"><div class="tag">03</div><h3>The inputs</h3><p>What will you actually give it — pasted text, a file, a form? Describe what that input looks like, mess and all.</p></div>
+      <div class="card"><div class="tag">04</div><h3>The work</h3><p>What is the AI actually doing in the middle — assessing against what rules? And where exactly do YOU want to check before it acts?</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 8 · step 1b — recording in Granola. artefact.slot: real screenshot to be added -->
+<section class="scene" id="step1-record">
+  <div class="scene-inner">
+    <div class="kicker">Step 1 &middot; 6 minutes &middot; Granola</div>
+    <h2>Hit record. <span class="accent">Talk like a human.</span></h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · Granola desktop app</div>
+      <ol>
+        <li>Open Granola → click <span class="ui">+ New note</span>, <strong>top right</strong> of the home screen.</li>
+        <li>Glance at the transcript panel — <strong>words appearing as you talk</strong> means it's listening.</li>
+        <li>Talk for ~6 minutes, then click <span class="ui">End</span> to stop the note.</li>
+        <li>Open the note → <strong>select and copy the whole transcript</strong> — you're taking it to Claude next.</li>
+      </ol>
+    </div>
+    <div class="grid-2 stagger" style="margin-top:1.6rem;">
+      <div class="card"><h3>Mumble away</h3><p>You don't need to speak clearly or in full sentences. Granola copes. Long pauses are fine too — think, then talk.</p></div>
+      <div class="card"><h3>Change your mind mid-stream</h3><p>"Actually, no, scrap that —" is valuable signal, not noise. The rethinking IS the requirements.</p></div>
+      <div class="card"><h3>Don't dictate — ramble</h3><p>You're not writing a document. You're thinking out loud about the four things on the last slide.</p></div>
+      <div class="card" style="border-color:var(--accent);"><h3>Then stop, and open the transcript</h3><p>Six minutes is plenty. Copy the whole transcript — you're taking it to Claude next.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 9 · step 2 — Claude + Wispr: the prompt that writes the prompts -->
+<section class="scene" id="step2">
+  <div class="scene-inner">
+    <div class="kicker">Step 2 &middot; 8 minutes &middot; Claude + Wispr Flow</div>
+    <h2>Paste the transcript. <span class="accent">Speak the instruction.</span></h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · claude.ai + Wispr Flow</div>
+      <ol>
+        <li>Go to <span class="ui">claude.ai</span> → start a <span class="ui">New chat</span>.</li>
+        <li><strong>Paste the whole Granola transcript</strong> into the message box.</li>
+        <li>Press your <span class="ui">Wispr Flow shortcut</span> — the mic overlay appears wherever your cursor is.</li>
+        <li><strong>Speak the instruction below</strong>, release the shortcut, then send.</li>
+      </ol>
+    </div>
+    <div class="card promptbox" style="margin-top:1.4rem;">
+      <div class="tag">Say something like this — hit your Wispr shortcut and talk, don't type</div>
+      <p class="mono">I've pasted a transcript of me talking through a tool I want to build. I'm a business owner, not an engineer. Give me three things. <strong>One</strong> — a plain-English summary of the tool: the inputs, the work the AI does, the check I make in the middle, and the action that comes out the end. Under half a page, with anything that should wait for version two clearly parked. <strong>Two</strong> — a ready-to-paste build prompt for Replit Agent, describing the app screen by screen. The AI step must call the Anthropic API, and the key must be read from an environment secret called ANTHROPIC_API_KEY — never hard-coded. It needs a place where I approve or reject the AI's assessment before anything final happens. <strong>Three</strong> — a short design prompt I can run next to get the look and feel. If anything in my transcript is ambiguous, ask me up to three questions before you write anything.</p>
+    </div>
+    <p class="footline"><strong style="color:var(--accent);">Then cut something.</strong> Out loud. That single act is the entire job of a product owner, and it needs no technical skill at all.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 10 · step 3 — design / wireframe -->
+<section class="scene" id="step3">
+  <div class="scene-inner">
+    <div class="kicker">Step 3 &middot; 4 minutes &middot; Claude</div>
+    <h2>Look at it <span class="accent">before you build it</span>.</h2>
+    <div class="card promptbox" style="margin-top:1.6rem;">
+      <div class="tag">Next message — run the design prompt Claude just wrote you, or say this</div>
+      <p class="mono">Now show me the look and feel. Describe the layout — what sits at the top, the hierarchy of information, and where my approve/reject checkpoint lives — then draw it as simple wireframes so I can see it before we build anything. No code yet.</p>
+    </div>
+    <p class="footline">Ten seconds looking at a wireframe beats ten minutes rebuilding. This is the cheapest step in the hour and the one most people skip.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 11 · step 4a — scaffold in Replit -->
+<section class="scene" id="step4">
+  <div class="scene-inner">
+    <div class="kicker">Step 4 &middot; 12 minutes &middot; Replit</div>
+    <h2>Scaffold it. <span class="accent">This is the long one.</span></h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · replit.com</div>
+      <ol>
+        <li>Go to <span class="ui">replit.com</span> → click <span class="ui">Create App</span>, <strong>top left</strong> of the home screen.</li>
+        <li>Choose <span class="ui">Describe an app</span> — <strong>not</strong> a language template. You're telling it what you want in words.</li>
+        <li><strong>Paste the build prompt Claude wrote you in step 2</strong> — the whole thing, untouched — then click <span class="ui">Start building</span>.</li>
+        <li>Let it run. It takes a few minutes and narrates as it goes.</li>
+      </ol>
+    </div>
+    <div class="card" style="margin-top:1.4rem;"><h3>While it builds: reread your requirements</h3><p>The plain-English summary Claude wrote you in step 2 is your checklist — you're about to check the agent's work against it.</p></div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 12 · step 4b — Preview: poke it, fix it in sentences -->
+<section class="scene" id="step4-preview">
+  <div class="scene-inner">
+    <div class="kicker">Step 4 &middot; still &middot; Replit Preview</div>
+    <h2>Preview is your app, <span class="accent">live</span>. Poke it.</h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · Replit workspace</div>
+      <ol>
+        <li>The <span class="ui">Preview</span> pane on the <strong>right</strong> is your app, running live. Click around in it like a user would.</li>
+        <li>Spot something wrong? Type the fix <strong>as a plain sentence</strong> into the <span class="ui">Agent chat</span> on the <strong>left</strong>, and send.</li>
+        <li>Repeat — poke, describe, let it fix — until your approve/reject checkpoint sits where you wanted it.</li>
+      </ol>
+    </div>
+    <div class="grid-2 stagger" style="margin-top:1.6rem;">
+      <div class="card"><h3>Use it like your user would</h3><p>Paste a real-ish input in. Click the buttons. Does the checkpoint appear where you wanted it?</p></div>
+      <div class="card" style="border-color:var(--accent);"><h3>Every fix is a sentence</h3><p class="mono2">"The approve button should come BEFORE the email is drafted, not after."</p><p style="margin-top:.5rem;">Tell the agent what's wrong in plain English. That's the whole skill.</p></div>
+    </div>
+    <p class="footline">It will get at least one thing wrong. That's not failure — noticing it is the product owner's job, and the fix is never more than a sentence.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 13 · step 5 — Secrets vault + Anthropic key -->
+<section class="scene" id="step5">
+  <div class="scene-inner">
+    <div class="kicker">Step 5 &middot; 4 minutes &middot; Replit Secrets</div>
+    <h2>The key goes in the vault. <span class="accent">Never in the code.</span></h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · Replit → Tools → Secrets</div>
+      <ol>
+        <li>Get your key: <span class="ui">console.anthropic.com</span> → <span class="ui">API Keys</span> → <strong>copy the key you created before today</strong>.</li>
+        <li>In Replit: open <span class="ui">Tools</span> in the <strong>left sidebar</strong> → click <span class="ui">Secrets</span>.</li>
+        <li>Click <span class="ui">+ New Secret</span> · Name: <span class="ui">ANTHROPIC_API_KEY</span> · Value: <strong>paste the key</strong> → save.</li>
+        <li>Back in <span class="ui">Preview</span>, run the AI step. Your build prompt already told the agent to read this secret — it should work now.</li>
+      </ol>
+    </div>
+    <p class="footline">This is why the secret exists: the key never appears in your code, so it never lands in GitHub, never shows in a screenshot, and can be revoked without touching the app. This is the pattern your security team will want to see.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 14 · step 6 — GitHub -->
+<section class="scene" id="step6">
+  <div class="scene-inner">
+    <div class="kicker">Step 6 &middot; 5 minutes &middot; GitHub</div>
+    <h2>Get your code <span class="accent">out of Replit</span>.</h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · Replit Git panel → GitHub</div>
+      <ol>
+        <li>Open the <span class="ui">Git</span> panel in Replit's <strong>left sidebar</strong>.</li>
+        <li>Click <span class="ui">Connect to GitHub</span> and authorise the popup.</li>
+        <li>Create a new repository — name it <span class="ui">build-lab-yourname</span>, set it to <span class="ui">Public</span>. That's fine: your key lives in Secrets, not code — just keep real customer data out of the repo.</li>
+        <li>Click <span class="ui">Commit &amp; push</span>, then go and look at your code on <span class="ui">github.com</span>.</li>
+      </ol>
+    </div>
+    <p class="footline">This isn't bureaucracy. It's the undo button, the audit trail, and the single thing that will most calm your security team down. It's also what lets Claude work on it next.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 15 · step 7 — Claude Code, choosing an adjustment, auto mode -->
+<section class="scene" id="step7">
+  <div class="scene-inner">
+    <div class="kicker">Step 7 &middot; 10 minutes &middot; Claude Code</div>
+    <h2>Now let Claude <span class="accent">make a change</span>.</h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · claude.ai/code</div>
+      <ol>
+        <li>Go to <span class="ui">claude.ai/code</span> — nothing to install, it runs in the browser.</li>
+        <li>Click the <span class="ui">repo &amp; branch picker</span> just <strong>above the message box</strong> → connect GitHub → choose <strong>your repo</strong>, branch <span class="ui">main</span>.</li>
+        <li>Type (or Wispr) your one-sentence adjustment, and send.</li>
+        <li>The <strong>first time</strong> it asks permission to edit or run something, choose <span class="ui">Always allow</span> — that's auto mode. It's a plain dialog; you can't miss it.</li>
+        <li>When it finishes, click through to the <span class="ui">pull request</span> it opened on GitHub.</li>
+      </ol>
+    </div>
+    <div class="grid-2 stagger" style="margin-top:1.6rem;">
+      <div class="card"><div class="tag">Pick well</div><h3>Small, visible, one sentence</h3><p>Good picks: a summary line above the result &middot; a download button &middot; a severity score on each assessment &middot; a history of past runs.</p></div>
+      <div class="card" style="border-color:var(--accent);"><div class="tag">Then read it</div><h3>The pull request description — not the code</h3><p>It tells you what it did and why, in English. Auto mode means you review once, at the end, instead of approving every step. That's the "it won't be documented" myth answering itself.</p></div>
+    </div>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 16 · step 8 — merge & publish -->
+<section class="scene" id="step8">
+  <div class="scene-inner">
+    <div class="kicker">Step 8 &middot; 6 minutes &middot; GitHub + Replit</div>
+    <h2>Merge it. Publish it. <span class="accent">Open it on your phone.</span></h2>
+    <div class="clickpath">
+      <div class="cp-head">Where to click · GitHub → Replit → your phone</div>
+      <ol>
+        <li>On your pull request page on GitHub, scroll to the bottom → click the green <span class="ui">Merge pull request</span> button. You can't miss it.</li>
+        <li>Back in Replit: open the <span class="ui">Git</span> panel → click <span class="ui">Pull</span> to bring the merged change in.</li>
+        <li>Click <span class="ui">Publish</span>, <strong>top right</strong> of the workspace (it reads <span class="ui">Republish</span> after your first deploy) → take the <strong>free option</strong> → wait for your URL.</li>
+        <li><strong>Get your phone out.</strong> Type the URL in. Look at it.</li>
+      </ol>
+    </div>
+    <p class="lede" style="margin-top:2.4rem;">An hour ago this was you, talking. It's now a working tool with an AI step, a human checkpoint, and a URL you could send your team this afternoon.</p>
+  </div>
+  <div class="mark">one<span class="dot">.</span>nz</div>
+</section>
+
+<!-- SLIDE 17 · closing -->
+<section class="scene" id="closing">
+  <div class="scene-inner">
+    <div class="kicker">What just happened</div>
+    <h2>In one hour, with <span class="accent">no engineers</span>.</h2>
+    <div class="grid-3 stagger" style="margin-top:2rem;">
+      <div class="card"><div class="big-num" style="font-size:clamp(1.8rem,3.4vw,2.6rem);">1</div><div class="vs-lab" style="margin-top:.4rem;">Conversation, recorded</div></div>
+      <div class="card"><div class="big-num" style="font-size:clamp(1.8rem,3.4vw,2.6rem);">1</div><div class="vs-lab" style="margin-top:.4rem;">AI step, key safely in a vault</div></div>
+      <div class="card"><div class="big-num" style="font-size:clamp(1.8rem,3.4vw,2.6rem);">1</div><div class="vs-lab" style="margin-top:.4rem;">Live URL, on your phone</div></div>
+    </div>
+    <p class="lede" style="margin-top:2.4rem;">Nothing you did today required a technical skill. It required you to know what good looks like for one task in your own week — and you already did.</p>
+    <div class="grid-2 stagger" style="margin-top:2rem;">
+      <div class="card"><div class="tag">Hardening it · next</div><h3>Add a sign-in</h3><p><strong style="color:var(--ink);">Magic link</strong> is the easy path — you enter your email, it sends a one-time link, no passwords to manage. Ask Claude to add it; it's one more pull request.</p></div>
+      <div class="card"><div class="tag">Even better</div><h3>Use your company SSO</h3><p>If your organisation is open to it, single sign-on puts the tool behind the same login as everything else — talk to your IT team before wiring it up.</p></div>
+    </div>
+    <div class="signoff">
+      <div class="so-mark">one<span class="dot">.</span>nz</div>
+      <div>Drop your published link in the shared doc before you go</div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function setTheme(mode){
+    root.classList.remove('theme-dark','theme-light');
+    root.classList.add(mode);
+    btn.textContent = mode === 'theme-dark' ? 'Light' : 'Dark';
+  }
+  btn.addEventListener('click', function(){
+    setTheme(root.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark');
+  });
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.15 });
+  var scenes = Array.prototype.slice.call(document.querySelectorAll('.scene'));
+  scenes.forEach(function(s){ io.observe(s); });
+
+  /* Arrow-key navigation: ↓ next scene, ↑ previous scene */
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    var y = window.scrollY, idx = 0, best = Infinity;
+    scenes.forEach(function(s, i){
+      var d = Math.abs(s.offsetTop - y);
+      if (d < best){ best = d; idx = i; }
+    });
+    var next = e.key === 'ArrowDown'
+      ? Math.min(idx + 1, scenes.length - 1)
+      : Math.max(idx - 1, 0);
+    scenes[next].scrollIntoView({ behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
