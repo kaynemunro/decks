@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<!--
+  ONE NZ · REPLIT — AI STEERCO PACK
+  Built in the reference-deck archetype system. CSS layered:
+  LAYER 1 tokens -> LAYER 2 primitives -> LAYER 3 one block per archetype.
+  Rhythm rule: no two adjacent scenes share a shape; dark grounds every 3-5 scenes.
+  Live figures sourced from ai_usage_logs / access_logs (17-Aug-2026); build costs are the author's own.
+-->
+<html lang="en-NZ" class="theme-light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Replit at One NZ · AI Steerco</title>
+<style>
+/* ========================================================================================
+   LAYER 1 · DESIGN TOKENS — both themes authored together.
+   ======================================================================================== */
+html.theme-light{
+  --bg:#FFFFFF; --bg-sunk:#F8F9FA; --surface:#FFFFFF; --surface-2:#F8F9FA;
+  --ink:#323232; --ink-2:#5A6376; --ink-3:rgba(90,99,118,.58);
+  --hair:#E1E4E9; --hair-2:rgba(50,50,50,.14);
+  --green:#00A45F; --green-txt:#1B7C53; --green-lift:#12CB77;
+  --green-mid:#95EEB4; --green-pale:#CDFBDD; --green-deep:#0A3833; --green-deeper:#06231F;
+  --green-wash:rgba(0,164,95,.07); --green-line:rgba(0,164,95,.26); --green-fog:rgba(0,164,95,.14);
+  --ground:#06231F; --ground-2:#0A3833; --g-ink:#FFFFFF; --g-ink-2:rgba(255,255,255,.64);
+  --g-hair:rgba(149,238,180,.20); --g-accent:#95EEB4; --g-wash:rgba(149,238,180,.07);
+  --alert:#D31F3F; --warn:#FFD600; --track:#E4E7EB;
+  --lift:0 1px 2px rgba(10,56,51,.04),0 10px 28px -14px rgba(10,56,51,.14);
+}
+html.theme-dark{
+  --bg:#06231F; --bg-sunk:#06231F; --surface:#0A3833; --surface-2:rgba(149,238,180,.045);
+  --ink:#FFFFFF; --ink-2:rgba(255,255,255,.66); --ink-3:rgba(255,255,255,.40);
+  --hair:rgba(149,238,180,.18); --hair-2:rgba(149,238,180,.30);
+  --green:#12CB77; --green-txt:#95EEB4; --green-lift:#12CB77;
+  --green-mid:#95EEB4; --green-pale:#CDFBDD; --green-deep:#0A3833; --green-deeper:#06231F;
+  --green-wash:rgba(18,203,119,.10); --green-line:rgba(149,238,180,.30); --green-fog:rgba(18,203,119,.18);
+  --ground:#0A3833; --ground-2:#06231F; --g-ink:#FFFFFF; --g-ink-2:rgba(255,255,255,.66);
+  --g-hair:rgba(149,238,180,.22); --g-accent:#95EEB4; --g-wash:rgba(149,238,180,.06);
+  --alert:#D31F3F; --warn:#FFD600; --track:rgba(255,255,255,.10);
+  --lift:0 1px 2px rgba(6,35,31,.30),0 12px 32px -14px rgba(6,35,31,.60);
+}
+:root{
+  --font:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --t-micro:11px; --t-label:13px; --t-small:15px; --t-body:17px; --t-lead:21px;
+  --t-h4:24px; --t-h3:30px; --t-h2:40px; --t-h1:56px; --t-display:80px; --t-mega:176px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pad-x:88px; --pad-y:54px;
+}
+/* ========================================================================================
+   LAYER 2 · PRIMITIVES — hierarchy from SIZE, GROUND, COLOUR, CASE, SPACE, DENSITY.
+   ======================================================================================== */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); font-weight:400; color:var(--ink); background:var(--bg);
+  -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;
+  transition:background-color .32s var(--ease),color .32s var(--ease);
+}
+.scene{
+  position:relative; min-height:100vh; padding:var(--pad-y) var(--pad-x) 34px;
+  display:grid; grid-template-rows:auto 1fr auto; gap:28px;
+  background:var(--bg); border-top:1px solid var(--hair); overflow:hidden;
+}
+.scene:first-of-type{border-top:0}
+.scene--sunk{background:var(--bg-sunk)}
+.scene--ground{background:var(--ground); border-top:0; color:var(--g-ink)}
+.scene--ground .t-micro,.scene--ground .eyebrow{color:var(--g-accent)}
+.scene--ground h1,.scene--ground h2,.scene--ground h3,.scene--ground h4{color:var(--g-ink)}
+.scene--ground .t-body,.scene--ground .lede,.scene--ground .note,.scene--ground .t-small{color:var(--g-ink-2)}
+.scene--ground .mark{color:var(--g-ink-2)} .scene--ground .pg{color:var(--g-ink-2)}
+.scene--ground::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 88% -10%,var(--g-wash),transparent 62%);
+}
+.scene--ground>*{position:relative}
+.scene-head{display:grid;gap:14px;padding-right:150px}
+.scene-body{display:grid;min-height:0}
+.scene-foot{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding-top:18px;border-top:1px solid var(--hair);
+}
+.scene--ground .scene-foot{border-top-color:var(--g-hair)}
+.pg{font-size:var(--t-micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.mark{font-size:var(--t-label);font-weight:500;letter-spacing:-.01em;color:var(--ink-2)}
+.mark i{font-style:normal;color:var(--green)}
+.t-micro{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--green-txt);line-height:1.3}
+.t-label{font-size:var(--t-label);font-weight:500;color:var(--ink-2);line-height:1.4}
+.t-small{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.t-body{font-size:var(--t-body);color:var(--ink-2);line-height:1.58;max-width:66ch;text-wrap:pretty}
+.lede{font-size:var(--t-lead);color:var(--ink-2);line-height:1.5;max-width:56ch;text-wrap:pretty}
+.note{font-size:var(--t-label);color:var(--ink-3);line-height:1.5;max-width:74ch}
+h1,h2,h3,h4,p,ul,ol,li,figure,blockquote,dl,dd,dt{margin:0;padding:0;list-style:none}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.022em;line-height:1.04;color:var(--ink);text-wrap:balance}
+.t-h1{font-size:var(--t-h1)} .t-h2{font-size:var(--t-h2)} .t-h3{font-size:var(--t-h3);letter-spacing:-.015em;line-height:1.14}
+.t-h4{font-size:var(--t-h4);letter-spacing:-.012em;line-height:1.22;font-weight:600}
+.t-mega{font-size:var(--t-mega);font-weight:500;letter-spacing:-.045em;line-height:.84}
+.num{font-variant-numeric:tabular-nums;font-weight:500;letter-spacing:-.02em}
+.q-ink{color:var(--ink)} .q-2{color:var(--ink-2)} .q-3{color:var(--ink-3)} .q-g{color:var(--green-txt)}
+.rule-accent{height:3px;width:56px;background:var(--green);border-radius:2px}
+.scene--ground .rule-accent{background:var(--g-accent)}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--hair);font-size:var(--t-label);font-weight:500;color:var(--ink);background:var(--surface);
+}
+.chip--fill{background:var(--green-wash);border-color:var(--green-line);color:var(--green-txt)}
+.tick{display:inline-block;width:0;height:0;border:5px solid transparent;border-bottom:7px solid currentColor;transform:translateY(-1px)}
+.panel{background:var(--surface);border:1px solid var(--hair);border-radius:18px;padding:26px 28px}
+.panel h3{font-size:var(--t-h4);margin-bottom:10px}
+.panel p{font-size:var(--t-small);color:var(--ink-2);line-height:1.55}
+.panel--hi{border-color:var(--green-line);background:var(--green-wash)}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;width:100%}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;width:100%}
+.footline{font-size:var(--t-small);color:var(--ink-3);line-height:1.55;padding-top:18px;border-top:1px solid var(--hair);width:100%}
+#themeToggle{
+  position:fixed;top:26px;right:32px;z-index:50;font:inherit;font-size:var(--t-label);font-weight:500;
+  padding:10px 20px;border-radius:999px;cursor:pointer;color:var(--ink);
+  background:var(--surface);border:1px solid var(--hair);box-shadow:var(--lift);
+  transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease);
+}
+#themeToggle:hover{border-color:var(--green-line);color:var(--green-txt)}
+#themeToggle:focus-visible{outline:3px solid var(--green-line);outline-offset:2px}
+.anim{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim{opacity:1;transform:none}
+.anim-grow{transform-origin:left center;transform:scaleX(.001);transition:transform .8s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim-grow{transform:scaleX(1)}
+@media (prefers-reduced-motion:reduce){
+  .anim,.anim-grow{opacity:1!important;transform:none!important;transition:none!important}
+  body,#themeToggle{transition:none}
+}
+/* ========================================================================================
+   LAYER 3 · ARCHETYPE BLOCKS
+   ======================================================================================== */
+/* --- cover.hero — opening scene only --------------------------------------------------- */
+.cover-body{grid-template-rows:1fr auto;align-content:stretch;gap:48px}
+.cover-title{font-size:104px;letter-spacing:-.035em;line-height:.96;align-self:end;max-width:20ch}
+.cover-title span{display:block;color:var(--g-ink-2)}
+.cover-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-top:30px;border-top:1px solid var(--g-hair)}
+.cover-meta dt{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--g-accent);margin-bottom:10px}
+.cover-meta dd{font-size:var(--t-body);color:var(--g-ink);line-height:1.45}
+.cover-stamp{display:inline-flex;align-items:center;gap:12px;align-self:start;padding:10px 18px 10px 14px;border:1px solid var(--g-hair);border-radius:999px;font-size:var(--t-label);font-weight:500;color:var(--g-ink)}
+.cover-stamp b{font-weight:500;color:var(--g-accent)}
+.cover-mark{font-size:34px;font-weight:500;letter-spacing:-.02em;color:var(--g-ink)}
+.cover-mark i{font-style:normal;color:var(--g-accent)}
+/* --- agenda.index — ordered sections only ----------------------------------------------- */
+.index-body{grid-template-columns:270px 1fr;gap:64px;align-items:start}
+.index-list{display:grid;grid-auto-rows:1fr;align-content:stretch;height:100%}
+.index-row{display:grid;grid-template-columns:112px 1fr 230px;gap:32px;align-items:center;padding:22px 0;border-top:1px solid var(--hair)}
+.index-row:last-child{border-bottom:1px solid var(--hair)}
+.index-num{font-size:52px;font-weight:500;letter-spacing:-.03em;color:var(--green);line-height:1}
+.index-row h3{font-size:var(--t-h3)}
+.index-row .t-small{margin-top:7px}
+.index-scenes{font-size:var(--t-label);font-weight:500;color:var(--ink-3);text-align:right;letter-spacing:.04em}
+.index-aside{display:grid;gap:20px;padding-right:20px}
+/* --- divider.act — the one archetype meant to repeat verbatim ---------------------------- */
+.act-body{grid-template-columns:1fr auto;align-items:end;gap:60px}
+/* max-width in px, not ch — ch resolves against this element's font-size, not the child's */
+.act-copy{display:grid;gap:26px;align-content:end;padding-bottom:12px;max-width:700px}
+.act-copy h2{font-size:72px;letter-spacing:-.032em;line-height:1;color:var(--g-ink)}
+.act-num{font-size:300px;font-weight:500;line-height:.72;letter-spacing:-.06em;color:transparent;
+  -webkit-text-stroke:1.5px var(--g-hair);opacity:.9;transform:translateX(14px)}
+.act-list{display:flex;gap:26px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--g-hair)}
+.act-list span{font-size:var(--t-label);color:var(--g-ink-2)}
+.act-list span b{font-weight:500;color:var(--g-accent);margin-right:9px}
+/* --- capability.set — four sizes, three treatments; replaces the identical-card grid ----- */
+.cap-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:1.25fr 1fr .85fr;gap:12px;min-height:0}
+.cap{display:grid;border-radius:16px;border:1px solid var(--hair);background:var(--surface);padding:16px 22px;align-content:space-between;gap:16px}
+.cap h3{font-size:var(--t-h4)} .cap p{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.cap--lead{grid-column:1/7;grid-row:1/3;background:var(--green-deep);border-color:var(--green-deep);color:#FFFFFF;padding:26px 32px}
+.cap--lead h3{font-size:44px;color:#FFFFFF;letter-spacing:-.026em;line-height:1.06;max-width:20ch}
+.cap--lead p{font-size:var(--t-body);color:rgba(255,255,255,.68);max-width:44ch}
+.cap--lead .t-micro{color:var(--g-accent)}
+.cap-lead-stat{display:flex;align-items:baseline;gap:16px;padding-top:18px;border-top:1px solid var(--g-hair)}
+.cap-lead-stat .num{font-size:64px;color:#FFFFFF;line-height:.9}
+.cap-lead-stat span{font-size:var(--t-label);color:rgba(255,255,255,.66);max-width:16ch}
+.cap--wide{grid-column:7/13;grid-row:1/2;grid-template-columns:1fr 168px;align-items:center;gap:30px}
+.cap-meter{display:grid;gap:9px}
+.cap-meter .num{font-size:34px;color:var(--green-txt)}
+.cap-meter-track{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+/* display:block is load-bearing: inline boxes ignore width/height */
+.cap-meter-fill{display:block;height:100%;background:var(--green);border-radius:3px}
+.cap--mid1{grid-column:7/10;grid-row:2/3} .cap--mid2{grid-column:10/13;grid-row:2/3}
+.cap--mid1 h3,.cap--mid2 h3{font-size:var(--t-lead)}
+.cap--min{grid-row:3/4;grid-template-columns:auto 1fr;align-items:center;gap:22px;background:transparent;border:0;border-top:1px solid var(--hair);border-radius:0;padding:18px 0 0}
+.cap--min h3{font-size:var(--t-body);white-space:nowrap}
+.cap--min p{font-size:var(--t-label)}
+.cap--min1{grid-column:1/7} .cap--min2{grid-column:7/13}
+/* --- gallery.tiles — the fourteen AI systems; vignettes preserved from the source deck --- */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:13px;align-content:start}
+.tile{background:var(--surface);border:1px solid var(--hair);border-radius:16px;padding:17px 18px;display:flex;flex-direction:column;transition:border-color .3s var(--ease),transform .3s var(--ease)}
+.tile:hover{border-color:var(--green);transform:translateY(-3px)}
+.tile .tnum{font-size:var(--t-micro);font-weight:500;letter-spacing:.16em;color:var(--green-txt);margin-bottom:7px}
+.tile h3{font-size:var(--t-body);letter-spacing:-.01em;margin-bottom:5px}
+.tile p{font-size:var(--t-label);color:var(--ink-2);line-height:1.45}
+.vig{margin-top:auto;padding-top:13px}
+.vwin{border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:var(--bg-sunk)}
+html.theme-dark .vwin{background:var(--green-deeper)}
+.vig-bar{display:flex;gap:5px;padding:7px 9px;border-bottom:1px solid var(--hair)}
+.vig-bar div{width:7px;height:7px;border-radius:50%;background:var(--ink-3);opacity:.5}
+.vig-body{padding:9px 10px;display:flex;flex-direction:column;gap:6px;min-height:62px;justify-content:center}
+.vrow{display:flex;align-items:center;gap:7px}
+.vline{height:7px;border-radius:4px;flex:none}
+.vtick{width:13px;height:13px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:#06231F}
+.vrank{font-size:9px;font-weight:600;color:var(--ink-3);width:11px;flex:none;text-align:center}
+.vchip{margin-left:auto;flex:none;font-size:8px;font-weight:600;letter-spacing:.08em;border-radius:999px;padding:2px 8px;color:#fff}
+.vfile{flex:1;border:1px solid var(--hair);border-radius:7px;padding:12px 4px;text-align:center;font-size:9px;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
+.vbox{width:10px;height:10px;border:1.5px solid var(--ink-3);border-radius:3px;flex:none}
+.vava{width:12px;height:12px;border-radius:50%;flex:none;margin-left:auto}
+.vbars{display:flex;align-items:flex-end;gap:5px;height:44px;flex:1}
+.vbars div{flex:1;max-width:16px;border-radius:3px 3px 0 0}
+.venv{width:36px;height:28px;flex:none;border:1.5px solid var(--ink-3);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-3)}
+.vsql{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9.5px;color:var(--green-txt);letter-spacing:.02em}
+/* --- closing.end — the ground returns; next steps ARE the close --------------------------- */
+.end-body{grid-template-rows:1fr auto;gap:48px}
+.end-main{display:grid;align-content:center;gap:34px;max-width:960px}
+.end-main h2{font-size:80px;letter-spacing:-.034em;line-height:1.02;color:var(--g-ink)}
+.end-next{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;padding-top:32px;border-top:1px solid var(--g-hair)}
+.end-next div{display:grid;gap:10px}
+.end-next b{font-size:var(--t-body);font-weight:500;color:var(--g-ink)}
+.end-next span{font-size:var(--t-label);color:var(--g-ink-2)}
+/* --- system.flow — sources into an engine into outputs, with one feedback loop.
+       Use whenever you'd otherwise describe in prose how things connect. Not for sequence in time. */
+.flow-body{grid-template-rows:1fr auto;gap:26px}
+.flow-diagram{display:grid;grid-template-columns:1fr 76px 1.2fr 76px 1fr;align-items:stretch;min-height:0}
+.flow-col{display:grid;grid-auto-rows:1fr;gap:12px;align-content:stretch}
+.flow-node{position:relative;display:grid;align-content:center;gap:5px;padding:14px 18px;background:var(--surface);border:1px solid var(--hair);border-radius:12px}
+.flow-node b{font-size:var(--t-body);font-weight:500;color:var(--ink);letter-spacing:-.01em}
+.flow-node span{font-size:var(--t-label);color:var(--ink-3)}
+.flow-col--in .flow-node::after{content:"";position:absolute;left:100%;top:50%;width:38px;height:1px;background:var(--hair-2)}
+.flow-bus{position:relative}
+.flow-bus::before{content:"";position:absolute;left:38px;top:12.5%;bottom:12.5%;width:1px;background:var(--hair-2)}
+.flow-bus::after{content:"";position:absolute;left:38px;right:9px;top:50%;height:1px;background:var(--green)}
+.flow-bus .flow-arrow{position:absolute;right:0;top:50%;transform:translateY(-50%);width:0;height:0;border:6px solid transparent;border-left:10px solid var(--green)}
+.flow-bus--out::after{left:0;right:auto;width:38px;background:var(--green)}
+.flow-bus--out .flow-arrow{display:none}
+.flow-engine{position:relative;background:var(--green-deep);border-radius:16px;padding:22px 26px;display:grid;align-content:start;gap:0;color:#FFFFFF}
+.flow-engine::after{content:"";position:absolute;left:100%;top:50%;width:38px;height:1px;background:var(--green)}
+.flow-engine>.t-micro{color:var(--g-accent)}
+.flow-engine h3{color:#FFFFFF;font-size:var(--t-h4);margin:12px 0 14px}
+.flow-engine li{display:grid;gap:4px;padding:10px 0;border-top:1px solid var(--g-hair)}
+.flow-engine li b{font-size:var(--t-body);font-weight:500;color:#FFFFFF}
+.flow-engine li span{font-size:var(--t-label);color:rgba(255,255,255,.62)}
+.flow-col--out .flow-node{border-color:var(--green-line)}
+.flow-col--out .flow-node::before{content:"";position:absolute;right:100%;top:50%;width:38px;height:1px;background:var(--green)}
+.flow-col--out .flow-node::after{content:"";position:absolute;right:100%;top:50%;transform:translate(10px,-50%);width:0;height:0;border:5px solid transparent;border-left:9px solid var(--green)}
+.flow-loop{display:grid;grid-template-columns:1fr 76px 1.2fr 76px 1fr}
+.flow-loop-path{grid-column:3/6;position:relative;height:46px;border:1px solid var(--green-line);border-top:0;border-radius:0 0 16px 16px}
+.flow-loop-path::after{content:"";position:absolute;left:-6px;top:-9px;width:0;height:0;border:5px solid transparent;border-bottom:9px solid var(--green)}
+.flow-loop-label{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:var(--bg-sunk);padding:0 14px;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--green-txt);white-space:nowrap}
+.flow-caption{display:flex;justify-content:space-between;gap:40px;padding-top:18px;border-top:1px solid var(--hair)}
+/* --- process.pipeline — sequential steps with a current position. Order matters here;
+       never use this for an unordered set. Each step draws its own rail segment so it
+       self-aligns at any step count. */
+.pipe-body{grid-template-rows:1fr auto;gap:26px}
+.pipe{position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-content:center;height:100%}
+.pipe-step{display:grid;grid-template-rows:120px 44px 1fr;text-align:center;justify-items:center}
+.pipe-when{display:grid;align-content:end;gap:8px;padding-bottom:20px}
+.pipe-when .num{font-size:40px;color:var(--ink-3);line-height:1}
+.pipe-node-row{position:relative;display:grid;place-items:center;justify-self:stretch;width:100%}
+.pipe-node-row::before,.pipe-node-row::after{content:"";position:absolute;top:50%;height:2px;transform:translateY(-1px);background:var(--hair-2)}
+.pipe-node-row::before{left:0;right:50%} .pipe-node-row::after{left:50%;right:0}
+.pipe-step:first-child .pipe-node-row::before,.pipe-step:last-child .pipe-node-row::after{display:none}
+.pipe-step--done .pipe-node-row::before,.pipe-step--done .pipe-node-row::after,
+.pipe-step--current .pipe-node-row::before{background:var(--green)}
+.pipe-node{width:18px;height:18px;border-radius:50%;background:var(--bg);border:2px solid var(--hair-2);position:relative;z-index:1}
+.pipe-step--done .pipe-node{background:var(--green);border-color:var(--green)}
+.pipe-step--done .pipe-when .num{color:var(--green-txt)}
+.pipe-step--current .pipe-node{background:var(--green);border-color:var(--green);box-shadow:0 0 0 7px var(--green-fog)}
+.pipe-step--current .pipe-when .num{color:var(--ink);font-size:52px}
+.pipe-copy{display:grid;gap:8px;padding:22px 14px 0;max-width:230px}
+.pipe-copy h3{font-size:var(--t-h4);color:var(--ink-3)}
+.pipe-step--done .pipe-copy h3,.pipe-step--current .pipe-copy h3{color:var(--ink)}
+.pipe-copy p{font-size:var(--t-label);color:var(--ink-2);line-height:1.5}
+.pipe-here{margin-top:14px;justify-self:center;padding:6px 14px;border-radius:999px;background:var(--green);color:#FFFFFF;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase}
+html.theme-dark .pipe-here{color:#06231F}
+.pipe-foot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair)}
+.pipe-foot div{padding:22px 26px 0;border-left:1px solid var(--hair)}
+.pipe-foot div:first-child{padding-left:0;border-left:0}
+.pipe-foot .num{display:block;font-size:34px;color:var(--ink);margin:10px 0 6px}
+/* --- myth.rows — dense myth/reality pairs, four to a scene. A row is one claim and its
+       answer; the spine carries the turn. Never render these as a grid of identical cards. */
+.myth-body{grid-template-rows:auto 1fr auto;gap:0}
+.myth-heads{display:grid;grid-template-columns:64px minmax(0,1fr) 60px minmax(0,1.2fr);padding-bottom:14px}
+.myth-rows{display:grid;grid-auto-rows:1fr;align-content:stretch;position:relative}
+.myth-row{display:grid;grid-template-columns:64px minmax(0,1fr) 60px minmax(0,1.2fr);align-items:center;border-top:1px solid var(--hair)}
+.myth-row:last-child{border-bottom:1px solid var(--hair)}
+.myth-n{font-size:var(--t-label);font-weight:500;color:var(--green);letter-spacing:.04em}
+.myth-claim{font-size:var(--t-lead);color:var(--ink-3);letter-spacing:-.008em;padding:20px 34px 20px 0;line-height:1.32}
+.myth-real{font-size:var(--t-lead);font-weight:500;color:var(--ink);letter-spacing:-.012em;padding:20px 0 20px 34px;line-height:1.32;border-left:1px solid var(--hair-2)}
+.myth-real small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-2);margin-top:7px;line-height:1.5}
+.myth-node{display:grid;place-items:center}
+.myth-node span{width:26px;height:26px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.myth-node svg{width:13px;height:13px;stroke:#FFFFFF;stroke-width:2;fill:none}
+html.theme-dark .myth-node svg{stroke:#06231F}
+/* --- compare.thennow — two real columns and a spine. Not five identical cards with arrows. */
+.compare-body{grid-template-rows:auto 1fr auto;gap:0}
+.compare-heads{display:grid;grid-template-columns:1fr 84px 1fr;padding-bottom:16px}
+.compare-rows{display:grid;grid-auto-rows:1fr;align-content:stretch;position:relative}
+.compare-rows::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - .5px);width:1px;background:var(--hair-2)}
+.compare-row{display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;border-top:1px solid var(--hair)}
+.compare-row:last-child{border-bottom:1px solid var(--hair)}
+.compare-then{padding:16px 40px 16px 0;font-size:var(--t-lead);color:var(--ink-3);letter-spacing:-.008em;line-height:1.3}
+.compare-now{padding:16px 0 16px 40px;font-size:var(--t-lead);font-weight:500;color:var(--ink);letter-spacing:-.012em;line-height:1.3}
+.compare-now small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-2);margin-top:6px;line-height:1.5}
+.compare-node{display:grid;place-items:center;position:relative;z-index:1}
+.compare-node span{width:30px;height:30px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.compare-node svg{width:14px;height:14px;stroke:#FFFFFF;stroke-width:2;fill:none}
+html.theme-dark .compare-node svg{stroke:#06231F}
+/* --- learn.rail — a statement scene marked as a confession, not a claim. Green rail, airy. */
+.learn-body{grid-template-rows:1fr auto;gap:26px;align-content:stretch}
+.learn-main{display:grid;gap:24px;align-content:center;justify-items:start;border-left:3px solid var(--green);padding-left:34px}
+/* --- pipe variants — five-step tool chain, tighter copy ---------------------------------- */
+.pipe--five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.pipe--tools .pipe-step{grid-template-rows:92px 44px 1fr}
+.pipe--tools .pipe-copy h3{font-size:var(--t-lead)}
+.pipe--tools .pipe-when .num{font-size:32px}
+/* --- proof.three — one claim, then three stepped proofs; the lead proof is physically bigger.
+       Do not use when all three items carry equal weight. */
+.proof-body{grid-template-rows:1fr auto;gap:40px}
+.proof-claim{display:grid;align-content:center;gap:22px;max-width:1080px}
+.proof-claim h2{font-size:64px;letter-spacing:-.032em;line-height:1.04}
+.proof-set{display:grid;grid-template-columns:1.45fr 1fr 1fr;gap:14px;align-items:stretch}
+.proof-item{display:grid;align-content:start;gap:12px;padding:26px 28px;border-radius:18px;border:1px solid var(--g-hair)}
+.proof-item .pn{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--g-accent)}
+.proof-item h3{font-size:var(--t-h4);color:var(--g-ink)}
+.proof-item p{font-size:var(--t-small);color:var(--g-ink-2);line-height:1.5}
+.proof-item--lead{background:var(--g-wash);border-color:var(--green-line)}
+.proof-item--lead h3{font-size:36px;letter-spacing:-.022em;line-height:1.1}
+.proof-item--lead p{font-size:var(--t-body);color:var(--g-ink-2)}
+/* --- demo.link — a single live-artefact link, used on ground scenes. Never more than one
+       per scene: it is a call to open something, not decoration. */
+.demo-link{display:inline-flex;align-items:center;gap:12px;padding:12px 22px;border-radius:999px;
+  border:1px solid var(--green-line);background:var(--g-wash);color:var(--g-ink);
+  font-size:var(--t-body);font-weight:500;letter-spacing:-.01em;text-decoration:none;
+  transition:background-color .25s var(--ease),border-color .25s var(--ease)}
+.demo-link:hover{background:rgba(149,238,180,.14);border-color:var(--g-accent)}
+.demo-link b{font-weight:500;color:var(--g-accent)}
+.demo-link svg{width:15px;height:15px;stroke:var(--g-accent);stroke-width:2;fill:none}
+/* --- pipe variant — four-step rollout. Sequence with a current position, so pipeline. --- */
+.pipe--four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pipe--four .pipe-copy{max-width:300px}
+/* --- pipe.loop — the one feedback path on a pipeline. Returns from the last step to the step
+       the loop actually re-enters (here: Wispr Flow), never to step 01 by default.
+       Arrow sits at 30% = centre of column 2 of five (100/5 = 20% per col; col-2 centre = 30%). */
+.pipe-loop{position:relative;height:54px;margin-top:6px}
+.pipe-loop-path{position:absolute;left:30%;right:10%;top:0;bottom:0;border:1px solid var(--green-line);border-top:0;border-radius:0 0 16px 16px}
+.pipe-loop-path::after{content:"";position:absolute;left:-5px;top:-10px;width:0;height:0;border:5px solid transparent;border-bottom:9px solid var(--green)}
+.pipe-loop-label{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:var(--bg);padding:0 14px;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--green-txt);white-space:nowrap}
+/* --- proof.three variant — two equal proofs, no stepping. Use ONLY when the pair genuinely
+       carries equal weight; if one leads, go back to the 1.45fr / 1fr / 1fr set. */
+.proof-set--duo{grid-template-columns:repeat(2,minmax(0,1fr))}
+.proof-set--duo .proof-item{padding:38px 36px;align-content:center;gap:18px;min-height:210px}
+.proof-set--duo .proof-item h3{font-size:40px;letter-spacing:-.024em;line-height:1.12;max-width:15ch}
+/* CSS-EXT */
+</style>
+</head>
+<body>
+<button id="themeToggle" type="button" aria-pressed="false">Dark</button>
+<main>
+<!-- SCENE 01 · cover.hero — dark ground, oversized title, meta rail. Opening only. -->
+<section class="scene scene--ground scene-cover">
+  <header class="scene-head">
+    <span class="cover-stamp anim"><b>AI Steerco</b> · decision paper, not a demo</span>
+  </header>
+  <div class="scene-body cover-body">
+    <h1 class="cover-title anim" style="--d:.06s">Replit at One NZ.<span>What it is, how we govern it, what&#8217;s next.</span></h1>
+    <dl class="cover-meta anim" style="--d:.16s;grid-template-columns:1fr">
+      <div><dt>Prepared for</dt><dd>The AI Steerco &#183; August 2026</dd></div>
+    </dl>
+  </div>
+  <footer class="scene-foot">
+    <span class="pg">01 / 14</span>
+    <span class="cover-mark">one<i>.</i>nz</span>
+  </footer>
+</section>
+
+<!-- SCENE 02 · agenda.index — asymmetric numbered index, rows stretch 1fr. -->
+<section class="scene scene-index">
+  <header class="scene-head">
+    <span class="t-micro anim">The run of show</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Three things to cover. One decision to make.</h2>
+  </header>
+  <div class="scene-body index-body">
+    <aside class="index-aside anim" style="--d:.1s">
+      <div class="rule-accent"></div>
+      <p class="t-small">What the tool is, what people wrongly believe about it, and how we govern it. Then the decision.</p>
+    </aside>
+    <ol class="index-list">
+      <li class="index-row anim" style="--d:.1s">
+        <span class="index-num num">01</span>
+        <div><h3>What Replit is</h3><p class="t-small">The tool chain, what it stands up, and the machine it built.</p></div>
+        <span class="index-scenes">Scenes 03&#8211;07</span>
+      </li>
+      <li class="index-row anim" style="--d:.15s">
+        <span class="index-num num">02</span>
+        <div><h3>Myths, and what we got wrong</h3><p class="t-small">Twelve beliefs answered in a line, then the two mistakes that actually cost us.</p></div>
+        <span class="index-scenes">Scenes 08&#8211;11</span>
+      </li>
+      <li class="index-row anim" style="--d:.2s">
+        <span class="index-num num" style="color:var(--green)">03</span>
+        <div><h3>Governance, rollout, the ask</h3><p class="t-small">How we keep it safe, where it&#8217;s up to, and the licence decision.</p></div>
+        <span class="index-scenes">Scenes 12&#8211;14</span>
+      </li>
+    </ol>
+  </div>
+  <footer class="scene-foot"><span class="pg">02 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 03 · divider.act — Act 1 opens. Repeats verbatim at each act. -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act 1 · What it is</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">Replit is where an idea becomes AI software.</h2>
+    </div>
+    <span class="act-num num anim" style="--d:.1s">01</span>
+  </div>
+  <footer class="scene-foot"><span class="pg">03 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 04 · process.pipeline — the tool chain in the order it is used. Sequence, so pipeline. -->
+<section class="scene scene-pipe">
+  <header class="scene-head">
+    <span class="t-micro anim">Act 1 · The tool chain</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Five tools, in the order you use them.</h2>
+  </header>
+  <div class="scene-body pipe-body">
+    <div class="pipe pipe--five pipe--tools">
+      <div class="pipe-step pipe-step--done anim" style="--d:.08s">
+        <div class="pipe-when"><span class="num">01</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Granola</h3><p>Records the room. The conversation is the brief.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--done anim" style="--d:.12s">
+        <div class="pipe-when"><span class="num">02</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Wispr Flow</h3><p>Speak the ask. 3&#8211;5&#215; the context of typing.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--done anim" style="--d:.16s">
+        <div class="pipe-when"><span class="num">03</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Claude</h3><p>Designs it, builds it, explains what it did.</p></div>
+      </div>
+
+      <div class="pipe-step pipe-step--done anim" style="--d:.2s">
+        <div class="pipe-when"><span class="num">04</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Replit</h3><p>Stands it up. App, database, hosting, deploys.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--done anim" style="--d:.24s">
+        <div class="pipe-when"><span class="num">05</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>GitHub</h3><p>Holds the code and the history.</p></div>
+      </div>
+    </div>
+    <div class="pipe-loop anim" style="--d:.28s">
+      <div class="pipe-loop-path"><span class="pipe-loop-label">Then round again &#8212; speak the next ask</span></div>
+    </div>
+    <p class="footline anim" style="--d:.34s">Replit was the bulk of the ~$10k build. About $200 a month keeps the features coming.</p>
+  </div>
+  <footer class="scene-foot"><span class="pg">04 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 05 · system.flow — the parts Replit provides, in one picture rather than a paragraph. -->
+<section class="scene scene--sunk scene-flow">
+  <header class="scene-head">
+    <span class="t-micro anim">Act 1 · What it stands up</span>
+    <h2 class="t-h1 anim" style="--d:.05s">The infrastructure you don't have to ask anyone for.</h2>
+  </header>
+  <div class="scene-body flow-body">
+    <div class="flow-diagram">
+      <div class="flow-col flow-col--in">
+        <div class="flow-node anim" style="--d:.08s"><b>The conversation</b><span>Recorded, transcribed, spoken in as the brief</span></div>
+        <div class="flow-node anim" style="--d:.12s"><b>Data exports</b><span>Whatever shape they arrive in</span></div>
+        <div class="flow-node anim" style="--d:.16s"><b>APIs &amp; model keys</b><span>Claude, OpenAI, SSO, email</span></div>
+      </div>
+      <div class="flow-bus anim" style="--d:.2s"><span class="flow-arrow"></span></div>
+      <div class="flow-engine anim" style="--d:.24s">
+        <span class="t-micro">Replit &#183; the platform</span>
+        <h3>Four things an engineering team would otherwise provision</h3>
+        <ul>
+          <li><b>App hosting &amp; autoscaling deploys</b><span>Rollbacks and custom domains, not a demo link</span></li>
+          <li><b>Managed database</b><span>Standard Postgres, portable, migrated on deploy</span></li>
+          <li><b>Secrets &amp; key management</b><span>Keys held safely, never in the code</span></li>
+          <li><b>Environments &amp; access</b><span>Private or public, SSO, per environment</span></li>
+        </ul>
+      </div>
+      <div class="flow-bus flow-bus--out anim" style="--d:.28s"><span class="flow-arrow"></span></div>
+      <div class="flow-col flow-col--out">
+        <div class="flow-node anim" style="--d:.32s"><b>A live, logged-in application</b><span>Real users, real permissions</span></div>
+        <div class="flow-node anim" style="--d:.36s"><b>Reports that run themselves</b><span>Daily, without anyone opening a laptop</span></div>
+        <div class="flow-node anim" style="--d:.4s"><b>An audit trail</b><span>Every change, every login, every AI call</span></div>
+      </div>
+    </div>
+    <div class="flow-loop anim" style="--d:.44s">
+      <div class="flow-loop-path"><span class="flow-loop-label">Corrections and decisions feed straight back in</span></div>
+    </div>
+    <div class="flow-caption anim" style="--d:.48s">
+      <p class="t-small" style="max-width:64ch">The honest difference: a coding agent gives you a codebase. Replit gives it somewhere to live, hold data and let people log in.</p>
+      <p class="note" style="text-align:right;max-width:30ch">Replit deployments run on standard Google Cloud infrastructure.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">05 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 06 · proof.three — the rewire opportunity, then the three things Replit does. Lead proof is bigger. -->
+<section class="scene scene--ground scene-proof">
+  <header class="scene-head">
+    <span class="t-micro anim">Act 1 &#183; The hypothesis</span>
+  </header>
+  <div class="scene-body proof-body">
+    <div class="proof-claim">
+      <p class="lede anim" style="--d:.04s">How do Replit and AI generate value?</p>
+      <h2 class="anim" style="--d:.08s">Hypothesis: confirmed.</h2>
+      <span class="t-micro anim" style="--d:.14s">It creates software that</span>
+    </div>
+    <div class="proof-set proof-set--duo">
+      <div class="proof-item proof-item--lead anim" style="--d:.18s">
+        <span class="pn">01</span>
+        <h3>Stores and organises information and context</h3>
+      </div>
+      <div class="proof-item proof-item--lead anim" style="--d:.24s">
+        <span class="pn">02</span>
+        <h3>Orchestrates AI action and automation</h3>
+      </div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">06 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 07 · gallery.tiles — the fourteen AI systems. Layout lifted VERBATIM from the workshop deck at the author&#8217;s request: do not restyle. -->
+<section class="scene scene-gallery">
+  <header class="scene-head">
+    <span class="t-micro anim">The AI-enabled machine</span>
+    <h2 class="t-h2 anim" style="--d:.05s">Arguably the most AI-enabled loyalty programme <span class="q-g">on the planet</span>.</h2>
+    <p class="lede anim" style="--d:.1s">The <b class="q-ink" style="font-weight:500">Membership Workbench</b> &#8212; 14+ AI systems running the loop end to end. These are examples.</p>
+  </header>
+  <div class="scene-body">
+    <div class="gallery">
+      <div class="tile anim" style="--d:.08s">
+        <div class="tnum">01</div>
+        <h3>Live data foundation</h3>
+        <p>Every base, campaign and channel file lands, self-checks and warms the reports and platform daily.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:72%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:56%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:64%; background:var(--track);"></div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.11s">
+        <div class="tnum">02</div>
+        <h3>Priority audience selection</h3>
+        <p>AI scores churn risk &amp; uplift, excludes collections, grounds cohorts in a living knowledge base.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vrank">1</div><div class="vline" style="width:82%; background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vrank">2</div><div class="vline" style="width:60%; background:#00A45F;"></div></div>
+          <div class="vrow"><div class="vrank">3</div><div class="vline" style="width:38%; background:var(--track);"></div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.14s">
+        <div class="tnum">03</div>
+        <h3>Campaign build</h3>
+        <p>Loading files &amp; offer values generated per cohort, ready to send.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:center;gap:8px;">
+          <div class="vfile">CSV</div>
+          <div class="vfile">CSV</div>
+          <div class="vfile">CSV</div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.17s">
+        <div class="tnum">04</div>
+        <h3>Post-implementation review</h3>
+        <p>Lift vs control measured; verdicts written back into the knowledge base the next campaign reads.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:44%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">CONTINUE</div></div>
+          <div class="vrow"><div class="vline" style="width:36%; background:var(--track);"></div><div class="vchip" style="background:#D31F3F;">RESTRICT</div></div>
+          <div class="vrow"><div class="vline" style="width:50%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">CONTINUE</div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.2s">
+        <div class="tnum">05</div>
+        <h3>Team meetings</h3>
+        <p>AI-drafted agenda off live performance, then the summary, decisions and actions &#8212; assigned to owners, with automatic follow-up.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:56%; background:var(--track);"></div><div class="vava" style="background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:44%; background:var(--track);"></div><div class="vava" style="background:#95EEB4;"></div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:62%; background:var(--track);"></div><div class="vava" style="background:#00A45F;"></div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.23s">
+        <div class="tnum">06</div>
+        <h3>Reporting</h3>
+        <p>Scorecards, weekly wraps and automated emails to stakeholders &#8212; with AI analysis and recommendations built in.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:flex-end;gap:12px;">
+          <div class="vbars">
+            <div style="height:40%; background:#00A45F;"></div>
+            <div style="height:65%; background:#12CB77;"></div>
+            <div style="height:50%; background:#00A45F;"></div>
+            <div style="height:85%; background:#12CB77;"></div>
+          </div>
+          <div class="venv">&#9993;</div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.26s">
+        <div class="tnum">07</div>
+        <h3>Device pricing engine</h3>
+        <p>Reads our offers vs the market, porting and churn; recommends per-model offers inside guardrails humans lock.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:34%; background:var(--track);"></div><div class="vline" style="width:14%; background:var(--track); margin-left:auto;"></div></div>
+          <div class="vrow"><div class="vline" style="width:42%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">REC $150</div></div>
+          <div class="vrow"><div class="vline" style="width:30%; background:var(--track);"></div><div class="vline" style="width:14%; background:var(--track); margin-left:auto;"></div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.29s">
+        <div class="tnum">08</div>
+        <h3>Presentations by voice</h3>
+        <p>The AI Studio builds presentations &#8212; e.g. this deck &#8212; by voice, grounded in live data, insights and analysis.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;gap:8px;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center;">
+            <div style="width:80%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+            <div style="width:68%; height:10px; background:#00A45F; border-radius:8px 8px 2px 8px; margin-left:auto;"></div>
+            <div style="width:58%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+          </div>
+          <div style="flex:1;border:1px solid var(--hair);border-radius:6px;padding:7px;display:flex;flex-direction:column;gap:5px;justify-content:center;">
+            <div class="vline" style="width:70%; height:8px; background:#12CB77;"></div>
+            <div class="vline" style="width:92%; background:var(--track);"></div>
+            <div class="vline" style="width:80%; background:var(--track);"></div>
+          </div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.32s">
+        <div class="tnum">09</div>
+        <h3>Data-powered insights &amp; analysis</h3>
+        <p>A commercial analyst at your fingertips &#8212; plain-English questions answered off live data, at the push of a button.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div style="width:72%; height:10px; background:var(--track); border-radius:8px 8px 8px 2px;"></div>
+          <div class="vsql">SELECT saves FROM campaigns&hellip;</div>
+          <div class="vrow"><div class="vline" style="width:54%; background:var(--track);"></div><div class="vava" style="background:#12CB77; margin-left:0;"></div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.35s">
+        <div class="tnum">10</div>
+        <h3>Delivery roadmap</h3>
+        <p>Every feature and build tracked live in the workbench &#8212; status, owner and next milestone in one view.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:46%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">LIVE</div></div>
+          <div class="vrow"><div class="vline" style="width:38%; background:var(--track);"></div><div class="vchip" style="background:#12CB77;">IN BUILD</div></div>
+          <div class="vrow"><div class="vline" style="width:52%; background:var(--track);"></div><div class="vchip" style="background:#5A6376;">NEXT</div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.38s">
+        <div class="tnum">11</div>
+        <h3>Campaign planning &amp; monitoring</h3>
+        <p>Campaigns planned and monitored on one timeline &#8212; what's live, what's queued, and how each is tracking.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vline" style="width:36%; background:#00A45F;"></div></div>
+          <div class="vrow"><div class="vline" style="width:30%; background:#12CB77; margin-left:24%;"></div></div>
+          <div class="vrow"><div class="vline" style="width:28%; background:#95EEB4; margin-left:48%;"></div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.41s">
+        <div class="tnum">12</div>
+        <h3>Team goals</h3>
+        <p>Every team goal tracked in the workbench &#8212; each linked to live performance data, so progress is never a guess.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:48%; background:var(--track);"></div><div class="vchip" style="background:#00A45F;">92%</div></div>
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:40%; background:var(--track);"></div><div class="vchip" style="background:#12CB77;">78%</div></div>
+          <div class="vrow"><div class="vbox"></div><div class="vline" style="width:54%; background:var(--track);"></div><div class="vchip" style="background:#5A6376;">54%</div></div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.44s">
+        <div class="tnum">13</div>
+        <h3>AI consumption analysis</h3>
+        <p>Our spend on LLMs and AI services is tracked daily through the platform &#8212; cost per system, per model, per day.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body" style="flex-direction:row;align-items:flex-end;gap:12px;">
+          <div class="vbars">
+            <div style="height:35%; background:#00A45F;"></div>
+            <div style="height:55%; background:#00A45F;"></div>
+            <div style="height:42%; background:#12CB77;"></div>
+            <div style="height:70%; background:#12CB77;"></div>
+            <div style="height:50%; background:#00A45F;"></div>
+          </div>
+          <div class="vchip" style="background:#00A45F;">$/DAY</div>
+        </div></div></div>
+      </div>
+      <div class="tile anim" style="--d:.47s">
+        <div class="tnum">14</div>
+        <h3>Train the AI &amp; living memory</h3>
+        <p>Correct any analyst in plain language, like briefing a junior. The lesson is stored and applied on every run after.</p>
+        <div class="vig"><div class="vwin"><div class="vig-bar"><div></div><div></div><div></div></div><div class="vig-body">
+          <div class="vrow"><div class="vtick" style="background:#12CB77;">&#10003;</div><div class="vline" style="width:78%; background:#12CB77;"></div></div>
+          <div class="vrow"><div class="vline" style="width:52%; background:var(--track);"></div></div>
+          <div class="vrow"><div class="vline" style="width:66%; background:var(--track);"></div></div>
+        </div></div></div>
+      </div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">07 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 08 · divider.act — Act 2. -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act 2 · Replit myths</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">Twelve myths worth answering.</h2>
+      <p class="t-body anim" style="--d:.12s">One line each. Grouped by the worry sitting underneath them.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>01&#8211;06</b>Capability, correctness, safety</span><span><b>07&#8211;12</b>What it is, cost, decay, lock-in</span>
+      </div>
+    </div>
+    <span class="act-num num anim" style="--d:.1s">02</span>
+  </div>
+  <footer class="scene-foot"><span class="pg">08 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 09 · myth.rows — myths 01–04. -->
+<section class="scene scene-myth">
+  <header class="scene-head">
+    <span class="t-micro anim">Myths 01&#8211;06 · Capability, correctness, safety</span>
+  </header>
+  <div class="scene-body myth-body">
+    <div class="myth-heads anim" style="--d:.08s">
+      <span></span><span class="t-micro q-3">The myth</span><span></span><span class="t-micro">The reality</span>
+    </div>
+    <div class="myth-rows">
+      <div class="myth-row anim" style="--d:.12s">
+        <span class="myth-n num">01</span>
+        <p class="myth-claim">&#8220;You need PII to do anything useful.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">Most use cases do not. Hashed or masked identities are enough.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.16s">
+        <span class="myth-n num">02</span>
+        <p class="myth-claim">&#8220;The data would have to be properly structured first.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">Whatever humans do with our data today, AI does better.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.2s">
+        <span class="myth-n num">03</span>
+        <p class="myth-claim">&#8220;You&#8217;d need engineers.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">Replit and three hours of training lets anyone who can talk build.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.24s">
+        <span class="myth-n num">04</span>
+        <p class="myth-claim">&#8220;It&#8217;ll make calculation errors.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">It will, like a human. The difference is you train those out for good.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.28s">
+        <span class="myth-n num">05</span>
+        <p class="myth-claim">&#8220;It won&#8217;t be documented.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">Better documented than any other internal build.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.32s">
+        <span class="myth-n num">06</span>
+        <p class="myth-claim">&#8220;It won&#8217;t be safe.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">Standard Google Cloud environments and proper governance manage this.</p>
+      </div>
+    </div>
+    <p class="footline anim" style="--d:.36s">The same six, in every function, every time. Worth answering once, properly.</p>
+  </div>
+  <footer class="scene-foot"><span class="pg">09 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 10 · myth.rows — myths 05–08. Same shape, sunk ground so the run reads as a set. -->
+<section class="scene scene--sunk scene-myth">
+  <header class="scene-head">
+    <span class="t-micro anim">Myths 07&#8211;12 · What it is, cost, decay, lock-in</span>
+  </header>
+  <div class="scene-body myth-body">
+    <div class="myth-heads anim" style="--d:.08s">
+      <span></span><span class="t-micro q-3">The myth</span><span></span><span class="t-micro">The reality</span>
+    </div>
+    <div class="myth-rows">
+      <div class="myth-row anim" style="--d:.12s">
+        <span class="myth-n num">07</span>
+        <p class="myth-claim">&#8220;Replit is just a prototyping tool.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">It was, 12 months ago. It is anything but that now.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.16s">
+        <span class="myth-n num">08</span>
+        <p class="myth-claim">&#8220;We&#8217;ve got Claude Code, Codex and Pages &#8212; we don&#8217;t need Replit.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">They build prototypes and internal dashboards. Replit builds software.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.2s">
+        <span class="myth-n num">09</span>
+        <p class="myth-claim">&#8220;It&#8217;ll cost too much to build.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">NZ$10k in credits built the whole Workbench. Under $3k today with Claude Code.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.24s">
+        <span class="myth-n num">10</span>
+        <p class="myth-claim">&#8220;It&#8217;ll cost too much to run, and take too long to deliver.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">Most of it was built in three weeks between meetings. It runs on US$224&#8211;313 a month.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.28s">
+        <span class="myth-n num">11</span>
+        <p class="myth-claim">&#8220;It&#8217;ll go out of date and become a burden.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">It improves every day with more context, and every model upgrade lands free.</p>
+      </div>
+      <div class="myth-row anim" style="--d:.32s">
+        <span class="myth-n num">12</span>
+        <p class="myth-claim">&#8220;We&#8217;d be locked into the platform, or the model.&#8221;</p>
+        <span class="myth-node"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></span>
+        <p class="myth-real">The opposite. The codebase is transferable; the model is a toggle.</p>
+      </div>
+    </div>
+    <p class="footline anim" style="--d:.36s">Build cost is the author&#8217;s own figure. Run costs are actuals from the platform&#8217;s AI consumption logs, 4 Jun &#8211; 17 Aug 2026.</p>
+  </div>
+  <footer class="scene-foot"><span class="pg">10 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+
+<!-- SCENE 11 · learn.rail — the two that actually cost us. Bridges Act 2 into governance. -->
+<section class="scene scene-learn">
+  <header class="scene-head">
+    <span class="t-micro anim">Not myths · the two that cost us</span>
+    <h2 class="t-h1 anim" style="--d:.05s">Two things I got wrong. That I&#8217;d like to put right.</h2>
+  </header>
+  <div class="scene-body learn-body">
+    <div class="learn-main">
+      <div class="duo">
+        <div class="panel anim" style="--d:.16s">
+          <span class="t-micro q-3">Learning 01</span>
+          <h3 style="margin-top:12px">Risk, privacy and architecture came in far too late</h3>
+          <p>A proof of concept quietly became business-critical before anyone had the chance to understand or review it.</p>
+        </div>
+        <div class="panel panel--hi anim" style="--d:.22s">
+          <span class="t-micro">Learning 02</span>
+          <h3 style="margin-top:12px">Define the measures before you build on them</h3>
+          <p>AI will run a flawed method flawlessly and write it up persuasively. Agree what each measure means and how it&#8217;s calculated first &#8212; every AI analyst downstream inherits that definition, right or wrong.</p>
+        </div>
+      </div>
+    </div>
+    <p class="footline anim" style="--d:.28s">Both are cheap to fix up front and expensive to fix later. The governance model on the next scene is built to force both.</p>
+  </div>
+  <footer class="scene-foot"><span class="pg">11 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 12 · proof.three — governance. One claim, three stepped proofs; the lead proof is
+     physically bigger. Live figures: access_logs and ai_usage_logs, pulled 17-Aug-2026. -->
+<section class="scene scene--ground scene-proof">
+  <header class="scene-head">
+    <span class="t-micro anim">Act 3</span>
+  </header>
+  <div class="scene-body proof-body" style="grid-template-rows:1fr">
+    <div class="proof-claim">
+      <h2 class="anim" style="--d:.06s;font-size:96px">Governing Replit.</h2>
+      <a class="demo-link anim" style="--d:.12s" href="https://velocity.quirio.co/ai-fast-track" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 5 11M11 9v3H3V4h3"/></svg>
+        <span><b>Live</b> &#8212; see it in the browser, right now</span>
+      </a>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">12 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 13 · process.pipeline — rollout. Order matters and there is a NOW, so pipeline.
+     Foot figures are live: access_logs / ai_usage_logs, pulled 17-Aug-2026. -->
+<section class="scene scene--sunk scene-pipe">
+  <header class="scene-head">
+    <span class="t-micro anim">Act 3 &#183; Where it&#8217;s up to</span>
+  </header>
+  <div class="scene-body pipe-body">
+    <div class="pipe pipe--four">
+      <div class="pipe-step pipe-step--done anim" style="--d:.08s">
+        <div class="pipe-when"><span class="num">01</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Proven</h3><p>The Membership Workbench, live since April.</p></div>
+      </div>
+      <div class="pipe-step pipe-step--current anim" style="--d:.12s">
+        <div class="pipe-when"><span class="num">02</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Governance</h3><p>Risk, privacy and architecture reviewing it now. Measure definitions locked.</p><span class="pipe-here">We are here</span></div>
+      </div>
+      <div class="pipe-step anim" style="--d:.16s">
+        <div class="pipe-when"><span class="num">03</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>Selective expansion</h3><p>Two more builders trained in product and marketing, plus room for up to three more from across the business.</p></div>
+      </div>
+      <div class="pipe-step anim" style="--d:.2s">
+        <div class="pipe-when"><span class="num">04</span></div>
+        <div class="pipe-node-row"><span class="pipe-node"></span></div>
+        <div class="pipe-copy"><h3>?</h3><p>To be defined following step three.</p></div>
+      </div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">13 / 14</span><span class="mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- SCENE 14 · closing.end — the ground returns. Next steps ARE the close; no thank-you slide. -->
+<section class="scene scene--ground scene-end">
+  <header class="scene-head">
+    <span class="t-micro anim">Act 3 &#183; The decision</span>
+  </header>
+  <div class="scene-body end-body">
+    <div class="end-main">
+      <h2 class="anim" style="--d:.06s">Agreement today.</h2>
+    </div>
+    <div class="end-next anim" style="--d:.18s">
+      <div><b>Decision today</b><span>Sign off Replit US$50k annual licence spend.</span></div>
+      <div><b>Additional builders</b><span>Two already lined up in product and marketing, and space for up to three more from across the business.</span></div>
+      <div><b>What follows</b><span>Governance and training defined off the back of that.</span></div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="pg">14 / 14</span><span class="cover-mark">one<i>.</i>nz</span></footer>
+</section>
+<!-- BUILD-MARKER -->
+</main>
+<script>
+/* Entrance only. One observer, one class, no scroll listener. */
+(function(){
+  var scenes=document.querySelectorAll('.scene');
+  if(!('IntersectionObserver' in window)){scenes.forEach(function(s){s.classList.add('in-view')});}
+  else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in-view');io.unobserve(e.target);} });
+    },{threshold:.16,rootMargin:'0px 0px -8% 0px'});
+    scenes.forEach(function(s){io.observe(s)});
+  }
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  btn.addEventListener('click',function(){
+    var dark=root.classList.toggle('theme-dark');
+    root.classList.toggle('theme-light',!dark);
+    btn.textContent=dark?'Light':'Dark';
+    btn.setAttribute('aria-pressed',dark?'true':'false');
+  });
+})();
+</script>
+</body>
+</html>
