@@ -225,17 +225,18 @@
 
   .org { width: 100%; max-width: 1280px; margin: 0 auto; }
 
-  .gm-row { display: flex; justify-content: center; }
+  .gm-row { display: grid; grid-template-columns: repeat(5, 1fr); }
   .gm-node {
-    background: var(--green);
+    grid-column: 3;
+    margin: 0 7px;
+    background: #1B7C53;
     color: #FFFFFF;
-    border-radius: 16px;
-    padding: 18px 42px;
+    border-radius: 14px;
+    padding: 14px 12px 12px;
     text-align: center;
-    box-shadow: 0 14px 34px rgba(0,164,95,0.35);
   }
-  .gm-node .nm { font-size: 20px; font-weight: 600; }
-  .gm-node .tt { font-size: 12.5px; font-weight: 500; opacity: .92; margin-top: 3px; letter-spacing: .02em; }
+  .gm-node .nm { font-size: 15px; font-weight: 600; line-height: 1.2; }
+  .gm-node .tt { font-size: 11.5px; font-weight: 500; margin-top: 4px; line-height: 1.3; opacity: .9; }
 
   .gm-stem { width: 2px; height: 26px; background: var(--line); margin: 0 auto; }
 
@@ -264,24 +265,19 @@
   .lead-card .nm { font-size: 15px; font-weight: 600; line-height: 1.2; }
   .lead-card .tt { font-size: 11.5px; font-weight: 500; margin-top: 4px; line-height: 1.3; opacity: .9; }
 
-  .p1 .lead-card { background: var(--green); color: #FFFFFF; }
-  .p2 .lead-card { background: var(--tint-1); color: var(--ink-on-tint); }
-  .p3 .lead-card { background: var(--tint-2); color: var(--ink-on-tint); }
-  .p4 .lead-card { background: var(--tint-3); color: var(--ink-on-tint); }
-  .p5 .lead-card { background: #0A3833; color: #95EEB4; border: 1px solid rgba(149,238,180,0.4); }
-  html.theme-light .p5 .lead-card { border: none; }
+  .lead-card { background: #1B7C53; color: #FFFFFF; }
 
   .member-stem { width: 2px; height: 12px; background: var(--line); margin: 0 auto; }
 
   .member-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
+    background: #1B7C53;
+    border: 1px solid #1B7C53;
     border-radius: 12px;
     padding: 11px 10px 10px;
     text-align: center;
   }
-  .member-card .nm { font-size: 13.5px; font-weight: 600; line-height: 1.25; color: var(--text); }
-  .member-card .tt { font-size: 11px; color: var(--muted-2); margin-top: 3px; line-height: 1.3; }
+  .member-card .nm { font-size: 13.5px; font-weight: 600; line-height: 1.25; color: #FFFFFF; }
+  .member-card .tt { font-size: 11px; color: rgba(255,255,255,0.78); margin-top: 3px; line-height: 1.3; }
 
   .pillar-empty {
     margin-top: 12px;
@@ -292,6 +288,8 @@
 
   @media (max-width: 900px) {
     .conn-row, .gm-stem { display: none; }
+    .gm-row { grid-template-columns: 1fr; }
+    .gm-node { grid-column: 1; margin: 0; }
     .pillar-row { grid-template-columns: 1fr; gap: 22px; margin-top: 26px; }
     .pillar { padding: 0; }
   }
@@ -370,17 +368,16 @@
     <div class="kicker reveal">At a glance</div>
     <h2 class="reveal d1">One team, five pillars.</h2>
     <div class="bignums reveal d2">
-      <div class="bignum"><div class="n">16</div><div class="l">People</div></div>
+      <div class="bignum"><div class="n">15</div><div class="l">People</div></div>
       <div class="bignum"><div class="n">5</div><div class="l">Pillars</div></div>
     </div>
     <div class="tiles reveal d3">
-      <div class="tile tile-accent"><div class="t-num"><em>5</em></div><div class="t-lab">Marketing</div></div>
+      <div class="tile tile-accent"><div class="t-num"><em>4</em></div><div class="t-lab">Marketing</div></div>
       <div class="tile tile-accent"><div class="t-num"><em>2</em></div><div class="t-lab">Product &amp; Design</div></div>
       <div class="tile tile-accent"><div class="t-num"><em>3</em></div><div class="t-lab">Delivery Ops</div></div>
       <div class="tile tile-accent"><div class="t-num"><em>5</em></div><div class="t-lab">Data &amp; Enablement</div></div>
-      <div class="tile tile-accent"><div class="t-num"><em>+1</em></div><div class="t-lab">Led by the GM</div></div>
     </div>
-    <p class="mission reveal d4">We're the team behind <strong>Phone Dollars</strong> and <strong>One Wallet</strong> — designing, building and running the membership experience end to end.</p>
+    <p class="mission reveal d4">We're the team behind <strong>Phone Dollars</strong> and <strong>One Wallet</strong> — designing, building and running the membership experience end to end — powered by an AI-driven workbench.</p>
   </div>
   <div class="brandmark">one<span class="dot">.</span>nz</div>
 </section>
@@ -432,11 +429,6 @@
             <div class="nm">Ragav Pobbathi Harigopal</div>
             <div class="tt">Marketing Automation Manager</div>
           </div>
-          <div class="member-stem"></div>
-          <div class="member-card">
-            <div class="nm">Jesse Sun</div>
-            <div class="tt">Marketing Automation Manager</div>
-          </div>
         </div>
 
         <!-- Pillar 2: Product -->
@@ -445,7 +437,6 @@
             <div class="nm">Greg Forsyth</div>
             <div class="tt">Product Manager</div>
           </div>
-          <div class="pillar-empty">Product</div>
         </div>
 
         <!-- Pillar 3: Design -->
@@ -454,7 +445,6 @@
             <div class="nm">Jeff Tebbutt</div>
             <div class="tt">Design Owner</div>
           </div>
-          <div class="pillar-empty">Design</div>
         </div>
 
         <!-- Pillar 4: Delivery Operations -->
@@ -498,8 +488,8 @@
           </div>
           <div class="member-stem"></div>
           <div class="member-card">
-            <div class="nm">Charan Mohan</div>
-            <div class="tt">Snr AI &amp; Data Systems Engineer</div>
+            <div class="nm">TBC</div>
+            <div class="tt">Senior Membership Solutions &amp; Marketing Automation Specialist</div>
           </div>
         </div>
 
@@ -519,16 +509,15 @@
       <div class="disc reveal d2">
         <div class="disc-bar" style="background:#00A45F;"></div>
         <h3>Marketing</h3>
-        <div class="count">5 people</div>
+        <div class="count">4 people</div>
         <div class="chips">
-          <span class="chip">Brand</span><span class="chip">Campaigns</span><span class="chip">Automation</span>
+          <span class="chip">Campaign performance</span><span class="chip">Partnership activation</span><span class="chip">Engagement</span>
         </div>
         <ul class="roster">
           <li><span class="nm">George Dyer <span class="lead-tag">· lead</span></span><span class="tt">Portfolio Owner – Membership Marketing</span></li>
           <li><span class="nm">Emma Kershaw</span><span class="tt">Marketing Manager</span></li>
           <li><span class="nm">Kristina Searle</span><span class="tt">Marketing Lead</span></li>
           <li><span class="nm">Ragav Pobbathi Harigopal</span><span class="tt">Marketing Automation Manager</span></li>
-          <li><span class="nm">Jesse Sun</span><span class="tt">Marketing Automation Manager</span></li>
         </ul>
       </div>
 
@@ -537,7 +526,7 @@
         <h3>Build &amp; Design</h3>
         <div class="count">5 people</div>
         <div class="chips">
-          <span class="chip">Product</span><span class="chip">Design</span><span class="chip">Delivery</span>
+          <span class="chip">Product</span><span class="chip">Design</span><span class="chip">Delivery</span><span class="chip">AI systems</span>
         </div>
         <ul class="roster">
           <li><span class="nm">Greg Forsyth <span class="lead-tag">· lead</span></span><span class="tt">Product Manager</span></li>
@@ -550,17 +539,17 @@
 
       <div class="disc reveal d4">
         <div class="disc-bar" style="background:#95EEB4;"></div>
-        <h3>Data &amp; AI</h3>
+        <h3>Data &amp; Enablement</h3>
         <div class="count">5 people</div>
         <div class="chips">
-          <span class="chip">Data engineering</span><span class="chip">AI systems</span><span class="chip">Quality</span>
+          <span class="chip">Data engineering</span><span class="chip">Campaign orchestration</span><span class="chip">Quality</span>
         </div>
         <ul class="roster">
           <li><span class="nm">Jared Smith <span class="lead-tag">· lead</span></span><span class="tt">Product Owner – Membership, Data &amp; Enablement</span></li>
           <li><span class="nm">Mia Yang</span><span class="tt">Data &amp; Systems Test Engineer</span></li>
           <li><span class="nm">Scott Walkinshaw</span><span class="tt">Data Engineer</span></li>
           <li><span class="nm">Lee-Anne Thorburn</span><span class="tt">Snr AI &amp; Data Systems Engineer</span></li>
-          <li><span class="nm">Charan Mohan</span><span class="tt">Snr AI &amp; Data Systems Engineer</span></li>
+          <li><span class="nm">TBC</span><span class="tt">Senior Membership Solutions &amp; Marketing Automation Specialist</span></li>
         </ul>
       </div>
 
@@ -572,8 +561,8 @@
 <!-- ============ SCENE 5 · CLOSE ============ -->
 <section class="scene close-scene">
   <div class="inner">
-    <h2 class="reveal">One team,<br>one flywheel<span class="accent">.</span></h2>
-    <p class="close-sub reveal d1">Marketing, product, design, delivery and data — all pulling in the same direction for our members.</p>
+    <h2 class="reveal">One team<span class="accent">.</span></h2>
+    <p class="close-sub reveal d1">Marketing, product, design, delivery and data — all pulling in the same direction to grow our base.</p>
     <div class="close-rule reveal d2"></div>
     <div class="close-mark reveal d3">one<span class="dot">.</span>nz</div>
   </div>
