@@ -466,12 +466,12 @@ html.theme-dark .venue-note i{color:#06231F}
 /* Tapering stages with the loss between them NAMED. Use when the DROP is the story. Widths
    are proportional to the eligible base; the drop chip shows loss against the PREVIOUS step,
    which is a different number — label both or the scene lies.
-   GEOMETRY: bar width % = step value divided by base (18,900) times 100. */
+   GEOMETRY: bar width % = step value divided by the base (the first step) times 100. */
 .funnel-body{grid-template-columns:1fr 340px;gap:60px;align-items:stretch}
 .funnel{display:grid;grid-auto-rows:1fr;align-content:stretch;min-height:0}
 .funnel-step{display:grid;grid-template-columns:1fr 168px;gap:26px;align-items:center;position:relative}
 .funnel-bar{height:56px;border-radius:6px;background:var(--green);display:flex;align-items:center;padding:0 20px;
-  font-size:var(--t-body);font-weight:500;color:#FFFFFF}
+  font-size:var(--t-body);font-weight:500;color:#FFFFFF;white-space:nowrap;overflow:hidden}
 .funnel-step:nth-child(1) .funnel-bar{background:var(--green-deep)}
 .funnel-step:nth-child(2) .funnel-bar{background:#1B7C53}
 .funnel-step:nth-child(4) .funnel-bar{background:var(--green-lift);color:var(--green-deep)}
@@ -548,11 +548,11 @@ html.theme-dark .venue-note i{color:#06231F}
    the caption block is a fixed height across all seven columns, totals included. */
 .fall-body{grid-template-rows:1fr auto;gap:30px}
 .fall-plot{display:grid;grid-template-columns:1.2fr repeat(5,1fr) 1.2fr;gap:20px;align-items:stretch;min-height:0;padding-left:78px;position:relative}
-.fall-zero{position:absolute;left:78px;right:0;bottom:40%;height:1px;background:var(--hair-2);z-index:0}
+.fall-zero{position:absolute;left:78px;right:0;bottom:calc(90px + (100% - 90px) * .0909);height:1px;background:var(--hair-2);z-index:0}
 /* the label owns the 78px gutter at the zero line; the y-axis 0 tick is dropped rather than
    nudged, because two labels for one value in one gutter is a collision either way. */
 .fall-zero span{position:absolute;left:-78px;bottom:-8px;font-size:var(--t-micro);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.fall-yaxis{position:absolute;left:0;top:0;bottom:74px;width:70px}
+.fall-yaxis{position:absolute;left:0;top:0;bottom:90px;width:70px}
 .fall-yaxis span{position:absolute;right:8px;transform:translateY(50%);font-size:var(--t-micro);font-weight:500;color:var(--ink-3)}
 .fall-col{position:relative;display:grid;grid-template-rows:1fr 74px;gap:16px;min-height:0}
 .fall-track{position:relative;min-height:0;z-index:1}
@@ -867,8 +867,8 @@ html.theme-dark .opt-pick{color:#06231F}
       </div>
       <div class="cap cap--wide anim" style="--d:.16s">
         <div><h3>Port-ins, completed on site</h3><p>The one thing a stand cannot do and a store can. Number kept, SIM live, device in hand, before they walk back out.</p></div>
-        <!-- modelled: 2,950 forecast against a 5,400 ceiling = 55% utilised. The headroom is deliberate. -->
-        <div class="cap-meter"><span class="num">55%</span><span class="cap-meter-track"><span class="cap-meter-fill anim-grow" style="width:55%;--d:.3s"></span></span><span class="t-label">2,950 forecast of 5,400 capacity</span></div>
+        <!-- modelled: 4,200 forecast against a 5,400 ceiling = 78% utilised. Less headroom than before. -->
+        <div class="cap-meter"><span class="num">78%</span><span class="cap-meter-track"><span class="cap-meter-fill anim-grow" style="width:78%;--d:.3s"></span></span><span class="t-label">4,200 forecast of 5,400 capacity</span></div>
       </div>
       <div class="cap cap--mid1 anim" style="--d:.2s"><h3>Sales and upgrades</h3><p>Full device range on site with stock behind the counter, not a catalogue and a courier.</p></div>
       <div class="cap cap--mid2 anim" style="--d:.24s"><h3>One Wallet activations</h3><p>Phone Dollars issued, seen and spent inside the same visit. The proposition made physical.</p></div>
@@ -964,7 +964,7 @@ html.theme-dark .opt-pick{color:#06231F}
         <span><b>$1,000</b>each way</span>
         <span><b>$3.0m</b>to deliver</span>
         <span><b>$8.70m</b>effective incentive</span>
-        <span><b>+$9.26m</b>at 36 months</span>
+        <span><b>$27.7m</b>revenue over three years</span>
       </div>
     </div>
     <span class="act-num num anim" style="--d:.1s">03</span>
@@ -975,60 +975,65 @@ html.theme-dark .opt-pick{color:#06231F}
 <!-- ==========================================================================================
      SCENE 08 · funnel.steps — stages with the loss between them NAMED. Use when the DROP is
      the story. The funnel runs in ONE currency, codes, so it tapers honestly; the people
-     arithmetic that produces the 18,900 base sits in the side rail rather than being spliced
+     arithmetic that produces the 48,400 base sits in the side rail rather than being spliced
      into the funnel, which would make step three larger than step two and the scene a lie.
-     GEOMETRY: bar width % = step value / 18,900 x 100.
+     GEOMETRY: bar width % = step value / 48,400 x 100.
+     SCALED TO 14,000 NET NEW, which is what the three-year bridge in scene 10 runs on. The
+     conversion rates through the funnel are UNCHANGED from the earlier version (70 / 58 / 55 /
+     91). What changed is the top: scan, send and sends-each all rise, because 14,000 cannot be
+     reached from the same footfall without them. The scene foot names the new rates rather
+     than burying them, since they are now the load-bearing assumption in the whole deck.
      ========================================================================================== -->
 <section class="scene scene-funnel">
   <header class="scene-head">
     <span class="t-micro anim">The mechanic &middot; what converts</span>
-    <h2 class="t-h1 anim" style="--d:.05s">18,900 codes, 4,150 connections.</h2>
+    <h2 class="t-h1 anim" style="--d:.05s">48,400 codes, 14,000 net new connections.</h2>
   </header>
   <div class="scene-body funnel-body">
     <div class="funnel">
       <!-- modelled throughout; the conversion assumptions are named in the side rail -->
       <div class="funnel-step anim" style="--d:.1s">
         <span class="funnel-bar" style="width:100%">Codes delivered to a non-One NZ number</span>
-        <span class="funnel-num"><b>18,900</b><span>100% of base</span></span>
+        <span class="funnel-num"><b>48,400</b><span>100% of base</span></span>
         <span class="funnel-drop">Not opened &middot; <b>30%</b></span>
       </div>
       <div class="funnel-step anim" style="--d:.16s">
-        <span class="funnel-bar" style="width:69.8%">Opened it</span>
-        <span class="funnel-num"><b>13,200</b><span>70% of base</span></span>
+        <span class="funnel-bar" style="width:70.0%">Opened it</span>
+        <span class="funnel-num"><b>33,900</b><span>70% of base</span></span>
         <span class="funnel-drop">Looked, did not act &middot; <b>42%</b></span>
       </div>
       <div class="funnel-step anim" style="--d:.22s">
-        <span class="funnel-bar" style="width:40.2%">Started a switch</span>
-        <span class="funnel-num"><b>7,600</b><span>40% of base</span></span>
+        <span class="funnel-bar" style="width:40.7%">Started a switch</span>
+        <span class="funnel-num"><b>19,700</b><span>41% of base</span></span>
         <span class="funnel-drop">Dropped mid-port &middot; <b>45%</b></span>
       </div>
       <div class="funnel-step anim" style="--d:.28s">
-        <span class="funnel-bar" style="width:22.0%">Connection completed</span>
-        <span class="funnel-num"><b>4,150</b><span>22% of base</span></span>
+        <span class="funnel-bar" style="width:22.3%">Completed</span>
+        <span class="funnel-num"><b>10,800</b><span>22% of base</span></span>
         <span class="funnel-drop">Gone by day 90 &middot; <b>9%</b></span>
       </div>
       <div class="funnel-step anim" style="--d:.34s">
-        <span class="funnel-bar" style="width:20.0%">Still connected at day 90</span>
-        <span class="funnel-num"><b>3,780</b><span>20% of base</span></span>
+        <span class="funnel-bar" style="width:20.2%">Held at day 90</span>
+        <span class="funnel-num"><b>9,800</b><span>20% of base</span></span>
       </div>
     </div>
     <aside class="funnel-side anim" style="--d:.2s">
       <div>
-        <span class="t-micro">Where the 18,900 comes from</span>
+        <span class="t-micro">Where the 48,400 comes from</span>
         <div class="funnel-calc">
           <div class="funnel-calc-row"><span>Through the doors</span><b>54,500</b></div>
-          <div class="funnel-calc-row"><span>Scanned a code &middot; 45%</span><b>24,500</b></div>
-          <div class="funnel-calc-row"><span>Sent at least one on &middot; 35%</span><b>8,600</b></div>
-          <div class="funnel-calc-row"><span>Valid sends each</span><b>2.2</b></div>
-          <div class="funnel-calc-row"><span>Codes delivered</span><b>18,900</b></div>
+          <div class="funnel-calc-row"><span>Scanned a code &middot; 58%</span><b>31,600</b></div>
+          <div class="funnel-calc-row"><span>Sent at least one on &middot; 52%</span><b>16,400</b></div>
+          <div class="funnel-calc-row"><span>Valid sends each</span><b>2.95</b></div>
+          <div class="funnel-calc-row"><span>Codes delivered</span><b>48,400</b></div>
         </div>
       </div>
       <div class="panel-dark">
         <span class="t-micro">Weekend total</span>
-        <p class="t-body" style="color:#FFFFFF;font-size:var(--t-lead);margin-top:10px">4,150 from codes, plus 2,950 connected on the floor over the three days.</p>
-        <p class="t-small" style="margin-top:14px">7,100 new connections attributed to the weekend, before any halo.</p>
+        <p class="t-body" style="color:#FFFFFF;font-size:var(--t-lead);margin-top:10px">9,800 still connected from codes, plus 4,200 completed on the floor across the three days.</p>
+        <p class="t-small" style="margin-top:14px">14,000 net new connections &mdash; the number scene 10 runs on for three years.</p>
       </div>
-      <p class="note">Every figure here is modelled. The three assumptions worth arguing about are the 35% send rate, the 22% code conversion and the 2.2 valid sends &mdash; move any of them and the whole scene moves.</p>
+      <p class="note">Reaching 14,000 needs a <b style="font-weight:500;color:var(--ink-2)">58% scan rate, a 52% send rate and 2.95 sends each</b> &mdash; up from 45%, 35% and 2.2. The conversion rates below the top of the funnel are unchanged. Those three numbers are now the load-bearing assumption in the deck: hold them and the three-year bridge stands, miss them and it does not.</p>
     </aside>
   </div>
   <footer class="scene-foot"><span class="pg">08 / 11</span><span class="mark">one<i>.</i>nz</span></footer>
@@ -1138,63 +1143,69 @@ html.theme-dark .opt-pick{color:#06231F}
      FLOAT: each step starts where the running total left off. This is the most useful chart in
      any review and the one most often replaced by a bullet list. Do NOT use for unrelated
      categories.
-     GEOMETRY — axis minus 4.0 to plus 12.0 $m, range 16.0, zero line at (0 + 4) / 16 = 25%.
-       height % = |step| / 16 x 100      bottom % = (running total at the bar's foot + 4) / 16 x 100
-     Running totals, $m: 0 to 9.04 to 10.69 to 1.99 to minus 1.01 to minus 0.49 to 9.26.
-       col 1  base   plus 9.04   bottom (0+4)/16 = 25.00%      height 9.04/16 = 56.50%
-       col 2  device plus 1.65   bottom (9.04+4)/16 = 81.50%   height 10.31%
-       col 3  incent minus 8.70  bottom (1.99+4)/16 = 37.44%   height 54.38%
-       col 4  deliv  minus 3.00  bottom (-1.01+4)/16 = 18.69%  height 18.75%
-       col 5  media  plus 0.52   bottom (-1.01+4)/16 = 18.69%  height 3.25%
-       col 6  halo   plus 9.75   bottom (-0.49+4)/16 = 21.94%  height 60.94%
-       col 7  total  plus 9.26   bottom 25.00%                 height 57.88%
-     The media reallocation drops from $1.20m to $0.52m with the campaign line: only what is
-     already sitting in the FY27 Canterbury plan can be reallocated, and that is now the whole
-     campaign line rather than a slice of a much larger one.
+     GEOMETRY — axis minus 2.0 to plus 20.0 $m, range 22.0, zero line at (0 + 2) / 22 = 9.09%.
+       height % = |step| / 22 x 100      bottom % = (running total at the bar's foot + 2) / 22 x 100
+     Running totals, $m: 0 to 9.24 to 10.89 to 2.19 to minus 0.81 to 8.43 to 17.67.
+       col 1  yr 1   plus 9.24   bottom (0+2)/22 = 9.09%       height 9.24/22 = 42.00%
+       col 2  device plus 1.65   bottom (9.24+2)/22 = 51.09%   height 7.50%
+       col 3  phone  minus 8.70  bottom (2.19+2)/22 = 19.05%   height 39.55%
+       col 4  deliv  minus 3.00  bottom (-0.81+2)/22 = 5.41%   height 13.64%
+       col 5  yr 2   plus 9.24   bottom (-0.81+2)/22 = 5.41%   height 42.00%
+       col 6  yr 3   plus 9.24   bottom (8.43+2)/22 = 47.41%   height 42.00%
+       col 7  total  plus 17.67  bottom 9.09%                  height 80.32%
+     THE REVENUE YEARS ARE GROSS, NOT MARGIN. Each is 14,000 connections x $55 x 12 months =
+     $9.24m. The brief for this scene said "$9m"; the arithmetic gives $9.24m and the exact
+     figure is used, because a bar labelled with its own formula has to survive being checked.
+     This is a change of basis from the earlier version of this scene, which ran on service
+     margin after cost to serve. Cost to serve is therefore NOT in this bridge: at ~32% of
+     $27.72m it is about $8.9m, which the scene foot states rather than hides. Subtract it and
+     the closing figure lands near $8.8m, which is what a margin-basis bridge would have shown.
+     The twelve-month halo and media-reallocation columns are gone: years 2 and 3 now carry the
+     same 14,000 connections, so keeping a halo column would double count them.
      ========================================================================================== -->
 <section class="scene scene-fall">
   <header class="scene-head">
     <span class="t-micro anim">The commercials &middot; 36-month bridge, $m</span>
-    <h2 class="t-h1 anim" style="--d:.05s">At $3.0m the weekend nearly washes its face on its own.</h2>
+    <h2 class="t-h1 anim" style="--d:.05s">One weekend, three years of revenue.</h2>
   </header>
   <div class="scene-body fall-body">
     <div class="fall-plot">
       <div class="fall-yaxis" aria-hidden="true">
-        <span style="bottom:100%">+12</span><span style="bottom:75%">+8</span><span style="bottom:50%">+4</span>
+        <span style="bottom:100%">+20</span><span style="bottom:77.27%">+15</span><span style="bottom:54.55%">+10</span><span style="bottom:31.82%">+5</span>
       </div>
       <div class="fall-zero"><span>Zero</span></div>
       <div class="fall-col fall-col--total anim" style="--d:.1s">
-        <div class="fall-track"><span class="fall-bar fall-bar--base anim-rise" style="bottom:25.0%;height:56.5%;--d:.14s"></span><span class="fall-val" style="bottom:82.5%">+9.04</span></div>
-        <div class="fall-cap"><b>Service margin</b><span>7,100 connections, 36 months</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--base anim-rise" style="bottom:9.09%;height:42.00%;--d:.14s"></span><span class="fall-val" style="bottom:52.1%">+9.24</span></div>
+        <div class="fall-cap"><b>Year 1 revenue</b><span>14,000 connections at $55 a month</span></div>
       </div>
       <div class="fall-col anim" style="--d:.16s">
-        <div class="fall-track"><span class="fall-bar fall-bar--up anim-rise" style="bottom:81.5%;height:10.31%;--d:.2s"></span><span class="fall-val" style="bottom:92.8%">+1.65</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--up anim-rise" style="bottom:51.09%;height:7.50%;--d:.2s"></span><span class="fall-val" style="bottom:59.6%">+1.65</span></div>
         <div class="fall-cap"><b>Device margin</b><span>Handsets and pulled-forward upgrades</span></div>
       </div>
       <div class="fall-col anim" style="--d:.22s">
-        <div class="fall-track"><span class="fall-bar fall-bar--down anim-rise" style="bottom:37.44%;height:54.38%;--d:.26s"></span><span class="fall-val" style="bottom:92.8%">&minus;8.70</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--down anim-rise" style="bottom:19.05%;height:39.55%;--d:.26s"></span><span class="fall-val" style="bottom:59.6%">&minus;8.70</span></div>
         <div class="fall-cap"><b>Phone Dollars</b><span>Effective, after forfeiture and breakage</span></div>
       </div>
       <div class="fall-col anim" style="--d:.28s">
-        <div class="fall-track"><span class="fall-bar fall-bar--down anim-rise" style="bottom:18.69%;height:18.75%;--d:.32s"></span><span class="fall-val" style="bottom:38.4%">&minus;3.00</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--down anim-rise" style="bottom:5.41%;height:13.64%;--d:.32s"></span><span class="fall-val" style="bottom:20.1%">&minus;3.00</span></div>
         <div class="fall-cap"><b>Delivery</b><span>The whole of scene 9</span></div>
       </div>
       <div class="fall-col anim" style="--d:.34s">
-        <div class="fall-track"><span class="fall-bar fall-bar--up anim-rise" style="bottom:18.69%;height:3.25%;--d:.38s"></span><span class="fall-val" style="bottom:22.9%">+0.52</span></div>
-        <div class="fall-cap"><b>Media reallocated</b><span>Already in the FY27 Canterbury plan</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--up anim-rise" style="bottom:5.41%;height:42.00%;--d:.38s"></span><span class="fall-val" style="bottom:48.4%">+9.24</span></div>
+        <div class="fall-cap"><b>Year 2 revenue</b><span>The same 14,000, held on the network</span></div>
       </div>
       <div class="fall-col anim" style="--d:.4s">
-        <div class="fall-track"><span class="fall-bar fall-bar--up anim-rise" style="bottom:21.94%;height:60.94%;--d:.44s"></span><span class="fall-val" style="bottom:83.9%">+9.75</span></div>
-        <div class="fall-cap"><b>Twelve-month halo</b><span>7,700 of 14,000 gross adds attributed</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--up anim-rise" style="bottom:47.41%;height:42.00%;--d:.44s"></span><span class="fall-val" style="bottom:90.4%">+9.24</span></div>
+        <div class="fall-cap"><b>Year 3 revenue</b><span>The same 14,000, held on the network</span></div>
       </div>
       <div class="fall-col fall-col--total anim" style="--d:.46s">
-        <div class="fall-track"><span class="fall-bar fall-bar--base anim-rise" style="bottom:25.0%;height:57.88%;--d:.5s"></span><span class="fall-val" style="bottom:83.9%">+9.26</span></div>
-        <div class="fall-cap"><b>Net at 36 months</b><span>Payback in month 23</span></div>
+        <div class="fall-track"><span class="fall-bar fall-bar--base anim-rise" style="bottom:9.09%;height:80.32%;--d:.5s"></span><span class="fall-val" style="bottom:90.4%">+17.67</span></div>
+        <div class="fall-cap"><b>Three-year total</b><span>Revenue basis, before cost to serve</span></div>
       </div>
     </div>
     <div class="fall-foot">
-      <p class="t-small">Read the fourth and fifth columns together: on the 7,100 connections the weekend itself produces this now lands at <b style="font-weight:500;color:var(--ink)">$0.49m under water</b> rather than $4.33m &mdash; cutting delivery from $7.53m to $3.0m is what closes it. Everything above zero comes from the halo column, and that remains the single assumption most worth attacking.</p>
-      <span class="t-label q-3">Modelled &middot; each cohort valued over its own 36 months</span>
+      <p class="t-small">Each revenue year is <b style="font-weight:500;color:var(--ink)">14,000 x $55 x 12 = $9.24m</b>, and it is <b style="font-weight:500;color:var(--ink)">gross revenue, not margin</b> &mdash; cost to serve at about 32%, roughly $8.9m across the three years, is not in this bridge. Take it out and the close lands near $8.8m. The two costs together are $11.70m against $27.72m of revenue, so the weekend is paid back inside year one and the two years after it are the return.</p>
+      <span class="t-label q-3">Modelled &middot; gross revenue basis &middot; 14,000 held flat</span>
     </div>
   </div>
   <footer class="scene-foot"><span class="pg">10 / 11</span><span class="mark">one<i>.</i>nz</span></footer>
