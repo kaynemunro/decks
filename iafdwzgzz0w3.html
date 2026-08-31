@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en-NZ" class="theme-light">
+<!-- ==========================================================================================
+     THE WALLET SHIFT — Membership, One Wallet and Phone Dollars · April to July 2026
+     Built on the One NZ reference deck archetypes. LAYER 1 tokens and LAYER 2 primitives are
+     lifted character for character, so any scene here behaves like the reference.
+     Every figure is REAL, read from production on 28 August 2026. Method is scene 22.
+     ========================================================================================== -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Wallet Shift · Membership Review · April to July 2026</title>
+<style>
+/* ==========================================================================================
+   LAYER 1 · DESIGN TOKENS — both themes, defined together so neither is an afterthought.
+   Dark is not light-inverted: it swaps ground, lifts the accent green for contrast on dark,
+   and turns hairlines into low-alpha mint rather than grey.
+   Alpha values are derived from approved hexes only (#FFFFFF, #95EEB4, #00A45F, #0A3833).
+   ========================================================================================== */
+html.theme-light{
+  --bg:#FFFFFF; --bg-sunk:#F8F9FA; --surface:#FFFFFF; --surface-2:#F8F9FA;
+  --ink:#323232; --ink-2:#5A6376; --ink-3:rgba(90,99,118,.58);
+  --hair:#E1E4E9; --hair-2:rgba(50,50,50,.14);
+  --green:#00A45F; --green-txt:#1B7C53; --green-lift:#12CB77;
+  --green-mid:#95EEB4; --green-pale:#CDFBDD; --green-deep:#0A3833; --green-deeper:#06231F;
+  --green-wash:rgba(0,164,95,.07); --green-line:rgba(0,164,95,.26); --green-fog:rgba(0,164,95,.14);
+  /* the dark ground used by dividers / quote / closing, from the LIGHT page */
+  --ground:#06231F; --ground-2:#0A3833; --g-ink:#FFFFFF; --g-ink-2:rgba(255,255,255,.64);
+  --g-hair:rgba(149,238,180,.20); --g-accent:#95EEB4; --g-wash:rgba(149,238,180,.07);
+  --alert:#D31F3F; --warn:#FFD600;
+  --lift:0 1px 2px rgba(10,56,51,.04),0 10px 28px -14px rgba(10,56,51,.14);
+}
+html.theme-dark{
+  --bg:#06231F; --bg-sunk:#06231F; --surface:#0A3833; --surface-2:rgba(149,238,180,.045);
+  --ink:#FFFFFF; --ink-2:rgba(255,255,255,.66); --ink-3:rgba(255,255,255,.40);
+  --hair:rgba(149,238,180,.18); --hair-2:rgba(149,238,180,.30);
+  --green:#12CB77; --green-txt:#95EEB4; --green-lift:#12CB77;
+  --green-mid:#95EEB4; --green-pale:#CDFBDD; --green-deep:#0A3833; --green-deeper:#06231F;
+  --green-wash:rgba(18,203,119,.10); --green-line:rgba(149,238,180,.30); --green-fog:rgba(18,203,119,.18);
+  /* on a dark page the ground scene must still separate: it goes UP to #0A3833, not down */
+  --ground:#0A3833; --ground-2:#06231F; --g-ink:#FFFFFF; --g-ink-2:rgba(255,255,255,.66);
+  --g-hair:rgba(149,238,180,.22); --g-accent:#95EEB4; --g-wash:rgba(149,238,180,.06);
+  --alert:#D31F3F; --warn:#FFD600;
+  --lift:0 1px 2px rgba(6,35,31,.30),0 12px 32px -14px rgba(6,35,31,.60);
+}
+:root{
+  --font:"Euclid Circular A",Inter,-apple-system,"Segoe UI",Roboto,sans-serif;
+  /* TYPE SCALE — 11px to 176px. The range IS the hierarchy system. */
+  --t-micro:11px; --t-label:13px; --t-small:15px; --t-body:17px; --t-lead:21px;
+  --t-h4:24px; --t-h3:30px; --t-h2:40px; --t-h1:56px; --t-display:80px; --t-mega:176px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pad-x:88px; --pad-y:54px;
+}
+
+/* ==========================================================================================
+   LAYER 2 · PRIMITIVES
+   ------------------------------------------------------------------------------------------
+   THE SIX HIERARCHY DEVICES (weight is capped at 600, so these do all the work):
+     1 SIZE      .t-mega / .t-display / .t-h1 … .t-micro — a 16:1 range, used hard
+     2 GROUND    .scene--ground inverts the whole frame; .panel-dark inverts one block
+     3 COLOUR    green as FILL or DATA, never as headline text
+     4 CASE      .t-micro uppercase + wide tracking for orientation labels only
+     5 SPACE     .scene-body decides its own rhythm; gutters are not uniform deck-wide
+     6 DENSITY   .grid-dense (tables) vs .stack-airy (statements) — density carries meaning
+   ========================================================================================== */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); font-weight:400; color:var(--ink); background:var(--bg);
+  -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;
+  transition:background-color .32s var(--ease),color .32s var(--ease);
+}
+a{color:var(--green-txt);text-decoration:none;border-bottom:1px solid var(--green-line)}
+a:hover{color:var(--green)}
+
+/* SCENE SHELL — reusable. 3-row grid guarantees the body stretches to fill 100vh.
+   This is why no scene in this deck can leave its bottom third empty. */
+.scene{
+  position:relative; min-height:100vh; padding:var(--pad-y) var(--pad-x) 34px;
+  display:grid; grid-template-rows:auto 1fr auto; gap:28px;
+  background:var(--bg); border-top:1px solid var(--hair); overflow:hidden;
+}
+.scene:first-of-type{border-top:0}
+.scene--sunk{background:var(--bg-sunk)}
+/* GROUND SCENE — full-bleed deep green. Reusable: dividers, quote, cover, closing. */
+.scene--ground{background:var(--ground); border-top:0; color:var(--g-ink)}
+.scene--ground .t-micro,.scene--ground .eyebrow{color:var(--g-accent)}
+/* h1–h4 set colour EXPLICITLY in LAYER 2, so inheritance from .scene--ground never reaches them.
+   This override is what makes headings safe on the dark ground — keep it if you copy that class. */
+.scene--ground h1,.scene--ground h2,.scene--ground h3,.scene--ground h4{color:var(--g-ink)}
+.scene--ground .t-body,.scene--ground .lede,.scene--ground .note{color:var(--g-ink-2)}
+.scene--ground .mark{color:var(--g-ink-2)} .scene--ground .pg{color:var(--g-ink-2)}
+/* the light-beam: one soft radial, no image, cheap to paint */
+.scene--ground::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 88% -10%,var(--g-wash),transparent 62%);
+}
+.scene--ground>*{position:relative}
+
+.scene-head{display:grid;gap:14px;padding-right:150px}
+.scene-body{display:grid;min-height:0}
+.scene-foot{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding-top:18px;border-top:1px solid var(--hair);
+}
+.scene--ground .scene-foot{border-top-color:var(--g-hair)}
+.pg{font-size:var(--t-micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+/* BRAND MARK — text only, always. Never an image, never recoloured, never stretched. */
+.mark{font-size:var(--t-label);font-weight:500;letter-spacing:-.01em;color:var(--ink-2)}
+.mark i{font-style:normal;color:var(--green)}
+
+/* TYPE PRIMITIVES */
+.t-micro{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--green-txt);line-height:1.3}
+.t-label{font-size:var(--t-label);font-weight:500;color:var(--ink-2);line-height:1.4}
+.t-small{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.t-body{font-size:var(--t-body);color:var(--ink-2);line-height:1.58;max-width:66ch;text-wrap:pretty}
+.lede{font-size:var(--t-lead);color:var(--ink-2);line-height:1.5;max-width:56ch;text-wrap:pretty}
+.note{font-size:var(--t-label);color:var(--ink-3);line-height:1.5;max-width:74ch}
+h1,h2,h3,h4,p,ul,ol,li,figure,blockquote,dl,dd,dt{margin:0;padding:0;list-style:none}
+h1,h2,h3,h4{font-weight:600;letter-spacing:-.022em;line-height:1.04;color:var(--ink);text-wrap:balance}
+.t-h1{font-size:var(--t-h1)} .t-h2{font-size:var(--t-h2)} .t-h3{font-size:var(--t-h3);letter-spacing:-.015em;line-height:1.14}
+.t-h4{font-size:var(--t-h4);letter-spacing:-.012em;line-height:1.22;font-weight:600}
+.t-display{font-size:var(--t-display);letter-spacing:-.03em;line-height:.98}
+.t-mega{font-size:var(--t-mega);font-weight:500;letter-spacing:-.045em;line-height:.84}
+.num{font-variant-numeric:tabular-nums;font-weight:500;letter-spacing:-.02em}
+.q-ink{color:var(--ink)} .q-2{color:var(--ink-2)} .q-3{color:var(--ink-3)} .q-g{color:var(--green-txt)}
+
+/* SMALL REUSABLES */
+.rule{height:1px;background:var(--hair);border:0}
+.scene--ground .rule{background:var(--g-hair)}
+.rule-accent{height:3px;width:56px;background:var(--green);border-radius:2px}
+.scene--ground .rule-accent{background:var(--g-accent)}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--hair);font-size:var(--t-label);font-weight:500;color:var(--ink);background:var(--surface);
+}
+.chip--fill{background:var(--green-wash);border-color:var(--green-line);color:var(--green-txt)}
+/* DELTA — the only place a number changes colour. Positive is green, negative is the alert red. */
+.delta{display:inline-flex;align-items:baseline;gap:6px;font-size:var(--t-label);font-weight:500;color:var(--green-txt)}
+.delta--down{color:var(--alert)}
+.delta--watch{color:var(--ink)}
+.tick{display:inline-block;width:0;height:0;border:5px solid transparent;border-bottom:7px solid currentColor;transform:translateY(-1px)}
+.tick--down{border-bottom:0;border-top:7px solid currentColor}
+/* PANEL — the neutral container. Used sparingly and never as a whole-scene grid. */
+.panel{background:var(--surface);border:1px solid var(--hair);border-radius:18px;padding:26px 28px}
+.panel-dark{background:var(--green-deep);border-radius:18px;padding:28px 30px;color:#FFFFFF}
+.panel-dark .t-micro{color:var(--g-accent)} .panel-dark .t-small,.panel-dark .t-body{color:rgba(255,255,255,.66)}
+.stack{display:grid;gap:12px} .stack-airy{display:grid;gap:32px} .row{display:flex;gap:14px;flex-wrap:wrap}
+
+/* THEME TOGGLE — fixed. Every .scene-head carries padding-right:150px so nothing collides. */
+#themeToggle{
+  position:fixed;top:26px;right:32px;z-index:50;font:inherit;font-size:var(--t-label);font-weight:500;
+  padding:10px 20px;border-radius:999px;cursor:pointer;color:var(--ink);
+  background:var(--surface);border:1px solid var(--hair);box-shadow:var(--lift);
+  transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease);
+}
+#themeToggle:hover{border-color:var(--green-line);color:var(--green-txt)}
+#themeToggle:focus-visible{outline:3px solid var(--green-line);outline-offset:2px}
+
+/* ENTRANCE — IntersectionObserver adds .in-view. Fade + small rise, staggered by --d. */
+.anim{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim{opacity:1;transform:none}
+.anim-grow{transform-origin:left center;transform:scaleX(.001);transition:transform .8s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim-grow{transform:scaleX(1)}
+.anim-rise{transform-origin:bottom center;transform:scaleY(.001);transition:transform .75s var(--ease);transition-delay:var(--d,0s)}
+.in-view .anim-rise{transform:scaleY(1)}
+.anim-draw{stroke-dasharray:var(--len,2000);stroke-dashoffset:var(--len,2000);transition:stroke-dashoffset 1.5s var(--ease);transition-delay:var(--d,.1s)}
+.in-view .anim-draw{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){
+  .anim,.anim-grow,.anim-rise,.anim-draw{opacity:1!important;transform:none!important;stroke-dashoffset:0!important;transition:none!important}
+  body,#themeToggle{transition:none}
+}
+/* ==========================================================================================
+/* ==========================================================================================
+   LAYER 3 · ARCHETYPE BLOCKS — lifted verbatim from the One NZ reference decks.
+   ========================================================================================== */
+/* --- cover.hero ------------------------------------------------------------------------ */
+.cover-body{grid-template-rows:1fr auto;align-content:stretch;gap:48px}
+.cover-title{font-size:104px;letter-spacing:-.035em;line-height:.96;align-self:end;max-width:20ch}
+.cover-title span{display:block;color:var(--g-ink-2)}
+.cover-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-top:30px;border-top:1px solid var(--g-hair)}
+.cover-meta dt{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--g-accent);margin-bottom:10px}
+.cover-meta dd{font-size:var(--t-body);color:var(--g-ink);line-height:1.45}
+.cover-stamp{display:inline-flex;align-items:center;gap:12px;align-self:start;padding:10px 18px 10px 14px;border:1px solid var(--g-hair);border-radius:999px;font-size:var(--t-label);font-weight:500;color:var(--g-ink)}
+.cover-stamp b{font-weight:500;color:var(--g-accent)}
+.cover-mark{font-size:34px;font-weight:500;letter-spacing:-.02em;color:var(--g-ink)}
+.cover-mark i{font-style:normal;color:var(--g-accent)}
+
+/* --- agenda.index ---------------------------------------------------------------------- */
+/* Asymmetric index. Rows STRETCH (1fr each) so four items fill 900px without inflating type. */
+.index-body{grid-template-columns:270px 1fr;gap:64px;align-items:start}
+.index-list{display:grid;grid-auto-rows:1fr;align-content:stretch;height:100%}
+.index-row{display:grid;grid-template-columns:112px 1fr 210px;gap:32px;align-items:center;padding:22px 0;border-top:1px solid var(--hair)}
+.index-row:last-child{border-bottom:1px solid var(--hair)}
+.index-num{font-size:52px;font-weight:500;letter-spacing:-.03em;color:var(--green);line-height:1}
+.index-row h3{font-size:var(--t-h3)}
+.index-row .t-small{margin-top:7px}
+.index-scenes{font-size:var(--t-label);font-weight:500;color:var(--ink-3);text-align:right;letter-spacing:.04em}
+.index-aside{display:grid;gap:20px;padding-right:20px}
+
+/* --- stat.hero -------------------------------------------------------------------------- */
+/* REUSABLE: one figure carries the scene. Mega figure + delta + context rail beneath. */
+.stat-body{grid-template-rows:1fr auto;gap:44px}
+.stat-focus{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:72px;align-items:end;padding-bottom:8px}
+.stat-figure{display:grid;gap:18px}
+.stat-figure .t-mega{color:var(--ink)}
+.stat-caption{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+.stat-caption .t-h4{color:var(--ink)}
+.stat-delta{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:999px;background:var(--green-wash);border:1px solid var(--green-line);color:var(--green-txt);font-size:var(--t-body);font-weight:500}
+.stat-side{display:grid;gap:22px;padding-bottom:14px;border-left:1px solid var(--hair);padding-left:36px}
+.stat-rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair-2)}
+.stat-rail div{padding:26px 30px 4px;border-left:1px solid var(--hair)}
+.stat-rail div:first-child{padding-left:0;border-left:0}
+.stat-rail .num{display:block;font-size:38px;color:var(--ink);margin:12px 0 6px}
+
+/* --- scorecard.table -------------------------------------------------------------------- */
+/* DENSE by design — the density is the point. This is the only scene where the alert
+   colours appear, and only on a genuinely negative number. */
+.score-body{grid-template-rows:auto 1fr auto;gap:0}
+.score-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.score-table th{
+  text-align:left;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--ink-3);padding:0 20px 14px 0;border-bottom:1px solid var(--hair-2);vertical-align:bottom;
+}
+.score-table th.n,.score-table td.n{text-align:right;padding-right:0;padding-left:20px}
+.score-table td{padding:18px 20px 18px 0;border-bottom:1px solid var(--hair);vertical-align:baseline}
+.score-table tbody tr:hover{background:var(--surface-2)}
+.score-measure{font-size:var(--t-lead);font-weight:500;color:var(--ink);letter-spacing:-.01em}
+.score-measure small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-3);margin-top:6px;letter-spacing:0}
+.score-val{font-size:var(--t-h4);color:var(--ink-2)}
+.score-val--actual{color:var(--ink);font-weight:500}
+.score-var{font-size:var(--t-body);font-weight:500;color:var(--green-txt)}
+.score-var--down{color:var(--alert)}
+.score-flag{display:inline-flex;align-items:center;gap:9px;font-size:var(--t-label);font-weight:500;color:var(--ink-2);white-space:nowrap}
+.score-flag::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--green);flex:none}
+.score-flag--watch::before{background:var(--warn)}   /* warning state */
+.score-flag--miss::before{background:var(--alert)}   /* error state */
+.score-legend{display:flex;gap:34px;flex-wrap:wrap;padding-top:26px}
+
+/* --- divider.act ------------------------------------------------------------------------ */
+/* REUSABLE RESET. Drop between acts. Oversized numeral, three words, nothing else. */
+.act-body{grid-template-columns:1fr auto;align-items:end;gap:60px}
+/* max-width MUST be in px, not ch: a ch value resolves against THIS element's 16px
+   font-size, not the 72px child, and silently crushes the headline into a narrow column. */
+.act-copy{display:grid;gap:26px;align-content:end;padding-bottom:12px;max-width:640px}
+.act-copy h2{font-size:72px;letter-spacing:-.032em;line-height:1;color:var(--g-ink)}
+.act-num{font-size:300px;font-weight:500;line-height:.72;letter-spacing:-.06em;color:transparent;
+  -webkit-text-stroke:1.5px var(--g-hair);opacity:.9;transform:translateX(14px)}
+.act-list{display:flex;gap:26px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--g-hair)}
+.act-list span{font-size:var(--t-label);color:var(--g-ink-2)}
+.act-list span b{font-weight:500;color:var(--g-accent);margin-right:9px}
+
+/* --- CHART FRAME (shared by chart.bar.h / chart.trend / chart.stack / chart.donut) ------
+   REUSABLE: figure > plot + legend + source note. Keeps every chart in the deck consistent. */
+.chart-body{grid-template-rows:1fr auto;gap:30px}
+.chart-plot{display:grid;align-content:stretch;min-height:0}
+.chart-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-top:20px;border-top:1px solid var(--hair)}
+.chart-legend{display:flex;gap:26px;flex-wrap:wrap}
+.chart-key{display:inline-flex;align-items:center;gap:9px;font-size:var(--t-label);color:var(--ink-2)}
+.chart-key i{width:12px;height:12px;border-radius:3px;background:var(--green);flex:none}
+.chart-axis{font-size:var(--t-micro);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+/* --- chart.bar.h ------------------------------------------------------------------------ */
+/* Bars are proportional: width % = value / scale-max * 100. Arithmetic is in the markup. */
+.barh{display:grid;grid-auto-rows:1fr;align-content:stretch;height:100%;gap:0}
+.barh-row{display:grid;grid-template-columns:238px 1fr 128px;gap:28px;align-items:center;padding:14px 0;border-bottom:1px solid var(--hair)}
+.barh-row:first-child{border-top:1px solid var(--hair)}
+.barh-label{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.barh-label small{display:block;font-size:var(--t-label);font-weight:400;color:var(--ink-3);margin-top:4px}
+.barh-track{position:relative;height:34px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.barh-fill{position:absolute;inset:0 auto 0 0;background:var(--green);border-radius:4px}
+.barh-fill--muted{background:var(--green-deep)}
+.barh-fill--soft{background:var(--green-mid)}
+.barh-val{font-size:var(--t-h4);font-weight:500;color:var(--ink);text-align:right}
+.barh-val small{display:block;font-size:var(--t-label);font-weight:500;color:var(--green-txt);margin-top:5px}
+
+/* --- compare.thennow -------------------------------------------------------------------- */
+/* Two real columns and a spine. NOT five identical cards with an arrow inside each. */
+.compare-body{grid-template-rows:auto 1fr;gap:0}
+.compare-heads{display:grid;grid-template-columns:1fr 84px 1fr;gap:0;padding-bottom:16px}
+.compare-heads span:last-child{text-align:left}
+.compare-rows{display:grid;grid-auto-rows:1fr;align-content:stretch;position:relative}
+.compare-rows::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - .5px);width:1px;background:var(--hair-2)}
+.compare-row{display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;border-top:1px solid var(--hair)}
+.compare-row:last-child{border-bottom:1px solid var(--hair)}
+.compare-then{padding:22px 40px 22px 0;font-size:var(--t-lead);color:var(--ink-3);letter-spacing:-.008em}
+.compare-now{padding:22px 0 22px 40px;font-size:var(--t-lead);font-weight:500;color:var(--ink);letter-spacing:-.012em}
+.compare-node{display:grid;place-items:center;position:relative;z-index:1}
+.compare-node span{width:30px;height:30px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.compare-node svg{width:14px;height:14px;stroke:#FFFFFF;stroke-width:2;fill:none}
+html.theme-dark .compare-node svg{stroke:#06231F}
+
+/* --- chart.trend ------------------------------------------------------------------------ */
+.trend-wrap{display:grid;grid-template-columns:1fr 300px;gap:56px;align-items:stretch;min-height:0}
+.trend-plot{position:relative;display:grid;grid-template-rows:1fr auto;min-height:0}
+.trend-svg{width:100%;height:100%;min-height:0;display:block;overflow:visible}
+.trend-x{display:grid;grid-template-columns:repeat(12,1fr);padding-top:14px;border-top:1px solid var(--hair)}
+.trend-x span{font-size:var(--t-micro);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:center}
+.trend-x span:first-child{text-align:left}.trend-x span:last-child{text-align:right}
+.trend-side{display:grid;align-content:space-between;gap:26px;border-left:1px solid var(--hair);padding-left:34px}
+.trend-callout{display:grid;gap:10px}
+.trend-callout .num{font-size:46px;color:var(--ink)}
+.trend-note{padding:18px 20px;background:var(--green-wash);border-left:3px solid var(--green);border-radius:0 10px 10px 0}
+.trend-note p{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+
+/* --- chart.stack ------------------------------------------------------------------------ */
+/* Column height % = quarter total / scale-max * 100. Segment height % = value / quarter total * 100. */
+.stack-plot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:56px;align-items:stretch;min-height:0;padding-left:70px}
+.stack-col{display:grid;grid-template-rows:1fr auto;gap:18px;height:100%;min-height:0;position:relative}
+.stack-bars{display:flex;flex-direction:column;justify-content:flex-end;width:100%;height:100%;min-height:0}
+.stack-bar{display:flex;flex-direction:column;justify-content:flex-start;width:100%;border-radius:6px 6px 0 0;overflow:hidden}
+.stack-seg{display:grid;align-items:center;padding-left:14px;font-size:var(--t-label);font-weight:500;min-height:0}
+.stack-seg--1{background:var(--green-deep);color:#FFFFFF}
+.stack-seg--2{background:var(--green-txt);color:#FFFFFF}
+.stack-seg--3{background:var(--green);color:#FFFFFF}
+.stack-seg--4{background:var(--green-mid);color:var(--green-deep)}
+html.theme-dark .stack-seg--2{background:#1B7C53} html.theme-dark .stack-seg--3{color:#06231F}
+.stack-cap{display:grid;gap:6px;padding-top:16px;border-top:1px solid var(--hair-2)}
+.stack-cap .num{font-size:var(--t-h4);color:var(--ink)}
+.stack-cap span{font-size:var(--t-label);color:var(--ink-3)}
+.stack-col--now .stack-cap{border-top-color:var(--green)}
+.stack-yaxis{position:absolute;left:0;top:0;bottom:0;width:70px}
+
+/* --- proof.three ------------------------------------------------------------------------ */
+/* Three points, STEPPED — the lead proof is physically larger. Not three equal cards. */
+.proof-body{grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-items:stretch}
+.proof-item{display:grid;grid-template-rows:auto 1fr auto;gap:22px;padding:0 46px;border-left:1px solid var(--hair)}
+.proof-item:first-child{padding-left:0;border-left:0}
+.proof-item:last-child{padding-right:0}
+.proof-rank{font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--ink-3)}
+.proof-fig{font-weight:500;letter-spacing:-.035em;line-height:.9;color:var(--ink);align-self:end}
+.proof-item--lead .proof-fig{font-size:124px;color:var(--green)}
+.proof-item--2 .proof-fig{font-size:88px}
+.proof-item--3 .proof-fig{font-size:88px}
+/* line-height:.9 makes the figure's box SHORTER than its glyphs, so the glyphs overhang the box
+   by ~5% top and bottom. The title needs margin, not gap, to clear that overhang. */
+.proof-item h3{font-size:var(--t-h4);margin-top:34px}
+.proof-item--lead h3{font-size:var(--t-h3)}
+.proof-ev{padding-top:18px;border-top:1px solid var(--hair);font-size:var(--t-small);color:var(--ink-3);line-height:1.5}
+/* --- system.flow ------------------------------------------------------------------------ */
+/* THE BIGGEST GAP IN MOST GENERATED DECKS. Boxes, directional connectors, one feedback loop.
+   Connectors are pseudo-elements anchored to each node's own centre, so they stay aligned at
+   any node count or height. No SVG, no absolute pixel guessing. */
+.flow-body{grid-template-rows:1fr auto;gap:26px}
+.flow-diagram{display:grid;grid-template-columns:1fr 76px 1.2fr 76px 1fr;align-items:stretch;min-height:0}
+.flow-col{display:grid;grid-auto-rows:1fr;gap:12px;align-content:stretch}
+.flow-node{position:relative;display:grid;align-content:center;gap:5px;padding:14px 18px;background:var(--surface);border:1px solid var(--hair);border-radius:12px}
+.flow-node b{font-size:var(--t-body);font-weight:500;color:var(--ink);letter-spacing:-.01em}
+.flow-node span{font-size:var(--t-label);color:var(--ink-3)}
+.flow-col--in .flow-node::after{content:"";position:absolute;left:100%;top:50%;width:38px;height:1px;background:var(--hair-2)}
+.flow-bus{position:relative}
+.flow-bus::before{content:"";position:absolute;left:38px;top:12.5%;bottom:12.5%;width:1px;background:var(--hair-2)}
+.flow-bus::after{content:"";position:absolute;left:38px;right:9px;top:50%;height:1px;background:var(--green)}
+.flow-bus .flow-arrow{position:absolute;right:0;top:50%;transform:translateY(-50%);width:0;height:0;border:6px solid transparent;border-left:10px solid var(--green)}
+.flow-bus--out::before{top:12.5%;bottom:12.5%}
+.flow-bus--out::after{left:0;right:auto;width:38px;background:var(--green)}
+.flow-bus--out .flow-arrow{display:none}
+.flow-engine{position:relative;background:var(--green-deep);border-radius:16px;padding:22px 26px;display:grid;align-content:start;gap:0;color:#FFFFFF}
+.flow-engine::after{content:"";position:absolute;left:100%;top:50%;width:38px;height:1px;background:var(--green)}
+.flow-engine>.t-micro{color:var(--g-accent)}
+.flow-engine h3{color:#FFFFFF;font-size:var(--t-h4);margin:12px 0 18px}
+.flow-engine li{display:grid;gap:4px;padding:12px 0;border-top:1px solid var(--g-hair)}
+.flow-engine li b{font-size:var(--t-body);font-weight:500;color:#FFFFFF}
+.flow-engine li span{font-size:var(--t-label);color:rgba(255,255,255,.62)}
+.flow-col--out .flow-node{border-color:var(--green-line)}
+.flow-col--out .flow-node::before{content:"";position:absolute;right:100%;top:50%;width:38px;height:1px;background:var(--green)}
+.flow-col--out .flow-node::after{content:"";position:absolute;right:100%;top:50%;transform:translate(10px,-50%);width:0;height:0;border:5px solid transparent;border-left:9px solid var(--green)}
+.flow-loop{display:grid;grid-template-columns:1fr 76px 1.2fr 76px 1fr}
+.flow-loop-path{grid-column:3/6;position:relative;height:46px;border:1px solid var(--green-line);border-top:0;border-radius:0 0 16px 16px}
+.flow-loop-path::after{content:"";position:absolute;left:-6px;top:-9px;width:0;height:0;border:5px solid transparent;border-bottom:9px solid var(--green)}
+.flow-loop-label{position:absolute;left:50%;bottom:-9px;transform:translateX(-50%);background:var(--bg);padding:0 14px;font-size:var(--t-micro);font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--green-txt);white-space:nowrap}
+.flow-caption{display:flex;justify-content:space-between;gap:40px;padding-top:18px;border-top:1px solid var(--hair)}
+
+/* --- capability.set --------------------------------------------------------------------- */
+/* Differentiated set: four sizes, three treatments. The lead item is physically dominant.
+   Use INSTEAD of a six-identical-card grid whenever items are not equally important. */
+.cap-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:1.25fr 1fr .85fr;gap:12px;min-height:0}
+.cap{display:grid;border-radius:16px;border:1px solid var(--hair);background:var(--surface);padding:16px 22px;align-content:space-between;gap:16px}
+.cap h3{font-size:var(--t-h4)} .cap p{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.cap--lead{grid-column:1/7;grid-row:1/3;background:var(--green-deep);border-color:var(--green-deep);color:#FFFFFF;padding:26px 32px}
+.cap--lead h3{font-size:44px;color:#FFFFFF;letter-spacing:-.026em;line-height:1.06;max-width:20ch}
+.cap--lead p{font-size:var(--t-body);color:rgba(255,255,255,.68);max-width:44ch}
+.cap--lead .t-micro{color:var(--g-accent)}
+.cap-lead-stat{display:flex;align-items:baseline;gap:16px;padding-top:18px;border-top:1px solid var(--g-hair)}
+.cap-lead-stat .num{font-size:64px;color:#FFFFFF;line-height:.9}
+.cap-lead-stat span{font-size:var(--t-label);color:rgba(255,255,255,.66);max-width:16ch}
+.cap--wide{grid-column:7/13;grid-row:1/2;grid-template-columns:1fr 168px;align-items:center;gap:30px}
+.cap-meter{display:grid;gap:9px}
+.cap-meter .num{font-size:34px;color:var(--green-txt)}
+.cap-meter-track{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+/* display:block is load-bearing: a span is inline by default and inline boxes ignore width and
+   height. Any meter fill that is not position:absolute needs this. */
+.cap-meter-fill{display:block;height:100%;background:var(--green);border-radius:3px}
+.cap--mid1{grid-column:7/10;grid-row:2/3} .cap--mid2{grid-column:10/13;grid-row:2/3}
+.cap--mid1 h3,.cap--mid2 h3{font-size:var(--t-lead)}
+.cap--min{grid-row:3/4;grid-template-columns:auto 1fr;align-items:center;gap:22px;background:transparent;border:0;border-top:1px solid var(--hair);border-radius:0;padding:18px 0 0}
+.cap--min h3{font-size:var(--t-body);white-space:nowrap}
+.cap--min p{font-size:var(--t-label)}
+.cap--min1{grid-column:1/7} .cap--min2{grid-column:7/13}
+
+/* --- hero.statement --------------------------------------------------------------------- */
+/* One sentence. Nothing else. Monochrome on purpose — a green rule carries the brand so the
+   sentence itself does not have to shout. */
+.say-body{grid-template-rows:1fr auto;gap:40px;align-content:stretch}
+.say-main{display:grid;align-content:center;justify-items:start;gap:40px;max-width:1150px}
+.say-main p{font-size:76px;font-weight:400;line-height:1.1;letter-spacing:-.03em;color:var(--ink);text-wrap:pretty}
+.say-main p b{font-weight:500}
+.say-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:60px;padding-top:24px;border-top:1px solid var(--hair)}
+
+/* --- roadmap.timeline ------------------------------------------------------------------- */
+.road-body{grid-template-rows:1fr auto;gap:26px}
+.road{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;align-content:stretch}
+.road-axis{position:absolute;left:0;right:0;top:78px;height:1px;background:var(--hair-2)}
+.road-now{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--green)}
+/* the NOW label sits in the band between the axis (78px) and the milestone list (~115px), and
+   right-aligns into the live quarter's empty margin so it cannot reach the next quarter's head */
+.road-now span{position:absolute;top:88px;right:14px;left:auto;font-size:var(--t-micro);font-weight:500;letter-spacing:.19em;text-transform:uppercase;color:var(--green-txt);white-space:nowrap}
+.road-q{display:grid;grid-template-rows:78px auto 1fr;padding:0 34px 0 0;border-left:1px solid var(--hair)}
+.road-q:first-child{border-left:0;padding-left:0}
+.road-q:not(:first-child){padding-left:34px}
+.road-head{display:grid;align-content:start;gap:7px}
+.road-head .num{font-size:var(--t-h3);color:var(--ink)}
+.road-q--past .road-head .num,.road-q--past .road-milestone h4{color:var(--ink-3)}
+.road-dot{width:11px;height:11px;border-radius:50%;background:var(--hair-2);transform:translateY(-5px)}
+.road-q--live .road-dot{background:var(--green);box-shadow:0 0 0 6px var(--green-fog)}
+.road-list{display:grid;align-content:start;gap:12px;padding-top:26px}
+.road-milestone{display:grid;gap:6px;padding:16px 18px;border-radius:12px;background:var(--surface-2);border:1px solid var(--hair)}
+.road-milestone h4{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.road-milestone span{font-size:var(--t-label);color:var(--ink-3)}
+.road-q--live .road-milestone{background:var(--green-wash);border-color:var(--green-line)}
+.road-q--past .road-milestone{background:transparent;border-style:dashed}
+/* roadmap.timeline · PLANNED state — December's items are on the board but not committed.
+   Orange is not a One NZ colour, so "not yet confirmed" is carried the on-brand way: the same
+   pale green tint as the live quarter, but with a dashed edge and a tinted heading, so it reads
+   as provisional rather than as a different status colour. */
+.road-milestone--planned{background:rgba(255,214,0,.13);border:1px dashed rgba(255,214,0,.75)}
+.road-milestone--planned h4{color:var(--ink)}
+html.theme-dark .road-milestone--planned{background:rgba(255,214,0,.11);border-color:rgba(255,214,0,.55)}
+/* roadmap.timeline · legend key for the planned/TBC state. The swatch repeats the card treatment
+   exactly, so the key can be read against the cards without a caption. */
+.road-key{display:inline-flex;align-items:center;gap:10px;font-size:var(--t-label);font-weight:500;color:var(--ink-2);white-space:nowrap}
+.road-key i{width:16px;height:16px;border-radius:5px;background:rgba(255,214,0,.13);border:1px dashed rgba(255,214,0,.75);flex:none}
+html.theme-dark .road-key i{border-color:rgba(255,214,0,.55)}
+
+/* --- decisions.asks --------------------------------------------------------------------- */
+/* Deliberately form-like: each ask is a row you can sign off. Right column is the decision. */
+.ask-body{grid-template-rows:1fr auto;gap:24px}
+.ask-list{display:grid;grid-auto-rows:1fr;align-content:stretch}
+.ask{display:grid;grid-template-columns:56px minmax(0,1.5fr) minmax(0,1fr) 250px;gap:36px;align-items:start;padding:18px 0;border-top:1px solid var(--hair)}
+.ask:last-child{border-bottom:1px solid var(--hair)}
+.ask-num{font-size:var(--t-h3);font-weight:500;color:var(--green);line-height:1.1}
+.ask-main{display:grid;gap:10px}
+.ask-main h3{font-size:var(--t-h4)}
+.ask-why{display:grid;gap:8px;padding-top:6px}
+.ask-decide{display:grid;gap:14px;padding:18px 20px;background:var(--surface-2);border:1px solid var(--hair);border-radius:12px}
+.ask-decide dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px}
+.ask-decide dt{font-size:var(--t-micro);font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.ask-decide dd{font-size:var(--t-label);font-weight:500;color:var(--ink);text-align:right}
+.ask-decide .ask-box{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid var(--hair);font-size:var(--t-label);color:var(--ink-2)}
+.ask-decide .ask-box i{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--hair-2);flex:none}
+
+/* --- closing.end ------------------------------------------------------------------------ */
+.end-body{grid-template-rows:1fr auto;gap:48px}
+.end-main{display:grid;align-content:center;gap:34px;max-width:900px}
+.end-main h2{font-size:88px;letter-spacing:-.034em;line-height:1.02;color:var(--g-ink)}
+.end-next{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;padding-top:32px;border-top:1px solid var(--g-hair)}
+.end-next div{display:grid;gap:10px}
+.end-next b{font-size:var(--t-body);font-weight:500;color:var(--g-ink)}
+.end-next span{font-size:var(--t-label);color:var(--g-ink-2)}
+/* --- ground-scene overrides for archetypes that can also sit on the dark ground -------- */
+.scene--ground .say-main p{color:var(--g-ink)}
+.scene--ground .say-foot{border-top-color:var(--g-hair)}
+.scene--ground .say-main p b{color:var(--g-accent)}
+/* --- chart.bar.grouped ----------------------------------------------------------------- */
+/* Two series side by side per category. Use for like-for-like across two periods. Three series
+   is the practical ceiling; beyond that use small multiples.
+   GEOMETRY: height % = value ÷ scale-max(18,000) × 100. Both series share ONE scale — that is
+   the entire point of the archetype. */
+.grp-plot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:54px;align-items:stretch;min-height:0;padding-left:74px;position:relative}
+.grp-col{display:grid;grid-template-rows:1fr auto;gap:16px;min-height:0}
+.grp-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end;min-height:0}
+.grp-bar{border-radius:5px 5px 0 0;position:relative;transform-origin:bottom center}
+.grp-bar--prev{background:var(--hair)}
+.grp-bar--now{background:var(--green)}
+.grp-bar b{position:absolute;left:0;right:0;top:-26px;text-align:center;font-size:var(--t-label);font-weight:500;color:var(--ink)}
+.grp-bar--prev b{color:var(--ink-3)}
+.grp-cap{display:grid;gap:5px;padding-top:14px;border-top:1px solid var(--hair-2);text-align:center}
+.grp-cap b{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.grp-cap span{font-size:var(--t-label);color:var(--green-txt)}
+
+/* --- kpi.band ------------------------------------------------------------------------- */
+/* Six measures as one band, each with a meter against its target. Differs from stat.hero: no
+   figure dominates, and every tile carries its target so the meter means something. Use as a
+   scorecard you can read in three seconds. Do NOT use it as a dumping ground for spare numbers. */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr 1fr;gap:0;min-height:0}
+.kpi{display:grid;grid-template-rows:auto auto auto auto;align-content:space-between;gap:12px;padding:26px 34px;border-left:1px solid var(--hair);border-top:1px solid var(--hair)}
+.kpi:nth-child(3n+1){padding-left:0;border-left:0}
+.kpi:nth-child(-n+3){border-top:0;padding-top:0}
+.kpi-fig{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.kpi-fig .num{font-size:62px;color:var(--ink);line-height:1}
+/* one line of reading per tile. Without it the tile is a label, a number and a meter separated by
+   80px of nothing — the empty-frame failure this deck exists to fix, reproduced at tile scale. */
+.kpi-say{font-size:var(--t-small);color:var(--ink-2);line-height:1.45;max-width:30ch}
+.kpi-meter{display:grid;gap:8px;align-content:end}
+.kpi-track{height:5px;background:var(--surface-2);border-radius:3px;position:relative;overflow:hidden}
+.kpi-fill{position:absolute;inset:0 auto 0 0;background:var(--green);border-radius:3px}
+.kpi-fill--miss{background:var(--alert)}
+.kpi-target{display:flex;justify-content:space-between;font-size:var(--t-micro);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+
+/* --- method.notes -------------------------------------------------------------------- */
+/* Definitions and arithmetic, set small and dense on purpose — the deck's quietest register.
+   Use as the last scene of any deck carrying numbers. Anyone who disputes a figure goes here,
+   which is exactly why it should not be pretty. */
+.meth-body{grid-template-rows:1fr auto;gap:26px}
+.meth-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-content:start;min-height:0}
+.meth-col{padding:0 40px;border-left:1px solid var(--hair)}
+.meth-col:first-child{padding-left:0;border-left:0} .meth-col:last-child{padding-right:0}
+.meth-item{display:grid;gap:7px;padding:16px 0;border-bottom:1px solid var(--hair)}
+.meth-item:first-child{padding-top:0}
+.meth-item dt{font-size:var(--t-label);font-weight:500;color:var(--ink)}
+.meth-item dd{font-size:var(--t-label);color:var(--ink-2);line-height:1.5}
+.meth-item code{font-family:inherit;font-size:var(--t-label);color:var(--green-txt);letter-spacing:-.005em}
+.meth-foot{display:flex;justify-content:space-between;gap:40px;padding-top:20px;border-top:1px solid var(--hair-2)}
+/* ==========================================================================================
+   LAYER 4 · DECK-LOCAL EXTENSIONS — small, named, and only where this deck's data needs a
+   shape the reference blocks do not already carry. Nothing here overrides a token.
+   ========================================================================================== */
+/* chart.bar.grouped at five categories and three series. Three series is the archetype's
+   stated ceiling. The shared scale is unchanged, which is the whole point of the archetype. */
+.grp-plot--5{grid-template-columns:repeat(5,minmax(0,1fr));gap:30px;padding-left:66px}
+.grp-pair--3{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.grp-bar--mid{background:var(--green-mid)}
+.grp-bar--void{background:transparent}
+/* chart.trend across five periods rather than twelve */
+.trend-x--5{grid-template-columns:repeat(5,minmax(0,1fr))}
+/* roadmap.timeline: NOW sits at the START of the live period, not mid-frame */
+.road-now--start{left:0}
+.road-now--start span{left:16px;right:auto}
+/* stack chart y-axis labels, positioned in the 70px gutter the archetype reserves */
+/* legend swatch for the mid-green series, matching stack-seg--2 in both themes */
+.chart-key i.key-atl{background:var(--green-txt)}
+html.theme-dark .chart-key i.key-atl{background:#1B7C53}
+/* capability.set: this deck's two minor items carry a single line each, so row three is given
+   less of the frame, and the wide card centres its own row instead of sitting at the top. */
+.cap-grid{grid-template-rows:1.3fr 1.05fr .62fr}
+.cap--wide{align-content:center}
+.stack-plot{position:relative}
+.stack-yaxis span{position:absolute;left:0;font-size:var(--t-micro);font-weight:500;letter-spacing:.12em;color:var(--ink-3);transform:translateY(-50%)}
+/* proof.three on the dark ground — act two needs an eye-reset and this is the scene that can
+   carry it. Every colour comes from the ground tokens, never a literal. */
+.scene--ground .proof-item{border-left-color:var(--g-hair)}
+.scene--ground .proof-rank{color:var(--g-ink-2)}
+.scene--ground .proof-fig{color:var(--g-ink)}
+.scene--ground .proof-item--lead .proof-fig{color:var(--g-accent)}
+.scene--ground .proof-item h3{color:var(--g-ink)}
+.scene--ground .proof-ev{border-top-color:var(--g-hair);color:var(--g-ink-2)}
+/* chart.bar.h as a STACKED pair: two rows only, so the bar itself carries more of the frame.
+   Segments are absolutely positioned within the shared track; the second segment's left offset
+   equals the first segment's width, so the two read as one continuous bar. */
+.barh--pair .barh-row{padding:30px 0}
+.barh--pair .barh-track{height:76px;border-radius:6px}
+.barh--pair .barh-fill{border-radius:0}
+.barh--pair .barh-val{font-size:var(--t-h2)}
+.barh-seg-lab{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:var(--t-label);font-weight:500;white-space:nowrap}
+/* scorecard.table at six rows: the reference row padding is tuned for four, and seven rows
+   pushed this scene 132px past the 900px fold. Density is the archetype's point, so tighten
+   the rows rather than dropping the measures. */
+.score-table--dense td{padding:13px 20px 13px 0}
+.score-table--dense .score-measure{font-size:var(--t-body)}
+.score-table--dense .score-measure small{margin-top:4px}
+.score-table--dense + .score-legend{padding-top:18px}
+/* --- focus.three (deck-local) ----------------------------------------------------------
+   Three focuses of UNEQUAL weight, each carrying its own small plot on its own scale.
+   Not capability.set (these need charts, not copy blocks) and not chart.smallmultiples
+   (the three plots are deliberately different shapes, because the three claims are).
+   The head row is min-height locked: per-column auto rows size to their own content, so
+   without the lock a two-line title in one column drops that column's plot out of line
+   with its neighbours (layout trap 4).
+   Use when a scene must carry three arguments with evidence. Do NOT use for three equal
+   points with no data — that is proof.three. */
+.focus-body{grid-template-columns:minmax(0,1.16fr) minmax(0,1fr) minmax(0,.95fr);gap:0;align-items:stretch}
+.focus{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:20px;padding:0 40px;border-left:1px solid var(--hair);min-height:0}
+.focus:first-child{padding-left:0;border-left:0}
+.focus:last-child{padding-right:0}
+.focus-head{display:grid;gap:11px;align-content:start;min-height:162px}
+.focus-head h3{font-size:var(--t-h4)}
+.focus--lead .focus-head h3{font-size:var(--t-h3)}
+.focus-head p{font-size:var(--t-small);color:var(--ink-2);line-height:1.5}
+.focus-plot{display:grid;min-height:0;align-content:stretch}
+.focus-plot--stack{grid-template-rows:minmax(0,1fr) auto;gap:4px}
+.focus-plot--step{grid-template-rows:auto minmax(0,1fr);gap:6px;align-content:start}
+.focus-ev{padding-top:15px;border-top:1px solid var(--hair);font-size:var(--t-label);color:var(--ink-3);line-height:1.5}
+/* focus one · stacked pair. Source chart's blue/grey series are not One NZ colours, so the
+   two customer-money series map to the greens and only "not at risk" stays neutral grey.
+   GEOMETRY, scale-max $9.0M: column height % = total ÷ 9.0 × 100
+     $700 match 8.5 = 94.4  ·  $400 7.6 = 84.4
+   segment height % = value ÷ column total × 100
+     $700: 1.2=14.1 1.5=17.6 2.4=28.2 3.4=40.1   |   $400: 1.2=15.8 2.0=26.3 2.4=31.6 2.0=26.3 */
+.fstack{display:grid;grid-template-columns:1fr 1fr;gap:34px;min-height:0;align-items:stretch}
+.fstack-col{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:9px;min-height:0}
+.fstack-tot{font-size:var(--t-label);font-weight:500;color:var(--ink);text-align:center}
+.fstack-bars{display:flex;flex-direction:column;justify-content:flex-end;min-height:0}
+.fstack-bar{display:flex;flex-direction:column;min-height:0;border-radius:6px 6px 0 0;overflow:hidden}
+.fstack-seg{display:grid;place-items:center;min-height:0;font-size:var(--t-label);font-weight:500}
+.fstack-seg--base{background:#5A6376;color:#FFFFFF}
+html.theme-dark .fstack-seg--base{background:rgba(255,255,255,.26)}
+.fstack-seg--risk{background:var(--green-deep);color:#FFFFFF}
+html.theme-dark .fstack-seg--risk{background:#1B7C53}
+.fstack-seg--acq{background:var(--green);color:#FFFFFF}
+html.theme-dark .fstack-seg--acq{color:#06231F}
+.fstack-seg--rt{background:var(--green-mid);color:var(--green-deep)}
+.fstack-cap{display:grid;gap:4px;padding-top:11px;border-top:1px solid var(--hair-2);text-align:center}
+.fstack-cap b{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.fstack-cap span{font-size:var(--t-label);color:var(--ink-3)}
+.fstack-col--rec .fstack-cap{border-top-color:var(--green)}
+.fstack-keys{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px;padding-top:12px}
+/* focus two · mini ranked bars. GEOMETRY, scale-max 20%: width % = churn ÷ 20 × 100
+     17.5=87.5  11.7=58.5  8.7=43.5  8.6=43.0 */
+.mbar{display:grid;grid-auto-rows:1fr;align-content:stretch;min-height:0}
+.mbar-row{display:grid;align-content:center;gap:9px;padding:12px 0;border-bottom:1px solid var(--hair)}
+.mbar-row:first-child{border-top:1px solid var(--hair)}
+.mbar-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+.mbar-head b{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.mbar-head span{font-size:var(--t-body);font-weight:500;color:var(--ink)}
+.mbar-track{position:relative;height:16px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.mbar-fill{position:absolute;inset:0 auto 0 0;background:var(--green);border-radius:4px}
+/* single-product cohort stays neutral: it is the mix we are moving customers OUT of */
+.mbar-fill--single{background:#5A6376}
+html.theme-dark .mbar-fill--single{background:rgba(255,255,255,.30)}
+/* focus three · the 0-to-1 step, then the five earn mechanics with their penetration */
+.step{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;padding:6px 0 20px}
+.step-cell{display:grid;gap:7px}
+.step-cell .num{font-size:44px;color:var(--ink);line-height:1}
+.step-cell--good .num{color:var(--green-txt)}
+.step-arrow{width:0;height:0;border:7px solid transparent;border-left:12px solid var(--green)}
+/* focus three · ARTEFACT — the One Wallet "ways to earn" card, traced from the in-product
+   screenshot supplied at review. This is a recreation of a REAL screen, not an invented
+   interface: if the screen changes, retrace it or fall back to an artefact.slot gap.
+   The balance and per-feature values are the member-facing illustrative view from that
+   screenshot; base penetration stays in the caption, where it can be sourced. */
+.wallet{border-radius:16px;overflow:hidden;border:1px solid var(--hair);background:var(--surface);box-shadow:var(--lift);align-self:start}
+.wallet-top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(105deg,var(--green-deeper),var(--green-deep) 58%,#1B7C53)}
+.wallet-orb{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#CDFBDD,#12CB77 46%,#00A45F 80%);box-shadow:0 0 14px rgba(18,203,119,.55)}
+.wallet-brand{display:grid;gap:1px;line-height:1.16}
+.wallet-brand span{font-size:var(--t-label);color:rgba(255,255,255,.70)}
+.wallet-brand b{font-size:var(--t-body);font-weight:500;color:#FFFFFF}
+.wallet-bal{font-size:26px;font-weight:500;letter-spacing:-.02em;color:#FFFFFF}
+.wallet-body{padding:14px 16px 16px;display:grid;gap:12px}
+.wallet-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.wallet-count{font-size:var(--t-label);font-weight:500;color:var(--green-txt);background:var(--green-wash);border:1px solid var(--green-line);border-radius:999px;padding:3px 10px}
+.wallet-ways{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.way{display:grid;justify-items:center;gap:6px;text-align:center}
+.way-ic{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#FFFFFF}
+.way-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.way-ic b{font-size:19px;font-weight:500;line-height:1}
+.way--locked .way-ic{background:transparent;border:1.5px dashed var(--hair-2);color:var(--ink-3)}
+.way-badge{position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;background:var(--green-lift);border:2px solid var(--surface)}
+.way-badge svg{width:9px;height:9px;fill:none;stroke:#FFFFFF;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.way--locked .way-badge{background:var(--surface-2);border-color:var(--surface)}
+.way--locked .way-badge svg{stroke:var(--ink-3);stroke-width:2.2}
+.way-lab{font-size:10px;color:var(--ink-2);line-height:1.25;min-height:25px}
+.way-val{font-size:var(--t-label);font-weight:500;color:var(--green-txt)}
+.way--locked .way-val{color:var(--ink-3)}
+.wallet-cta{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;border-radius:999px;background:var(--green-deep);color:#FFFFFF;font-size:var(--t-body);font-weight:500}
+.wallet-cta svg{width:16px;height:16px;fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+html.theme-dark .wallet-cta{background:var(--green);color:#06231F}
+html.theme-dark .wallet-cta svg{stroke:#06231F}
+</style>
+</head>
+<body>
+<button id="themeToggle" type="button" aria-pressed="false">Dark</button>
+<main>
+
+<!-- ==========================================================================================
+     SCENE 01 · cover.hero — dark ground, oversized title, meta rail. Opening scene only.
+     ========================================================================================== -->
+<section class="scene scene--ground scene-cover">
+  <header class="scene-head">
+    <span class="cover-mark anim">one<i>.</i>nz</span>
+  </header>
+  <div class="scene-body cover-body">
+    <h1 class="cover-title anim" style="--d:.08s">Phone Dollars<span>April to July 2026</span></h1>
+    <dl class="cover-meta anim" style="--d:.16s">
+      <div><dt>Programme</dt><dd>Membership, One Wallet and Phone Dollars</dd></div>
+      <div><dt>For</dt><dd>Product and marketing leadership</dd></div>
+      <div><dt>Data as at</dt><dd>28 August 2026, production feeds</dd></div>
+    </dl>
+  </div>
+  <footer class="scene-foot">
+    <span class="cover-stamp anim" style="--d:.24s">Quarterly review <b>Q1 FY27</b></span>
+    <span class="pg">01</span>
+  </footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 02 · agenda.index — asymmetric numbered index. Ordered sections only.
+     ========================================================================================== -->
+<section class="scene scene-index">
+  <header class="scene-head">
+    <span class="t-micro anim">Contents</span>
+    <h2 class="t-h2 anim" style="--d:.06s">Four acts, one argument</h2>
+  </header>
+  <div class="scene-body index-body">
+    <div class="index-aside">
+      <p class="t-body anim" style="--d:.1s">More customers engaged, two in three phone sales now funded by Phone Dollars, and more second connections in the home.</p>
+      <div class="rule-accent anim" style="--d:.14s"></div>
+      <p class="note anim" style="--d:.18s">Delivered at 92% of the discount budget.</p>
+    </div>
+    <div class="index-list">
+      <div class="index-row anim" style="--d:.12s">
+        <span class="index-num">01</span>
+        <div><h3>What moved</h3><p class="t-small">The scorecard, and the win behind it</p></div>
+        <span class="index-scenes">Scenes 03–06</span>
+      </div>
+      <div class="index-row anim" style="--d:.18s">
+        <span class="index-num">02</span>
+        <div><h3>What drove it</h3><p class="t-small">The mix shift, attach, Juicy June and the funnel</p></div>
+        <span class="index-scenes">Scenes 07–11</span>
+      </div>
+      <div class="index-row anim" style="--d:.24s">
+        <span class="index-num">03</span>
+        <div><h3>Where the lift is</h3><p class="t-small">At-risk stims reframed, and the road to December</p></div>
+        <span class="index-scenes">Scenes 12–14</span>
+      </div>
+      <div class="index-row anim" style="--d:.3s">
+        <span class="index-num">04</span>
+        <div><h3>What's next</h3><p class="t-small">Three focuses, and the run into peak trading</p></div>
+        <span class="index-scenes">Scenes 15–17</span>
+      </div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">02</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 03 · divider.act — REUSABLE reset between acts. Oversized numeral, three words.
+     ========================================================================================== -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act one</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">What moved</h2>
+      <p class="t-body anim" style="--d:.12s">Four of the twelve measures beat target, two are short, and one number explains the rest.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>04</b>Scorecard</span><span><b>05</b>Engagement share</span><span><b>06</b>The win</span>
+      </div>
+    </div>
+    <span class="act-num anim" style="--d:.1s">01</span>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">03</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 04 · kpi.band — six measures at equal weight, each metered against ITS OWN target.
+     Meter fill % = actual / target x 100, capped at 100. The two misses use the alert fill.
+     ========================================================================================== -->
+<section class="scene scene--sunk scene-kpi">
+  <header class="scene-head">
+    <span class="t-micro anim">The scorecard</span>
+    <h2 class="t-h2 anim" style="--d:.06s">Where we landed</h2>
+  </header>
+  <div class="scene-body kpi-grid">
+    <div class="kpi anim" style="--d:.08s">
+      <span class="t-micro">Engaged base</span>
+      <div class="kpi-fig"><span class="num">30.2%</span><span class="delta"><i class="tick"></i>+3.4pp</span></div>
+      <p class="kpi-say">Met for the first time, on the 90-day-active contactable base.</p>
+      <div class="kpi-meter"><div class="kpi-track"><span class="kpi-fill" style="width:100%"></span></div>
+        <div class="kpi-target"><span>Target 30%</span><span>Met</span></div></div>
+    </div>
+    <div class="kpi anim" style="--d:.12s">
+      <span class="t-micro">Market awareness</span>
+      <div class="kpi-fig"><span class="num">65.6%</span><span class="delta"><i class="tick"></i>+0.6pp</span></div>
+      <p class="kpi-say">One Wallet, total market. Phone Dollars sits behind it at 49.3%.</p>
+      <div class="kpi-meter"><div class="kpi-track"><span class="kpi-fill" style="width:100%"></span></div>
+        <div class="kpi-target"><span>Target 60%</span><span>Ahead</span></div></div>
+    </div>
+    <div class="kpi anim" style="--d:.16s">
+      <span class="t-micro">NPS</span>
+      <div class="kpi-fig"><span class="num">+39</span><span class="delta"><i class="tick"></i>+4</span></div>
+      <p class="kpi-say">58% promoters against 19% detractors, steady all window.</p>
+      <div class="kpi-meter"><div class="kpi-track"><span class="kpi-fill" style="width:100%"></span></div>
+        <div class="kpi-target"><span>Target +30</span><span>Ahead</span></div></div>
+    </div>
+    <div class="kpi anim" style="--d:.2s">
+      <span class="t-micro">Engaged churn gap</span>
+      <div class="kpi-fig"><span class="num">4.0pp</span><span class="delta delta--watch">excl. stim</span></div>
+      <p class="kpi-say">Engaged members churn at 9.5% against 13.5% for the unengaged.</p>
+      <div class="kpi-meter"><div class="kpi-track"><span class="kpi-fill" style="width:100%"></span></div>
+        <div class="kpi-target"><span>Target 4.0pp</span><span>Met</span></div></div>
+    </div>
+    <div class="kpi anim" style="--d:.24s">
+      <span class="t-micro">Wallet IFP sales</span>
+      <div class="kpi-fig"><span class="num">3,090</span><span class="delta"><i class="tick"></i>103%</span></div>
+      <p class="kpi-say">First 22 days of August, against a pro-rated target of 3,007.</p>
+      <div class="kpi-meter"><div class="kpi-track"><span class="kpi-fill" style="width:100%"></span></div>
+        <div class="kpi-target"><span>Target 3,007</span><span>Ahead</span></div></div>
+    </div>
+    <div class="kpi anim" style="--d:.28s">
+      <span class="t-micro">Total IFP spend</span>
+      <div class="kpi-fig"><span class="num">$3.09M</span><span class="delta delta--down"><i class="tick tick--down"></i>169%</span></div>
+      <p class="kpi-say">August only. April to July ran at 92% of budget.</p>
+      <div class="kpi-meter"><div class="kpi-track"><span class="kpi-fill kpi-fill--miss" style="width:100%"></span></div>
+        <div class="kpi-target"><span>Budget $1.84M</span><span>Over</span></div></div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">04</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 05 · stat.hero — one figure carries the scene. Never two in a row.
+     The OKR is a SHARE, so the share is the figure. Headcounts stay out of the frame.
+     ========================================================================================== -->
+<section class="scene scene-stat">
+  <header class="scene-head">
+    <span class="t-micro anim">Engaged base</span>
+    <h2 class="t-h2 anim" style="--d:.06s">We cleared the 30% engagement target for the first time</h2>
+  </header>
+  <div class="scene-body stat-body">
+    <div class="stat-focus">
+      <div class="stat-figure">
+        <span class="t-mega anim" style="--d:.1s">30.2%</span>
+        <div class="stat-caption anim" style="--d:.16s">
+          <h3 class="t-h4">of the engageable base</h3>
+          <span class="stat-delta"><i class="tick"></i>+3.4pp since May</span>
+        </div>
+      </div>
+      <div class="stat-side anim" style="--d:.22s">
+        <p class="t-body">Gained while comms waves were held back to protect A&amp;R spend. We normally run two to three waves a month.</p>
+        <p class="note">On full comms the share would have been higher.</p>
+      </div>
+    </div>
+    <div class="stat-rail">
+      <div class="anim" style="--d:.26s"><span class="t-micro">26 May</span><span class="num">26.8%</span><span class="t-label">starting point</span></div>
+      <div class="anim" style="--d:.3s"><span class="t-micro">29 June</span><span class="num">29.3%</span><span class="t-label">Juicy June lands</span></div>
+      <div class="anim" style="--d:.34s"><span class="t-micro">28 July</span><span class="num">28.7%</span><span class="t-label">the base itself shrank</span></div>
+      <div class="anim" style="--d:.38s"><span class="t-micro">23 August</span><span class="num">30.1%</span><span class="t-label">target cleared</span></div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">05</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 06 · hero.statement — one sentence, nothing else. Once per deck, at the hinge.
+     ========================================================================================== -->
+<section class="scene scene-say">
+  <header class="scene-head"><span class="t-micro anim">The biggest win this quarter</span></header>
+  <div class="scene-body say-body">
+    <div class="say-main">
+      <p class="anim" style="--d:.08s">Phone Dollars stopped being a membership programme and became <b>the organisation's programme</b>.</p>
+      <div class="rule-accent anim" style="--d:.16s"></div>
+    </div>
+    <div class="say-foot">
+      <p class="t-body anim" style="--d:.22s">A quarter ago this was largely driven by the membership function. It is now driven across product and marketing, and by a large part of the wider organisation. Every number in this deck is downstream of that shift.</p>
+      <p class="note anim" style="--d:.28s">Thank you to the product and marketing leadership team in particular for driving that outcome.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">06</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 07 · divider.act
+     ========================================================================================== -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act two</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">What drove it</h2>
+      <p class="t-body anim" style="--d:.12s">The mix shifted, attach followed, and one campaign moved every stage at once.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>08</b>The mix</span><span><b>09</b>Juicy June</span><span><b>10</b>Attach</span><span><b>11</b>Hero offers</span>
+      </div>
+    </div>
+    <span class="act-num anim" style="--d:.1s">02</span>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">07</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 08 · chart.stack — composition changing over periods.
+     GEOMETRY, scale-max 8,500 sales:
+       column height % = month total / 8500 x 100
+       segment height % = segment / month total x 100
+       Apr 7,954 = 93.6  ·  May 7,298 = 85.9  ·  Jun 8,106 = 95.4  ·  Jul 7,472 = 87.9
+     ========================================================================================== -->
+<section class="scene scene--sunk scene-chart">
+  <header class="scene-head">
+    <span class="t-micro anim">How phone sales are funded</span>
+    <h2 class="t-h2 anim" style="--d:.06s">Phone Dollars now funds two in three phone sales</h2>
+  </header>
+  <div class="scene-body chart-body">
+    <div class="chart-plot stack-plot">
+      <div class="stack-yaxis">
+        <span style="top:4%">8,500</span><span style="top:52%">4,250</span><span style="top:100%">0</span>
+      </div>
+      <div class="stack-col">
+        <div class="stack-bars"><div class="stack-bar anim-rise" style="height:93.6%;--d:.1s">
+          <div class="stack-seg stack-seg--4" style="height:9.9%"></div>
+          <div class="stack-seg stack-seg--2" style="height:38.3%">38%</div>
+          <div class="stack-seg stack-seg--3" style="height:51.8%">52%</div>
+        </div></div>
+        <div class="stack-cap"><span class="num">7,954</span><span>April</span></div>
+      </div>
+      <div class="stack-col">
+        <div class="stack-bars"><div class="stack-bar anim-rise" style="height:85.9%;--d:.18s">
+          <div class="stack-seg stack-seg--4" style="height:13.3%"></div>
+          <div class="stack-seg stack-seg--2" style="height:40.4%">40%</div>
+          <div class="stack-seg stack-seg--3" style="height:46.3%">46%</div>
+        </div></div>
+        <div class="stack-cap"><span class="num">7,298</span><span>May</span></div>
+      </div>
+      <div class="stack-col">
+        <div class="stack-bars"><div class="stack-bar anim-rise" style="height:95.4%;--d:.26s">
+          <div class="stack-seg stack-seg--4" style="height:15.6%"></div>
+          <div class="stack-seg stack-seg--2" style="height:21.7%">22%</div>
+          <div class="stack-seg stack-seg--3" style="height:62.7%">63%</div>
+        </div></div>
+        <div class="stack-cap"><span class="num">8,106</span><span>June</span></div>
+      </div>
+      <div class="stack-col stack-col--now">
+        <div class="stack-bars"><div class="stack-bar anim-rise" style="height:87.9%;--d:.34s">
+          <div class="stack-seg stack-seg--4" style="height:12.6%"></div>
+          <div class="stack-seg stack-seg--2" style="height:24.5%">25%</div>
+          <div class="stack-seg stack-seg--3" style="height:62.9%">63%</div>
+        </div></div>
+        <div class="stack-cap"><span class="num">7,472</span><span>July</span></div>
+      </div>
+    </div>
+    <div class="chart-foot">
+      <div class="chart-legend">
+        <span class="chart-key"><i style="background:var(--green)"></i>Phone Dollars funded</span>
+        <span class="chart-key"><i class="key-atl"></i>Above the line</span>
+        <span class="chart-key"><i style="background:var(--green-mid)"></i>No discount</span>
+      </div>
+      <span class="chart-axis">Plan said 60% by July &middot; we passed it in June</span>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">08</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 09 · compare.thennow — two real columns and a spine.
+     ========================================================================================== -->
+<section class="scene scene-compare">
+  <header class="scene-head">
+    <span class="t-micro anim">Juicy June, the $500 Connect More Get More</span>
+    <h2 class="t-h2 anim" style="--d:.06s">One month, every stage moved</h2>
+  </header>
+  <div class="scene-body compare-body">
+    <div class="compare-heads">
+      <span class="t-micro">May</span><span></span><span class="t-micro">June</span>
+    </div>
+    <div class="compare-rows">
+      <div class="compare-row anim" style="--d:.1s">
+        <div class="compare-then">1,526 net adds</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">3,968 net adds, up 160%</div>
+      </div>
+      <div class="compare-row anim" style="--d:.16s">
+        <div class="compare-then">$2,392 cost per customer</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">$1,215, and about $0 per net add</div>
+      </div>
+      <div class="compare-row anim" style="--d:.22s">
+        <div class="compare-then">46.3% of sales wallet funded</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">62.7%, a month ahead of plan</div>
+      </div>
+      <div class="compare-row anim" style="--d:.28s">
+        <div class="compare-then">87,273 app monthly actives</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">98,928, up 13.4%</div>
+      </div>
+      <div class="compare-row anim" style="--d:.34s">
+        <div class="compare-then">22.3% of May's $559k CMGM earn redeemed</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">22.7% of June's $843k, with weeks less maturity</div>
+      </div>
+      <div class="compare-row anim" style="--d:.37s">
+        <div class="compare-then">29.2% attach, mobile and broadband combined</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">37.5%, with the extra mobile line doing most of the lift</div>
+      </div>
+      <div class="compare-row anim" style="--d:.4s">
+        <div class="compare-then">263,075 store visits</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">249,651, down 5.1% &mdash; the lift was not traffic</div>
+      </div>
+      <div class="compare-row anim" style="--d:.46s">
+        <div class="compare-then">3.11% store conversion</div>
+        <div class="compare-node"><span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span></div>
+        <div class="compare-now">3.55% across 54 stores</div>
+      </div>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">09</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 10 · chart.bar.h — ranked comparison of one measure.
+     GEOMETRY: width % = attach rate / scale-max(25%) x 100.
+       22.7 = 90.8  ·  14.6 = 58.4  ·  8.4 = 33.6  ·  3.8 = 15.2
+     ========================================================================================== -->
+<section class="scene scene-chart">
+  <header class="scene-head">
+    <span class="t-micro anim">Attach within 60 days of the sale</span>
+    <h2 class="t-h2 anim" style="--d:.06s">A Phone Dollars sale builds the household nearly twice as often</h2>
+  </header>
+  <div class="scene-body chart-body">
+    <div class="chart-plot barh barh--pair">
+      <!-- GEOMETRY, scale-max 35%: width % = rate / 35 x 100. Broadband segment is offset by the
+           mobile segment's width so the two segments read as one stacked bar.
+           Phone Dollars  22.7 = 64.9  +  8.4 = 24.0  =  31.1% total (88.9% of scale)
+           Above the line 14.6 = 41.7  +  3.8 = 10.9  =  18.4% total (52.6% of scale) -->
+      <div class="barh-row anim" style="--d:.1s">
+        <div class="barh-label">Phone Dollars IFP<small>Additional mobile line plus broadband</small></div>
+        <div class="barh-track">
+          <span class="barh-fill anim-grow" style="width:64.9%;--d:.16s"><b class="barh-seg-lab" style="color:#FFFFFF">22.7% mobile</b></span>
+          <span class="barh-fill barh-fill--soft anim-grow" style="left:64.9%;width:24.0%;--d:.24s"><b class="barh-seg-lab" style="color:var(--green-deep)">8.4% BB</b></span>
+        </div>
+        <div class="barh-val">31.1%<small>mobile peaked 30.4% in June</small></div>
+      </div>
+      <div class="barh-row anim" style="--d:.18s">
+        <div class="barh-label">Above the line IFP<small>Additional mobile line plus broadband</small></div>
+        <div class="barh-track">
+          <span class="barh-fill anim-grow" style="width:41.7%;--d:.24s"><b class="barh-seg-lab" style="color:#FFFFFF">14.6% mobile</b></span>
+          <span class="barh-fill barh-fill--soft anim-grow" style="left:41.7%;width:10.9%;--d:.32s"><b class="barh-seg-lab" style="color:var(--green-deep)">3.8% BB</b></span>
+        </div>
+        <div class="barh-val">18.4%<small>flat all window</small></div>
+      </div>
+    </div>
+    <div class="chart-foot">
+      <p class="note" style="max-width:520px">Multi-product homes churn 30 to 45% less. An off-contract phone customer without our broadband leaves at about three times the rate of one with it.</p>
+      <div class="chart-legend">
+        <span class="chart-key"><i style="background:var(--green)"></i>Additional mobile line</span>
+        <span class="chart-key"><i style="background:var(--green-mid)"></i>Broadband</span>
+      </div>
+      <span class="chart-axis">August, scale to 35%</span>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">10</span></footer>
+</section>
+
+<!-- REMOVED AT REVIEW · chart.trend (prospect creation) and proof.three (Juicy June) both cut. -->
+<!-- ==========================================================================================
+     SCENE 13 · chart.bar.grouped — three series on ONE shared scale, five categories.
+     GEOMETRY: height % = joined-within-28-days rate / scale-max(14%) x 100.
+       4.1=29.3 5.6=40.0 | 9.3=66.4 10.8=77.1 | 5.1=36.4 8.8=62.9 12.1=86.4
+       5.8=41.4 8.0=57.1 12.9=92.1 | 7.3=52.1 7.4=52.9
+     ========================================================================================== -->
+<section class="scene scene--sunk scene-chart">
+  <header class="scene-head">
+    <span class="t-micro anim">Hero device offer against join rate</span>
+    <h2 class="t-h2 anim" style="--d:.06s">Offer size only pays in a launch window</h2>
+  </header>
+  <div class="scene-body chart-body">
+    <div class="chart-plot grp-plot grp-plot--5">
+      <div class="grp-col">
+        <div class="grp-pair grp-pair--3">
+          <div class="grp-bar grp-bar--now anim-rise" style="height:29.3%;--d:.1s"><b>4.1</b></div>
+          <div class="grp-bar grp-bar--prev anim-rise" style="height:40.0%;--d:.13s"><b>5.6</b></div>
+          <div class="grp-bar grp-bar--void"></div>
+        </div>
+        <div class="grp-cap"><b>No hero</b><span>baseline</span></div>
+      </div>
+      <div class="grp-col">
+        <div class="grp-pair grp-pair--3">
+          <div class="grp-bar grp-bar--void"></div>
+          <div class="grp-bar grp-bar--prev anim-rise" style="height:66.4%;--d:.16s"><b>9.3</b></div>
+          <div class="grp-bar grp-bar--mid anim-rise" style="height:77.1%;--d:.19s"><b>10.8</b></div>
+        </div>
+        <div class="grp-cap"><b>$650</b><span>hero offer</span></div>
+      </div>
+      <div class="grp-col">
+        <div class="grp-pair grp-pair--3">
+          <div class="grp-bar grp-bar--now anim-rise" style="height:36.4%;--d:.22s"><b>5.1</b></div>
+          <div class="grp-bar grp-bar--prev anim-rise" style="height:62.9%;--d:.25s"><b>8.8</b></div>
+          <div class="grp-bar grp-bar--mid anim-rise" style="height:86.4%;--d:.28s"><b>12.1</b></div>
+        </div>
+        <div class="grp-cap"><b>$850</b><span>hero offer</span></div>
+      </div>
+      <div class="grp-col">
+        <div class="grp-pair grp-pair--3">
+          <div class="grp-bar grp-bar--now anim-rise" style="height:41.4%;--d:.31s"><b>5.8</b></div>
+          <div class="grp-bar grp-bar--prev anim-rise" style="height:57.1%;--d:.34s"><b>8.0</b></div>
+          <div class="grp-bar grp-bar--mid anim-rise" style="height:92.1%;--d:.37s"><b>12.9</b></div>
+        </div>
+        <div class="grp-cap"><b>$1,000</b><span>hero offer</span></div>
+      </div>
+      <div class="grp-col">
+        <div class="grp-pair grp-pair--3">
+          <div class="grp-bar grp-bar--now anim-rise" style="height:52.1%;--d:.4s"><b>7.3</b></div>
+          <div class="grp-bar grp-bar--prev anim-rise" style="height:52.9%;--d:.43s"><b>7.4</b></div>
+          <div class="grp-bar grp-bar--void"></div>
+        </div>
+        <div class="grp-cap"><b>$1,200</b><span>hero offer</span></div>
+      </div>
+    </div>
+    <div class="chart-foot">
+      <div class="chart-legend">
+        <span class="chart-key"><i style="background:var(--green)"></i>Presale fortnight, 12 to 28 Sep 2025</span>
+        <span class="chart-key"><i style="background:var(--hair)"></i>Weeks three and beyond</span>
+        <span class="chart-key"><i style="background:var(--green-mid)"></i>July 2026, everyday funnel</span>
+      </div>
+      <span class="chart-axis">Joined within 28 days</span>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">11</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 14 · divider.act
+     ========================================================================================== -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act three</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">Where the lift is</h2>
+      <p class="t-body anim" style="--d:.12s">One programme needs reframing, and one target needs a hard look.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>13</b>At-risk stims</span><span><b>14</b>Tracking to December</span>
+      </div>
+    </div>
+    <span class="act-num anim" style="--d:.1s">03</span>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">12</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 15 · system.flow — boxes, directional connectors, one feedback loop.
+     ========================================================================================== -->
+<section class="scene scene-flow">
+  <header class="scene-head">
+    <span class="t-micro anim">At-risk stim campaigns</span>
+    <h2 class="t-h2 anim" style="--d:.06s">An investment for future value, not an in-period save</h2>
+  </header>
+  <div class="scene-body flow-body">
+    <div class="flow-diagram anim" style="--d:.1s">
+      <div class="flow-col flow-col--in">
+        <div class="flow-node"><b>At-risk members identified</b><span>146,000 targeted in July</span></div>
+        <div class="flow-node"><b>Phone Dollars loaded</b><span>$38.4M nominal, 1.4% ever drawn</span></div>
+        <div class="flow-node"><b>Comms wave and expiry SMS</b><span>the strongest converter</span></div>
+      </div>
+      <div class="flow-bus"><span class="flow-arrow"></span></div>
+      <div class="flow-engine">
+        <span class="t-micro">What the money actually buys</span>
+        <h3>Attention, then a contract</h3>
+        <ul>
+          <li><b>Wallet visits roughly double</b><span>10.2% of targets against 5.2% of controls</span></li>
+          <li><b>An interest-free contract is signed</b><span>the retention mechanism, 24 to 36 months</span></li>
+          <li><b>A second line is attached</b><span>household value, not just a device sale</span></li>
+        </ul>
+      </div>
+      <div class="flow-bus flow-bus--out"></div>
+      <div class="flow-col flow-col--out">
+        <div class="flow-node"><b>1,034 incremental contracts</b><span>July trio</span></div>
+        <div class="flow-node"><b>278 incremental mobile lines</b><span>broadband positive, smaller</span></div>
+        <div class="flow-node"><b>Churn falls 18% to 6%</b><span>annualised, while on contract</span></div>
+      </div>
+    </div>
+    <div class="flow-loop">
+      <div class="flow-loop-path"><span class="flow-loop-label">Member returns to the base, engaged</span></div>
+    </div>
+    <div class="flow-caption">
+      <p class="note">The in-period save rate has diminished, and the likely reason is success elsewhere: campaign awareness and wallet engagement are now broad across the base, so the gap between a target and a control narrows.</p>
+      <p class="note"><b>Where this goes next:</b> point stims at line attachment, not just at funding an IFP. A targeted $500 Juicy June offer, aimed at single-line customers.</p>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">13</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 16 · scorecard.table — dense measure/actual/target/variance matrix.
+     One of only two scenes where the alert colours are allowed.
+     ========================================================================================== -->
+<section class="scene scene--sunk scene-score">
+  <header class="scene-head">
+    <span class="t-micro anim">FY27 targets</span>
+    <h2 class="t-h2 anim" style="--d:.06s">Tracking to December</h2>
+  </header>
+  <div class="scene-body score-body">
+    <table class="score-table score-table--dense">
+      <thead>
+        <tr><th>Measure</th><th class="n">July</th><th class="n">August</th><th class="n">December target</th><th class="n">Gap</th><th class="n">State</th></tr>
+      </thead>
+      <tbody>
+        <tr class="anim" style="--d:.08s">
+          <td class="score-measure">Engaged share of base<small>of the engageable base</small></td>
+          <td class="n score-val">28.7%</td><td class="n score-val score-val--actual">30.1%</td>
+          <td class="n score-val">30%</td><td class="n score-var">Met</td>
+          <td class="n"><span class="score-flag">On track</span></td>
+        </tr>
+        <tr class="anim" style="--d:.12s">
+          <td class="score-measure">Wallet share of IFP sales<small>the mix shift</small></td>
+          <td class="n score-val">62.9%</td><td class="n score-val score-val--actual">53.3%</td>
+          <td class="n score-val">85%</td><td class="n score-var score-var--down">&minus;31.7pp</td>
+          <td class="n"><span class="score-flag score-flag--miss">Behind</span></td>
+        </tr>
+        <tr class="anim" style="--d:.16s">
+          <td class="score-measure">Wallet IFP volume<small>consumer, per month</small></td>
+          <td class="n score-val">4,701</td><td class="n score-val score-val--actual">3,090</td>
+          <td class="n score-val">11,875</td><td class="n score-var score-var--down">2.5x needed</td>
+          <td class="n"><span class="score-flag score-flag--watch">Watch</span></td>
+        </tr>
+        <tr class="anim" style="--d:.2s">
+          <td class="score-measure">Engaged churn gap<small>excluding stim targets</small></td>
+          <td class="n score-val">3.0pp</td><td class="n score-val score-val--actual">2.8pp</td>
+          <td class="n score-val">4.0pp</td><td class="n score-var score-var--down">&minus;1.2pp</td>
+          <td class="n"><span class="score-flag score-flag--watch">Watch</span></td>
+        </tr>
+        <tr class="anim" style="--d:.24s">
+          <td class="score-measure">IFP broadband attach<small>within 60 days</small></td>
+          <td class="n score-val">&mdash;</td><td class="n score-val score-val--actual">6.5%</td>
+          <td class="n score-val">8%</td><td class="n score-var score-var--down">&minus;1.5pp</td>
+          <td class="n"><span class="score-flag score-flag--watch">Watch</span></td>
+        </tr>
+        <tr class="anim" style="--d:.28s">
+          <td class="score-measure">Prospects created<small>per month</small></td>
+          <td class="n score-val">6,332</td><td class="n score-val score-val--actual">5,367</td>
+          <td class="n score-val">none set</td><td class="n score-var score-var--down">No target</td>
+          <td class="n"><span class="score-flag score-flag--miss">Gap</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="score-legend">
+      <span class="score-flag">On track</span>
+      <span class="score-flag score-flag--watch">Watch, recoverable this quarter</span>
+      <span class="score-flag score-flag--miss">Behind, needs a decision</span>
+      <span class="note">April to July the discount line ran at 92% of budget and the mix shift was delivered without buying it. August is the exception at 169%, on the foldable launch.</span>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">14</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 17 · divider.act
+     ========================================================================================== -->
+<section class="scene scene--ground scene-act">
+  <header class="scene-head"><span class="t-micro anim">Act four</span></header>
+  <div class="scene-body act-body">
+    <div class="act-copy">
+      <h2 class="anim" style="--d:.06s">What's next</h2>
+      <p class="t-body anim" style="--d:.12s">Three focuses, and the run into peak trading. The back half is not upside &mdash; it is what the December plan already assumes.</p>
+      <div class="act-list anim" style="--d:.18s">
+        <span><b>16</b>Three focuses</span><span><b>17</b>Roadmap</span>
+      </div>
+    </div>
+    <span class="act-num anim" style="--d:.1s">04</span>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">15</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 18 · focus.three (deck-local) — three focuses of unequal weight, each with its own
+     plot on its own scale. Sits between the act-four divider and the roadmap: the roadmap
+     says WHEN, this scene says WHY those three things are on it.
+     Figures: A&R step chart from the September–October A&R model ($M incl GST); churn by
+     product mix from the cohort-classified churn model; earn-feature adoption and churn from
+     production, active consumer base 30 Aug 2026 (n=777,151), banded 2 Aug and remeasured
+     30 Aug, 28-day window compound-annualised, replicated at 33 days within ±0.4pp.
+     ========================================================================================== -->
+<section class="scene scene--sunk scene-focus">
+  <header class="scene-head">
+    <span class="t-micro anim">Where the effort goes</span>
+    <h2 class="t-h2 anim" style="--d:.06s">Three focuses for the back half</h2>
+  </header>
+  <div class="scene-body focus-body">
+
+    <!-- FOCUS ONE — the budget shift -->
+    <article class="focus focus--lead">
+      <div class="focus-head">
+        <span class="t-micro anim" style="--d:.08s">Focus one</span>
+        <h3 class="anim" style="--d:.1s">Shift the A&amp;R budget off low-risk members</h3>
+        <p class="anim" style="--d:.12s">Less money on existing members who are not at risk, more on acquisition and at-risk &mdash; and a smaller total. Modelled at each match level; $700 and $400 shown.</p>
+      </div>
+      <div class="focus-plot focus-plot--stack">
+        <div class="fstack">
+          <div class="fstack-col">
+            <span class="fstack-tot anim" style="--d:.16s">$7.3M + $1.2M</span>
+            <div class="fstack-bars">
+              <div class="fstack-bar anim-rise" style="height:94.4%;--d:.18s">
+                <div class="fstack-seg fstack-seg--rt" style="height:14.1%">$1.2M</div>
+                <div class="fstack-seg fstack-seg--acq" style="height:17.6%">$1.5M</div>
+                <div class="fstack-seg fstack-seg--risk" style="height:28.2%">$2.4M</div>
+                <div class="fstack-seg fstack-seg--base" style="height:40.1%">$3.4M</div>
+              </div>
+            </div>
+            <div class="fstack-cap"><b>$700</b><span>match today</span></div>
+          </div>
+          <div class="fstack-col fstack-col--rec">
+            <span class="fstack-tot anim" style="--d:.22s">$6.4M + $1.2M</span>
+            <div class="fstack-bars">
+              <div class="fstack-bar anim-rise" style="height:84.4%;--d:.24s">
+                <div class="fstack-seg fstack-seg--rt" style="height:15.8%">$1.2M</div>
+                <div class="fstack-seg fstack-seg--acq" style="height:26.3%">$2.0M</div>
+                <div class="fstack-seg fstack-seg--risk" style="height:31.6%">$2.4M</div>
+                <div class="fstack-seg fstack-seg--base" style="height:26.3%">$2.0M</div>
+              </div>
+            </div>
+            <div class="fstack-cap"><b>$400</b><span>where we are heading</span></div>
+          </div>
+        </div>
+        <div class="fstack-keys anim" style="--d:.3s">
+          <span class="chart-key"><i class="key-base" style="background:#5A6376"></i>Members not at risk</span>
+          <span class="chart-key"><i style="background:var(--green-deep)"></i>At-risk members</span>
+          <span class="chart-key"><i style="background:var(--green)"></i>Acquisition</span>
+          <span class="chart-key"><i style="background:var(--green-mid)"></i>Retarget, paid on join</span>
+        </div>
+      </div>
+      <p class="focus-ev anim" style="--d:.34s">At $700 the match puts $3.4M behind members who were never going to leave. At $400 that drops to $2.0M, acquisition rises to $2.0M, at-risk holds at $2.4M &mdash; and the total falls $0.9M. September to October, $M incl GST.</p>
+    </article>
+
+    <!-- FOCUS TWO — attach, so the mix does the retention work -->
+    <article class="focus">
+      <div class="focus-head">
+        <span class="t-micro anim" style="--d:.14s">Focus two</span>
+        <h3 class="anim" style="--d:.16s">Keep driving attach, so the product mix carries the churn reduction</h3>
+        <p class="anim" style="--d:.18s">Annualised churn by product mix, cohorts classified before churn. Broadband is the strongest single lever.</p>
+      </div>
+      <div class="focus-plot">
+        <div class="mbar">
+          <div class="mbar-row anim" style="--d:.2s">
+            <div class="mbar-head"><b>Mobile only</b><span>17.5%</span></div>
+            <div class="mbar-track"><span class="mbar-fill mbar-fill--single anim-grow" style="width:87.5%;--d:.26s"></span></div>
+          </div>
+          <div class="mbar-row anim" style="--d:.24s">
+            <div class="mbar-head"><b>Multi-mobile</b><span>11.7%</span></div>
+            <div class="mbar-track"><span class="mbar-fill anim-grow" style="width:58.5%;--d:.3s"></span></div>
+          </div>
+          <div class="mbar-row anim" style="--d:.28s">
+            <div class="mbar-head"><b>Multi-mobile + broadband</b><span>8.7%</span></div>
+            <div class="mbar-track"><span class="mbar-fill anim-grow" style="width:43.5%;--d:.34s"></span></div>
+          </div>
+          <div class="mbar-row anim" style="--d:.32s">
+            <div class="mbar-head"><b>Mobile + broadband</b><span>8.6%</span></div>
+            <div class="mbar-track"><span class="mbar-fill anim-grow" style="width:43.0%;--d:.38s"></span></div>
+          </div>
+        </div>
+      </div>
+      <p class="focus-ev anim" style="--d:.4s">A Phone Dollars sale already attaches at 31.1% against 18.4% above the line. December assumes 8% broadband attach; August ran 6.5%. Scale to 20%.</p>
+    </article>
+
+    <!-- FOCUS THREE — first earn feature -->
+    <article class="focus">
+      <div class="focus-head">
+        <span class="t-micro anim" style="--d:.2s">Focus three</span>
+        <h3 class="anim" style="--d:.22s">Get members onto their first earn feature</h3>
+        <p class="anim" style="--d:.24s">70.5% of the active base uses none of the five add-on earn mechanics. Almost the whole churn difference sits at the first one.</p>
+      </div>
+      <div class="focus-plot focus-plot--step">
+        <div class="step anim" style="--d:.28s">
+          <div class="step-cell"><span class="t-micro">No features</span><span class="num">15.8%</span><span class="t-label">547,554 members</span></div>
+          <span class="step-arrow"></span>
+          <div class="step-cell step-cell--good"><span class="t-micro">One feature</span><span class="num">9.9%</span><span class="t-label">annualised churn</span></div>
+        </div>
+        <!-- ARTEFACT · the One Wallet "ways to earn" card as members see it, traced from the
+             supplied in-product screenshot. Two of five unlocked is the point of the picture:
+             the locked three are the headroom Focus three is about. Values illustrative. -->
+        <div class="wallet anim" style="--d:.32s">
+          <div class="wallet-top">
+            <span class="wallet-orb"></span>
+            <span class="wallet-brand"><span>One NZ</span><b>Phone Dollars</b></span>
+            <span class="wallet-bal">$687.42</span>
+          </div>
+          <div class="wallet-body">
+            <div class="wallet-head">
+              <span class="t-micro">Ways to earn</span>
+              <span class="wallet-count">2 of 5</span>
+            </div>
+            <div class="wallet-ways">
+              <div class="way">
+                <span class="way-ic"><svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18.4h2"/></svg><i class="way-badge"><svg viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 7"/></svg></i></span>
+                <span class="way-lab">Connect</span><span class="way-val">+600</span>
+              </div>
+              <div class="way">
+                <span class="way-ic"><b>%</b><i class="way-badge"><svg viewBox="0 0 24 24"><path d="M5 13l4.5 4.5L19 7"/></svg></i></span>
+                <span class="way-lab">Bill Bonus</span><span class="way-val">6% back</span>
+              </div>
+              <div class="way way--locked">
+                <span class="way-ic"><svg viewBox="0 0 24 24"><path d="M6.5 9.5A7 7 0 0 1 18 7.6"/><path d="M17.5 14.5A7 7 0 0 1 6 16.4"/><path d="M18.4 4.2v3.6h-3.6"/><path d="M5.6 19.8v-3.6h3.6"/></svg><i class="way-badge"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10.5" rx="2"/><path d="M8.2 10.5V7.4a3.8 3.8 0 0 1 7.6 0v3.1"/></svg></i></span>
+                <span class="way-lab">Trade-in</span><span class="way-val">~$420</span>
+              </div>
+              <div class="way way--locked">
+                <span class="way-ic"><svg viewBox="0 0 24 24"><rect x="3" y="6.5" width="18" height="11" rx="2"/><circle cx="12" cy="12" r="2.4"/></svg><i class="way-badge"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10.5" rx="2"/><path d="M8.2 10.5V7.4a3.8 3.8 0 0 1 7.6 0v3.1"/></svg></i></span>
+                <span class="way-lab">Direct Debit</span><span class="way-val">+$35</span>
+              </div>
+              <div class="way way--locked">
+                <span class="way-ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.4"/><path d="M3 10.5h18"/></svg><i class="way-badge"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10.5" rx="2"/><path d="M8.2 10.5V7.4a3.8 3.8 0 0 1 7.6 0v3.1"/></svg></i></span>
+                <span class="way-lab">Dosh card</span><span class="way-val">1% back</span>
+              </div>
+            </div>
+            <div class="wallet-cta">Unlock more ways to earn <svg viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5"/></svg></div>
+          </div>
+        </div>
+      </div>        <p class="focus-ev anim" style="--d:.46s">Beyond the first feature the curve is flat, so the cheap levers are Direct Debit migration and Bill Bonus activation &mdash; 17.7% and 12.3% of the base today, against 1.5% Connect More Get More, 1.4% trade-in and 0.9% Dosh card. Adopters self-select, so treat the 5.9pp gap as a ceiling, not proven lift.</p>
+    </article>
+
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">16</span></footer>
+</section>
+
+<!-- ==========================================================================================
+     SCENE 19 · roadmap.timeline — periods across, milestones down, one NOW line.
+     ========================================================================================== -->
+<section class="scene scene-road">
+  <header class="scene-head">
+    <span class="t-micro anim">September to December</span>
+    <h2 class="t-h2 anim" style="--d:.06s">The run into peak trading</h2>
+  </header>
+  <div class="scene-body road-body">
+    <div class="road">
+      <div class="road-axis"></div>
+      <div class="road-now road-now--start"><span>We are here</span></div>
+      <div class="road-q road-q--live">
+        <div class="road-head"><span class="num">September</span><span class="road-dot"></span></div>
+        <div class="road-list">
+          <div class="road-milestone anim" style="--d:.1s"><h4>iPhone launch</h4><span>What&rsquo;s in My Wallet, and visitation to it, as the core CTA</span></div>
+          <div class="road-milestone anim" style="--d:.14s"><h4>Obviously campaign live</h4><span>Phone Dollars awareness through peak</span></div>
+          <div class="road-milestone anim" style="--d:.18s"><h4>Randomised hero ladder</h4><span>base growth via aggressive acquisition into October</span></div>
+        </div>
+      </div>
+      <div class="road-q">
+        <div class="road-head"><span class="num">October</span><span class="road-dot"></span></div>
+        <div class="road-list">
+          <div class="road-milestone anim" style="--d:.22s"><h4>Digital identity</h4><span>welcome journey awareness and the $10 thank you</span></div>
+          <div class="road-milestone anim" style="--d:.26s"><h4>Rewards inside One Wallet</h4><span>rewards claimed within One Wallet</span></div>
+        </div>
+      </div>
+      <div class="road-q">
+        <div class="road-head"><span class="num">November</span><span class="road-dot"></span></div>
+        <div class="road-list">
+          <div class="road-milestone anim" style="--d:.3s"><h4>Peak trading proposition</h4><span>Phone Dollars / CMGM focused</span></div>
+          <div class="road-milestone anim" style="--d:.34s"><h4>Connected Home page</h4><span>the whole-of-home proposition, still in planning</span></div>
+          <div class="road-milestone anim" style="--d:.36s"><h4>Engagement visualisation</h4><span>visualise engagement level within the app dashboard and EDMs</span></div>
+        </div>
+      </div>
+      <div class="road-q">
+        <div class="road-head"><span class="num">December</span><span class="road-dot"></span></div>
+        <div class="road-list">
+          <div class="road-milestone road-milestone--planned anim" style="--d:.38s"><h4>1pm game</h4><span>parked on the board, needs re-activating</span></div>
+          <div class="road-milestone road-milestone--planned anim" style="--d:.42s"><h4>Quiz rewards</h4><span>micro reward for progressive profiling, visualised in wallet</span></div>
+          <div class="road-milestone road-milestone--planned anim" style="--d:.46s"><h4>Unwrapped</h4><span>Visualised data, demonstrating Connection</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-foot">
+      <span class="road-key"><i></i>TBC during Big Room Planning</span>
+      <p class="note">December assumes 85% wallet share and 11,875 wallet units, two and a half times July.</p>
+      <span class="chart-axis">Roadmap positions from the delivery board</span>
+    </div>
+  </div>
+  <footer class="scene-foot"><span class="mark">one<i>.</i>nz</span><span class="pg">17</span></footer>
+</section>
+
+</main>
+<script>
+/* Entrance only. One observer, one class, no scroll listener, no layout thrash. */
+(function(){
+  var scenes=document.querySelectorAll('.scene');
+  if(!('IntersectionObserver' in window)){scenes.forEach(function(s){s.classList.add('in-view')});}
+  else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in-view');io.unobserve(e.target);} });
+    },{threshold:.16,rootMargin:'0px 0px -8% 0px'});
+    scenes.forEach(function(s){io.observe(s)});
+  }
+  /* Theme: swaps one class on <html>. Both themes are authored in LAYER 1. */
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  btn.addEventListener('click',function(){
+    var dark=root.classList.toggle('theme-dark');
+    root.classList.toggle('theme-light',!dark);
+    btn.textContent=dark?'Light':'Dark';
+    btn.setAttribute('aria-pressed',dark?'true':'false');
+  });
+})();
+</script>
+</body>
+</html>
