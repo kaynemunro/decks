@@ -63,52 +63,36 @@
 
   .tag { display: inline-block; font-size: 11.5px; font-weight: 500; padding: 2px 8px; border-radius: 999px; white-space: nowrap; line-height: 1.5; }
   .t-bill, .t-approved, .t-taught, .t-line { background: var(--g50); color: var(--g600); }
-  .t-assumed, .t-draft, .t-preview { background: #FFF7C2; color: #5C4B00; box-shadow: inset 3px 0 0 var(--yellow); }
-  .t-mocked, .t-policy, .t-retired { background: var(--n50); color: var(--n600); }
+  .t-assumed, .t-preview { background: #FFF7C2; color: #5C4B00; box-shadow: inset 3px 0 0 var(--yellow); }
+  .t-mocked, .t-policy { background: var(--n50); color: var(--n600); }
   .t-integration { background: #fff; color: var(--n900); border: 1px dashed var(--n400); }
   .t-unanswered, .t-error, .t-missing { background: #FBE3E8; color: #8E1530; }
 
-  /* ---------- Admin console ---------- */
-  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--n100); margin: 10px 0 12px; }
-  .tabs button { border: 0; background: none; padding: 10px 10px; font-weight: 500; font-size: 14px; color: var(--n600); border-bottom: 2.5px solid transparent; margin-bottom: -1px; }
-  .tabs button.on { color: var(--n900); border-bottom-color: var(--g400); }
-  .tabs .count { display: inline-block; min-width: 18px; font-size: 11px; background: var(--n50); border-radius: 9px; padding: 0 5px; margin-left: 4px; }
+  /* ---------- Admin: top five to fix, plus one teach box ---------- */
   .fine { font-size: 12.5px; color: var(--n600); }
-  .hit { border: 1px solid var(--n100); border-radius: 12px; padding: 12px 12px 10px; margin-bottom: 8px; }
-  .hit .top { display: flex; gap: 8px; align-items: baseline; justify-content: space-between; }
-  .hit .rank { color: var(--n400); font-size: 12.5px; margin-right: 6px; }
-  .hit .name { font-weight: 600; font-size: 15px; }
-  .hit .nums { font-size: 13px; color: var(--n600); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
-  .hit .bar { height: 8px; border-radius: 8px; background: var(--n50); overflow: hidden; display: flex; }
-  .hit .bar i { display: block; height: 100%; }
-  .hit .bar .u1 { background: var(--red); }
-  .hit .bar .u2 { background: var(--n200); }
-  .hit .sample { font-size: 13.5px; margin: 8px 0 8px; color: var(--n900); }
-  .hit .acts { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-  .hit .live { font-size: 12px; color: var(--g600); font-weight: 500; }
+  .fix { border: 1px solid var(--n100); border-radius: 12px; padding: 12px 12px 10px; margin-bottom: 8px; }
+  .fix .top { display: flex; gap: 8px; align-items: baseline; justify-content: space-between; }
+  .fix .rank { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 22px; background: var(--n900); color: #fff; font-size: 12px; font-weight: 600; margin-right: 8px; }
+  .fix .name { font-weight: 600; font-size: 15px; }
+  .fix .nums { font-size: 13px; color: var(--n600); margin: 4px 0 8px 30px; }
+  .fix .nums b { font-weight: 600; color: var(--n900); }
+  .fix .rec { font-size: 13.5px; margin: 0 0 6px 30px; }
+  .fix .rec b { font-weight: 600; }
+  .fix .acts { display: flex; gap: 8px; align-items: center; margin: 8px 0 0 30px; }
   .sbtn { border: 1.5px solid var(--n200); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 500; }
   .sbtn:hover { border-color: var(--n900); }
   .sbtn.primary { background: var(--g400); border-color: var(--g400); color: #fff; }
   .sbtn.primary:hover { background: var(--g600); border-color: var(--g600); }
-  .qlist { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--n600); }
   .linecard { border-radius: 12px; background: var(--n25); border: 1px solid var(--n100); padding: 10px 12px; }
   .linecard .lc-top { display: flex; justify-content: space-between; gap: 10px; font-weight: 500; }
   .linecard .lc-sub { font-size: 12.5px; color: var(--n600); margin-top: 2px; }
-  .teach h3 { font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  .teach { border: 2px solid var(--g400); border-radius: 12px; padding: 12px; margin-bottom: 14px; background: #F6FFF9; }
+  .teach h3 { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
   .current { font-size: 14px; background: #fff; border: 1px solid var(--n100); border-radius: 10px; padding: 10px 12px; }
   .current p { margin: 0 0 6px; }
-  .scope { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
-  .scope label { display: flex; gap: 8px; align-items: flex-start; }
-  .scope input { margin-top: 3px; accent-color: var(--g400); }
-  .teach textarea, .teach input[type=text] { width: 100%; font: inherit; font-size: 14px; border: 1.5px solid var(--n200); border-radius: 10px; padding: 9px 11px; color: var(--n900); }
-  .teach textarea { min-height: 96px; resize: vertical; }
+  .teach textarea { width: 100%; min-height: 96px; resize: vertical; font: inherit; font-size: 14px; border: 1.5px solid var(--n200); border-radius: 10px; padding: 9px 11px; color: var(--n900); background: #fff; }
   .teach .lbl { font-size: 13px; color: var(--n600); margin: 10px 0 4px; display: block; }
-  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  .lib { border: 1px solid var(--n100); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; font-size: 14px; }
-  .lib .lib-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 4px; }
-  .lib .lib-target { font-weight: 500; }
-  .lib p { margin: 4px 0; }
-  .empty { border: 1.5px dashed var(--n200); border-radius: 12px; padding: 16px; text-align: center; color: var(--n600); font-size: 14px; }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
 
   /* Heat badges on bill lines in admin view: the hit list, shown inside the journey. */
   .hb { display: none; position: absolute; right: 8px; bottom: -8px; font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; z-index: 2; white-space: nowrap; pointer-events: none; }
@@ -329,7 +313,6 @@
   .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
   .chip { border: 1.5px solid var(--n200); background: #fff; border-radius: 999px; padding: 7px 12px; font-size: 13.5px; text-align: left; }
   .chip:hover { border-color: var(--n900); }
-  .chip.taughtq { border-color: var(--g400); }
   .askbox { display: flex; gap: 8px; }
   .askbox input { flex: 1; font: inherit; font-size: 15.5px; border: 1.5px solid var(--n200); border-radius: 999px; padding: 11px 16px; min-width: 0; }
   .askbox button { width: 46px; height: 46px; border-radius: 999px; border: 0; background: var(--g400); color: #fff; display: grid; place-items: center; flex: none; }
@@ -635,15 +618,12 @@
     </div>
 
     <div id="adminPanel" hidden>
-      <p class="lead">For billing experts. Click any line on the bill to teach the explainer how to explain it, and see where customers still need help.</p>
-      <div class="tabs" role="tablist">
-        <button data-tab="hits" class="on">Hit list</button>
-        <button data-tab="teach">Teach</button>
-        <button data-tab="library">Library <span class="count" id="libCount">0</span></button>
-      </div>
-      <div id="tab-hits"></div>
-      <div id="tab-teach" hidden></div>
-      <div id="tab-library" hidden></div>
+      <p class="lead">The five parts of the bill customers most often still find unclear, what to change, and what to ask the billing team.</p>
+      <div id="teachBox"></div>
+      <h2>Top 5 to fix</h2>
+      <div id="top5"></div>
+      <p class="fine">Illustrative numbers, plus questions asked in this prototype. A possible billing error is a lead to check, not a confirmed cause. Click any line on the bill to teach the explainer; it's saved in this browser only and doesn't retrain a model.</p>
+      <button class="linkbtn" id="resetData">Reset this prototype</button>
     </div>
   </aside>
   <button class="side-toggle" id="sideToggle">Notes and admin</button>
@@ -662,11 +642,11 @@
   // Escape, then turn {{m:N}} into a solid bar N characters wide: masked, never replaced.
   const fmt = (s) => esc(s).replace(/\{\{m:(\d+)\}\}/g, (_, n) => `<span class="mask" style="width:${Math.max(2, Number(n)) * 0.55}em" role="img" aria-label="masked"></span>`);
   const num = (n) => n.toLocaleString("en-NZ");
-  const SOURCE = { bill: "From the bill", approved: "Approved 14 Oct", assumed: "Assumed – needs approval", mocked: "Mocked", integration: "Needs integration", policy: "Can't change charges here", unanswered: "Passed to billing team", taught: "Approved by billing team", draft: "Draft", preview: "Preview – not live yet", retired: "Retired" };
+  const SOURCE = { bill: "From the bill", approved: "Approved 14 Oct", assumed: "Assumed – needs approval", mocked: "Mocked", integration: "Needs integration", policy: "Can't change charges here", unanswered: "Passed to billing team", taught: "Approved by billing team", preview: "Preview – not live yet" };
   const TYPE = { unclear: "Explanation unclear", error: "Possible billing error – check", missing: "Not on the bill" };
   const ADVANCE_PAUSE_MS = 650;   // breath between steps so the highlight move reads as a new beat
   const READ_WORDS_PER_SEC = 2.6; // silent mode pacing, roughly comfortable reading speed
-  const HEAT_FLOOR_PCT = 20;     // below this, a topic is explained well enough to leave off the overlay
+  const TOP_N = 5;               // the admin view is a short to-do list, not a report
   const MAX_EVENTS = 500;         // the question log is a demo; cap it so storage can't grow without bound
   const STORE_KEY = "billExplainer.v2";
   const ICON = {
@@ -699,7 +679,7 @@
   function logEvent(topic, kind, question) {
     S.events.push({ topic: topic || "other", kind, q: (question || "").slice(0, 200), at: Date.now() });
     saveState();
-    if (view === "admin") { renderHitList(); renderHeat(); }
+    if (view === "admin") { renderAdmin(); renderHeat(); }
   }
 
   /* ---------------- Bill line index ---------------- */
@@ -741,7 +721,7 @@
   }
   function explainFor(line) {
     const t = liveTeaching(line);
-    if (t) return { text: t.text, source: "taught", teaching: t };
+    if (t) return { text: fill(t.text, line), source: "taught", teaching: t };
     const topic = W.topics[line.topic];
     return { text: fill(topic ? topic.explain : "", line), source: topic ? topic.source : "bill", teaching: null };
   }
@@ -877,6 +857,7 @@
 
   function renderHeat() {
     $$(".bill .hb").forEach((b) => b.remove());
+    const rank = topRanks();
     $$(".bill").forEach((bill) => {
       const seen = new Set(); // one badge per topic per section keeps the overlay readable
       $$(".u[data-topic]", bill).forEach((el) => {
@@ -885,11 +866,12 @@
         const key = (el.closest(".page") ? Array.from(bill.children).indexOf(el.closest(".page")) : 0) + ":" + el.dataset.topic;
         if (!st || !line || seen.has(key)) return;
         const taught = !!liveTeaching(line);
-        if (!taught && st.pct < HEAT_FLOOR_PCT) return;
+        const r = rank[el.dataset.topic];
+        if (!taught && !r) return;
         seen.add(key);
         const hb = document.createElement("span");
         hb.className = "hb " + (taught ? "taught" : st.pct >= 40 ? "hot" : "warm");
-        hb.textContent = taught ? "Taught" : `${shortNum(st.asked)} asked · ${st.pct}% still unclear`;
+        hb.textContent = taught ? "Taught" : `Top 5 · #${r} · ${st.pct}% still unclear`;
         el.appendChild(hb);
       });
     });
@@ -1036,18 +1018,19 @@
 
   function renderStepExtras(step) {
     const ids = stepLineIds(step);
-    const taught = ids.map((id) => liveTeaching(LINES[id])).find(Boolean);
+    const taughtId = ids.find((id) => liveTeaching(LINES[id]));
     const note = $("#taughtNote");
-    note.hidden = !taught;
-    if (taught) note.innerHTML = `<b>From our billing team</b>${esc(taught.text)}`;
-    // Admin strip: the most-asked topic this step covers, with a shortcut to teach it.
-    const topics = [...new Set(ids.map((id) => LINES[id].topic))].map((t) => ({ t, st: topicStats(t) })).filter((x) => x.st);
-    topics.sort((a, b) => b.st.unclearN - a.st.unclearN);
+    note.hidden = !taughtId;
+    if (taughtId) note.innerHTML = `<b>From our billing team</b>${fmt(explainFor(LINES[taughtId]).text)}`;
+    // Admin strip: the highest-ranked top-five topic this step covers, with a shortcut to teach it.
+    const rank = topRanks();
+    const topics = [...new Set(ids.map((id) => LINES[id].topic))].filter((t) => rank[t]).map((t) => ({ t, st: topicStats(t) }));
+    topics.sort((a, b) => rank[a.t] - rank[b.t]);
     const strip = $("#adminStrip");
     strip.classList.toggle("has", topics.length > 0);
     if (!topics.length) { strip.innerHTML = ""; return; }
     const top = topics[0], firstLine = ids.find((id) => LINES[id].topic === top.t);
-    strip.innerHTML = `<span><b style="font-weight:600">${esc(W.topics[top.t].name)}</b>: ${num(top.st.asked)} asked · ${top.st.pct}% still unclear</span><button class="sbtn" data-teach="${firstLine}">Teach</button>`;
+    strip.innerHTML = `<span>Top 5, #${rank[top.t]}: <b style="font-weight:600">${esc(W.topics[top.t].name)}</b> · ${top.st.pct}% still unclear</span><button class="sbtn" data-teach="${firstLine}">Teach</button>`;
   }
 
   function goStep(i) {
@@ -1095,31 +1078,27 @@
   }
 
   /* ---------------- Answers ---------------- */
-  function words(s) { return s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 3); }
-  function similar(a, b) { const wb = new Set(words(b)); return words(a).filter((w) => wb.has(w)).length >= 2; }
-
   // Order matters: a request to change charges always goes to a person; "what is this" needs a line.
   function resolve(question, line) {
     const q = question.toLowerCase();
     for (const h of W.qa.filter((x) => new RegExp(x.match).test(q))) {
       if (h.id === "what-is-this") { if (line) return lineAnswer(line); continue; }
       const topic = h.topic || (line ? line.topic : "other");
-      return { answer: h.answer, cite: h.cite, source: h.source, human: !!h.human, topic, expert: topicTeaching(h.topic, line) };
+      return { answer: h.answer, cite: h.cite, source: h.source, human: !!h.human, topic, expert: expertNote(h.topic, line) };
     }
-    const taught = S.teachings.find((t) => t.status === "approved" && t.example && similar(q, t.example));
-    if (taught) return { answer: taught.text, cite: teachingCite(taught), source: "taught", topic: teachingTopic(taught) };
     return { answer: W.fallback.answer, cite: [], source: "unanswered", human: true, topic: line ? line.topic : "other" };
   }
   function lineAnswer(line) {
     const ex = explainFor(line);
     return { answer: ex.text, cite: [line.id], source: ex.source, topic: line.topic };
   }
-  function topicTeaching(topic, line) {
-    const live = S.teachings.filter((t) => t.status === "approved");
-    return (line && live.find((t) => t.scope === "line" && t.target === line.id)) || live.find((t) => t.scope === "topic" && t.target === topic) || null;
+  // The expert's explanation for this topic, filled in with the asked-about line (or the topic's first line).
+  function expertNote(topic, line) {
+    const subject = line && line.topic === topic ? line : LINES[IDX.order.find((id) => LINES[id].topic === topic)];
+    const t = subject && liveTeaching(subject);
+    return t ? { text: fill(t.text, subject) } : null;
   }
   function teachingTopic(t) { return t.scope === "topic" ? t.target : (LINES[t.target] || {}).topic; }
-  function teachingCite(t) { return t.scope === "line" ? [t.target] : IDX.order.filter((id) => LINES[id].topic === t.target).slice(0, 2); }
 
   function citeHtml(ids) {
     const rows = (ids || []).filter((id) => LINES[id]).map((id) => {
@@ -1158,9 +1137,7 @@
     $("#askLine").innerHTML = `<div class="lc-top"><span>${fmt(lineTitle(line))}</span><span>${esc(line.amount)}</span></div><div class="lc-sub">${fmt(line.period)}</div>`;
     $("#askExplain").innerHTML = `<p>${fmt(ex.text)}</p><span class="tag t-${ex.source}">${esc(SOURCE[ex.source])}</span>`;
     const topic = W.topics[line.topic] || { questions: [] };
-    const taughtQs = S.teachings.filter((t) => t.status === "approved" && t.example && (t.target === line.id || t.target === line.topic));
-    $("#askChips").innerHTML = taughtQs.map((t) => `<button class="chip taughtq" data-tq="${t.id}">${esc(t.example)}</button>`).join("") +
-      topic.questions.map((q, k) => `<button class="chip" data-lq="${k}">${esc(q.q)}</button>`).join("");
+    $("#askChips").innerHTML = topic.questions.map((q, k) => `<button class="chip" data-lq="${k}">${esc(q.q)}</button>`).join("");
     $("#askThread").innerHTML = "";
     $("#askSheet").classList.add("show");
     if (!preview) logEvent(line.topic, "asked", "Tapped: " + line.label.replace(/\{\{m:\d+\}\}/g, "").trim());
@@ -1168,18 +1145,11 @@
   function answerLineQuestion(k) {
     const line = LINES[askLineId];
     const q = W.topics[line.topic].questions[k];
-    const res = { answer: fill(q.a, line), cite: [line.id], source: q.source, human: !!q.human, topic: line.topic, expert: liveTeaching(line) };
+    const res = { answer: fill(q.a, line), cite: [line.id], source: q.source, human: !!q.human, topic: line.topic, expert: expertNote(line.topic, line) };
     logEvent(line.topic, "asked", q.q);
     if (q.source === "unanswered") logEvent(line.topic, "unclear", q.q);
     $("#askThread").insertAdjacentHTML("beforeend", answerHtml(q.q, res));
     $("#askThread").lastElementChild.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-  function answerTaughtQuestion(id) {
-    const t = S.teachings.find((x) => x.id === id);
-    if (!t) return;
-    const res = { answer: t.text, cite: teachingCite(t), source: "taught", topic: teachingTopic(t) };
-    logEvent(res.topic, "asked", t.example);
-    $("#askThread").insertAdjacentHTML("beforeend", answerHtml(t.example, res));
   }
 
   // A tap on the bill means "ask about this" for customers and "teach this" for admins.
@@ -1190,10 +1160,8 @@
     openAsk(lineId);
   }
 
-  /* ---------------- Admin view ---------------- */
-  let adminTab = "hits";
+  /* ---------------- Admin view: top five to fix, and one teach box ---------------- */
   let teachLineId = null;
-  let editingId = null;
 
   function setView(v) {
     view = v;
@@ -1203,153 +1171,112 @@
     $("#adminPanel").hidden = v !== "admin";
     $("#billSub").textContent = v === "admin" ? "Admin: click a line to teach it" : "Tap any line to ask about it";
     $("#tapChip").textContent = v === "admin" ? "Admin: click a line to teach it" : "Tap any line to ask about it";
-    if (v === "admin") {
-      if (current !== "player" && current !== "bill") show("bill");
-      renderAdmin();
-    }
+    if (v === "admin" && current !== "player" && current !== "bill") show("bill");
+    if (v !== "admin") clearSelection();
+    renderAdmin();
     renderHeat();
     if (current === "player") renderStepExtras(STEPS[P.i]);
   }
 
-  function setTab(t) {
-    adminTab = t;
-    $$(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === t));
-    ["hits", "teach", "library"].forEach((x) => { $("#tab-" + x).hidden = x !== t; });
-    renderAdmin();
+  // Only topics with a written recommendation can rank, ordered by customers still unclear.
+  function topFive() {
+    return Object.keys(W.topics).filter((id) => W.topics[id].recommend)
+      .map((id) => ({ id, t: W.topics[id], st: topicStats(id) }))
+      .sort((a, b) => b.st.unclearN - a.st.unclearN)
+      .slice(0, TOP_N);
   }
+  function topRanks() {
+    const r = {};
+    topFive().forEach((x, k) => { r[x.id] = k + 1; });
+    return r;
+  }
+
   function renderAdmin() {
-    $("#libCount").textContent = S.teachings.filter((t) => t.status !== "retired").length;
-    if (adminTab === "hits") renderHitList();
-    if (adminTab === "teach") renderTeach();
-    if (adminTab === "library") renderLibrary();
+    if (view !== "admin") return;
+    renderTeachBox();
+    renderTopFive();
   }
 
-  function topicStatus(id) {
-    const ts = S.teachings.filter((t) => t.status !== "retired" && teachingTopic(t) === id);
-    if (ts.some((t) => t.status === "approved")) return '<span class="tag t-taught">Explanation approved</span>';
-    if (ts.some((t) => t.status === "draft")) return '<span class="tag t-draft">Draft waiting</span>';
-    return '<span class="tag t-mocked">No teaching yet</span>';
+  function fixCard(r, k) {
+    const first = IDX.order.find((lid) => LINES[lid].topic === r.id);
+    const taught = S.teachings.some((x) => x.status === "approved" && teachingTopic(x) === r.id);
+    const flag = r.t.seed.type === "error" ? `<span class="tag t-error">${TYPE.error}</span>` : "";
+    const action = taught ? `<span class="tag t-taught">Taught</span><button class="linkbtn" data-undo="${r.id}">Undo</button>`
+      : first ? `<button class="sbtn primary" data-teach="${first}">Teach the explainer</button>`
+      : `<span class="fine">Not on the bill, so there's nothing to teach yet.</span>`;
+    return `<div class="fix"><div class="top"><span><span class="rank">${k + 1}</span><span class="name">${esc(r.t.name)}</span></span>${flag}</div>` +
+      `<div class="nums">${num(r.st.asked)} asked · <b>${r.st.pct}% still unclear</b></div>` +
+      `<p class="rec"><b>Change:</b> ${esc(r.t.recommend)}</p><p class="rec"><b>Ask billing:</b> ${esc(r.t.followUp)}</p>` +
+      `<div class="acts">${action}</div></div>`;
   }
+  function renderTopFive() { $("#top5").innerHTML = topFive().map(fixCard).join(""); }
 
-  function renderHitList() {
-    const rows = Object.keys(W.topics).map((id) => ({ id, t: W.topics[id], st: topicStats(id) }));
-    rows.sort((a, b) => b.st.unclearN - a.st.unclearN);
-    const html = rows.map((r, k) => {
-      const first = IDX.order.find((lid) => LINES[lid].topic === r.id);
-      const live = r.st.liveAsked ? `<span class="live">+${r.st.liveAsked} asked here</span>` : "";
-      const liveQs = S.events.filter((e) => e.topic === r.id && e.kind === "unclear").slice(-3).map((e) => `<li>${esc(e.q)}</li>`).join("");
-      const action = first ? `<button class="sbtn primary" data-teach="${first}">Teach this</button>` : `<button class="sbtn" data-toast="Not on the bill: add to help content, or route to a person">Route</button>`;
-      return `<div class="hit"><div class="top"><span><span class="rank">${k + 1}</span><span class="name">${esc(r.t.name)}</span></span><span class="tag t-${r.t.seed.type}">${TYPE[r.t.seed.type]}</span></div>` +
-        `<div class="nums">${num(r.st.asked)} asked · <b style="font-weight:600;color:var(--n900)">${num(r.st.unclearN)} still unclear (${r.st.pct}%)</b></div>` +
-        `<div class="bar"><i class="u1" style="width:${r.st.pct}%"></i><i class="u2" style="width:${100 - r.st.pct}%"></i></div>` +
-        `<div class="sample">&ldquo;${esc(r.t.seed.sample)}&rdquo;</div>${liveQs ? `<ul class="qlist">${liveQs}</ul>` : ""}` +
-        `<div class="acts">${topicStatus(r.id)}${live}${action}</div></div>`;
-    }).join("");
-    $("#tab-hits").innerHTML = `<p class="fine">Ranked by customers still unclear after an explanation. <b>Illustrative numbers</b>, plus any questions asked in this prototype. A possible billing error is a lead to check, not a confirmed cause.</p>${html}` +
-      `<p class="fine" style="margin-top:12px">The same numbers show as badges on each bill line in the phone, inside the customer journey.</p>`;
+  function clearSelection() {
+    teachLineId = null;
+    $$(".bill .u.sel").forEach((e) => e.classList.remove("sel"));
   }
 
   function openTeach(lineId) {
+    if (!LINES[lineId]) return;
+    clearSelection();
     teachLineId = lineId;
-    editingId = null;
-    $$(".bill .u.sel").forEach((e) => e.classList.remove("sel"));
     $$(`.bill [data-id="${lineId}"]`).forEach((e) => e.classList.add("sel"));
     if (current !== "player" && current !== "bill") show("bill");
     if (current === "bill") requestAnimationFrame(() => scrollToIds("#billViewScroll", "#billView", [lineId]));
     if (current === "player") requestAnimationFrame(() => scrollToIds("#billScroll", "#bill", [lineId]));
     $("#side").classList.add("open");
-    setTab("teach");
+    renderTeachBox();
+    $("#side").scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function renderTeach() {
-    const box = $("#tab-teach");
+  function renderTeachBox() {
     const line = LINES[teachLineId];
-    if (!line) { box.innerHTML = `<div class="empty">Click any line on the bill to teach the explainer how to explain it.<br><br>Or pick a row in the hit list.</div>`; return; }
+    if (!line) { $("#teachBox").innerHTML = ""; return; }
+    const topic = W.topics[line.topic];
     const ex = explainFor(line);
-    const topicName = (W.topics[line.topic] || { name: line.topic }).name;
-    const editing = editingId && S.teachings.find((t) => t.id === editingId);
-    const scope = editing ? editing.scope : "topic";
-    const text = editing ? editing.text : ex.text;
-    const example = editing ? editing.example || "" : "";
-    const st = topicStats(line.topic);
-    box.innerHTML = `<div class="teach">
-      <div class="linecard"><div class="lc-top"><span>${fmt(lineTitle(line))}</span><span>${esc(line.amount)}</span></div><div class="lc-sub">${fmt(line.period)} · ${esc(topicName)}${st ? ` · ${num(st.asked)} asked, ${st.pct}% still unclear` : ""}</div></div>
-      <h3>Customers see now</h3><div class="current"><p>${fmt(ex.text)}</p><span class="tag t-${ex.source}">${esc(SOURCE[ex.source])}</span></div>
-      <h3>${editing ? "Edit teaching" : "Teach the explainer"}</h3>
-      <div class="scope">
-        <label><input type="radio" name="scope" value="topic" ${scope === "topic" ? "checked" : ""}><span>Every <b style="font-weight:500">${esc(topicName.toLowerCase())}</b> line, on every bill</span></label>
-        <label><input type="radio" name="scope" value="line" ${scope === "line" ? "checked" : ""}><span>Just this line</span></label>
-      </div>
-      <label class="lbl" for="teachText">When you get to this, explain it like this</label>
-      <textarea id="teachText" maxlength="600">${esc(text)}</textarea>
-      <label class="lbl" for="teachQ">When customers ask… (optional, becomes a suggested question)</label>
-      <input type="text" id="teachQ" maxlength="140" value="${esc(example)}" placeholder="e.g. Why was I charged for a whole day?">
-      <div class="btnrow"><button class="sbtn" id="teachPreview">Preview as customer</button><button class="sbtn" id="teachDraft">Save draft</button><button class="sbtn primary" id="teachApprove">Approve and use</button></div>
-      <p class="fine" style="margin-top:12px">Saved to this prototype's explanation library, in this browser only. It guides what the explainer says to customers. It doesn't retrain a model.</p>
-    </div>`;
+    const live = liveTeaching(line);
+    const draft = live ? live.text : topic.explain;
+    $("#teachBox").innerHTML = `<div class="teach"><h3>Teach: ${esc(topic.name)}</h3>
+      <div class="current"><p>${fmt(ex.text)}</p><span class="tag t-${ex.source}">Customers see now · ${esc(SOURCE[ex.source])}</span></div>
+      <label class="lbl" for="teachText">Explain every ${esc(topic.name.toLowerCase())} line like this</label>
+      <textarea id="teachText" maxlength="600">${esc(draft)}</textarea>
+      <p class="fine" style="margin:4px 0 0">Words in {curly brackets} fill in each line's own details, so one explanation fits every bill.</p>
+      <div class="btnrow"><button class="sbtn" id="teachPreview">Preview</button><button class="sbtn primary" id="teachApprove">Approve and use</button><button class="linkbtn" id="teachCancel">Cancel</button></div></div>`;
   }
 
-  function readTeachForm() {
+  function teachText() {
     const text = $("#teachText").value.trim();
     if (text.length < 12) { toast("Write the explanation first (a sentence or two)"); return null; }
-    const scope = $('input[name="scope"]:checked').value;
-    const line = LINES[teachLineId];
-    return { scope, target: scope === "line" ? line.id : line.topic, text, example: $("#teachQ").value.trim() };
+    return text;
   }
-  function saveTeaching(status) {
-    const f = readTeachForm();
-    if (!f) return;
-    if (status === "approved") {
-      // One live explanation per target: approving retires the previous one.
-      S.teachings.forEach((t) => { if (t.status === "approved" && t.scope === f.scope && t.target === f.target && t.id !== editingId) t.status = "retired"; });
-    }
-    const existing = editingId && S.teachings.find((t) => t.id === editingId);
-    if (existing) Object.assign(existing, f, { status, updatedAt: Date.now() });
-    else S.teachings.push(Object.assign({ id: "t" + Date.now().toString(36), status, createdAt: Date.now() }, f));
+  function approveTeaching() {
+    const text = teachText();
+    if (!text) return;
+    const topic = LINES[teachLineId].topic;
+    // One live explanation per topic: approving replaces the previous one.
+    S.teachings.forEach((t) => { if (t.status === "approved" && teachingTopic(t) === topic) t.status = "retired"; });
+    S.teachings.push({ id: "t" + Date.now().toString(36), scope: "topic", target: topic, text, status: "approved", createdAt: Date.now() });
     saveState();
-    editingId = null;
-    toast(status === "approved" ? "Approved. Customers now see this explanation." : "Draft saved to the library.");
-    renderHeat();
-    if (current === "player") renderStepExtras(STEPS[P.i]);
-    setTab(status === "approved" ? "teach" : "library");
+    clearSelection();
+    toast("Approved. Customers now see this explanation.");
+    refreshAfterTeaching();
   }
-  function previewTeaching() {
-    const f = readTeachForm();
-    if (!f) return;
-    if (current !== "bill") show("bill");
-    openAsk(teachLineId, f.text);
-  }
-
-  function renderLibrary() {
-    const items = S.teachings.slice().reverse();
-    const html = items.map((t) => {
-      const target = t.scope === "line" ? "This line: " + lineTitle(LINES[t.target] || { label: t.target }) : "Every " + ((W.topics[t.target] || { name: t.target }).name).toLowerCase() + " line";
-      const status = t.status === "approved" ? "taught" : t.status;
-      const acts = (t.status === "draft" ? `<button class="sbtn primary" data-approve="${t.id}">Approve</button>` : "") +
-        (t.status !== "retired" ? `<button class="sbtn" data-edit="${t.id}">Edit</button><button class="sbtn" data-retire="${t.id}">Retire</button>` : "");
-      return `<div class="lib"><div class="lib-top"><span class="lib-target">${fmt(target)}</span><span class="tag t-${status}">${esc(SOURCE[status])}</span></div>` +
-        `<p>${esc(t.text)}</p>${t.example ? `<p class="fine">When customers ask: &ldquo;${esc(t.example)}&rdquo;</p>` : ""}<div class="btnrow" style="margin-top:6px">${acts}</div></div>`;
-    }).join("");
-    $("#tab-library").innerHTML = (html || `<div class="empty">No teachings yet. Click a line on the bill, or use Teach this in the hit list.</div>`) +
-      `<div class="btnrow" style="margin-top:14px"><button class="sbtn" id="resetData">Clear my teachings and question log</button></div>`;
-  }
-  function libraryAction(kind, id) {
-    const t = S.teachings.find((x) => x.id === id);
-    if (!t) return;
-    if (kind === "approve") {
-      S.teachings.forEach((o) => { if (o.status === "approved" && o.scope === t.scope && o.target === t.target) o.status = "retired"; });
-      t.status = "approved";
-    }
-    if (kind === "retire") t.status = "retired";
-    if (kind === "edit") {
-      teachLineId = t.scope === "line" ? t.target : IDX.order.find((lid) => LINES[lid].topic === t.target);
-      editingId = t.id;
-      setTab("teach");
-      return;
-    }
+  function undoTeaching(topic) {
+    S.teachings.forEach((t) => { if (t.status === "approved" && teachingTopic(t) === topic) t.status = "retired"; });
     saveState();
+    toast("Back to the original explanation.");
+    refreshAfterTeaching();
+  }
+  function refreshAfterTeaching() {
     renderHeat();
     renderAdmin();
+    if (current === "player") renderStepExtras(STEPS[P.i]);
+  }
+  function previewTeaching() {
+    const text = teachText();
+    if (!text) return;
+    if (current !== "bill") show("bill");
+    openAsk(teachLineId, fill(text, LINES[teachLineId]));
   }
 
   /* ---------------- Wiring ---------------- */
@@ -1396,17 +1323,15 @@
     if (d.fb) { if (d.fb === "no") logEvent(d.topic, "unclear", "Said the answer didn't help"); t.parentElement.textContent = d.fb === "yes" ? "Thanks for letting us know." : "Thanks. We've passed this to our team to improve."; return; }
     if (d.ask) { ask(d.ask, null, "#thread"); return; }
     if (d.lq !== undefined) { answerLineQuestion(Number(d.lq)); return; }
-    if (d.tq) { answerTaughtQuestion(d.tq); return; }
     if (d.screen) { jumpTo(d.screen); return; }
     if (d.step) { if (current !== "player") show("player"); goStep(Number(d.step)); return; }
     if (d.view) { setView(d.view); return; }
-    if (d.tab) { setTab(d.tab); return; }
     if (d.teach) { openTeach(d.teach); return; }
-    if (d.approve || d.edit || d.retire) { libraryAction(d.approve ? "approve" : d.edit ? "edit" : "retire", d.approve || d.edit || d.retire); return; }
+    if (d.undo) { undoTeaching(d.undo); return; }
     if (t.id === "teachPreview") { previewTeaching(); return; }
-    if (t.id === "teachDraft") { saveTeaching("draft"); return; }
-    if (t.id === "teachApprove") { saveTeaching("approved"); return; }
-    if (t.id === "resetData") { S.teachings = []; S.events = []; saveState(); renderHeat(); renderAdmin(); toast("Cleared."); }
+    if (t.id === "teachApprove") { approveTeaching(); return; }
+    if (t.id === "teachCancel") { clearSelection(); renderTeachBox(); return; }
+    if (t.id === "resetData") { S.teachings = []; S.events = []; saveState(); clearSelection(); refreshAfterTeaching(); toast("Reset."); }
   }
 
   function jumpTo(screen) {

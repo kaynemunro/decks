@@ -89,6 +89,8 @@ window.WALKTHROUGH = {
       "name": "Roaming", "source": "approved",
       "explain": "You roamed for {qty} days ({period}) at $9.99 a day, which comes to {amount}. A roaming day starts the first time you use your phone overseas that day, counted in local time.",
       "seed": { "asked": 1240, "unclear": 41, "type": "unclear", "sample": "I was only overseas for part of the day. Why was I charged for a full day?" },
+      "recommend": "Show roaming days on a small calendar, and say once that any use starts a day, counted in local time.",
+      "followUp": "Do customers get a text when a roaming day starts? If so, the walkthrough should say so.",
       "questions": [
         { "q": "How is a roaming day counted?", "a": "A roaming day starts the first time your phone is used overseas, even for one message or a moment of data. Days follow local time where you are, and each one is $9.99.", "source": "approved" },
         { "q": "Why was I charged for a day I barely used?", "a": "Any use starts a roaming day, however small: a message, a call or a little data. Once the day has started, it's $9.99, however much or little you use.", "source": "approved" },
@@ -125,6 +127,8 @@ window.WALKTHROUGH = {
       "name": "Plans paid a month ahead", "source": "approved",
       "explain": "{label} is {amount} a month. Plans are paid a month ahead, so this covers {period}.",
       "seed": { "asked": 980, "unclear": 35, "type": "unclear", "sample": "Why am I paying for October already?" },
+      "recommend": "Add a simple two-part timeline: plans paid a month ahead, usage and phone payments charged after.",
+      "followUp": "How do part-month charges look on a first bill or after a plan change? We need a sample to explain them.",
       "questions": [
         { "q": "Why am I paying for next month already?", "a": "Plans are paid a month ahead, so this bill covers your plans from 24 September to 23 October. What you use is charged the month after.", "source": "approved" },
         { "q": "What's included in my plan?", "a": "Your bill links to 'What's included in my plan?' for the full list. The bill itself shows the price and the dates it covers.", "source": "bill" }
@@ -142,6 +146,8 @@ window.WALKTHROUGH = {
       "name": "Phone payments and balance", "source": "bill",
       "explain": "Your {friendly} is {amount} a month, interest free. This is payment 20 of 36, so 16 are left.",
       "seed": { "asked": 760, "unclear": 52, "type": "unclear", "sample": "The balance says $661. I thought I owed less than that." },
+      "recommend": "Show what is actually left to pay after the discount ($281.76) beside the balance ($661.28).",
+      "followUp": "What is the payoff amount if a customer leaves or upgrades: with the discount, or without it?",
       "questions": [
         { "q": "How much do I still owe?", "a": "There are 16 payments left. The $661.28 balance is before your One Wallet discount. If the discount continues, those payments come to $281.76.", "source": "assumed" },
         { "q": "Can I pay it off early?", "a": "The bill doesn't say. A person can give you the payoff amount and explain how it affects your discount.", "source": "unanswered", "human": true }
@@ -150,7 +156,9 @@ window.WALKTHROUGH = {
     "wallet": {
       "name": "One Wallet discount", "source": "bill",
       "explain": "Your One Wallet discount takes {amountAbs} a month off your iPhone payment, so you pay $17.61. It covers more than half the cost.",
-      "seed": { "asked": 540, "unclear": 30, "type": "unclear", "sample": "Will I lose the discount if I change plans?" },
+      "seed": { "asked": 540, "unclear": 22, "type": "unclear", "sample": "Will I lose the discount if I change plans?" },
+      "recommend": "Say plainly how long the discount runs and what would end it.",
+      "followUp": "Does a plan change or paying the phone off early end the One Wallet discount?",
       "questions": [
         { "q": "Will the discount continue?", "a": "It's numbered 20 of 36, the same as your phone payments, so it's set to run to the end.", "source": "assumed" },
         { "q": "What happens if I change plans?", "a": "The bill doesn't say. A person can check how a plan change would affect it.", "source": "unanswered", "human": true }
@@ -168,6 +176,8 @@ window.WALKTHROUGH = {
       "name": "Phone payments total", "source": "bill",
       "explain": "Your phone payments come to {amount} this month: $41.33 for the phone, less your $23.72 discount, plus $5.40 for the case and screen protector.",
       "seed": { "asked": 200, "unclear": 28, "type": "unclear", "sample": "Why is it only $23.01 when my phone is $41.33?" },
+      "recommend": "Explain why tax shows as a minus in the phone section, or stop showing it to customers.",
+      "followUp": "Does the customer bill need the minus tax line, or can it move to the full tax breakdown?",
       "questions": [
         { "q": "Why is the tax a minus here?", "a": "Your phone payments carry no tax, but your One Wallet discount does. So the discount reduces the tax, and this section shows −$3.09.", "source": "assumed" }
       ]
@@ -189,7 +199,9 @@ window.WALKTHROUGH = {
     "credit": {
       "name": "Bill credits", "source": "assumed",
       "explain": "This is a $20 staff discount, applied as a credit against last month's bill.",
-      "seed": { "asked": 290, "unclear": 47, "type": "error", "sample": "I paid less than my bill. Am I behind?" },
+      "seed": { "asked": 380, "unclear": 47, "type": "error", "sample": "I paid less than my bill. Am I behind?" },
+      "recommend": "Check whether cards are charged before or after a credit lands, then show each credit with the date it applied.",
+      "followUp": "When a credit lands between bills, is the card charged the reduced amount? Our explanation assumes yes.",
       "questions": [
         { "q": "Why did I pay $20 less than my bill?", "a": "Your $20 staff discount was applied as a credit before your card was charged, so it covered the last $20.", "source": "assumed" }
       ]
@@ -225,9 +237,11 @@ window.WALKTHROUGH = {
       ]
     },
     "other": {
-      "name": "Not on the bill", "source": "unanswered",
+      "name": "Questions the bill can't answer", "source": "unanswered",
       "explain": "",
       "seed": { "asked": 420, "unclear": 100, "type": "missing", "sample": "When does my contract end?" },
+      "recommend": "Add the contract end date and phone payoff amount to the bill or app, or send these questions straight to a person.",
+      "followUp": "Which of these can billing data answer today, without a person?",
       "questions": []
     }
   },
