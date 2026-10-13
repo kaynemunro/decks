@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Bill Walkthrough Prototype</title>
+<title>Clearer Bills Prototype</title>
 <style>
   @font-face { font-family: "Euclid Circular A"; src: url("assets/fonts/EuclidCircularA-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
   @font-face { font-family: "Euclid Circular A"; src: url("assets/fonts/EuclidCircularA-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
@@ -363,6 +363,79 @@
   .paid h1 { font-size: 26px; font-weight: 500; margin: 6px 0 0; }
   .paid p { margin: 0; color: var(--n600); }
 
+  /* ---------- Intro slides: a 1920×1080 canvas scaled to the window; the prototype follows slide 4 ---------- */
+  #deck { position: fixed; inset: 0; background: #0E1B1A; display: none; overflow: hidden; }
+  body[data-mode="slides"] #deck { display: block; }
+  body[data-mode="slides"] .stage, body[data-mode="slides"] .side-toggle { display: none; }
+  .deckview { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform: translate(-50%, -50%); }
+  .slide { position: absolute; inset: 0; display: none; flex-direction: column; gap: 56px; padding: 128px 128px 160px; background: #F8F9FA; color: #323232; overflow: hidden; }
+  .slide.on { display: flex; animation: slideIn .45s var(--ease); }
+  @keyframes slideIn { from { transform: translateX(24px); } to { transform: none; } }
+  .slide .notes { display: none; }
+  .slide.dark { background: #0A3833; color: #F8F9FA; justify-content: center; }
+  .slide.dark > :not(.tex):not(.scrim):not(.foot) { position: relative; }
+  .slide .tex { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 20% 30%; transform: scale(1.6); }
+  .slide .scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,56,51,.94) 0%, rgba(10,56,51,.8) 55%, rgba(10,56,51,.42) 100%); }
+  .slide .eyebrow { font-size: 26px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: #1B7C53; margin: 0 0 16px; }
+  .slide.dark .eyebrow { color: #12CB77; }
+  .slide h1 { font-size: 96px; font-weight: 300; line-height: 1.1; letter-spacing: -1.5px; margin: 0; max-width: 1400px; }
+  .slide.close h1 { font-size: 80px; max-width: none; }
+  .slide h2 { font-size: 72px; font-weight: 500; line-height: 1.1; letter-spacing: -1px; margin: 0; }
+  .slide .lede { font-size: 40px; line-height: 1.35; color: #DCEFE7; max-width: 1250px; margin: 0; }
+  .srows { display: flex; flex-direction: column; gap: 28px; }
+  .srow { display: flex; align-items: center; gap: 36px; background: #FFFFFF; border: 1px solid #E1E4E9; border-radius: 20px; padding: 34px 44px; }
+  .srow .bar { flex: none; width: 10px; align-self: stretch; border-radius: 6px; background: #00A45F; }
+  .srow .lab { flex: none; width: 430px; font-size: 36px; font-weight: 500; line-height: 1.2; color: #1B7C53; }
+  .srow p { margin: 0; font-size: 40px; line-height: 1.3; }
+  .slide.dark .srow { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); }
+  .slide.dark .srow .bar { background: #12CB77; }
+  .scards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .scard { background: #FFFFFF; border: 1px solid #E1E4E9; border-top: 10px solid #00A45F; border-radius: 20px; padding: 40px 44px; display: flex; flex-direction: column; gap: 18px; }
+  .scard.pause { border-top-color: #8C96A8; }
+  .scard.stop { border-top-color: #323232; }
+  .scard .lab { font-size: 56px; font-weight: 500; line-height: 1.1; }
+  .scard .num { font-size: 120px; font-weight: 300; line-height: 1; letter-spacing: -3px; color: #1B7C53; }
+  .scard .num small { font-size: 40px; letter-spacing: 0; margin-left: 12px; color: #5A6376; }
+  .scard p { margin: 0; font-size: 40px; line-height: 1.32; }
+  .strip { margin: 0; font-size: 32px; line-height: 1.4; background: #FFFFFF; border: 2px dashed #8C96A8; border-radius: 16px; padding: 22px 32px; }
+  .foot { position: absolute; left: 128px; right: 128px; bottom: 64px; display: flex; justify-content: space-between; align-items: center; font-size: 24px; color: #5A6376; }
+  .slide.dark .foot { color: #BFD8D5; }
+  .foot .logo { height: 62px; }
+  .nextpill { font: 500 26px var(--font); background: #1B7C53; color: #FFFFFF; border: 0; border-radius: 999px; padding: 14px 30px; cursor: pointer; }
+  .nextpill:hover { background: #0A3833; }
+  .slide.dark .nextpill { background: #FFFFFF; color: #0A3833; }
+  .deckctl { position: fixed; left: 50%; transform: translateX(-50%); bottom: 12px; opacity: .55; transition: opacity .2s; display: flex; gap: 4px; align-items: center; background: rgba(14,27,26,.86); color: #FFFFFF; border-radius: 999px; padding: 6px 8px; z-index: 100; font-size: 14px; }
+  .deckctl:hover, .deckctl:focus-within { opacity: 1; }
+  .deckctl button { border: 0; background: transparent; color: #FFFFFF; border-radius: 999px; min-width: 40px; height: 36px; padding: 0 12px; font-weight: 500; }
+  .deckctl button:hover { background: rgba(255,255,255,.14); }
+  .deckctl .count { padding: 0 6px; font-variant-numeric: tabular-nums; opacity: .85; }
+  .notespanel { position: fixed; left: 16px; right: 16px; bottom: 64px; max-height: 34vh; overflow: auto; background: rgba(14,27,26,.95); color: #F8F9FA; border-radius: 14px; padding: 16px 20px; font-size: 15px; line-height: 1.55; z-index: 99; white-space: pre-line; display: none; }
+  .notespanel.show { display: block; }
+  .deckbar { position: fixed; top: 0; left: 0; right: 0; height: 48px; display: none; align-items: center; justify-content: center; gap: 10px; background: #0A3833; color: #FFFFFF; z-index: 120; font-size: 14px; }
+  body[data-mode="prototype"] .deckbar { display: flex; }
+  .deckbar button { border: 1px solid rgba(255,255,255,.35); background: transparent; color: #FFFFFF; border-radius: 999px; padding: 6px 14px; font-weight: 500; }
+  .deckbar button.go { background: #FFFFFF; color: #0A3833; border-color: #FFFFFF; }
+  .deckbar .lbl { opacity: .8; margin: 0 6px; }
+  body[data-mode="prototype"] .stage { padding-top: 76px; }
+  body[data-mode="prototype"] .device, body[data-mode="prototype"] .side { top: 76px; }
+
+  /* ---------- App home (entry point beside the bill) ---------- */
+  .app { background: var(--n25); }
+  .apphead { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 4px; }
+  .apphead img { height: 26px; }
+  .app h1 { font-size: 26px; font-weight: 500; margin: 10px 20px 14px; }
+  .billcard { margin: 0 16px; background: #FFFFFF; border-radius: 18px; padding: 18px; box-shadow: 0 1px 2px rgba(50,50,50,.08); display: flex; flex-direction: column; gap: 6px; }
+  .billcard .k { font-size: 13px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--n600); }
+  .billcard .big { font-size: 40px; font-weight: 600; letter-spacing: -.8px; line-height: 1.1; }
+  .billcard .sub { font-size: 14px; color: var(--n600); margin-bottom: 8px; }
+  .billcard .hint { font-size: 13px; color: var(--n600); text-align: center; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 16px; }
+  .tile { background: #FFFFFF; border: 0; border-radius: 14px; padding: 14px; text-align: left; box-shadow: 0 1px 2px rgba(50,50,50,.08); }
+  .tile b { display: block; font-weight: 500; }
+  .tile span { font-size: 13px; color: var(--n600); }
+  .tabbar { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--n100); background: #FFFFFF; padding: 10px 0 14px; font-size: 11.5px; color: var(--n600); text-align: center; }
+  .tabbar .on { color: var(--g600); font-weight: 600; }
+
   /* ---------- Small screens: the phone becomes the page; the side panel becomes a drawer ---------- */
   @media (max-width: 900px) {
     .stage { padding: 0; display: block; }
@@ -372,9 +445,161 @@
     .side.open { transform: none; }
     .side-toggle { display: block; position: fixed; left: 50%; transform: translateX(-50%); top: 9px; z-index: 90; border: 0; background: var(--n900); color: #fff; border-radius: 999px; padding: 7px 12px; font-size: 12.5px; }
   }
+  @media (max-width: 900px) {
+    body[data-mode="prototype"] .stage { padding-top: 0; }
+    body[data-mode="prototype"] .device { padding-top: 48px; }
+    body[data-mode="prototype"] .screen { height: calc(100dvh - 48px); }
+    .side-toggle { top: 57px; }
+    .deckbar .lbl { display: none; }
+  }
 </style>
 </head>
-<body>
+<body data-mode="slides">
+<div id="deck" aria-label="Intro slides">
+  <div class="deckview">
+    <section class="slide dark" data-n="1">
+      <img class="tex" src="assets/img/texture-dapple-01.jpg" alt="">
+      <div class="scrim"></div>
+      <div><p class="eyebrow">Clearer bills · our aim</p>
+      <h1>Make every bill easier to understand, so customers need less help.</h1></div>
+      <p class="lede">When help is still needed, it tells us what to fix or explain better first.</p>
+      <div class="foot"><span>Bill explainer · plan and prototype</span><img class="logo" src="assets/img/onenz-logo-primary.png" alt="One NZ"></div>
+      <aside class="notes">Our aim in one sentence: make every bill easier to understand, so fewer customers need to call or contact us about it.
+
+The second half matters as much. When someone still needs help, their question tells us which part of the bill to fix, or explain better, first.
+
+Treat any figures in this deck as working assumptions to validate, not results.</aside>
+    </section>
+    <section class="slide " data-n="2">
+      <div><p class="eyebrow">02 · Priority workflow</p><h2>Start with a bill explainer</h2></div>
+      <div class="srows">
+        <div class="srow"><span class="bar"></span><p>A customer bill explainer, opened from the bill email and the One NZ app.</p></div>
+        <div class="srow"><span class="bar"></span><p>Works with today's bills. No billing-system rebuild needed first.</p></div>
+        <div class="srow"><span class="bar"></span><p>Customer questions show us what to fix next.</p></div>
+      </div>
+      <div class="foot"><span>Bill explainer · plan and prototype</span>2</div>
+      <aside class="notes">Why this first: it is customer-facing, and it reaches people where they already are, in the bill email and the app.
+
+It works with today's bills, so it doesn't wait for a billing-system rebuild.
+
+Every question customers ask becomes evidence for what to fix next.</aside>
+    </section>
+    <section class="slide " data-n="3">
+      <div><p class="eyebrow">03 · Focus</p><h2>What starts, pauses and stops</h2></div>
+      <div class="scards">
+        <div class="scard "><div class="lab">Start</div><p>Prototype and test the bill explainer.</p></div>
+        <div class="scard pause"><div class="lab">Pause</div><p>Review overlapping bill work already under way, until we know what the explainer does and doesn't solve.</p></div>
+        <div class="scard stop"><div class="lab">Stop</div><p>Only work proven to be redundant. Existing billing fixes carry on.</p></div>
+      </div>
+      <div class="foot"><span>Bill explainer · plan and prototype</span>3</div>
+      <aside class="notes">Start: prototype and test the explainer.
+
+Pause: review in-flight bill-improvement work that overlaps, until we know what the explainer does and doesn't solve.
+
+Stop: only work proven to be redundant. Be clear that existing billing fixes have not stopped.</aside>
+    </section>
+    <section class="slide " data-n="4">
+      <div><p class="eyebrow">04 · Next 90 days</p><h2>Top three actions in the next 90 days</h2></div>
+      <div class="scards">
+        <div class="scard "><div class="num">30<small>days</small></div><p>Discover, set a baseline, and build a proof of concept and business case.</p></div>
+        <div class="scard "><div class="num">60<small>days</small></div><p>Design, build and test a consumer experience, with safeguards in place.</p></div>
+        <div class="scard "><div class="num">90<small>days</small></div><p>Measure results, then decide what to improve or scale next.</p></div>
+      </div>
+      <div class="foot"><span><button class="nextpill" data-deck="prototype">Next: live prototype walkthrough →</button></span>4</div>
+      <aside class="notes">Next: live prototype walkthrough, about five minutes, then slide 5. Press the right arrow or the green button.
+
+1. Email: in the inbox, tap the One NZ email, then Walk me through my bill. Sign in (simulated). The link alone shows nothing.
+2. App: in Jump to on the right, choose App home, then Understand my bill. Already signed in, so it opens straight to the bill.
+3. Explain a charge: start the walkthrough with sound. Let the overview play, then tap a progress segment to jump to the second mobile's roaming.
+4. Follow-up question: tap the roaming line, then How is a roaming day counted?
+5. Uncertainty and handover: type When does my contract end? It won't guess, and offers a person.
+6. Expert correction: switch to Admin view. In Top 5 to fix, choose Roaming, Teach the explainer. Edit, Preview, Approve. Back in Customer view, tap the line to show the new wording.
+7. Repeat questions: the Top 5 to fix list, each with a recommended change and a question for billing.
+
+Say once: real amounts from one bill, personal details blacked out; hit-list numbers are illustrative; nothing connects to One NZ systems yet.
+Then use Continue to slide 5 at the top.</aside>
+    </section>
+    <section class="slide " data-n="5">
+      <div><p class="eyebrow">05 · Oversight</p><h2>AI use and human oversight</h2></div>
+      <div class="srows">
+        <div class="srow"><span class="lab">What AI does</span><p>Explains the bill. It never changes charges or takes payments.</p></div>
+        <div class="srow"><span class="lab">What experts do</span><p>Review uncertain answers and improve the approved explanations.</p></div>
+        <div class="srow"><span class="lab">What we watch</span><p>Accuracy, feedback and handovers, plus privacy and billing integrity.</p></div>
+      </div>
+      <div class="foot"><span>Bill explainer · plan and prototype</span>5</div>
+      <aside class="notes">AI explains; it doesn't act. It can't change charges, apply credits or take payments.
+
+Where the bill or approved rules don't support a confident answer, it says so and offers a person.
+
+Billing experts review those uncertain answers and approve better explanations. We monitor accuracy, customer feedback and handovers, and check privacy and billing integrity throughout.</aside>
+    </section>
+    <section class="slide " data-n="6">
+      <div><p class="eyebrow">06 · Risks</p><h2>Top three risks and how we manage them</h2></div>
+      <div class="srows">
+        <div class="srow"><span class="lab">Wrong explanation</span><p>Check answers against the bill. Review and correct errors.</p></div>
+        <div class="srow"><span class="lab">Privacy or security</span><p>Use only the data needed, protect access, complete required reviews.</p></div>
+        <div class="srow"><span class="lab">Low trust or use</span><p>Clear choice, easy feedback and a person to talk to.</p></div>
+      </div>
+      <div class="foot"><span>Bill explainer · plan and prototype</span>6</div>
+      <aside class="notes">Wrong explanation: every answer points to the bill lines it comes from, and experts review and correct errors.
+
+Privacy or security: use the least customer data needed, protect access, and complete the required privacy and security reviews before customers use it.
+
+Low trust or use: customers choose whether to use it, can give feedback on every answer, and can always reach a person.</aside>
+    </section>
+    <section class="slide " data-n="7">
+      <div><p class="eyebrow">07 · Progress</p><h2>How we'll know it's working</h2></div>
+      <div class="scards">
+        <div class="scard "><div class="num">30<small>days</small></div><p>Proof of concept, baseline and a credible business case.</p></div>
+        <div class="scard "><div class="num">60<small>days</small></div><p>Tested experience that meets agreed accuracy, privacy and security gates.</p></div>
+        <div class="scard "><div class="num">90<small>days</small></div><p>Evidence on use, understanding, repeat contacts and avoidable calls.</p></div>
+      </div>
+      <p class="strip">Any reduction target is a target to validate, not a forecast.</p>
+      <div class="foot"><span>Bill explainer · plan and prototype</span>7</div>
+      <aside class="notes">These are progress indicators, not promises.
+
+Any reduction in calls or contacts is a target to validate in the trial, not a forecast. The baseline comes first, in the first 30 days.</aside>
+    </section>
+    <section class="slide " data-n="8">
+      <div><p class="eyebrow">08 · Leadership</p><h2>How leaders support teams</h2></div>
+      <div class="srows">
+        <div class="srow"><span class="bar"></span><p>Be clear on what changes, what stays human and who owns decisions.</p></div>
+        <div class="srow"><span class="bar"></span><p>Give frontline teams training, a clear handover path and hands-on support.</p></div>
+        <div class="srow"><span class="bar"></span><p>Protect capacity: check workload and team confidence as the trial grows.</p></div>
+      </div>
+      <div class="foot"><span>Bill explainer · plan and prototype</span>8</div>
+      <aside class="notes">Teams need to know what changes, what stays with people, and who decides.
+
+Frontline teams get training and a clear handover path, so a customer who moves from the explainer to a person doesn't start again.
+
+Watch workload and confidence as the trial grows.</aside>
+    </section>
+    <section class="slide dark close" data-n="9">
+      <img class="tex" src="assets/img/texture-dapple-01.jpg" alt="">
+      <div class="scrim"></div>
+      <div><p class="eyebrow">09 · Close</p><h1>Start small. Prove it. Then grow.</h1></div>
+      <div class="srows">
+        <div class="srow"><span class="bar"></span><p>A small, measurable improvement, not a full billing rebuild.</p></div>
+        <div class="srow"><span class="bar"></span><p>Show value quickly, learn from customers and staff, and expand only if it works.</p></div>
+        <div class="srow"><span class="bar"></span><p>Let what the trial reveals shape the longer-term bill redesign.</p></div>
+      </div>
+      <div class="foot"><span><button class="nextpill" data-deck="prototype">Explore the prototype</button></span><img class="logo" src="assets/img/onenz-logo-primary.png" alt="One NZ"></div>
+      <aside class="notes">Start with a small, measurable improvement rather than a full billing rebuild.
+
+Show value quickly, learn from customers and staff, and expand only if it works.
+
+What the trial reveals should inform the longer-term bill redesign.</aside>
+    </section>
+  </div>
+  <div class="notespanel" id="notesPanel" aria-live="polite"></div>
+  <div class="deckctl" role="toolbar" aria-label="Slide controls">
+    <button data-deck="prev" aria-label="Previous slide">←</button><span class="count" id="deckCount">1 / 9</span><button data-deck="next" aria-label="Next slide">→</button>
+    <button data-deck="notes">Notes</button><button data-deck="prototype">Prototype</button>
+  </div>
+</div>
+<nav class="deckbar" aria-label="Presentation">
+  <button data-deck="back">← Slide 4</button><span class="lbl">Live prototype walkthrough</span><button class="go" data-deck="continue">Continue to slide 5 →</button><button data-deck="slides">All slides</button>
+</nav>
 <div class="stage">
   <div class="device">
     <div class="screen" id="screen">
@@ -448,6 +673,27 @@
           </div>
         </div>
         <div class="proto">Prototype · sign-in is simulated</div>
+      </section>
+
+      <!-- 3b. App home: the entry point beside the bill (already signed in) -->
+      <section class="scr app" id="s-app" aria-label="One NZ app">
+        <div class="scroll">
+          <div class="apphead"><img src="assets/img/onenz-logo-secondary.png" alt="One NZ"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6M10 19a2 2 0 004 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <h1>Kia ora <span class="mask" style="width:3.6em"></span></h1>
+          <div class="billcard">
+            <div class="k">Your bill</div>
+            <div class="big">$319.30</div>
+            <div class="sub">24 Sep – 23 Oct · paid automatically on 10 October</div>
+            <button class="btn btn-primary" data-go="intro">Understand my bill</button>
+            <div class="hint">A guided walkthrough, about three minutes</div>
+            <button class="linkbtn" data-toast="Mocked: opens the full bill, as today">View full bill</button>
+          </div>
+          <div class="tiles">
+            <button class="tile" data-toast="Not part of the prototype"><b>My plan</b><span>One Plan and Companion</span></button>
+            <button class="tile" data-toast="Not part of the prototype"><b>Usage</b><span>This month so far</span></button>
+          </div>
+        </div>
+        <div class="tabbar" aria-hidden="true"><span class="on">Home</span><span>Account</span><span>Shop</span><span>Help</span></div>
       </section>
 
       <!-- 4. Walkthrough intro -->
@@ -727,11 +973,12 @@
   }
 
   /* ---------------- Screens ---------------- */
-  const SCREENS = { inbox: "Inbox", email: "Bill email", signin: "Sign in", intro: "Walkthrough start", player: "Walkthrough", end: "Summary and questions", bill: "Tap a line to ask", pay: "Payment", paid: "Confirmed" };
+  const SCREENS = { inbox: "Inbox", email: "Bill email", signin: "Sign in", app: "App home", intro: "Walkthrough start", player: "Walkthrough", end: "Summary and questions", bill: "Tap a line to ask", pay: "Payment", paid: "Confirmed" };
   const NOTES = {
     inbox: ['<span class="tag t-mocked">Mocked</span>', "The bill email arrives as it does today. Its preview line now offers the walkthrough."],
     email: ['<span class="tag t-mocked">Mocked</span>', "<b>Walk me through my bill</b> is the main button. The full bill stays one tap away.", "The email shows the total and the change from last month. It never shows line detail. Personal details are blacked out."],
     signin: ['<span class="tag t-assumed">Assumed – needs approval</span> <span class="tag t-integration">Needs integration</span>', "The link carries a bill reference, not bill data. Nothing loads until the account holder signs in, so a forwarded email shows nothing.", "Simulated here; any input works."],
+    app: ['<span class="tag t-mocked">Mocked</span> <span class="tag t-integration">Needs integration</span>', "<b>Understand my bill</b> sits beside the bill in the One NZ app. The customer is already signed in, so the explainer opens straight to the right bill."],
     intro: ['<span class="tag t-integration">Needs integration</span>', "The correct bill opens with no upload and no retyping. A real version reads it from billing data, not from the bill document."],
     player: ['<span class="tag t-mocked">Voice: ElevenLabs</span>', "The bill highlights line by line, in step with the voice. Pause, go back, skip ahead, tap a segment to jump, or skip to the end.", "<b>Tap any line</b> to pause and ask about it.", "Keys: space plays or pauses; arrow keys move between steps."],
     end: ['<span class="tag t-mocked">Mocked</span>', "Customers can tap a line on the bill, pick a suggested question, or type their own. Each answer shows the bill lines it comes from and how far it can be trusted.", "Unknown questions get no guess: the customer is offered a person, and the question goes to the admin hit list. Requests to change charges always go to a person."],
@@ -1309,6 +1556,8 @@
     $("#restart").addEventListener("click", restart);
     $("#sideToggle").addEventListener("click", () => $("#side").classList.toggle("open"));
     document.addEventListener("keydown", onKey);
+    // Leaving the prototype for the slides stops any narration mid-sentence.
+    window.addEventListener("deck:mode", (e) => { if (e.detail === "slides") stopPlayback(); });
   }
 
   // One delegated handler keeps every button's behaviour in one place.
@@ -1339,7 +1588,7 @@
     show(screen);
   }
   function onKey(e) {
-    if (current !== "player" || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if (document.body.dataset.mode === "slides" || current !== "player" || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
     if (e.key === " ") { e.preventDefault(); togglePlay(); }
     if (e.key === "ArrowRight") goStep(P.i + 1);
     if (e.key === "ArrowLeft" && P.i > 0) goStep(P.i - 1);
@@ -1381,6 +1630,68 @@
   renderPlayButton();
   renderHeat();
   show("inbox");
+})();
+</script>
+<script>
+"use strict";
+// Intro slides and the prototype share one page: slides 1–4, the live prototype, then slides 5–9.
+(function () {
+  const PROTOTYPE_AFTER = 4; // the live walkthrough sits between slides 4 and 5
+  const slides = Array.from(document.querySelectorAll("#deck .slide"));
+  const view = document.querySelector("#deck .deckview");
+  if (!slides.length || !view) throw new Error("Intro slides are missing from the page.");
+  let idx = 0;
+
+  function fit() {
+    const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    view.style.transform = `translate(-50%, -50%) scale(${s})`;
+  }
+  function setMode(mode) {
+    if (document.body.dataset.mode === mode) return;
+    document.body.dataset.mode = mode;
+    window.dispatchEvent(new CustomEvent("deck:mode", { detail: mode }));
+    if (mode === "prototype") history.replaceState(null, "", "#prototype");
+  }
+  function showSlide(n) {
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle("on", k === idx));
+    document.getElementById("deckCount").textContent = `${idx + 1} / ${slides.length}`;
+    const notes = slides[idx].querySelector(".notes");
+    document.getElementById("notesPanel").textContent = notes ? notes.textContent.trim() : "No notes for this slide.";
+    setMode("slides");
+    history.replaceState(null, "", "#" + (idx + 1));
+  }
+  function next() {
+    if (idx === PROTOTYPE_AFTER - 1) { setMode("prototype"); return; }
+    showSlide(idx + 1);
+  }
+  const ACTIONS = {
+    next, prev: () => showSlide(idx - 1),
+    notes: () => document.getElementById("notesPanel").classList.toggle("show"),
+    prototype: () => setMode("prototype"),
+    back: () => showSlide(PROTOTYPE_AFTER - 1),
+    continue: () => showSlide(PROTOTYPE_AFTER),
+    slides: () => showSlide(idx)
+  };
+
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-deck]");
+    if (b && ACTIONS[b.dataset.deck]) ACTIONS[b.dataset.deck]();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (document.body.dataset.mode !== "slides" || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); next(); }
+    if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); showSlide(idx - 1); }
+    if (e.key === "n" || e.key === "N") ACTIONS.notes();
+  });
+  window.addEventListener("resize", fit);
+
+  // Deep links: #prototype opens the prototype; #1–#9 open a slide.
+  const hash = location.hash.replace("#", "");
+  const asked = Number(hash);
+  fit();
+  if (hash === "prototype") { showSlide(PROTOTYPE_AFTER - 1); setMode("prototype"); }
+  else showSlide(Number.isInteger(asked) && asked >= 1 ? asked - 1 : 0);
 })();
 </script>
 </body>
