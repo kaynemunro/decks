@@ -1,0 +1,1462 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bill Walkthrough Prototype</title>
+<style>
+  @font-face { font-family: "Euclid Circular A"; src: url("assets/fonts/EuclidCircularA-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+  @font-face { font-family: "Euclid Circular A"; src: url("assets/fonts/EuclidCircularA-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Euclid Circular A"; src: url("assets/fonts/EuclidCircularA-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Euclid Circular A"; src: url("assets/fonts/EuclidCircularA-Semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+  /* Official One NZ palette (Brand Guidelines v11.0). No invented tints. */
+  :root {
+    --g50: #CDFBDD; --g100: #95EEB4; --g200: #12CB77; --g400: #00A45F; --g600: #1B7C53; --g900: #0A3833;
+    --n25: #F8F9FA; --n50: #ECEEF1; --n100: #E1E4E9; --n200: #C5CAD5; --n400: #8C96A8; --n600: #5A6376; --n900: #323232;
+    --red: #D31F3F; --yellow: #FFD600; --mask: #1E2326;
+    --font: "Euclid Circular A", "Figtree", Arial, sans-serif;
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--n50); color: var(--n900); font: 400 15px/1.45 var(--font); font-synthesis: none; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--g400); outline-offset: 2px; }
+  svg { display: block; }
+  [hidden] { display: none !important; }
+
+  /* Blacked-out personal details: a solid bar, so it reads as masked rather than replaced. */
+  .mask { display: inline-block; height: .95em; min-width: 1.2em; background: var(--mask); border-radius: 3px; vertical-align: -0.14em; }
+
+  /* ---------- Stage: phone on the left, notes or admin console on the right ---------- */
+  .stage { min-height: 100%; display: flex; gap: 32px; align-items: flex-start; justify-content: center; padding: 28px 24px; }
+  .device { flex: none; width: 414px; height: 868px; border-radius: 56px; background: #1E2A2A; padding: 12px; box-shadow: 0 24px 60px rgba(10,56,51,.22); position: sticky; top: 28px; }
+  .screen { position: relative; width: 390px; height: 844px; border-radius: 44px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+  .status { flex: none; height: 46px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px 0 34px; font-weight: 600; font-size: 15px; z-index: 5; }
+  .status.dark { color: #fff; background: var(--g900); }
+  .status .icons { display: flex; gap: 6px; align-items: center; }
+  .scr { position: absolute; inset: 46px 0 0 0; display: none; flex-direction: column; background: #fff; }
+  .scr.active { display: flex; animation: scrIn .28s var(--ease); }
+  @keyframes scrIn { from { transform: translateX(14px); } to { transform: none; } }
+  .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; }
+  .scroll::-webkit-scrollbar { width: 0; }
+
+  .side { width: 400px; flex: none; background: #fff; border-radius: 16px; padding: 18px 20px 24px; position: sticky; top: 28px; max-height: calc(100vh - 56px); overflow-y: auto; border: 1px solid var(--n100); }
+  .side h2 { font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--n600); margin: 18px 0 8px; }
+  .side p { margin: 0 0 8px; font-size: 14px; }
+  .side .lead { color: var(--n600); }
+  .viewtoggle { display: grid; grid-template-columns: 1fr 1fr; background: var(--n50); border-radius: 999px; padding: 4px; margin: 4px 0 6px; }
+  .viewtoggle button { border: 0; background: transparent; border-radius: 999px; padding: 8px 10px; font-weight: 500; font-size: 14px; min-height: 40px; }
+  .viewtoggle button.on { background: var(--n900); color: #fff; }
+  .nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .nav button { border: 1px solid var(--n200); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; }
+  .nav button.on { background: var(--n900); color: #fff; border-color: var(--n900); }
+  .side ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .side li { margin-bottom: 5px; }
+  .steps { list-style: none; padding: 0 !important; }
+  .steps li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; align-items: start; padding: 6px 8px; border-radius: 8px; cursor: pointer; margin: 0 !important; }
+  .steps li.on { background: var(--n50); }
+  .steps .n { color: var(--n400); font-size: 12.5px; padding-top: 1px; }
+  .side-toggle { display: none; }
+
+  .tag { display: inline-block; font-size: 11.5px; font-weight: 500; padding: 2px 8px; border-radius: 999px; white-space: nowrap; line-height: 1.5; }
+  .t-bill, .t-approved, .t-taught, .t-line { background: var(--g50); color: var(--g600); }
+  .t-assumed, .t-draft, .t-preview { background: #FFF7C2; color: #5C4B00; box-shadow: inset 3px 0 0 var(--yellow); }
+  .t-mocked, .t-policy, .t-retired { background: var(--n50); color: var(--n600); }
+  .t-integration { background: #fff; color: var(--n900); border: 1px dashed var(--n400); }
+  .t-unanswered, .t-error, .t-missing { background: #FBE3E8; color: #8E1530; }
+
+  /* ---------- Admin console ---------- */
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--n100); margin: 10px 0 12px; }
+  .tabs button { border: 0; background: none; padding: 10px 10px; font-weight: 500; font-size: 14px; color: var(--n600); border-bottom: 2.5px solid transparent; margin-bottom: -1px; }
+  .tabs button.on { color: var(--n900); border-bottom-color: var(--g400); }
+  .tabs .count { display: inline-block; min-width: 18px; font-size: 11px; background: var(--n50); border-radius: 9px; padding: 0 5px; margin-left: 4px; }
+  .fine { font-size: 12.5px; color: var(--n600); }
+  .hit { border: 1px solid var(--n100); border-radius: 12px; padding: 12px 12px 10px; margin-bottom: 8px; }
+  .hit .top { display: flex; gap: 8px; align-items: baseline; justify-content: space-between; }
+  .hit .rank { color: var(--n400); font-size: 12.5px; margin-right: 6px; }
+  .hit .name { font-weight: 600; font-size: 15px; }
+  .hit .nums { font-size: 13px; color: var(--n600); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+  .hit .bar { height: 8px; border-radius: 8px; background: var(--n50); overflow: hidden; display: flex; }
+  .hit .bar i { display: block; height: 100%; }
+  .hit .bar .u1 { background: var(--red); }
+  .hit .bar .u2 { background: var(--n200); }
+  .hit .sample { font-size: 13.5px; margin: 8px 0 8px; color: var(--n900); }
+  .hit .acts { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .hit .live { font-size: 12px; color: var(--g600); font-weight: 500; }
+  .sbtn { border: 1.5px solid var(--n200); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 500; }
+  .sbtn:hover { border-color: var(--n900); }
+  .sbtn.primary { background: var(--g400); border-color: var(--g400); color: #fff; }
+  .sbtn.primary:hover { background: var(--g600); border-color: var(--g600); }
+  .qlist { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--n600); }
+  .linecard { border-radius: 12px; background: var(--n25); border: 1px solid var(--n100); padding: 10px 12px; }
+  .linecard .lc-top { display: flex; justify-content: space-between; gap: 10px; font-weight: 500; }
+  .linecard .lc-sub { font-size: 12.5px; color: var(--n600); margin-top: 2px; }
+  .teach h3 { font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+  .current { font-size: 14px; background: #fff; border: 1px solid var(--n100); border-radius: 10px; padding: 10px 12px; }
+  .current p { margin: 0 0 6px; }
+  .scope { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+  .scope label { display: flex; gap: 8px; align-items: flex-start; }
+  .scope input { margin-top: 3px; accent-color: var(--g400); }
+  .teach textarea, .teach input[type=text] { width: 100%; font: inherit; font-size: 14px; border: 1.5px solid var(--n200); border-radius: 10px; padding: 9px 11px; color: var(--n900); }
+  .teach textarea { min-height: 96px; resize: vertical; }
+  .teach .lbl { font-size: 13px; color: var(--n600); margin: 10px 0 4px; display: block; }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .lib { border: 1px solid var(--n100); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; font-size: 14px; }
+  .lib .lib-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 4px; }
+  .lib .lib-target { font-weight: 500; }
+  .lib p { margin: 4px 0; }
+  .empty { border: 1.5px dashed var(--n200); border-radius: 12px; padding: 16px; text-align: center; color: var(--n600); font-size: 14px; }
+
+  /* Heat badges on bill lines in admin view: the hit list, shown inside the journey. */
+  .hb { display: none; position: absolute; right: 8px; bottom: -8px; font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; z-index: 2; white-space: nowrap; pointer-events: none; }
+  body.admin .hb { display: inline-block; }
+  .hb.hot { background: #FBE3E8; color: #8E1530; box-shadow: 0 0 0 1px #F3B8C4; }
+  .hb.warm { background: #FFF7C2; color: #5C4B00; box-shadow: 0 0 0 1px #F0DE7A; }
+  .hb.cool { background: var(--g50); color: var(--g600); box-shadow: 0 0 0 1px var(--g100); }
+  .hb.taught { background: var(--g400); color: #fff; box-shadow: none; }
+  body.admin .bill .u { cursor: pointer; }
+  body.admin .bill .u:hover { box-shadow: inset 0 0 0 2px var(--n900); opacity: 1; }
+  body.admin .bill .u.sel { box-shadow: inset 0 0 0 2px var(--n900) !important; opacity: 1 !important; background: #fff; }
+
+  /* ---------- Shared app pieces ---------- */
+  .bar { flex: none; height: 52px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-bottom: 1px solid var(--n50); }
+  .bar .title { flex: 1; text-align: center; font-weight: 500; font-size: 16px; line-height: 1.15; }
+  .bar .title small { display: block; font-size: 12.5px; color: var(--n600); font-weight: 400; }
+  .iconbtn { width: 44px; height: 44px; border: 0; background: transparent; border-radius: 999px; display: grid; place-items: center; }
+  .iconbtn:hover { background: var(--n50); }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 52px; border-radius: 999px; border: 0; font-weight: 500; font-size: 17px; padding: 0 22px; text-decoration: none; }
+  .btn-primary { background: var(--g400); color: #fff; }
+  .btn-primary:hover { background: var(--g600); }
+  .btn-secondary { background: #fff; color: var(--n900); box-shadow: inset 0 0 0 1.5px var(--n200); }
+  .btn-secondary:hover { box-shadow: inset 0 0 0 1.5px var(--n900); }
+  .linkbtn { background: none; border: 0; color: var(--g600); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; padding: 10px 4px; }
+  .proto { font-size: 11.5px; color: var(--n400); text-align: center; padding: 10px 16px 14px; }
+  .toast { position: absolute; left: 16px; right: 16px; bottom: 26px; background: var(--n900); color: #fff; border-radius: 14px; padding: 12px 16px; font-size: 14px; z-index: 60; opacity: 0; transform: translateY(10px); transition: .25s var(--ease); pointer-events: none; }
+  .toast.show { opacity: 1; transform: none; }
+
+  /* ---------- Inbox ---------- */
+  .inbox h1 { font-size: 32px; font-weight: 600; margin: 6px 20px 10px; letter-spacing: -.3px; }
+  .search { margin: 0 20px 10px; background: var(--n50); border-radius: 12px; padding: 9px 12px; color: var(--n400); font-size: 15px; }
+  .mail { display: grid; grid-template-columns: 44px 1fr; gap: 12px; padding: 12px 20px; border: 0; border-bottom: 1px solid var(--n50); background: #fff; text-align: left; width: 100%; }
+  .mail:hover { background: var(--n25); }
+  .avatar { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; font-weight: 600; color: #fff; overflow: hidden; }
+  .avatar img { width: 44px; height: 44px; }
+  .mail .top { display: flex; justify-content: space-between; gap: 8px; }
+  .mail .from { font-weight: 600; }
+  .mail .time { color: var(--n400); font-size: 13px; }
+  .mail .subj { font-size: 14.5px; }
+  .mail .prev { font-size: 14px; color: var(--n600); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .mail.unread .from::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 9px; background: #2F6FED; margin-right: 6px; vertical-align: 1px; }
+  .mail.hint { animation: hint 2.2s ease-in-out infinite; }
+  @keyframes hint { 0%,100% { box-shadow: inset 0 0 0 0 rgba(0,164,95,0); } 50% { box-shadow: inset 0 0 0 2px var(--g400); } }
+
+  /* ---------- Email (Arial: the brand's own rule for email) ---------- */
+  .mailhead { padding: 10px 20px 14px; border-bottom: 1px solid var(--n50); }
+  .mailhead .subj { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+  .mailhead .who { display: grid; grid-template-columns: 36px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
+  .mailhead .who .avatar, .mailhead .who .avatar img { width: 36px; height: 36px; }
+  .em { font-family: Arial, Helvetica, sans-serif; color: var(--n900); background: var(--n50); padding: 14px 12px 24px; }
+  .em .card { background: #fff; border-radius: 4px; overflow: hidden; }
+  .em .pill { display: inline-flex; background: var(--g900); border-radius: 999px; padding: 8px 14px; margin: 18px 20px 0; }
+  .em .pill img { height: 24px; }
+  .em .band { margin: 16px 0 0; height: 120px; background: var(--g900) url("assets/img/texture-dapple-01.jpg") 18% 34% / 230% no-repeat; position: relative; display: flex; align-items: flex-end; padding: 0 20px 16px; }
+  .em .band::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,56,51,0) 30%, rgba(10,56,51,.45)); }
+  .em .band h1 { position: relative; margin: 0; color: #fff; font-size: 27px; font-weight: normal; letter-spacing: -.3px; }
+  .em .body { padding: 18px 20px 6px; font-size: 15.5px; line-height: 1.5; }
+  .em .body p { margin: 0 0 12px; }
+  .em .amount { border: 1px solid var(--n100); border-radius: 6px; padding: 14px 16px; margin: 4px 0 16px; }
+  .em .amount .big { font-size: 32px; font-weight: bold; letter-spacing: -.5px; }
+  .em .amount .sub { color: var(--n600); font-size: 14px; }
+  .em .change { background: var(--n25); border-left: 4px solid var(--g400); padding: 10px 12px; font-size: 14.5px; margin: 0 0 16px; }
+  .em .cta { display: block; width: 100%; border: 0; background: var(--g400); color: #fff; font: bold 17px Arial, sans-serif; border-radius: 999px; padding: 15px 18px; }
+  .em .cta:hover { background: var(--g600); }
+  .em .cta-sub { text-align: center; font-size: 13px; color: var(--n600); margin: 8px 0 14px; }
+  .em .pdf { display: block; text-align: center; color: var(--g600); font-weight: bold; font-size: 15px; background: none; border: 0; width: 100%; padding: 8px; text-decoration: underline; font-family: Arial, sans-serif; }
+  .em .meta { font-size: 12.5px; color: var(--n600); border-top: 1px solid var(--n100); padding: 12px 20px 16px; margin-top: 10px; line-height: 1.5; }
+
+  /* ---------- Sign in ---------- */
+  .urlbar { flex: none; margin: 4px 12px 8px; background: var(--n50); border-radius: 12px; height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; color: var(--n600); }
+  .signin { padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .signin .logo { height: 34px; align-self: flex-start; margin-bottom: 18px; }
+  .signin h1 { font-size: 28px; font-weight: 500; margin: 0; letter-spacing: -.3px; line-height: 1.2; }
+  .signin p { margin: 0; color: var(--n600); font-size: 16px; }
+  .why { display: grid; grid-template-columns: 22px 1fr; gap: 10px; background: var(--n25); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--n600); margin: 6px 0 10px; }
+  .faceid { display: grid; place-items: center; height: 120px; }
+  .faceid .ring { width: 74px; height: 74px; border-radius: 22px; border: 3px solid var(--n200); display: grid; place-items: center; transition: .3s; }
+  .faceid.scanning .ring { border-color: var(--g400); animation: pulse 1s ease-in-out infinite; }
+  .faceid.done .ring { border-color: var(--g400); background: var(--g50); }
+  @keyframes pulse { 50% { transform: scale(1.06); } }
+  .field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--n600); }
+  .field input, .fakeinput { font: inherit; font-size: 16px; color: var(--n900); border: 1.5px solid var(--n200); border-radius: 10px; padding: 12px 14px; }
+  .pwform { display: none; flex-direction: column; gap: 12px; }
+  .pwform.show { display: flex; }
+
+  /* ---------- Walkthrough intro ---------- */
+  .hero { flex: none; position: relative; color: #fff; padding: 22px 24px 26px; background: var(--g900) url("assets/img/texture-dapple-01.jpg") 52% 62% / 260% no-repeat; }
+  .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,56,51,.35) 0%, rgba(10,56,51,.72) 100%); }
+  .hero > * { position: relative; }
+  .hero .logo { height: 26px; margin-bottom: 26px; }
+  .hero .kicker { font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
+  .hero h1 { font-size: 30px; font-weight: 300; margin: 6px 0 14px; letter-spacing: -.3px; line-height: 1.15; }
+  .hero .total { font-size: 48px; font-weight: 600; letter-spacing: -1px; line-height: 1; }
+  .hero .meta { margin-top: 8px; font-size: 15px; }
+  .chapters { padding: 18px 24px 4px; }
+  .chapters h2 { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
+  .chapters ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 14.5px; color: var(--n600); }
+  .chapters li { display: flex; gap: 8px; align-items: center; }
+  .chapters li::before { content: ""; width: 6px; height: 6px; border-radius: 6px; background: var(--g400); flex: none; }
+  .intro-actions { padding: 18px 24px 6px; display: flex; flex-direction: column; gap: 10px; }
+
+  /* ---------- Bill (shared by the walkthrough and the tap-a-line view) ---------- */
+  .billwrap { position: relative; flex: 1; min-height: 0; }
+  .billscroll { position: absolute; inset: 0; overflow-y: auto; scroll-behavior: smooth; background: var(--n25); }
+  .billscroll::-webkit-scrollbar { width: 0; }
+  .tapchip { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: var(--n900); color: #fff; font-size: 12.5px; padding: 6px 12px; border-radius: 999px; z-index: 3; white-space: nowrap; pointer-events: none; transition: opacity .4s; }
+  body.admin .tapchip { background: var(--g600); }
+  .bill { padding: 14px 12px 40px; }
+  .page { background: #fff; border-radius: 12px; padding: 16px 14px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(50,50,50,.06); }
+  .bill .u { position: relative; cursor: pointer; }
+  .bill .u, .bill .hd { transition: opacity .35s var(--ease), background-color .35s var(--ease), box-shadow .35s var(--ease); border-radius: 10px; }
+  .bill .u:hover { background: var(--n25); }
+  .bill.spot .u { opacity: .26; }
+  .bill.spot .hd { opacity: .4; }
+  .bill.spot .sec.has-on .hd { opacity: 1; }
+  .bill .u.on { opacity: 1; background: #F1FEF5; box-shadow: inset 0 0 0 2px var(--g400); }
+  .bill.veil { filter: blur(1.5px); opacity: .35; transition: .3s; }
+  .bhead { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .bhead img { height: 22px; }
+  .bhead .ti { font-weight: 600; font-size: 13px; letter-spacing: .04em; }
+  .addr { font-size: 13px; color: var(--n600); margin-bottom: 10px; line-height: 1.7; }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 13px; margin: 0; }
+  .kv dt { color: var(--n600); }
+  .kv dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .h3 { font-size: 17px; font-weight: 600; margin: 2px 0 2px; }
+  .subtle { font-size: 13px; color: var(--n600); margin-bottom: 8px; }
+  .row { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 8px; font-size: 14px; }
+  .row .amt { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .row.strong { font-weight: 600; border-top: 1.5px solid var(--n900); margin-top: 4px; }
+  .row .lbl { display: flex; gap: 8px; align-items: center; }
+  .pilltag { font-size: 11.5px; font-weight: 500; background: var(--g50); color: var(--g600); padding: 1px 8px; border-radius: 999px; }
+  .note-r { text-align: right; font-size: 12.5px; color: var(--n600); padding: 2px 8px; }
+  .payrow { margin-top: 8px; padding: 10px 8px; }
+  .payrow .amt { color: var(--g600); font-weight: 600; font-size: 18px; }
+  .payrow .nothing { font-size: 13px; color: var(--g600); margin-top: 2px; }
+  .sec { margin-bottom: 4px; }
+  .kicker { font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--n600); }
+  .sec .stitle { font-size: 18px; font-weight: 500; margin: 2px 0 6px; }
+  .sub2 { font-size: 13px; font-weight: 600; margin: 10px 8px 2px; }
+  .ln { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 8px 8px; font-size: 14px; }
+  .ln .grp { grid-column: 1 / -1; font-size: 12.5px; font-weight: 600; color: var(--n600); }
+  .ln .per { font-size: 12.5px; color: var(--n600); }
+  .ln .incl { font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .stot { display: flex; justify-content: space-between; padding: 8px 8px 0; border-top: 1.5px solid var(--n900); margin-top: 6px; font-weight: 600; }
+  .stot .amt { color: var(--g600); }
+  .detail-h { font-size: 19px; font-weight: 500; margin: 6px 4px 10px; }
+
+  .insert { display: none; margin: 4px 8px 10px; padding: 12px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px var(--n100); animation: insIn .4s var(--ease); }
+  .insert.show { display: block; }
+  @keyframes insIn { from { transform: translateY(-6px); } to { transform: none; } }
+  .insert .ihead { font-size: 12.5px; font-weight: 600; color: var(--n600); margin-bottom: 8px; }
+  .progress { height: 10px; border-radius: 10px; background: var(--n50); overflow: hidden; }
+  .progress > div { height: 100%; width: 0; background: var(--g400); border-radius: 10px; transition: width 1.1s var(--ease) .15s; }
+  .insert.show .progress > div { width: calc(var(--p) * 1%); }
+  .progress-legend { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--n600); margin-top: 6px; }
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal .d { border-radius: 8px; background: var(--n25); text-align: center; padding: 5px 0 4px; font-size: 13px; color: var(--n400); }
+  .cal .d small { display: block; font-size: 10px; }
+  .cal .d.r { background: var(--g400); color: #fff; animation: dayIn .35s var(--ease) both; }
+  .cal .d.cut { box-shadow: inset 0 0 0 2px var(--n900); }
+  @keyframes dayIn { from { transform: scale(.6); } }
+  .cal-note { font-size: 12.5px; color: var(--n600); margin-top: 8px; }
+
+  .windows { position: absolute; left: 12px; right: 12px; top: 18px; background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 16px 40px rgba(10,56,51,.18); display: none; z-index: 4; }
+  .windows.show { display: block; animation: insIn .4s var(--ease); }
+  .windows h3 { margin: 0 0 12px; font-size: 17px; font-weight: 600; }
+  .wins { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .win { border-radius: 12px; padding: 12px; transition: transform .35s var(--ease), box-shadow .35s var(--ease), opacity .35s; }
+  .win.prev { background: var(--n50); }
+  .win.next { background: var(--g50); }
+  .win .k { font-size: 11.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--n600); }
+  .win .dt { font-weight: 600; margin: 2px 0 6px; font-size: 14.5px; }
+  .win .wa { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .win ul { margin: 6px 0 0; padding-left: 16px; font-size: 13px; }
+  .wins.spot .win { opacity: .4; }
+  .wins .win.on { opacity: 1; box-shadow: inset 0 0 0 2px var(--g400); transform: translateY(-2px); }
+  .axis { position: relative; height: 34px; margin-top: 12px; }
+  .axis .line { position: absolute; left: 0; right: 0; top: 10px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--n200) 50%, var(--g400) 50%); }
+  .axis .mk { position: absolute; top: 2px; transform: translateX(-50%); text-align: center; font-size: 11.5px; color: var(--n600); }
+  .axis .mk::before { content: ""; display: block; width: 12px; height: 12px; margin: 2px auto 3px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 3px var(--n900); }
+
+  /* ---------- Player sheet ---------- */
+  .sheet { flex: none; border-top: 1px solid var(--n100); background: #fff; padding: 10px 16px 14px; box-shadow: 0 -8px 24px rgba(50,50,50,.06); }
+  .segs { display: flex; gap: 3px; margin-bottom: 8px; }
+  .seg { flex: 1; height: 4px; border-radius: 4px; background: var(--n100); overflow: hidden; border: 0; padding: 0; }
+  .seg > i { display: block; height: 100%; width: 0; background: var(--g400); }
+  .seg:hover { background: var(--n200); }
+  .where { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--n600); margin-bottom: 4px; }
+  .where .skip { background: none; border: 0; color: var(--g600); font-weight: 500; font-size: 13.5px; padding: 6px 0 6px 10px; }
+  .caption { min-height: 108px; font-size: 16.5px; line-height: 1.45; margin: 0 0 8px; }
+  .caption span { color: var(--n400); transition: color .25s; }
+  .caption span.past { color: var(--n600); }
+  .caption span.now { color: var(--n900); }
+  .caption.all span { color: var(--n900); }
+  .taught { font-size: 14px; background: #F1FEF5; border-left: 3px solid var(--g400); border-radius: 0 8px 8px 0; padding: 8px 10px; margin: 0 0 8px; }
+  .taught b { font-weight: 600; color: var(--g600); display: block; font-size: 12px; letter-spacing: .03em; }
+  .adminstrip { display: none; align-items: center; justify-content: space-between; gap: 8px; font-size: 12.5px; background: var(--n50); border-radius: 8px; padding: 6px 8px; margin-bottom: 8px; }
+  body.admin .adminstrip.has { display: flex; }
+  .controls { display: flex; align-items: center; justify-content: center; gap: 22px; }
+  .play { width: 60px; height: 60px; border-radius: 999px; border: 0; background: var(--g400); color: #fff; display: grid; place-items: center; }
+  .play:hover { background: var(--g600); }
+  .ctl { width: 48px; height: 48px; border-radius: 999px; border: 0; background: var(--n50); display: grid; place-items: center; }
+  .ctl:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* ---------- Summary + questions ---------- */
+  .done-head { padding: 18px 20px 6px; }
+  .done-head h1 { font-size: 28px; font-weight: 500; margin: 0 0 4px; letter-spacing: -.3px; }
+  .done-head p { margin: 0; color: var(--n600); }
+  .keys { display: grid; gap: 8px; padding: 12px 20px; }
+  .key { display: grid; grid-template-columns: 4px 1fr; gap: 12px; background: var(--n25); border-radius: 12px; padding: 12px 14px 12px 0; overflow: hidden; }
+  .key::before { content: ""; background: var(--g400); border-radius: 0 4px 4px 0; }
+  .key b { font-weight: 600; display: block; }
+  .key span { font-size: 14px; color: var(--n600); }
+  .ask { padding: 6px 20px 10px; }
+  .ask h2 { font-size: 17px; font-weight: 600; margin: 8px 0 8px; }
+  .tapline { width: 100%; display: flex; gap: 10px; align-items: center; text-align: left; border: 1.5px dashed var(--g400); background: #F6FFF9; border-radius: 12px; padding: 12px 14px; font-size: 15px; font-weight: 500; margin-bottom: 12px; }
+  .tapline small { display: block; font-weight: 400; color: var(--n600); font-size: 13px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip { border: 1.5px solid var(--n200); background: #fff; border-radius: 999px; padding: 7px 12px; font-size: 13.5px; text-align: left; }
+  .chip:hover { border-color: var(--n900); }
+  .chip.taughtq { border-color: var(--g400); }
+  .askbox { display: flex; gap: 8px; }
+  .askbox input { flex: 1; font: inherit; font-size: 15.5px; border: 1.5px solid var(--n200); border-radius: 999px; padding: 11px 16px; min-width: 0; }
+  .askbox button { width: 46px; height: 46px; border-radius: 999px; border: 0; background: var(--g400); color: #fff; display: grid; place-items: center; flex: none; }
+  .thread { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .q { align-self: flex-end; background: var(--n900); color: #fff; border-radius: 16px 16px 4px 16px; padding: 9px 13px; max-width: 85%; font-size: 15px; }
+  .a { background: var(--n25); border: 1px solid var(--n100); border-radius: 16px 16px 16px 4px; padding: 12px 14px; font-size: 15px; animation: insIn .35s var(--ease); }
+  .a p { margin: 0 0 8px; }
+  .a .expert { background: #F1FEF5; border-left: 3px solid var(--g400); border-radius: 0 8px 8px 0; padding: 8px 10px; margin: 6px 0 8px; font-size: 14px; }
+  .a .expert b { display: block; font-size: 12px; font-weight: 600; color: var(--g600); }
+  .cite { background: #fff; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--n100); padding: 4px 10px; margin: 8px 0; }
+  .cite .ct { font-size: 11.5px; font-weight: 600; color: var(--n600); letter-spacing: .04em; text-transform: uppercase; padding-top: 6px; }
+  .cite .cr { display: grid; grid-template-columns: 1fr auto; gap: 0 10px; padding: 6px 0; border-top: 1px solid var(--n50); font-size: 13.5px; }
+  .cite .cr:nth-child(2) { border-top: 0; }
+  .cite .cr small { grid-column: 1; color: var(--n600); font-size: 12px; }
+  .cite .cr b { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .afoot { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--n600); }
+  .afoot .fb button { background: none; border: 0; color: var(--g600); font-weight: 500; padding: 4px 6px; text-decoration: underline; }
+  .human { margin-top: 8px; }
+  .end-actions { padding: 10px 20px 4px; display: flex; flex-direction: column; gap: 10px; }
+  .end-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+  .modal { position: absolute; inset: 0; background: rgba(50,50,50,.4); display: none; align-items: flex-end; z-index: 30; }
+  .modal.show { display: flex; }
+  .modal .panel { background: #fff; width: 100%; border-radius: 22px 22px 0 0; padding: 20px 20px 28px; animation: up .3s var(--ease); max-height: 86%; overflow-y: auto; }
+  @keyframes up { from { transform: translateY(40px); } }
+  .modal h2 { font-size: 20px; font-weight: 500; margin: 0 0 6px; }
+  .modal p { margin: 0 0 14px; color: var(--n600); font-size: 14.5px; }
+  .modal .stack { display: flex; flex-direction: column; gap: 10px; }
+  .sheet-head { display: flex; justify-content: space-between; align-items: center; margin: -6px -6px 8px 0; }
+  .sheet-head span { font-size: 13px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--n600); }
+  .explain { font-size: 15.5px; margin: 12px 0 10px; }
+  .explain p { margin: 0 0 6px; color: var(--n900); }
+
+  /* ---------- Payment ---------- */
+  .pay { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .pay h1 { font-size: 26px; font-weight: 500; margin: 0; letter-spacing: -.3px; }
+  .paycard { border-radius: 16px; background: var(--n25); border: 1px solid var(--n100); padding: 16px; }
+  .paycard .big { font-size: 34px; font-weight: 600; letter-spacing: -.6px; }
+  .paycard .card { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 14.5px; }
+  .visa { font-weight: 600; font-size: 12px; letter-spacing: .04em; background: #1F2A6B; color: #fff; padding: 3px 7px; border-radius: 5px; margin-right: 8px; }
+  .opt { display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: 14px; border-radius: 14px; border: 1.5px solid var(--n100); cursor: pointer; align-items: start; }
+  .opt input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--g400); }
+  .opt b { font-weight: 500; display: block; }
+  .opt span { font-size: 14px; color: var(--n600); }
+  .opt.sel { border-color: var(--g400); background: #F6FFF9; }
+  .paid { padding: 40px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .tick { width: 76px; height: 76px; border-radius: 999px; background: var(--g50); display: grid; place-items: center; animation: dayIn .5s var(--ease); }
+  .paid h1 { font-size: 26px; font-weight: 500; margin: 6px 0 0; }
+  .paid p { margin: 0; color: var(--n600); }
+
+  /* ---------- Small screens: the phone becomes the page; the side panel becomes a drawer ---------- */
+  @media (max-width: 900px) {
+    .stage { padding: 0; display: block; }
+    .device { width: 100%; height: 100dvh; border-radius: 0; padding: 0; position: relative; top: 0; box-shadow: none; }
+    .screen { width: 100%; height: 100dvh; border-radius: 0; }
+    .side { position: fixed; inset: auto 0 0 0; width: auto; max-height: 78dvh; border-radius: 18px 18px 0 0; z-index: 80; transform: translateY(105%); transition: transform .3s var(--ease); box-shadow: 0 -12px 40px rgba(0,0,0,.2); }
+    .side.open { transform: none; }
+    .side-toggle { display: block; position: fixed; left: 50%; transform: translateX(-50%); top: 9px; z-index: 90; border: 0; background: var(--n900); color: #fff; border-radius: 999px; padding: 7px 12px; font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="device">
+    <div class="screen" id="screen">
+      <div class="status" id="status"><span>9:41</span><span class="icons" aria-hidden="true">
+        <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>
+      </span></div>
+
+      <!-- 1. Inbox -->
+      <section class="scr inbox" id="s-inbox" aria-label="Email inbox">
+        <div class="scroll">
+          <h1>Inbox</h1>
+          <div class="search">Search</div>
+          <button class="mail unread hint" data-go="email">
+            <span class="avatar" style="background:#0A3833"><img src="assets/img/one-nz-symbol.png" alt=""></span>
+            <span><span class="top"><span class="from">One NZ</span><span class="time">9:02 am</span></span>
+              <span class="subj">Your One NZ bill is ready</span>
+              <span class="prev">$319.30 will be paid automatically on 10 October. Walk through it in about three minutes.</span></span>
+          </button>
+          <button class="mail" data-toast="Not part of the prototype"><span class="avatar" style="background:#8C96A8"><span class="mask" style="width:.9em;background:#fff;opacity:.5"></span></span>
+            <span><span class="top"><span class="from"><span class="mask" style="width:3.2em"></span></span><span class="time">8:15 am</span></span><span class="subj">Sunday lunch?</span><span class="prev">Are you still coming on Sunday? Bring a jacket, it's meant to turn.</span></span></button>
+          <button class="mail" data-toast="Not part of the prototype"><span class="avatar" style="background:#5A6376">S</span>
+            <span><span class="top"><span class="from">Sports club</span><span class="time">Yesterday</span></span><span class="subj">Training moved to Thursday</span><span class="prev">The field's booked on Wednesday, so we'll train Thursday at 6pm instead.</span></span></button>
+        </div>
+        <div class="proto">Prototype · tap the One NZ email</div>
+      </section>
+
+      <!-- 2. Bill email -->
+      <section class="scr" id="s-email" aria-label="Bill email">
+        <div class="bar"><button class="iconbtn" data-go="inbox" aria-label="Back to inbox"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="title"></span><span style="width:44px"></span></div>
+        <div class="scroll">
+          <div class="mailhead">
+            <div class="subj">Your One NZ bill is ready</div>
+            <div class="who"><span class="avatar" style="background:#0A3833"><img src="assets/img/one-nz-symbol.png" alt=""></span><span><b style="font-weight:600">One NZ</b><br><span style="color:var(--n600)">to me</span></span><span style="color:var(--n400);font-size:13px">9:02 am</span></div>
+          </div>
+          <div class="em">
+            <div class="card">
+              <div class="pill"><img src="assets/img/onenz-logo-primary.png" alt="One NZ"></div>
+              <div class="band"><h1>Your bill is ready</h1></div>
+              <div class="body">
+                <p>Kia ora <span class="mask" style="width:3.6em"></span></p>
+                <div class="amount"><div class="big">$319.30</div><div class="sub">Paid automatically on 10 October. There's nothing you need to do.</div></div>
+                <div class="change">It's $139.52 more than last month. We'll show you why.</div>
+                <button class="cta" data-go="signin">Walk me through my bill</button>
+                <div class="cta-sub">About three minutes, with sound. You'll sign in first.</div>
+                <button class="pdf" data-toast="Mocked: opens the full bill, as today">Download your full bill</button>
+              </div>
+              <div class="meta">Billing period 24 Sep – 23 Oct 2026 · Account <span class="mask" style="width:4em"></span><br>One New Zealand Group Limited. This is a service message about your account.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Sign in -->
+      <section class="scr" id="s-signin" aria-label="Sign in">
+        <div class="urlbar"><svg width="13" height="15" viewBox="0 0 13 15"><rect x="1" y="6" width="11" height="8" rx="2" fill="currentColor"/><path d="M3.5 6V4.5a3 3 0 016 0V6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>one.nz/bill/7f3k…</div>
+        <div class="scroll">
+          <div class="signin">
+            <img class="logo" src="assets/img/onenz-logo-secondary.png" alt="One NZ">
+            <h1>Sign in to see your bill</h1>
+            <p>Your bill has personal details, so we check it's you first.</p>
+            <div class="why"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>This link only opens a bill after the account holder signs in. A forwarded email shows nothing.</span></div>
+            <div class="faceid" id="faceid" aria-hidden="true"><div class="ring"><svg width="38" height="38" viewBox="0 0 38 38" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 11V7a4 4 0 014-4h4M27 3h4a4 4 0 014 4v4M35 27v4a4 4 0 01-4 4h-4M11 35H7a4 4 0 01-4-4v-4M13 14v3M25 14v3M19 14v7h-2M14 26c3 2.5 7 2.5 10 0"/></svg></div></div>
+            <button class="btn btn-primary" id="faceBtn">Continue with Face ID</button>
+            <button class="btn btn-secondary" id="pwBtn">Use email and password</button>
+            <div class="pwform" id="pwForm">
+              <div class="field">Email<div class="fakeinput"><span class="mask" style="width:9em"></span></div></div>
+              <label class="field">Password<input type="password" placeholder="Prototype: any password works" autocomplete="off"></label>
+              <button class="btn btn-primary" id="pwGo">Sign in</button>
+            </div>
+          </div>
+        </div>
+        <div class="proto">Prototype · sign-in is simulated</div>
+      </section>
+
+      <!-- 4. Walkthrough intro -->
+      <section class="scr" id="s-intro" aria-label="Your bill, explained">
+        <div class="scroll">
+          <div class="hero">
+            <img class="logo" src="assets/img/onenz-logo-primary.png" alt="One NZ">
+            <div class="kicker">Your bill, explained</div>
+            <h1>Here's your bill for 24 Sep – 23 Oct</h1>
+            <div class="total">$319.30</div>
+            <div class="meta">Paid automatically on 10 October</div>
+          </div>
+          <div class="chapters"><h2>What we&rsquo;ll cover · about three minutes</h2><ol id="chapterList"></ol></div>
+          <div class="intro-actions">
+            <button class="btn btn-primary" id="startSound"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Start walkthrough</button>
+            <button class="btn btn-secondary" id="startQuiet">Read it without sound</button>
+            <button class="linkbtn" data-go="end">Skip to the summary</button>
+          </div>
+        </div>
+        <div class="proto">Prototype · real amounts, personal details blacked out</div>
+      </section>
+
+      <!-- 5. Player -->
+      <section class="scr" id="s-player" aria-label="Bill walkthrough">
+        <div class="bar">
+          <button class="iconbtn" data-go="intro" aria-label="Back to start"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span class="title">Your bill<small id="chapterName">Overview</small></span>
+          <button class="iconbtn" id="muteBtn" aria-label="Sound on"></button>
+        </div>
+        <div class="billwrap">
+          <div class="billscroll" id="billScroll"><div class="bill" id="bill"></div></div>
+          <div class="tapchip" id="tapChip">Tap any line to ask about it</div>
+          <div class="windows" id="windows" aria-hidden="true">
+            <h3>Two months, one bill</h3>
+            <div class="wins">
+              <div class="win prev" data-id="win-prev"><div class="k">Charged after</div><div class="dt">24 Aug – 23 Sep</div><div class="wa">$163.27</div>
+                <ul><li>Roaming $139.86</li><li>Phone payments $23.01</li><li>Picture messages $0.40</li></ul></div>
+              <div class="win next" data-id="win-next"><div class="k">Paid ahead</div><div class="dt">24 Sep – 23 Oct</div><div class="wa">$156.00</div>
+                <ul><li>One Plan $44.00</li><li>Companion $42.00</li><li>Broadband $70.00</li></ul></div>
+            </div>
+            <div class="axis"><div class="line"></div><div class="mk" style="left:2%">24 Aug</div><div class="mk" style="left:50%">Bill 23 Sep</div><div class="mk" style="left:77%">Paid 10 Oct</div></div>
+          </div>
+        </div>
+        <div class="sheet">
+          <div class="segs" id="segs"></div>
+          <div class="where"><span id="where">1 of 13</span><button class="skip" data-go="end">Skip to end</button></div>
+          <div class="adminstrip" id="adminStrip"></div>
+          <p class="caption" id="caption" aria-live="polite"></p>
+          <div class="taught" id="taughtNote" hidden></div>
+          <div class="controls">
+            <button class="ctl" id="prevBtn" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M18 6l-8.5 6L18 18zM6 6h2v12H6z" fill="currentColor"/></svg></button>
+            <button class="play" id="playBtn" aria-label="Pause"></button>
+            <button class="ctl" id="nextBtn" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 6l8.5 6L6 18zM16 6h2v12h-2z" fill="currentColor"/></svg></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Summary and questions -->
+      <section class="scr" id="s-end" aria-label="Summary and questions">
+        <div class="scroll">
+          <div class="done-head"><h1>That's your bill</h1><p>$319.30, paid automatically on 10 October.</p></div>
+          <div class="keys">
+            <div class="key"><div><b>Roaming: $139.86</b><span>14 days overseas across two phones, at $9.99 a day</span></div></div>
+            <div class="key"><div><b>Without roaming: $179.44</b><span>Almost the same as last month's $179.78</span></div></div>
+            <div class="key"><div><b>Your phone: 16 payments to go</b><span>$17.61 a month after your One Wallet discount</span></div></div>
+          </div>
+          <div class="ask">
+            <h2>Got a question about your bill?</h2>
+            <button class="tapline" data-go="bill"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M9 11.5V5a1.5 1.5 0 013 0v5.5M12 10.5V9a1.5 1.5 0 013 0v2M15 11V10a1.5 1.5 0 013 0v4.5c0 3.6-2.4 6.5-6 6.5-2.4 0-3.9-1.1-5.1-3L4.6 14a1.5 1.5 0 012.4-1.8L9 14.5" fill="none" stroke="#1B7C53" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tap a line on your bill<small>Point to the exact charge and ask about it</small></span></button>
+            <div class="chips" id="chips"></div>
+            <form class="askbox" id="askForm"><input id="askInput" maxlength="300" placeholder="Or type your question" aria-label="Type your question"><button aria-label="Ask"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="currentColor"/></svg></button></form>
+            <div class="thread" id="thread"></div>
+          </div>
+          <div class="end-actions">
+            <button class="btn btn-primary" data-go="pay">Pay or manage payment</button>
+            <div class="end-links">
+              <button class="linkbtn" id="replay">Replay walkthrough</button>
+              <button class="linkbtn" data-toast="Mocked: opens the full bill, as today">Download full bill</button>
+              <button class="linkbtn" data-human>Talk to a person</button>
+            </div>
+          </div>
+          <div class="proto">Prototype · answers come from a fixed, labelled list</div>
+        </div>
+      </section>
+
+      <!-- 7. Your bill: tap a line to ask (customer) or teach (admin) -->
+      <section class="scr" id="s-bill" aria-label="Your bill">
+        <div class="bar"><button class="iconbtn" data-go="end" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="title">Your bill<small id="billSub">Tap any line to ask about it</small></span><span style="width:44px"></span></div>
+        <div class="billwrap"><div class="billscroll" id="billViewScroll"><div class="bill" id="billView"></div></div></div>
+      </section>
+
+      <!-- 8. Payment -->
+      <section class="scr" id="s-pay" aria-label="Payment">
+        <div class="bar"><button class="iconbtn" data-go="end" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="title">Payment</span><span style="width:44px"></span></div>
+        <div class="scroll">
+          <div class="pay">
+            <h1>Your payment</h1>
+            <div class="paycard">
+              <div style="color:var(--n600);font-size:14px">Scheduled for 10 October</div>
+              <div class="big">$319.30</div>
+              <div class="card"><span><span class="visa">VISA</span>Visa ending <span class="mask" style="width:2.4em"></span></span><button class="linkbtn" data-toast="Mocked: opens One NZ's existing card settings">Change card</button></div>
+            </div>
+            <label class="opt sel" id="optKeep"><input type="radio" name="pay" value="keep" checked><span><b>Keep my scheduled payment</b><span>We'll take it from your card on 10 October. Nothing to do.</span></span></label>
+            <label class="opt" id="optNow"><input type="radio" name="pay" value="now"><span><b>Pay now instead</b><span>Pay $319.30 today with your saved card.</span></span></label>
+            <button class="btn btn-primary" id="payGo">Done</button>
+          </div>
+        </div>
+        <div class="proto">Prototype · no money moves</div>
+      </section>
+
+      <!-- 9. Payment confirmed -->
+      <section class="scr" id="s-paid" aria-label="Payment confirmed">
+        <div class="scroll">
+          <div class="paid">
+            <div class="tick"><svg width="38" height="38" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#1B7C53" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h1 id="paidTitle">You're all set</h1>
+            <p id="paidText">We'll take $319.30 from your card on 10 October.</p>
+            <div style="height:10px"></div>
+            <button class="btn btn-secondary" id="restart">Start the prototype again</button>
+          </div>
+        </div>
+        <div class="proto">Prototype · no money moved</div>
+      </section>
+
+      <!-- Ask about one line -->
+      <div class="modal" id="askSheet" role="dialog" aria-modal="true" aria-label="Ask about this line">
+        <div class="panel">
+          <div class="sheet-head"><span id="askHead">Ask about this line</span><button class="iconbtn" id="askClose" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
+          <div class="linecard" id="askLine"></div>
+          <div class="explain" id="askExplain"></div>
+          <div class="chips" id="askChips"></div>
+          <form class="askbox" id="askLineForm"><input id="askLineInput" maxlength="300" placeholder="Ask about this charge" aria-label="Ask about this charge"><button aria-label="Ask"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="currentColor"/></svg></button></form>
+          <div class="thread" id="askThread"></div>
+        </div>
+      </div>
+
+      <div class="modal" id="humanModal" role="dialog" aria-modal="true" aria-labelledby="humanTitle">
+        <div class="panel">
+          <h2 id="humanTitle">Talk to a person</h2>
+          <p>We'll pass on this walkthrough and your question, so you won't have to start from scratch.</p>
+          <div class="stack">
+            <button class="btn btn-primary" data-toast="Mocked: opens chat with your bill and question attached (needs integration)">Chat with us</button>
+            <button class="btn btn-secondary" data-toast="Mocked: call 777 from your One NZ mobile">Call us</button>
+            <button class="linkbtn" id="humanClose">Not now</button>
+          </div>
+        </div>
+      </div>
+      <div class="toast" id="toast" role="status"></div>
+    </div>
+  </div>
+
+  <aside class="side" id="side" aria-label="Prototype notes and admin">
+    <h2 style="margin-top:0">Bill explainer prototype</h2>
+    <div class="viewtoggle" role="tablist" aria-label="View">
+      <button data-view="customer" class="on" role="tab">Customer view</button>
+      <button data-view="admin" role="tab">Admin view</button>
+    </div>
+
+    <div id="customerPanel">
+      <p class="lead">A clickable mock from the bill email to payment. Amounts and dates come from one real bill; personal details are blacked out.</p>
+      <h2>Jump to</h2>
+      <div class="nav" id="nav"></div>
+      <h2 id="notesTitle">This screen</h2>
+      <div id="notesBody"></div>
+      <div id="stepNotes"></div>
+      <h2>Labels</h2>
+      <p><span class="tag t-bill">From the bill</span> <span class="tag t-approved">Approved 14 Oct</span> <span class="tag t-taught">Approved by billing team</span> <span class="tag t-assumed">Assumed – needs approval</span> <span class="tag t-mocked">Mocked</span> <span class="tag t-integration">Needs integration</span></p>
+    </div>
+
+    <div id="adminPanel" hidden>
+      <p class="lead">For billing experts. Click any line on the bill to teach the explainer how to explain it, and see where customers still need help.</p>
+      <div class="tabs" role="tablist">
+        <button data-tab="hits" class="on">Hit list</button>
+        <button data-tab="teach">Teach</button>
+        <button data-tab="library">Library <span class="count" id="libCount">0</span></button>
+      </div>
+      <div id="tab-hits"></div>
+      <div id="tab-teach" hidden></div>
+      <div id="tab-library" hidden></div>
+    </div>
+  </aside>
+  <button class="side-toggle" id="sideToggle">Notes and admin</button>
+</div>
+
+<script src="script.js"></script>
+<script>
+"use strict";
+(function () {
+  const W = window.WALKTHROUGH;
+  if (!W || !Array.isArray(W.steps)) { document.body.textContent = "script.js did not load."; return; }
+  const STEPS = W.steps;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  // Escape, then turn {{m:N}} into a solid bar N characters wide: masked, never replaced.
+  const fmt = (s) => esc(s).replace(/\{\{m:(\d+)\}\}/g, (_, n) => `<span class="mask" style="width:${Math.max(2, Number(n)) * 0.55}em" role="img" aria-label="masked"></span>`);
+  const num = (n) => n.toLocaleString("en-NZ");
+  const SOURCE = { bill: "From the bill", approved: "Approved 14 Oct", assumed: "Assumed – needs approval", mocked: "Mocked", integration: "Needs integration", policy: "Can't change charges here", unanswered: "Passed to billing team", taught: "Approved by billing team", draft: "Draft", preview: "Preview – not live yet", retired: "Retired" };
+  const TYPE = { unclear: "Explanation unclear", error: "Possible billing error – check", missing: "Not on the bill" };
+  const ADVANCE_PAUSE_MS = 650;   // breath between steps so the highlight move reads as a new beat
+  const READ_WORDS_PER_SEC = 2.6; // silent mode pacing, roughly comfortable reading speed
+  const HEAT_FLOOR_PCT = 20;     // below this, a topic is explained well enough to leave off the overlay
+  const MAX_EVENTS = 500;         // the question log is a demo; cap it so storage can't grow without bound
+  const STORE_KEY = "billExplainer.v2";
+  const ICON = {
+    play: '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
+    pause: '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor"/></svg>',
+    soundOn: '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    soundOff: '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM17 9.5l5 5M22 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    ifp: '<svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 15l6-6M9.5 9.5h.01M14.5 14.5h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+    bb: '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0119 0M5.5 12.5a9.5 9.5 0 0113 0M8.5 16a5 5 0 017 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.4" fill="currentColor"/></svg>',
+    mobile: '<svg width="18" height="18" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    companion: '<svg width="18" height="18" viewBox="0 0 24 24"><circle cx="8.5" cy="7.5" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="16.5" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c.6-3.4 2.8-5 5.5-5s4.9 1.6 5.5 5M14.5 14.3c2.6-.4 5.6.8 6.5 4.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+  };
+
+  /* ---------------- Prototype state: teachings and the question log ----------------
+     Kept in this browser only (public static site, no server). If storage is blocked the page
+     still works; changes just don't survive a reload, and we say so once in the console. */
+  const S = loadState();
+  function loadState() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+      if (raw && Array.isArray(raw.teachings) && Array.isArray(raw.events)) return raw;
+    } catch (err) { console.warn("Bill explainer: saved state unreadable, starting fresh.", err); }
+    return { teachings: [], events: [] };
+  }
+  function saveState() {
+    if (S.events.length > MAX_EVENTS) S.events = S.events.slice(-MAX_EVENTS);
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); }
+    catch (err) { console.warn("Bill explainer: could not save; changes last until reload.", err); }
+  }
+  function logEvent(topic, kind, question) {
+    S.events.push({ topic: topic || "other", kind, q: (question || "").slice(0, 200), at: Date.now() });
+    saveState();
+    if (view === "admin") { renderHitList(); renderHeat(); }
+  }
+
+  /* ---------------- Bill line index ---------------- */
+  function buildLineIndex(b) {
+    const m = {}, order = [];
+    const put = (x, extra) => { m[x.id] = Object.assign({ id: x.id, topic: x.topic, label: x.label || "", amount: x.amount || x.incl || "", period: "", qty: "", friendly: "", group: "" }, extra || {}); order.push(x.id); };
+    b.lastMonth.lines.forEach((l) => put(l, { period: b.lastMonth.period }));
+    put(b.lastMonth.carried, { period: b.lastMonth.period });
+    b.summary.lines.forEach((l) => put(l, { period: "This month's summary" }));
+    ["total", "gst", "noGst", "pay"].forEach((k) => put(b.summary[k], { period: "This month's summary" }));
+    b.sections.forEach((s) => {
+      s.lines.forEach((l) => put(l, { period: l.period, qty: l.qty || "", friendly: l.friendly || "", group: l.group || "", section: s }));
+      put(s.total, { label: (s.kicker + " total"), section: s });
+    });
+    return { map: m, order };
+  }
+  const IDX = buildLineIndex(W.bill);
+  const LINES = IDX.map;
+
+  function lineTitle(line) {
+    const where = line.section && (line.section.id === "ma" ? "Mobile · " : line.section.id === "mb" ? "Second mobile · " : "");
+    return (where || "") + (line.group ? line.group + " · " : "") + line.label;
+  }
+  function fill(template, line) {
+    const amt = line.amount || "";
+    return template
+      .replace(/\{amountAbs\}/g, amt.replace(/^-/, ""))
+      .replace(/\{amount\}/g, amt)
+      .replace(/\{period\}/g, line.period || "")
+      .replace(/\{qty\}/g, line.qty || "")
+      .replace(/\{friendly\}/g, line.friendly || "item")
+      .replace(/\{label\}/g, line.label || "");
+  }
+
+  /* ---------------- Explanations: approved teaching beats the default ---------------- */
+  function liveTeaching(line) {
+    const live = S.teachings.filter((t) => t.status === "approved");
+    return live.find((t) => t.scope === "line" && t.target === line.id) || live.find((t) => t.scope === "topic" && t.target === line.topic) || null;
+  }
+  function explainFor(line) {
+    const t = liveTeaching(line);
+    if (t) return { text: t.text, source: "taught", teaching: t };
+    const topic = W.topics[line.topic];
+    return { text: fill(topic ? topic.explain : "", line), source: topic ? topic.source : "bill", teaching: null };
+  }
+
+  /* ---------------- Screens ---------------- */
+  const SCREENS = { inbox: "Inbox", email: "Bill email", signin: "Sign in", intro: "Walkthrough start", player: "Walkthrough", end: "Summary and questions", bill: "Tap a line to ask", pay: "Payment", paid: "Confirmed" };
+  const NOTES = {
+    inbox: ['<span class="tag t-mocked">Mocked</span>', "The bill email arrives as it does today. Its preview line now offers the walkthrough."],
+    email: ['<span class="tag t-mocked">Mocked</span>', "<b>Walk me through my bill</b> is the main button. The full bill stays one tap away.", "The email shows the total and the change from last month. It never shows line detail. Personal details are blacked out."],
+    signin: ['<span class="tag t-assumed">Assumed – needs approval</span> <span class="tag t-integration">Needs integration</span>', "The link carries a bill reference, not bill data. Nothing loads until the account holder signs in, so a forwarded email shows nothing.", "Simulated here; any input works."],
+    intro: ['<span class="tag t-integration">Needs integration</span>', "The correct bill opens with no upload and no retyping. A real version reads it from billing data, not from the bill document."],
+    player: ['<span class="tag t-mocked">Voice: ElevenLabs</span>', "The bill highlights line by line, in step with the voice. Pause, go back, skip ahead, tap a segment to jump, or skip to the end.", "<b>Tap any line</b> to pause and ask about it.", "Keys: space plays or pauses; arrow keys move between steps."],
+    end: ['<span class="tag t-mocked">Mocked</span>', "Customers can tap a line on the bill, pick a suggested question, or type their own. Each answer shows the bill lines it comes from and how far it can be trusted.", "Unknown questions get no guess: the customer is offered a person, and the question goes to the admin hit list. Requests to change charges always go to a person."],
+    bill: ['<span class="tag t-mocked">Mocked</span>', "Tap any line to see what it is, pick a question about that exact charge, or type one. The selected line tells the explainer what to focus on."],
+    pay: ['<span class="tag t-mocked">Mocked</span> <span class="tag t-integration">Needs integration</span>', "Hands off to One NZ's existing payment flow. No money moves here."],
+    paid: ['<span class="tag t-assumed">Assumed – needs approval</span>', "Assumed: paying now replaces the 10 October payment, so the customer isn't charged twice."]
+  };
+  let current = "inbox";
+  let view = "customer";
+
+  function show(name) {
+    if (!SCREENS[name]) throw new Error("unknown screen " + name);
+    if (current === "player" && name !== "player") stopPlayback();
+    current = name;
+    $$(".scr").forEach((s) => s.classList.toggle("active", s.id === "s-" + name));
+    $("#status").classList.toggle("dark", name === "intro");
+    closeModals();
+    renderNotes();
+  }
+  function closeModals() { $$(".modal.show").forEach((m) => m.classList.remove("show")); }
+
+  function renderNotes() {
+    $$("#nav button").forEach((b) => b.classList.toggle("on", b.dataset.screen === current));
+    $("#notesTitle").textContent = SCREENS[current];
+    $("#notesBody").innerHTML = (NOTES[current] || []).map((p) => "<p>" + p + "</p>").join("");
+    $("#stepNotes").innerHTML = current === "player" ? stepListHtml() : "";
+  }
+
+  function stepListHtml() {
+    const items = STEPS.map((s, k) =>
+      `<li data-step="${k}" class="${k === P.i ? "on" : ""}"><span class="n">${k + 1}</span><span><b style="font-weight:500">${esc(s.chapter)}</b> <span class="tag t-${s.source}">${esc(SOURCE[s.source])}</span><br><span style="color:var(--n600);font-size:12.5px">${esc(s.note)}</span></span></li>`).join("");
+    const voice = P.voice === "browser" ? '<p><span class="tag t-assumed">Voice fallback</span> A clip was missing, so the browser voice stood in.</p>' : "";
+    return `<h2>Steps</h2>${voice}<ul class="steps">${items}</ul>`;
+  }
+
+  let toastTimer = 0;
+  function toast(msg) {
+    const t = $("#toast");
+    t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+  }
+
+  /* ---------------- Bill rendering ---------------- */
+  function lineHtml(l) {
+    const grp = l.group ? `<div class="grp">${fmt(l.group)}</div>` : "";
+    const qty = l.qty && l.qty !== "1" ? ` · ${esc(l.qty)} days` : "";
+    return `<div class="ln u" data-id="${l.id}" data-topic="${l.topic}">${grp}<div>${fmt(l.label)}</div><div class="incl">${esc(l.incl)}</div>` +
+      `<div class="per">${esc(l.period)}${qty}</div><div></div></div>${insertHtml(l.insert)}`;
+  }
+
+  function insertHtml(kind) {
+    if (kind === "ifp-progress") {
+      return `<div class="insert" data-insert="ifp-progress"><div class="ihead">iPhone 16 Pro: payment 20 of 36</div><div class="progress" style="--p:${(20 / 36) * 100}"><div></div></div>` +
+        `<div class="progress-legend"><span>20 paid</span><span>16 to go · $17.61 a month after discount</span></div></div>`;
+    }
+    if (kind === "roam-a") return calendarHtml("roam-a", 16, 18, false);
+    if (kind === "roam-b") return calendarHtml("roam-b", 13, 23, true);
+    return "";
+  }
+
+  // Two weeks from Sunday 13 Sep 2026, so weekday labels line up. Roamed days are filled;
+  // the bill's last day (23 Sep) is outlined when later roaming would move to the next bill.
+  function calendarHtml(id, from, to, showCut) {
+    const names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let cells = "";
+    for (let d = 13; d <= 26; d++) {
+      const roamed = d >= from && d <= to;
+      const cut = showCut && d === 23 ? " cut" : "";
+      const delay = roamed ? ` style="animation-delay:${(d - from) * 60}ms"` : "";
+      cells += `<div class="d${roamed ? " r" : ""}${cut}"${delay}><small>${names[(d - 13) % 7]}</small>${d}</div>`;
+    }
+    const days = to - from + 1;
+    const note = showCut ? `${days} days at $9.99. The outlined day is the last one on this bill; any later days go on next month's.` : `${days} days at $9.99, each started by the first use that day, in local time.`;
+    return `<div class="insert" data-insert="${id}"><div class="ihead">Roaming days in September</div><div class="cal">${cells}</div><div class="cal-note">${note}</div></div>`;
+  }
+
+  function sectionHtml(s) {
+    let html = `<div class="page sec"><div class="hd"><div class="kicker">${fmt(s.kicker)}</div>${s.title ? `<div class="stitle">${fmt(s.title)}</div>` : ""}</div>`;
+    let inExtras = false;
+    if (s.id !== "ifp" && s.id !== "adj") html += `<div class="sub2 hd">Your plan charges for this month</div>`;
+    s.lines.forEach((l) => {
+      if (l.extras && !inExtras) { inExtras = true; html += `<div class="sub2 hd">Extras</div>`; }
+      html += lineHtml(l);
+    });
+    const notes = s.total.notes.map((n) => `<div class="note-r">${esc(n)}</div>`).join("");
+    return html + `<div class="u" data-id="${s.total.id}" data-topic="${s.total.topic}"><div class="stot"><span>Total charges</span><span class="amt">${esc(s.total.amount)}</span></div>${notes}</div></div>`;
+  }
+
+  function rowHtml(l, extraCls, inner) {
+    return `<div class="row u${extraCls || ""}" data-id="${l.id}" data-topic="${l.topic}">${inner}</div>`;
+  }
+
+  function billHtml() {
+    const b = W.bill, c = W.customer, lm = b.lastMonth, sm = b.summary;
+    const meta = [["Account number", b.accountNumber], ["Invoice number", b.invoiceNumber], ["Invoice date", b.invoiceDate], ["Billing period", b.billingPeriod], ["Due date", b.dueDate]]
+      .map(([k, v]) => `<dt>${k}</dt><dd>${fmt(v)}</dd>`).join("");
+    const lmRows = lm.lines.map((l) => rowHtml(l, "", `<span class="lbl">${fmt(l.label)}${l.tag ? `<span class="pilltag">${esc(l.tag)}</span>` : ""}</span><span class="amt">${esc(l.amount)}</span>`)).join("");
+    const smRows = sm.lines.map((l) => rowHtml(l, "", `<span class="lbl">${ICON[l.icon]}<span>${fmt(l.label)}</span></span><span class="amt">${esc(l.amount)}</span>`)).join("");
+    return `<div class="page"><div class="bhead"><img src="assets/img/onenz-logo-secondary.png" alt="One NZ"><span class="ti">TAX INVOICE</span></div>` +
+      `<div class="addr">${fmt(c.name)}<br>${c.address.map(fmt).join("<br>")}</div><dl class="kv">${meta}</dl></div>` +
+      `<div class="page sec"><div class="hd"><div class="h3">Last month's summary</div><div class="subtle">${esc(lm.period)}</div></div>${lmRows}` +
+      rowHtml(lm.carried, " strong", `<span>${esc(lm.carried.label)}</span><span class="amt">${esc(lm.carried.amount)}</span>`) + `</div>` +
+      `<div class="page sec"><div class="hd"><div class="h3">This month's summary</div><div class="subtle">Prices shown are inclusive of extras – like roaming</div></div>${smRows}` +
+      rowHtml(sm.total, " strong", `<span>${esc(sm.total.label)}</span><span class="amt">${esc(sm.total.amount)}</span>`) +
+      `<div class="note-r u" data-id="${sm.gst.id}" data-topic="${sm.gst.topic}">${esc(sm.gst.label)}</div><div class="note-r u" data-id="${sm.noGst.id}" data-topic="${sm.noGst.topic}">${esc(sm.noGst.label)}</div>` +
+      `<div class="payrow u" data-id="${sm.pay.id}" data-topic="${sm.pay.topic}"><div class="row" style="padding:0"><span style="font-weight:600">${esc(sm.pay.label)}</span><span class="amt">${esc(sm.pay.amount)}</span></div><div class="nothing">${esc(sm.pay.note)}</div></div></div>` +
+      `<div class="detail-h hd">Detailed charges for this month</div>` + b.sections.map(sectionHtml).join("");
+  }
+
+  /* ---------------- Admin heat badges: the hit list inside the journey ---------------- */
+  function topicStats(id) {
+    const t = W.topics[id];
+    if (!t) return null;
+    const live = S.events.filter((e) => e.topic === id);
+    const liveAsked = live.filter((e) => e.kind === "asked").length;
+    const liveUnclear = live.filter((e) => e.kind === "unclear").length;
+    const asked = t.seed.asked + liveAsked;
+    const unclearN = Math.round((t.seed.asked * t.seed.unclear) / 100) + liveUnclear;
+    return { asked, unclearN, pct: Math.round((100 * unclearN) / Math.max(1, asked)), liveAsked, liveUnclear };
+  }
+  function shortNum(n) { return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n); }
+
+  function renderHeat() {
+    $$(".bill .hb").forEach((b) => b.remove());
+    $$(".bill").forEach((bill) => {
+      const seen = new Set(); // one badge per topic per section keeps the overlay readable
+      $$(".u[data-topic]", bill).forEach((el) => {
+        const line = LINES[el.dataset.id];
+        const st = topicStats(el.dataset.topic);
+        const key = (el.closest(".page") ? Array.from(bill.children).indexOf(el.closest(".page")) : 0) + ":" + el.dataset.topic;
+        if (!st || !line || seen.has(key)) return;
+        const taught = !!liveTeaching(line);
+        if (!taught && st.pct < HEAT_FLOOR_PCT) return;
+        seen.add(key);
+        const hb = document.createElement("span");
+        hb.className = "hb " + (taught ? "taught" : st.pct >= 40 ? "hot" : "warm");
+        hb.textContent = taught ? "Taught" : `${shortNum(st.asked)} asked · ${st.pct}% still unclear`;
+        el.appendChild(hb);
+      });
+    });
+  }
+
+  /* ---------------- Walkthrough player ---------------- */
+  const P = { i: 0, sound: true, playing: false, clock: null, advanceTimer: 0, sentence: -1, voice: "elevenlabs" };
+  const audio = new Audio();
+  audio.preload = "auto";
+
+  function djb2(text) {
+    let h = 5381;
+    for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) >>> 0;
+    return h.toString(16);
+  }
+  const clipUrl = (step) => `audio/${step.id}-${djb2(step.speech)}.mp3`;
+  const sentencesOf = (text) => text.split(/(?<=[.!?])\s+(?=[A-Z0-9$])/);
+
+  function renderSegments() {
+    $("#segs").innerHTML = STEPS.map((s, k) => `<button class="seg" data-step="${k}" aria-label="Step ${k + 1}: ${esc(s.chapter)}"><i></i></button>`).join("");
+  }
+  function setProgress(frac) {
+    $$("#segs .seg > i").forEach((el, k) => {
+      el.style.width = (k < P.i ? 100 : k === P.i ? Math.round(frac * 100) : 0) + "%";
+    });
+  }
+  function renderCaption(step) {
+    $("#caption").innerHTML = sentencesOf(step.caption).map((p) => `<span>${esc(p)} </span>`).join("");
+    $("#caption").classList.remove("all");
+    P.sentence = -1;
+  }
+  function markSentence(idx) {
+    if (idx === P.sentence) return;
+    P.sentence = idx;
+    $$("#caption span").forEach((s, k) => { s.className = k < idx ? "past" : k === idx ? "now" : ""; });
+    const step = STEPS[P.i];
+    applyFocus((step.beats && (step.beats[idx] || step.beats[step.beats.length - 1])) || step.focus);
+  }
+  function onTick(frac) {
+    setProgress(frac);
+    const parts = sentencesOf(STEPS[P.i].caption);
+    const total = parts.reduce((n, p) => n + p.length, 0);
+    let acc = 0, idx = parts.length - 1;
+    for (let k = 0; k < parts.length; k++) { acc += parts[k].length; if (frac * total < acc) { idx = k; break; } }
+    markSentence(idx);
+  }
+  function onDone() {
+    setProgress(1);
+    P.clock = null;
+    clearTimeout(P.advanceTimer);
+    P.advanceTimer = setTimeout(() => { if (P.playing) goStep(P.i + 1); }, ADVANCE_PAUSE_MS);
+  }
+
+  function applyFocus(ids) {
+    const root = $("#s-player");
+    $$(".u.on, .win.on", root).forEach((e) => e.classList.remove("on"));
+    ids.forEach((id) => $$(`[data-id="${id}"]`, root).forEach((e) => e.classList.add("on")));
+    const billIds = ids.filter((id) => !id.startsWith("win-"));
+    $("#bill").classList.toggle("spot", billIds.length > 0);
+    $(".wins").classList.toggle("spot", ids.length > billIds.length);
+    $$("#bill .sec").forEach((s) => s.classList.toggle("has-on", !!s.querySelector(".u.on")));
+    if (billIds.length) requestAnimationFrame(() => scrollToIds("#billScroll", "#bill", billIds));
+  }
+
+  // Centre the highlighted lines in view, or top-align them when the group is taller than the view.
+  function scrollToIds(scrollSel, billSel, ids) {
+    const sc = $(scrollSel);
+    const els = ids.map((id) => $(`${billSel} [data-id="${id}"]`)).filter(Boolean);
+    if (!els.length) return;
+    const base = sc.getBoundingClientRect().top - sc.scrollTop;
+    const tops = els.map((e) => e.getBoundingClientRect().top - base);
+    const bottoms = els.map((e) => e.getBoundingClientRect().bottom - base);
+    const top = Math.min(...tops), height = Math.max(...bottoms) - top;
+    const target = height < sc.clientHeight * 0.8 ? top - (sc.clientHeight - height) / 2 : top - 16;
+    sc.scrollTo({ top: Math.max(0, target), behavior: "smooth" });
+  }
+
+  function showInsert(kind) {
+    $$("#bill .insert").forEach((e) => e.classList.toggle("show", e.dataset.insert === kind));
+    $("#windows").classList.toggle("show", kind === "windows");
+    $("#bill").classList.toggle("veil", kind === "windows");
+  }
+
+  /* Clocks: one interface, three sources. ElevenLabs clip first; browser voice if a clip is missing;
+     a reading-pace timer when sound is off. Each calls onTick(0..1) and onDone() exactly once. */
+  function audioClock(step, fail) {
+    let failed = false;
+    const onFail = () => { if (!failed) { failed = true; fail(); } };
+    audio.src = clipUrl(step);
+    audio.ontimeupdate = () => { if (audio.duration) onTick(audio.currentTime / audio.duration); };
+    audio.onended = onDone;
+    audio.onerror = onFail;
+    audio.play().catch(onFail);
+    return { pause: () => audio.pause(), resume: () => audio.play().catch(onFail), stop: () => { audio.ontimeupdate = audio.onended = audio.onerror = null; audio.pause(); } };
+  }
+  function speechClock(step) {
+    const u = new SpeechSynthesisUtterance(step.speech);
+    const voice = speechSynthesis.getVoices().find((v) => /en-(NZ|AU|GB)/.test(v.lang));
+    if (voice) u.voice = voice;
+    u.rate = 1.02;
+    u.onboundary = (e) => onTick(Math.min(1, e.charIndex / step.speech.length));
+    u.onend = onDone;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+    return { pause: () => speechSynthesis.pause(), resume: () => speechSynthesis.resume(), stop: () => { u.onend = u.onboundary = null; speechSynthesis.cancel(); } };
+  }
+  function timerClock(step) {
+    const ms = Math.max(3500, (step.caption.split(/\s+/).length / READ_WORDS_PER_SEC) * 1000);
+    let elapsed = 0, last = performance.now(), running = true, raf = 0;
+    const loop = (t) => {
+      if (running) elapsed += t - last;
+      last = t;
+      const f = Math.min(1, elapsed / ms);
+      onTick(f);
+      if (f >= 1) { onDone(); return; }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return { pause: () => { running = false; }, resume: () => { running = true; last = performance.now(); }, stop: () => cancelAnimationFrame(raf) };
+  }
+  function startClock(step) {
+    if (!P.sound) { P.clock = timerClock(step); return; }
+    P.clock = audioClock(step, () => {
+      if (P.clock) P.clock.stop();
+      P.voice = "browser";
+      renderNotes();
+      P.clock = "speechSynthesis" in window ? speechClock(step) : timerClock(step);
+    });
+  }
+  function stopClock() {
+    clearTimeout(P.advanceTimer);
+    if (P.clock) P.clock.stop();
+    P.clock = null;
+  }
+  function stopPlayback() {
+    stopClock();
+    P.playing = false;
+    renderPlayButton();
+  }
+
+  function stepLineIds(step) {
+    return [...new Set([...(step.focus || []), ...(step.beats || []).flat()])].filter((id) => LINES[id]);
+  }
+
+  function renderStepExtras(step) {
+    const ids = stepLineIds(step);
+    const taught = ids.map((id) => liveTeaching(LINES[id])).find(Boolean);
+    const note = $("#taughtNote");
+    note.hidden = !taught;
+    if (taught) note.innerHTML = `<b>From our billing team</b>${esc(taught.text)}`;
+    // Admin strip: the most-asked topic this step covers, with a shortcut to teach it.
+    const topics = [...new Set(ids.map((id) => LINES[id].topic))].map((t) => ({ t, st: topicStats(t) })).filter((x) => x.st);
+    topics.sort((a, b) => b.st.unclearN - a.st.unclearN);
+    const strip = $("#adminStrip");
+    strip.classList.toggle("has", topics.length > 0);
+    if (!topics.length) { strip.innerHTML = ""; return; }
+    const top = topics[0], firstLine = ids.find((id) => LINES[id].topic === top.t);
+    strip.innerHTML = `<span><b style="font-weight:600">${esc(W.topics[top.t].name)}</b>: ${num(top.st.asked)} asked · ${top.st.pct}% still unclear</span><button class="sbtn" data-teach="${firstLine}">Teach</button>`;
+  }
+
+  function goStep(i) {
+    stopClock();
+    if (i >= STEPS.length) { P.playing = false; show("end"); return; }
+    P.i = Math.max(0, i);
+    const step = STEPS[P.i];
+    $("#chapterName").textContent = step.chapter;
+    $("#where").textContent = `${P.i + 1} of ${STEPS.length} · ${step.chapter}`;
+    $("#prevBtn").disabled = P.i === 0;
+    showInsert(step.insert || "");
+    renderCaption(step);
+    renderStepExtras(step);
+    setProgress(0);
+    markSentence(0);
+    if (!P.playing) $("#caption").classList.add("all");
+    if (P.playing) startClock(step);
+    renderPlayButton();
+    renderNotes();
+  }
+  function togglePlay() {
+    if (P.playing) {
+      P.playing = false;
+      if (P.clock) P.clock.pause();
+      clearTimeout(P.advanceTimer);
+    } else {
+      P.playing = true;
+      $("#caption").classList.remove("all");
+      if (P.clock) P.clock.resume(); else startClock(STEPS[P.i]);
+    }
+    renderPlayButton();
+  }
+  function renderPlayButton() {
+    $("#playBtn").innerHTML = P.playing ? ICON.pause : ICON.play;
+    $("#playBtn").setAttribute("aria-label", P.playing ? "Pause" : "Play");
+    $("#muteBtn").innerHTML = P.sound ? ICON.soundOn : ICON.soundOff;
+    $("#muteBtn").setAttribute("aria-label", P.sound ? "Turn sound off" : "Turn sound on");
+  }
+  function startWalkthrough(withSound) {
+    P.sound = withSound;
+    P.playing = true;
+    P.voice = "elevenlabs";
+    show("player");
+    goStep(0);
+  }
+
+  /* ---------------- Answers ---------------- */
+  function words(s) { return s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 3); }
+  function similar(a, b) { const wb = new Set(words(b)); return words(a).filter((w) => wb.has(w)).length >= 2; }
+
+  // Order matters: a request to change charges always goes to a person; "what is this" needs a line.
+  function resolve(question, line) {
+    const q = question.toLowerCase();
+    for (const h of W.qa.filter((x) => new RegExp(x.match).test(q))) {
+      if (h.id === "what-is-this") { if (line) return lineAnswer(line); continue; }
+      const topic = h.topic || (line ? line.topic : "other");
+      return { answer: h.answer, cite: h.cite, source: h.source, human: !!h.human, topic, expert: topicTeaching(h.topic, line) };
+    }
+    const taught = S.teachings.find((t) => t.status === "approved" && t.example && similar(q, t.example));
+    if (taught) return { answer: taught.text, cite: teachingCite(taught), source: "taught", topic: teachingTopic(taught) };
+    return { answer: W.fallback.answer, cite: [], source: "unanswered", human: true, topic: line ? line.topic : "other" };
+  }
+  function lineAnswer(line) {
+    const ex = explainFor(line);
+    return { answer: ex.text, cite: [line.id], source: ex.source, topic: line.topic };
+  }
+  function topicTeaching(topic, line) {
+    const live = S.teachings.filter((t) => t.status === "approved");
+    return (line && live.find((t) => t.scope === "line" && t.target === line.id)) || live.find((t) => t.scope === "topic" && t.target === topic) || null;
+  }
+  function teachingTopic(t) { return t.scope === "topic" ? t.target : (LINES[t.target] || {}).topic; }
+  function teachingCite(t) { return t.scope === "line" ? [t.target] : IDX.order.filter((id) => LINES[id].topic === t.target).slice(0, 2); }
+
+  function citeHtml(ids) {
+    const rows = (ids || []).filter((id) => LINES[id]).map((id) => {
+      const l = LINES[id];
+      return `<div class="cr"><span>${fmt(lineTitle(l))}</span><b>${esc(l.amount)}</b><small>${fmt(l.period)}</small></div>`;
+    }).join("");
+    return rows ? `<div class="cite"><div class="ct">From your bill</div>${rows}</div>` : "";
+  }
+  function answerHtml(question, res) {
+    const expert = res.expert && res.expert.text !== res.answer ? `<div class="expert"><b>From our billing team</b>${esc(res.expert.text)}</div>` : "";
+    const human = res.human ? `<button class="btn btn-secondary human" data-human data-topic="${esc(res.topic)}">Talk to a person</button>` : "";
+    const fb = res.source === "unanswered" ? "" : `<span class="fb">Did this help? <button data-fb="yes">Yes</button><button data-fb="no" data-topic="${esc(res.topic)}">No</button></span>`;
+    return `<div class="q">${esc(question)}</div><div class="a"><p>${fmt(res.answer)}</p>${expert}${citeHtml(res.cite)}${human}` +
+      `<div class="afoot"><span class="tag t-${res.source}">${esc(SOURCE[res.source] || res.source)}</span>${fb}</div></div>`;
+  }
+  function ask(question, line, threadSel) {
+    const text = question.trim().slice(0, 300);
+    if (!text) return;
+    const res = resolve(text, line);
+    logEvent(res.topic, "asked", text);
+    if (res.source === "unanswered") logEvent(res.topic, "unclear", text);
+    const thread = $(threadSel);
+    thread.insertAdjacentHTML("beforeend", answerHtml(text, res));
+    const last = thread.lastElementChild;
+    requestAnimationFrame(() => last.scrollIntoView({ behavior: "smooth", block: "nearest" }));
+  }
+
+  /* ---------------- Ask about one line ---------------- */
+  let askLineId = null;
+  function openAsk(lineId, preview) {
+    const line = LINES[lineId];
+    if (!line) return;
+    askLineId = lineId;
+    const ex = preview ? { text: preview, source: "preview" } : explainFor(line);
+    $("#askHead").textContent = preview ? "Preview: how customers will see it" : "Ask about this line";
+    $("#askLine").innerHTML = `<div class="lc-top"><span>${fmt(lineTitle(line))}</span><span>${esc(line.amount)}</span></div><div class="lc-sub">${fmt(line.period)}</div>`;
+    $("#askExplain").innerHTML = `<p>${fmt(ex.text)}</p><span class="tag t-${ex.source}">${esc(SOURCE[ex.source])}</span>`;
+    const topic = W.topics[line.topic] || { questions: [] };
+    const taughtQs = S.teachings.filter((t) => t.status === "approved" && t.example && (t.target === line.id || t.target === line.topic));
+    $("#askChips").innerHTML = taughtQs.map((t) => `<button class="chip taughtq" data-tq="${t.id}">${esc(t.example)}</button>`).join("") +
+      topic.questions.map((q, k) => `<button class="chip" data-lq="${k}">${esc(q.q)}</button>`).join("");
+    $("#askThread").innerHTML = "";
+    $("#askSheet").classList.add("show");
+    if (!preview) logEvent(line.topic, "asked", "Tapped: " + line.label.replace(/\{\{m:\d+\}\}/g, "").trim());
+  }
+  function answerLineQuestion(k) {
+    const line = LINES[askLineId];
+    const q = W.topics[line.topic].questions[k];
+    const res = { answer: fill(q.a, line), cite: [line.id], source: q.source, human: !!q.human, topic: line.topic, expert: liveTeaching(line) };
+    logEvent(line.topic, "asked", q.q);
+    if (q.source === "unanswered") logEvent(line.topic, "unclear", q.q);
+    $("#askThread").insertAdjacentHTML("beforeend", answerHtml(q.q, res));
+    $("#askThread").lastElementChild.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  function answerTaughtQuestion(id) {
+    const t = S.teachings.find((x) => x.id === id);
+    if (!t) return;
+    const res = { answer: t.text, cite: teachingCite(t), source: "taught", topic: teachingTopic(t) };
+    logEvent(res.topic, "asked", t.example);
+    $("#askThread").insertAdjacentHTML("beforeend", answerHtml(t.example, res));
+  }
+
+  // A tap on the bill means "ask about this" for customers and "teach this" for admins.
+  function onLineTap(lineId) {
+    if (view === "admin") { openTeach(lineId); return; }
+    if (current === "player" && P.playing) togglePlay();
+    $("#tapChip").style.opacity = "0";
+    openAsk(lineId);
+  }
+
+  /* ---------------- Admin view ---------------- */
+  let adminTab = "hits";
+  let teachLineId = null;
+  let editingId = null;
+
+  function setView(v) {
+    view = v;
+    document.body.classList.toggle("admin", v === "admin");
+    $$(".viewtoggle button").forEach((b) => b.classList.toggle("on", b.dataset.view === v));
+    $("#customerPanel").hidden = v === "admin";
+    $("#adminPanel").hidden = v !== "admin";
+    $("#billSub").textContent = v === "admin" ? "Admin: click a line to teach it" : "Tap any line to ask about it";
+    $("#tapChip").textContent = v === "admin" ? "Admin: click a line to teach it" : "Tap any line to ask about it";
+    if (v === "admin") {
+      if (current !== "player" && current !== "bill") show("bill");
+      renderAdmin();
+    }
+    renderHeat();
+    if (current === "player") renderStepExtras(STEPS[P.i]);
+  }
+
+  function setTab(t) {
+    adminTab = t;
+    $$(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === t));
+    ["hits", "teach", "library"].forEach((x) => { $("#tab-" + x).hidden = x !== t; });
+    renderAdmin();
+  }
+  function renderAdmin() {
+    $("#libCount").textContent = S.teachings.filter((t) => t.status !== "retired").length;
+    if (adminTab === "hits") renderHitList();
+    if (adminTab === "teach") renderTeach();
+    if (adminTab === "library") renderLibrary();
+  }
+
+  function topicStatus(id) {
+    const ts = S.teachings.filter((t) => t.status !== "retired" && teachingTopic(t) === id);
+    if (ts.some((t) => t.status === "approved")) return '<span class="tag t-taught">Explanation approved</span>';
+    if (ts.some((t) => t.status === "draft")) return '<span class="tag t-draft">Draft waiting</span>';
+    return '<span class="tag t-mocked">No teaching yet</span>';
+  }
+
+  function renderHitList() {
+    const rows = Object.keys(W.topics).map((id) => ({ id, t: W.topics[id], st: topicStats(id) }));
+    rows.sort((a, b) => b.st.unclearN - a.st.unclearN);
+    const html = rows.map((r, k) => {
+      const first = IDX.order.find((lid) => LINES[lid].topic === r.id);
+      const live = r.st.liveAsked ? `<span class="live">+${r.st.liveAsked} asked here</span>` : "";
+      const liveQs = S.events.filter((e) => e.topic === r.id && e.kind === "unclear").slice(-3).map((e) => `<li>${esc(e.q)}</li>`).join("");
+      const action = first ? `<button class="sbtn primary" data-teach="${first}">Teach this</button>` : `<button class="sbtn" data-toast="Not on the bill: add to help content, or route to a person">Route</button>`;
+      return `<div class="hit"><div class="top"><span><span class="rank">${k + 1}</span><span class="name">${esc(r.t.name)}</span></span><span class="tag t-${r.t.seed.type}">${TYPE[r.t.seed.type]}</span></div>` +
+        `<div class="nums">${num(r.st.asked)} asked · <b style="font-weight:600;color:var(--n900)">${num(r.st.unclearN)} still unclear (${r.st.pct}%)</b></div>` +
+        `<div class="bar"><i class="u1" style="width:${r.st.pct}%"></i><i class="u2" style="width:${100 - r.st.pct}%"></i></div>` +
+        `<div class="sample">&ldquo;${esc(r.t.seed.sample)}&rdquo;</div>${liveQs ? `<ul class="qlist">${liveQs}</ul>` : ""}` +
+        `<div class="acts">${topicStatus(r.id)}${live}${action}</div></div>`;
+    }).join("");
+    $("#tab-hits").innerHTML = `<p class="fine">Ranked by customers still unclear after an explanation. <b>Illustrative numbers</b>, plus any questions asked in this prototype. A possible billing error is a lead to check, not a confirmed cause.</p>${html}` +
+      `<p class="fine" style="margin-top:12px">The same numbers show as badges on each bill line in the phone, inside the customer journey.</p>`;
+  }
+
+  function openTeach(lineId) {
+    teachLineId = lineId;
+    editingId = null;
+    $$(".bill .u.sel").forEach((e) => e.classList.remove("sel"));
+    $$(`.bill [data-id="${lineId}"]`).forEach((e) => e.classList.add("sel"));
+    if (current !== "player" && current !== "bill") show("bill");
+    if (current === "bill") requestAnimationFrame(() => scrollToIds("#billViewScroll", "#billView", [lineId]));
+    if (current === "player") requestAnimationFrame(() => scrollToIds("#billScroll", "#bill", [lineId]));
+    $("#side").classList.add("open");
+    setTab("teach");
+  }
+
+  function renderTeach() {
+    const box = $("#tab-teach");
+    const line = LINES[teachLineId];
+    if (!line) { box.innerHTML = `<div class="empty">Click any line on the bill to teach the explainer how to explain it.<br><br>Or pick a row in the hit list.</div>`; return; }
+    const ex = explainFor(line);
+    const topicName = (W.topics[line.topic] || { name: line.topic }).name;
+    const editing = editingId && S.teachings.find((t) => t.id === editingId);
+    const scope = editing ? editing.scope : "topic";
+    const text = editing ? editing.text : ex.text;
+    const example = editing ? editing.example || "" : "";
+    const st = topicStats(line.topic);
+    box.innerHTML = `<div class="teach">
+      <div class="linecard"><div class="lc-top"><span>${fmt(lineTitle(line))}</span><span>${esc(line.amount)}</span></div><div class="lc-sub">${fmt(line.period)} · ${esc(topicName)}${st ? ` · ${num(st.asked)} asked, ${st.pct}% still unclear` : ""}</div></div>
+      <h3>Customers see now</h3><div class="current"><p>${fmt(ex.text)}</p><span class="tag t-${ex.source}">${esc(SOURCE[ex.source])}</span></div>
+      <h3>${editing ? "Edit teaching" : "Teach the explainer"}</h3>
+      <div class="scope">
+        <label><input type="radio" name="scope" value="topic" ${scope === "topic" ? "checked" : ""}><span>Every <b style="font-weight:500">${esc(topicName.toLowerCase())}</b> line, on every bill</span></label>
+        <label><input type="radio" name="scope" value="line" ${scope === "line" ? "checked" : ""}><span>Just this line</span></label>
+      </div>
+      <label class="lbl" for="teachText">When you get to this, explain it like this</label>
+      <textarea id="teachText" maxlength="600">${esc(text)}</textarea>
+      <label class="lbl" for="teachQ">When customers ask… (optional, becomes a suggested question)</label>
+      <input type="text" id="teachQ" maxlength="140" value="${esc(example)}" placeholder="e.g. Why was I charged for a whole day?">
+      <div class="btnrow"><button class="sbtn" id="teachPreview">Preview as customer</button><button class="sbtn" id="teachDraft">Save draft</button><button class="sbtn primary" id="teachApprove">Approve and use</button></div>
+      <p class="fine" style="margin-top:12px">Saved to this prototype's explanation library, in this browser only. It guides what the explainer says to customers. It doesn't retrain a model.</p>
+    </div>`;
+  }
+
+  function readTeachForm() {
+    const text = $("#teachText").value.trim();
+    if (text.length < 12) { toast("Write the explanation first (a sentence or two)"); return null; }
+    const scope = $('input[name="scope"]:checked').value;
+    const line = LINES[teachLineId];
+    return { scope, target: scope === "line" ? line.id : line.topic, text, example: $("#teachQ").value.trim() };
+  }
+  function saveTeaching(status) {
+    const f = readTeachForm();
+    if (!f) return;
+    if (status === "approved") {
+      // One live explanation per target: approving retires the previous one.
+      S.teachings.forEach((t) => { if (t.status === "approved" && t.scope === f.scope && t.target === f.target && t.id !== editingId) t.status = "retired"; });
+    }
+    const existing = editingId && S.teachings.find((t) => t.id === editingId);
+    if (existing) Object.assign(existing, f, { status, updatedAt: Date.now() });
+    else S.teachings.push(Object.assign({ id: "t" + Date.now().toString(36), status, createdAt: Date.now() }, f));
+    saveState();
+    editingId = null;
+    toast(status === "approved" ? "Approved. Customers now see this explanation." : "Draft saved to the library.");
+    renderHeat();
+    if (current === "player") renderStepExtras(STEPS[P.i]);
+    setTab(status === "approved" ? "teach" : "library");
+  }
+  function previewTeaching() {
+    const f = readTeachForm();
+    if (!f) return;
+    if (current !== "bill") show("bill");
+    openAsk(teachLineId, f.text);
+  }
+
+  function renderLibrary() {
+    const items = S.teachings.slice().reverse();
+    const html = items.map((t) => {
+      const target = t.scope === "line" ? "This line: " + lineTitle(LINES[t.target] || { label: t.target }) : "Every " + ((W.topics[t.target] || { name: t.target }).name).toLowerCase() + " line";
+      const status = t.status === "approved" ? "taught" : t.status;
+      const acts = (t.status === "draft" ? `<button class="sbtn primary" data-approve="${t.id}">Approve</button>` : "") +
+        (t.status !== "retired" ? `<button class="sbtn" data-edit="${t.id}">Edit</button><button class="sbtn" data-retire="${t.id}">Retire</button>` : "");
+      return `<div class="lib"><div class="lib-top"><span class="lib-target">${fmt(target)}</span><span class="tag t-${status}">${esc(SOURCE[status])}</span></div>` +
+        `<p>${esc(t.text)}</p>${t.example ? `<p class="fine">When customers ask: &ldquo;${esc(t.example)}&rdquo;</p>` : ""}<div class="btnrow" style="margin-top:6px">${acts}</div></div>`;
+    }).join("");
+    $("#tab-library").innerHTML = (html || `<div class="empty">No teachings yet. Click a line on the bill, or use Teach this in the hit list.</div>`) +
+      `<div class="btnrow" style="margin-top:14px"><button class="sbtn" id="resetData">Clear my teachings and question log</button></div>`;
+  }
+  function libraryAction(kind, id) {
+    const t = S.teachings.find((x) => x.id === id);
+    if (!t) return;
+    if (kind === "approve") {
+      S.teachings.forEach((o) => { if (o.status === "approved" && o.scope === t.scope && o.target === t.target) o.status = "retired"; });
+      t.status = "approved";
+    }
+    if (kind === "retire") t.status = "retired";
+    if (kind === "edit") {
+      teachLineId = t.scope === "line" ? t.target : IDX.order.find((lid) => LINES[lid].topic === t.target);
+      editingId = t.id;
+      setTab("teach");
+      return;
+    }
+    saveState();
+    renderHeat();
+    renderAdmin();
+  }
+
+  /* ---------------- Wiring ---------------- */
+  function renderEndChips() {
+    const qs = ["Why is my bill higher?", "How much do I still owe on my phone?", "What's the International charge?", "Can you refund my roaming?", "When does my contract end?"];
+    $("#chips").innerHTML = qs.map((q) => `<button class="chip" data-ask="${esc(q)}">${esc(q)}</button>`).join("");
+  }
+
+  function wire() {
+    $("#nav").innerHTML = Object.entries(SCREENS).map(([k, v]) => `<button data-screen="${k}">${v}</button>`).join("");
+    $("#chapterList").innerHTML = [...new Set(STEPS.map((s) => s.chapter))].map((c) => `<li>${esc(c)}</li>`).join("");
+    document.addEventListener("click", onClick);
+    $("#faceBtn").addEventListener("click", signInFaceId);
+    $("#pwBtn").addEventListener("click", () => { $("#pwForm").classList.add("show"); $("#pwBtn").style.display = "none"; });
+    $("#pwGo").addEventListener("click", () => show("intro"));
+    $("#startSound").addEventListener("click", () => startWalkthrough(true));
+    $("#startQuiet").addEventListener("click", () => startWalkthrough(false));
+    $("#playBtn").addEventListener("click", togglePlay);
+    $("#prevBtn").addEventListener("click", () => goStep(P.i - 1));
+    $("#nextBtn").addEventListener("click", () => goStep(P.i + 1));
+    $("#muteBtn").addEventListener("click", () => { P.sound = !P.sound; goStep(P.i); });
+    $("#replay").addEventListener("click", () => startWalkthrough(P.sound));
+    $("#humanClose").addEventListener("click", () => $("#humanModal").classList.remove("show"));
+    $("#askClose").addEventListener("click", () => $("#askSheet").classList.remove("show"));
+    $$(".modal").forEach((m) => m.addEventListener("click", (e) => { if (e.target === m) m.classList.remove("show"); }));
+    $("#askForm").addEventListener("submit", (e) => { e.preventDefault(); ask($("#askInput").value, null, "#thread"); $("#askInput").value = ""; });
+    $("#askLineForm").addEventListener("submit", (e) => { e.preventDefault(); ask($("#askLineInput").value, LINES[askLineId], "#askThread"); $("#askLineInput").value = ""; });
+    $$('input[name="pay"]').forEach((r) => r.addEventListener("change", updatePayChoice));
+    $("#payGo").addEventListener("click", confirmPayment);
+    $("#restart").addEventListener("click", restart);
+    $("#sideToggle").addEventListener("click", () => $("#side").classList.toggle("open"));
+    document.addEventListener("keydown", onKey);
+  }
+
+  // One delegated handler keeps every button's behaviour in one place.
+  function onClick(e) {
+    const t = e.target.closest("button, [data-go], [data-step], [data-screen], .bill .u");
+    if (!t) return;
+    const d = t.dataset;
+    if (t.matches(".bill .u")) { onLineTap(d.id); return; }
+    if (d.go) { show(d.go); return; }
+    if (d.toast) { toast(d.toast); return; }
+    if (t.hasAttribute("data-human")) { logEvent(d.topic || "other", "unclear", "Asked for a person"); $("#humanModal").classList.add("show"); return; }
+    if (d.fb) { if (d.fb === "no") logEvent(d.topic, "unclear", "Said the answer didn't help"); t.parentElement.textContent = d.fb === "yes" ? "Thanks for letting us know." : "Thanks. We've passed this to our team to improve."; return; }
+    if (d.ask) { ask(d.ask, null, "#thread"); return; }
+    if (d.lq !== undefined) { answerLineQuestion(Number(d.lq)); return; }
+    if (d.tq) { answerTaughtQuestion(d.tq); return; }
+    if (d.screen) { jumpTo(d.screen); return; }
+    if (d.step) { if (current !== "player") show("player"); goStep(Number(d.step)); return; }
+    if (d.view) { setView(d.view); return; }
+    if (d.tab) { setTab(d.tab); return; }
+    if (d.teach) { openTeach(d.teach); return; }
+    if (d.approve || d.edit || d.retire) { libraryAction(d.approve ? "approve" : d.edit ? "edit" : "retire", d.approve || d.edit || d.retire); return; }
+    if (t.id === "teachPreview") { previewTeaching(); return; }
+    if (t.id === "teachDraft") { saveTeaching("draft"); return; }
+    if (t.id === "teachApprove") { saveTeaching("approved"); return; }
+    if (t.id === "resetData") { S.teachings = []; S.events = []; saveState(); renderHeat(); renderAdmin(); toast("Cleared."); }
+  }
+
+  function jumpTo(screen) {
+    if (screen === "player") { P.playing = false; show("player"); goStep(0); return; }
+    show(screen);
+  }
+  function onKey(e) {
+    if (current !== "player" || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    if (e.key === " ") { e.preventDefault(); togglePlay(); }
+    if (e.key === "ArrowRight") goStep(P.i + 1);
+    if (e.key === "ArrowLeft" && P.i > 0) goStep(P.i - 1);
+  }
+  function signInFaceId() {
+    const f = $("#faceid");
+    f.classList.add("scanning");
+    $("#faceBtn").textContent = "Checking…";
+    setTimeout(() => { f.classList.remove("scanning"); f.classList.add("done"); $("#faceBtn").textContent = "Signed in"; }, 1100);
+    setTimeout(() => { show("intro"); f.classList.remove("done"); $("#faceBtn").textContent = "Continue with Face ID"; }, 1700);
+  }
+  function updatePayChoice() {
+    const now = $('input[name="pay"]:checked').value === "now";
+    $("#optKeep").classList.toggle("sel", !now);
+    $("#optNow").classList.toggle("sel", now);
+    $("#payGo").textContent = now ? "Pay $319.30 now" : "Done";
+  }
+  function confirmPayment() {
+    const now = $('input[name="pay"]:checked').value === "now";
+    $("#paidTitle").textContent = now ? "Payment received" : "You're all set";
+    $("#paidText").textContent = now
+      ? "$319.30 paid with your saved card. We've cancelled the 10 October payment, so you won't be charged twice."
+      : "We'll take $319.30 from your card on 10 October.";
+    show("paid");
+  }
+  function restart() {
+    $("#thread").innerHTML = "";
+    $('input[name="pay"][value="keep"]').checked = true;
+    updatePayChoice();
+    $("#tapChip").style.opacity = "1";
+    show("inbox");
+  }
+
+  $("#bill").innerHTML = billHtml();
+  $("#billView").innerHTML = billHtml();
+  renderSegments();
+  renderEndChips();
+  wire();
+  renderPlayButton();
+  renderHeat();
+  show("inbox");
+})();
+</script>
+</body>
+</html>
